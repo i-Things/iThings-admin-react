@@ -1,0 +1,53 @@
+@import "/src/global.less";
+
+@childcardheight: 196px;
+.baseCard {
+  width: 100%;
+  height: 400px;
+  color: @fontRegularColor;
+  font-family: @fontFamily;
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 8px;
+  }
+  .card1 {
+    height: @childcardheight;
+    margin: 0px 2px 5px 0px;
+    padding: @defaultModuleSpace;
+    background-color: #e5f8ff;
+  }
+  .card2 {
+    height: @childcardheight;
+    margin: 0px 0px 5px 2px;
+    padding: @defaultModuleSpace;
+    background-color: #edf1fd;
+  }
+  .card3 {
+    height: @childcardheight;
+    margin: 5px 2px 0px 0px;
+    padding: @defaultModuleSpace;
+    background-color: #fff3e7;
+  }
+  .card4 {
+    height: @childcardheight;
+    margin: 5px 0px 0px 2px;
+    padding: @defaultModuleSpace;
+    background-color: #ffeae9;
+  }
+
+  span {
+    display: block;
+    line-height: @fontDefaultHeight;
+  }
+  .valueSpan {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: @fontTitleSize;
+  }
+  .hitSpan {
+    font-size: @fontDefaultSize;
+  }
+}

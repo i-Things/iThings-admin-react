@@ -1,0 +1,99 @@
+.img {
+  width: 960px;
+  height: 100vh;
+  margin-left: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background: "#fff";
+}
+
+.lang {
+  width: 100%;
+  height: 40px;
+  line-height: 44px;
+  text-align: right;
+
+  :global(.ant-dropdown-trigger) {
+    margin-right: 24px;
+  }
+}
+
+.captcha {
+  width: 130px;
+  height: 30px;
+}
+
+.mrb24 {
+  margin-bottom: 24px;
+}
+
+.codeInput {
+  display: flex !important;
+}
+
+.contentWrap {
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff;
+  
+
+  p {
+    margin: 0;
+  }
+}
+
+.content {
+  width: 460px;
+  margin: 90px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.logo {
+  margin: 60px 0 20px 10px;
+}
+
+.title {
+  padding-left: 10px;
+  font-weight: bolder;
+  font-size: 28px;
+}
+
+.subTitle {
+  margin-bottom: 20px !important;
+  padding-left: 10px;
+  color: #b2adad;
+  font-size: 20px;
+}
+
+:global {
+  .ant-pro-form-login-container {
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ant-pro-form-login-main {
+    width: 435px !important;
+  }
+}
+
+.icon {
+  margin-left: 8px;
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: @primary-color;
+  }
+}
