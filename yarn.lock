@@ -3718,7 +3718,7 @@
   resolved "https://registry.npmmirror.com/@umijs/error-code-map/-/error-code-map-1.0.1.tgz#2a2dd7b4bcd11869e968264ff3dabacfabe8b874"
   integrity sha512-Q0KSpQYKTF2XWOlAxJO/SRbRhIGAp1GK1spWFbzwv3h0WvfX7pPeA05Y3p0hut7Vcjhdocnx5NduuApF4R1lGQ==
 
-"@umijs/fabric@^2.0.0", "@umijs/fabric@^2.2.2", "@umijs/fabric@^2.5.6", "@umijs/fabric@^2.6.2":
+"@umijs/fabric@^2.0.0", "@umijs/fabric@^2.2.2", "@umijs/fabric@^2.5.6":
   version "2.12.2"
   resolved "https://registry.npmmirror.com/@umijs/fabric/-/fabric-2.12.2.tgz#31df21bfdd2c6b2bff90fbfde5321cb04d79724b"
   integrity sha512-3fLQ3SOFmyzEbv0ELUPBRMfgMGNkWtJVnhgMmcvgtOfq4g3croDVKQetxjfjJ3cfYqVGtFfbQJ//RuEdYU3+2A==
@@ -3745,6 +3745,43 @@
     fast-glob "^3.2.4"
     os-locale "^5.0.0"
     prettier "^2.3.2"
+    prettier-plugin-packagejson "^2.2.18"
+    prettier-plugin-two-style-order "^1.0.0"
+    stylelint "^13.0.0"
+    stylelint-config-css-modules "^2.2.0"
+    stylelint-config-prettier "^8.0.1"
+    stylelint-config-standard "^20.0.0"
+    stylelint-declaration-block-no-ignored-properties "^2.1.0"
+    typescript "^4.5.4"
+
+"@umijs/fabric@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry-npm.myscrm.cn/repository/pkg/@umijs/fabric/-/fabric-3.0.0.tgz#c85742ca7900e8c70b2a0ef10b0d4580c30c5252"
+  integrity sha512-1mkcltWbSfq0fioR4Bw8mabe1Vjo85LBE84eQM4E5uYXk2qW3zUMrZcp0z8a6RQQDiYitQl3ch8kqaDPStHODw==
+  dependencies:
+    "@babel/core" "^7.12.10"
+    "@babel/eslint-parser" "^7.12.1"
+    "@babel/plugin-proposal-class-properties" "^7.13.0"
+    "@babel/plugin-proposal-decorators" "^7.13.5"
+    "@babel/preset-env" "^7.12.11"
+    "@babel/preset-react" "^7.12.10"
+    "@babel/preset-typescript" "^7.12.7"
+    "@typescript-eslint/eslint-plugin" "^5.8.1"
+    "@typescript-eslint/parser" "^5.9.0"
+    chalk "^4.1.1"
+    eslint "^7.11.0"
+    eslint-config-prettier "^8.3.0"
+    eslint-formatter-pretty "^4.0.0"
+    eslint-plugin-babel "^5.3.0"
+    eslint-plugin-jest "^24.0.1"
+    eslint-plugin-promise "^6.0.0"
+    eslint-plugin-react "^7.21.5"
+    eslint-plugin-react-hooks "^4.1.2"
+    eslint-plugin-unicorn "^20.0.0"
+    fast-glob "^3.2.4"
+    os-locale "^5.0.0"
+    prettier "^2.3.2"
+    prettier-plugin-organize-imports "^3.0.0"
     prettier-plugin-packagejson "^2.2.18"
     prettier-plugin-two-style-order "^1.0.0"
     stylelint "^13.0.0"
@@ -13442,6 +13479,11 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha512-ravE6m9Atw9Z/jjttRUZ+clIXogdghyZAuWJ3qEzjT+jI/dL1ifAqhZeC5VHzQp1MSt1+jxKkFNemj/iO7tVUA==
+
+prettier-plugin-organize-imports@^3.0.0:
+  version "3.0.3"
+  resolved "https://registry-npm.myscrm.cn/repository/pkg/prettier-plugin-organize-imports/-/prettier-plugin-organize-imports-3.0.3.tgz#de6fed664b34d42bf6c7ce3f306ceec4ea3c4fb7"
+  integrity sha512-eu8PhJR39UZamhRdLEBJhUKG/sg0s+bnjwnN5Lc1TByZUHBtMuS9tBstnyaKGTSiMLhhftRPr0yIWG+PmJ13MA==
 
 prettier-plugin-packagejson@^2.2.18:
   version "2.2.18"

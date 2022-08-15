@@ -1,5 +1,5 @@
 {
-  "name": "fmcs",
+  "name": "ithings-admin",
   "version": "5.0.0",
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
@@ -42,14 +42,21 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
+    "**/*.less": "stylelint --syntax less",
+    "*.{js,ts,ts,tsx}": [
+      "eslint --fix"
     ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write",
-      "git add ."
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write"
     ]
   },
+  "checkFiles": [
+    "src/**/*.js*",
+    "src/**/*.ts*",
+    "src/**/*.less",
+    "config/**/*.js*",
+    "scripts/**/*.js"
+],
   "browserslist": [
     "> 1%",
     "last 2 versions",
@@ -106,7 +113,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.0",
-    "@umijs/fabric": "^2.6.2",
+    "@umijs/fabric": "^3.0.0",
     "@umijs/openapi": "^1.1.14",
     "@umijs/plugin-blocks": "^2.0.5",
     "@umijs/plugin-esbuild": "^1.0.1",
@@ -135,7 +142,7 @@
     "validate-commit-msg": "^2.14.0"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
   },
   "gitHooks": {
     "commit-msg": "fabric verify-commit"
