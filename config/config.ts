@@ -13,7 +13,6 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
     siderWidth: 250,
     ...defaultSettings,
@@ -24,7 +23,6 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
-  // umi routes: https://umijs.org/docs/routing
   routes: [
     {
       path: "/user",
