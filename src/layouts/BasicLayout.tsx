@@ -8,7 +8,7 @@ import "moment/locale/zh-cn";
 import React from "react";
 import { history, Link } from "umi";
 import styles from "./BasicLayout.less";
-moment.locale("zh-cn"); // 注意这里设置 moment 必须放在有 import 的后面。
+moment.locale("zh-cn");
 
 const BasicLayout: React.FC = (props) => {
   const { children } = props;
@@ -75,8 +75,7 @@ const BasicLayout: React.FC = (props) => {
           onClick={() => {
             history.push("/");
           }}
-        >
-        </div>
+         />
       )}
       menuProps={{
         style: {
