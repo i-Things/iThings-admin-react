@@ -1,6 +1,6 @@
 {
-  "name": "瀚鼎厂务管理系统",
-  "short_name": "瀚鼎厂务管理系统",
+  "name": "iThings",
+  "short_name": "iThings",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",

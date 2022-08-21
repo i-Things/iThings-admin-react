@@ -2,16 +2,18 @@ import {
   postV1ThingsProductInfoCreate,
   postV1ThingsProductInfoIndex,
   postV1ThingsProductInfoUpdate,
-  postV1ThingsProductInfo__openAPI__delete,
+  postV1ThingsProductInfo__openAPI__delete
 } from "@/services/fmcsapi/chanpinguanli";
-import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-table";
 import ProTable from "@ant-design/pro-table";
-import { Button, Card, message, Modal } from "antd";
+import { Button, Card, Col, message, Modal, Row } from "antd";
 import React, { useRef, useState } from "react";
 import { history } from "umi";
-import ProductOp from "./ProductOp";
 import type { ProductType } from "./ProductOp";
+import ProductOp from "./ProductOp";
+import styles from "./style.less";
+
 
 const queryProductList = async (params: {
   pageSize: number;
@@ -287,6 +289,13 @@ const IndexPage: React.FC = () => {
 
   return (
     <Card>
+        <Row>
+        <Col span={24}>
+          <div className={styles.global_fontTitle}>
+            <span>产品列表</span>
+          </div>
+        </Col>
+      </Row>
       <ProTable<API.chanpinhexinziduan>
         headerTitle="产品列表"
         actionRef={actionRef}

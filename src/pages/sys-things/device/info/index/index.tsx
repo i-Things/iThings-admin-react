@@ -1,21 +1,13 @@
-import {
-  postV1ThingsProductInfoIndex,
-  postV1ThingsProductInfo__openAPI__delete,
-} from "@/services/fmcsapi/chanpinguanli";
-import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { PageContainer } from "@ant-design/pro-layout";
+import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-table";
 import ProTable from "@ant-design/pro-table";
-import { Button, message, Card, Tabs, Modal } from "antd";
-import React, { useRef, useState, useEffect } from "react";
+import { Button, Card, Col, message, Modal, Row, Tabs } from "antd";
+import React, { useRef, useState } from "react";
 import { history } from "umi";
-import SchemaInfo from "./SchameInfo";
+import styles from "./style.less";
 
 import {
-  postV1ThingsDeviceIndex,
-  postV1ThingsDeviceCreate,
-  postV1ThingsDevice__openAPI__delete,
-  postV1ThingsDeviceUpdate,
+  postV1ThingsDeviceCreate, postV1ThingsDeviceIndex, postV1ThingsDeviceUpdate, postV1ThingsDevice__openAPI__delete
 } from "@/services/fmcsapi/shebeiguanli";
 import DeviceOp from "./deviceop";
 
@@ -248,6 +240,13 @@ const IndexPage: React.FC = (props: any) => {
 
   return (
     <Card>
+       <Row>
+        <Col span={24}>
+          <div className={styles.global_fontTitle}>
+            <span>设备列表</span>
+          </div>
+        </Col>
+      </Row>
       <ProTable<API.shebeixinxihexinziduan>
         actionRef={actionRef}
         columns={columns}

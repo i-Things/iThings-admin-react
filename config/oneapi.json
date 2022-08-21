@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "瀚鼎厂务管理系统",
+    "title": "iThings",
     "version": "1.0.0"
   },
   "servers": [

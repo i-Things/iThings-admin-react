@@ -22,7 +22,7 @@ export default (): React.ReactNode => {
             textAlign: "center",
           }}
         >
-          <SmileTwoTone /> 瀚鼎厂务管理系统{" "}
+          <SmileTwoTone /> iThings{" "}
           <HeartTwoTone twoToneColor="#eb2f96" /> You
         </Typography.Title>
       </Card>
