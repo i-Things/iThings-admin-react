@@ -43,11 +43,10 @@
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
-    "*.{js,ts,ts,tsx}": [
-      "eslint --fix"
-    ],
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ]
   },
   "checkFiles": [
@@ -56,7 +55,7 @@
     "src/**/*.less",
     "config/**/*.js*",
     "scripts/**/*.js"
-],
+  ],
   "browserslist": [
     "> 1%",
     "last 2 versions",
@@ -127,7 +126,7 @@
     "cross-port-killer": "^1.1.1",
     "detect-installer": "^1.0.1",
     "enzyme": "^3.11.0",
-    "eslint": "^7.1.0",
+    "eslint": "^8.22.0",
     "express": "^4.17.1",
     "gh-pages": "^3.0.0",
     "hooks": "^0.3.2",
@@ -135,9 +134,9 @@
     "jsdom-global": "^3.0.2",
     "lint-staged": "^10.0.0",
     "mockjs": "^1.0.1-beta3",
-    "prettier": "^2.3.2",
+    "prettier": "^2.7.1",
     "puppeteer-core": "^8.0.0",
-    "stylelint": "^13.0.0",
+    "stylelint": "^14.11.0",
     "typescript": "^4.2.2",
     "validate-commit-msg": "^2.14.0"
   },
