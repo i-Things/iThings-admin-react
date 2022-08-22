@@ -26,15 +26,19 @@ const BasicLayout: React.FC = (props) => {
           !menuItemProps.path
         ) {
           return (
+            // @ts-ignore
             <Link to={menuItemProps.path ? menuItemProps.path : "#"}>
+              // @ts-ignore
               {defaultDom}
             </Link>
           );
         }
         if (menuItemProps.pro_layout_parentKeys.length < 2) {
+          // @ts-ignore
           return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         } else {
           return (
+            // @ts-ignore
             <Link to={menuItemProps.path}>
               {menuItemProps.icon}
               {defaultDom}
@@ -75,7 +79,7 @@ const BasicLayout: React.FC = (props) => {
           onClick={() => {
             history.push("/");
           }}
-         />
+        />
       )}
       menuProps={{
         style: {

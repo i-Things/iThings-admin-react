@@ -8,20 +8,20 @@ import {
   postV1SystemUserCoreIndex,
   postV1SystemUserInfoCreate,
   postV1SystemUserInfoUpdate,
-  postV1SystemUserInfo__openAPI__delete,
+  postV1SystemUserInfo__openAPI__delete
 } from "@/services/fmcsapi/yonghuguanli";
 import { timestampToDateStr } from "@/utils/date";
 import { apiParams, apiParamsGUID } from "@/utils/utils";
 import {
   ExclamationCircleOutlined,
-  FontColorsOutlined,
+  FontColorsOutlined
 } from "@ant-design/icons";
 import {
   ModalForm,
   ProFormCaptcha,
   ProFormSelect,
   ProFormText,
-  StepsForm,
+  StepsForm
 } from "@ant-design/pro-form";
 import styles from "./style.less";
 
@@ -271,7 +271,7 @@ const IndexPage: React.FC = () => {
           console.log(values);
           // 请求创建用户基本信息的接口
           const params = apiParams();
-          const body = values;
+          const body = values as any;
           body.token = firstStepFormData.accessToken;
           body.uid = firstStepFormData.uid;
           return postV1SystemUserInfoCreate(params, body)
@@ -314,7 +314,7 @@ const IndexPage: React.FC = () => {
             console.log("base", values);
             // 调用创建用户核心数据的接口
             const params = apiParams();
-            const body = values;
+            const body = values as any;
             body.reqType = "password";
             body.codeID = codeID;
             return postV1SystemUserCoreCreate(params, body)
