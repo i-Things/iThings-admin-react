@@ -2,7 +2,7 @@ import RightContent from "@/components/RightContent";
 import { IconMap } from "@/utils/iconMap";
 import { ProLayout } from "@ant-design/pro-layout";
 import { ConfigProvider } from "antd";
-import zhCN from "antd/es/locale/zh_CN"; // 引入语言包
+import zhCN from "antd/es/locale/zh_CN";
 import moment from "moment";
 import "moment/locale/zh-cn";
 import React from "react";
