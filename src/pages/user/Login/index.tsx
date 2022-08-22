@@ -87,7 +87,7 @@ const Login: React.FC = () => {
         <Col flex="auto">
           <div className={styles.contentWrap}>
             <div className={styles.content}>
-              <p className={styles.title}>厂务管理系统客户端</p>
+              <p className={styles.title}>iThings</p>
               <p className={styles.subTitle}>欢迎使用</p>
               <LoginForm
                 initialValues={{
