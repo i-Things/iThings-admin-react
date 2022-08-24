@@ -5,7 +5,7 @@ export const isMobile = () => {
   return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
 };
 
-export const TOKEN_PREFIX = 'fmcs-';
+export const TOKEN_PREFIX = 'iThings';
 
 export const setToken = (token: string) => {
   localStorage.setItem(`${TOKEN_PREFIX}-token`, token);

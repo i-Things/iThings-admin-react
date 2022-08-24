@@ -93,8 +93,6 @@ declare namespace API {
     code: number;
     /** 返回消息 */
     msg: string;
-    /** 返回数据 */
-    data: Record<string, any>;
   };
 
   type chenggongfanhuishuzu = {
@@ -102,8 +100,6 @@ declare namespace API {
     code: number;
     /** 返回消息 */
     msg: string;
-    /** 返回数据 */
-    data: Record<string, any>[];
   };
 
   type emailForm = {};
@@ -196,37 +192,47 @@ declare namespace API {
 
   type postSystemMenu__openAPI__deleteParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   };
 
   type postSystemMenuCreateParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   };
 
   type postSystemMenuIndexParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   };
 
   type postSystemMenuUpdateParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
+  };
+
+  type postSystemRole__openAPI__deleteParams = {
+    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
+    'iThings-guid': string;
   };
 
   type postSystemRoleCreateParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   };
 
   type postSystemRoleIndexParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
+  };
+
+  type postSystemRoleRoleMenuUpdateParams = {
+    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
+    'iThings-guid': string;
   };
 
   type postSystemRoleUpdateParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   };
 
   type postSystemUserCaptchaParams = {

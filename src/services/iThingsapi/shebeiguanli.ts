@@ -13,17 +13,14 @@ export async function postThingsDeviceInfoCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/things/device/info/create',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/things/device/info/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 删除设备 POST /api/v1/things/device/info/delete */
@@ -35,17 +32,14 @@ export async function postThingsDeviceInfo__openAPI__delete(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/things/device/info/delete',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/things/device/info/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 获取设备列表 POST /api/v1/things/device/info/index */
@@ -131,15 +125,12 @@ export async function postThingsDeviceInfoUpdate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/things/device/info/update',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/things/device/info/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
 }

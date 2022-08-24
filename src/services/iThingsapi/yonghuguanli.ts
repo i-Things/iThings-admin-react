@@ -56,11 +56,7 @@ export async function postSystemUserCoreCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: { uid?: string; accessToken?: string; accessExpire?: string; RefreshAfter?: string };
-  }>('/api/v1/system/user/core/create', {
+  return request<{ code: number; msg: string }>('/api/v1/system/user/core/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -179,18 +175,15 @@ export async function postSystemUserInfo__openAPI__delete(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/system/user/info/delete',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...params },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/system/user/info/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 更新用户基本数据 POST /api/v1/system/user/info/update */

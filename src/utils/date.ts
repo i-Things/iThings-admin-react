@@ -1,19 +1,19 @@
-import type { Moment } from "moment";
-import moment from "moment";
+import type { Moment } from 'moment';
+import moment from 'moment';
 export function timestampToDateStr(
   timestamp: number,
-  format: string = "YYYY-MM-DD HH:mm:ss"
+  format: string = 'YYYY-MM-DD HH:mm:ss',
 ): string {
   const m = timestampToDate(timestamp);
   if (m.isValid()) {
     return m.format(format);
   } else {
-    return "-";
+    return '-';
   }
 }
 
 export function dateStrToTimestamp(date: string): number {
-  return moment(date, "YYYY-MM-DD HH:mm:ss").valueOf();
+  return moment(date, 'YYYY-MM-DD HH:mm:ss').valueOf();
 }
 
 export function timestampToDate(timestamp: number): Moment {
@@ -26,34 +26,24 @@ export function timestampToDate(timestamp: number): Moment {
 
 // 获取当前年月日 星期 以及 当前时间
 export function curTime() {
-  let date = new Date();
-  let str = "";
+  const date = new Date();
+  let str = '';
 
   // 获取日期：年月日
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  str += year + "年" + month + "月" + day + "日" + " ";
+  str += year + '年' + month + '月' + day + '日' + ' ';
 
   // 获取星期几
-  const weeks = new Array(
-    "星期日",
-    "星期一",
-    "星期二",
-    "星期三",
-    "星期四",
-    "星期五",
-    "星期六"
-  );
-  str += weeks[new Date().getDay()] + " ";
+  const weeks = new Array('星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六');
+  str += weeks[new Date().getDay()] + ' ';
 
   // 获取时间：时分秒
-  const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-  const minute =
-    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-  const secound =
-    date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-  str += hour + ":" + minute + ":" + secound;
+  const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const secound = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  str += hour + ':' + minute + ':' + secound;
 
-  return "现在是：" + str;
+  return '现在是：' + str;
 }

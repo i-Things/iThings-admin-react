@@ -31,15 +31,12 @@ export async function postThingsProductSchemaUpdate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/things/product/schema/update',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/things/product/schema/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
 }

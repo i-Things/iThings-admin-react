@@ -8,15 +8,15 @@ export async function postSystemMenuCreate(
   params: API.postSystemMenuCreateParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     /** 菜单名称 */
     name: string;
     /** 父菜单ID，一级菜单为1 */
-    parentID: string;
+    parentID: number;
     /** 类型   1：目录   2：菜单   3：按钮 */
-    type: string;
+    type: number;
     /** 系统的path */
     path: string;
     /** 页面 */
@@ -28,18 +28,15 @@ export async function postSystemMenuCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/system/menu/create',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...params },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/system/menu/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 删除菜单 POST /api/v1/system/menu/delete */
@@ -48,26 +45,23 @@ export async function postSystemMenu__openAPI__delete(
   params: API.postSystemMenu__openAPI__deleteParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     /** 菜单编号 */
-    id: string;
+    id: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/system/menu/delete',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...params },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/system/menu/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 获取菜单列表 POST /api/v1/system/menu/index */
@@ -76,7 +70,7 @@ export async function postSystemMenuIndex(
   params: API.postSystemMenuIndexParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     page: { page?: number; size?: number };
@@ -84,12 +78,12 @@ export async function postSystemMenuIndex(
   options?: { [key: string]: any },
 ) {
   return request<{
-    total: string;
+    total: number;
     data: {
-      id?: string;
+      id?: number;
       name?: string;
-      parentID?: string;
-      type?: string;
+      parentID?: number;
+      type?: number;
       path?: string;
       component?: string;
       icon?: string;
@@ -112,38 +106,35 @@ export async function postSystemMenuUpdate(
   params: API.postSystemMenuUpdateParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     /** 编号 */
-    id: string;
+    id: number;
     /** 菜单名称 */
-    name: string;
+    name?: string;
     /** 父菜单ID，一级菜单为1 */
-    parentID: string;
+    parentID?: number;
     /** 类型   1：目录   2：菜单   3：按钮 */
-    type: string;
+    type?: number;
     /** 系统的path */
-    path: string;
+    path?: string;
     /** 页面 */
-    component: string;
+    component?: string;
     /** 菜单图标 */
-    icon: string;
+    icon?: string;
     /** 路由重定向 */
-    redirect: string;
+    redirect?: string;
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/system/menu/update',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...params },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/system/menu/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
 }

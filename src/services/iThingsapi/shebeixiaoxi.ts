@@ -17,7 +17,15 @@ export async function postThingsDeviceMsgHubLogIndex(
     code: number;
     msg: string;
     data: {
-      list?: API.E4BA91E7ABAFE8B083E8AF95E697A5E5BF97E695B0E68DAEE7BB93E69E84E4BD93[];
+      list?: {
+        timestamp?: string;
+        action?: string;
+        requestID?: string;
+        tranceID?: string;
+        topic?: string;
+        content?: string;
+        resultType?: string;
+      }[];
       total?: number;
     };
   }>('/api/v1/things/device/msg/hub-log/index', {
@@ -45,7 +53,16 @@ export async function postThingsDeviceMsgSchemaLatestIndex(
   return request<{
     code: number;
     msg: string;
-    data: { list?: API.E789A9E6A8A1E59E8BE8AEB0E5BD95[]; total?: number };
+    data: {
+      list?: {
+        timestamp?: string;
+        type?: string;
+        dataID?: string;
+        getValue?: string;
+        sendValue?: string;
+      }[];
+      total?: number;
+    };
   }>('/api/v1/things/device/msg/schema-latest/index', {
     method: 'POST',
     headers: {
@@ -74,7 +91,16 @@ export async function postThingsDeviceMsgSchemaLogIndex(
   return request<{
     code: number;
     msg: string;
-    data: { list?: API.E789A9E6A8A1E59E8BE8AEB0E5BD95[]; total?: number };
+    data: {
+      list?: {
+        timestamp?: string;
+        type?: string;
+        dataID?: string;
+        getValue?: string;
+        sendValue?: string;
+      }[];
+      total?: number;
+    };
   }>('/api/v1/things/device/msg/schema-log/index', {
     method: 'POST',
     headers: {

@@ -9,7 +9,7 @@ export default () => {
           title: 'fmcs',
           href: 'http://scm.enet51.com/fmcs/frontend',
           blankTarget: true,
-        }
+        },
       ]}
     />
   );

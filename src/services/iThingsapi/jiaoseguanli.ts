@@ -8,30 +8,52 @@ export async function postSystemRoleCreate(
   params: API.postSystemRoleCreateParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     /** 角色名称 */
     name: string;
     /** 备注 */
-    remark: string;
+    remark?: string;
     /** 状态 1:启用,2:禁用 */
-    status: string;
+    status: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/system/role/create',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...params },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/system/role/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 删除角色 POST /api/v1/system/role/delete */
+export async function postSystemRole__openAPI__delete(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postSystemRole__openAPI__deleteParams & {
+    // header
+    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
+    'iThings-guid': string;
+  },
+  body: {
+    /** 角色编号 */
+    id: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string }>('/api/v1/system/role/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 获取角色列表 POST /api/v1/system/role/index */
@@ -40,30 +62,57 @@ export async function postSystemRoleIndex(
   params: API.postSystemRoleIndexParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     page: { page?: number; size?: number };
     /** 按编号查找角色 */
-    id: number;
+    id?: number;
     /** 按名称查找角色 */
-    name: string;
+    name?: string;
     /** 按状态查找角色 */
-    status: number;
+    status?: number;
   },
   options?: { [key: string]: any },
 ) {
   return request<{
-    total: string;
+    total: number;
     data: {
-      id?: string;
+      id?: number;
       name?: string;
       remark?: string;
       createdTime?: string;
-      status?: string;
+      status?: number;
       roleMenuID?: number[];
     }[];
   }>('/api/v1/system/role/index', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 更新角色对应菜单列表 POST /api/v1/system/role/role-menu/update */
+export async function postSystemRoleRoleMenuUpdate(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postSystemRoleRoleMenuUpdateParams & {
+    // header
+    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
+    'iThings-guid': string;
+  },
+  body: {
+    /** 角色编号 */
+    id: number;
+    /** 菜单编号列表 */
+    menuID: number[];
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string }>('/api/v1/system/role/role-menu/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -80,30 +129,27 @@ export async function postSystemRoleUpdate(
   params: API.postSystemRoleUpdateParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
+    'iThings-guid': string;
   },
   body: {
     /** 编号 */
-    id: string;
+    id: number;
     /** 角色名称 */
-    name: string;
+    name?: string;
     /** 备注信息 */
-    remark: string;
+    remark?: string;
     /** 角色状态 1-启用 2-禁用 */
-    status: string;
+    status?: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/system/role/update',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...params },
-      data: body,
-      ...(options || {}),
+  return request<{ code: number; msg: string }>('/api/v1/system/role/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
 }
