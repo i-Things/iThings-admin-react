@@ -17,7 +17,13 @@ yarn
 ### 启动项目
 
 ```bash
+// 不使用 mock 接口
 yarn start
+```
+
+```bash
+// 使用 mock 接口
+yarn dev
 ```
 
 ### 项目打包
