@@ -56,6 +56,80 @@ yarn test
 
 ## 目录结构
 
-```md
-├── README.md // 项目介绍 ├── config // 配置文件夹 │ ├── config.dev.ts //开发时配置 │ ├── config.ts // 基本配置 │ ├── defaultSettings.ts // 默认设置 │ ├── iThingsapi.json // openApi 导出的 JSON │ ├── proxy.ts // 本地开发时代理配置 │ └── routes.ts // 路由表 ├── deploy.sh // 部署脚本 ├── jest.config.js // 单元测试相关 ├── jsconfig.json // 单元测试相关 ├── mock // 本地 mock 文件夹 │ └── user.ts ├── package.json // 依赖 ├── public // 公共资源目录 │ ├── CNAME │ ├── favicon.ico │ ├── favicon.png │ ├── icons │ │ ├── icon-128x128.png │ │ ├── icon-192x192.png │ │ ├── icon-512x512.png │ │ ├── icon_data_01.png │ │ └── logo.png │ └── pro_icon.svg ├── src // 主文件夹 │ ├── access.ts // plugin-access 插件依赖文件 │ ├── app.tsx // 应用入口 │ ├── assets // 静态资源 │ │ ├── icons │ │ └── img │ ├── components // 公共组件目录 │ │ ├── Footer │ │ ├── HeaderDropdown │ │ └── RightContent │ ├── global.less │ ├── global.tsx │ ├── layouts // 布局组件 │ │ ├── BasicLayout.tsx │ │ └── BlankLayout.tsx │ ├── manifest.json │ ├── pages // 页面文件夹 │ │ ├── 404.tsx │ │ ├── Admin.tsx │ │ ├── Welcome.less │ │ ├── Welcome.tsx │ │ ├── device // 设备模块 │ │ ├── document.ejs │ │ ├── product // 产品模块 │ │ └── user // 用户登录模块 │ ├── service-worker.js │ ├── services // 由 openApi 生成的异步请求文件，使用方法见 pages/user │ │ └── iThingsapi │ ├── typings.d.ts // 类型声明 │ └── utils // 工具方法目录 │ ├── const.ts // 常量表 │ ├── hooks.ts // 自定义 hooks 存放地址 │ ├── date.ts // 时间|日期相关方法 │ ├── iconMap.ts // 菜单图表对应 Map │ ├── request.ts // 封装的请求相关 │ └── utils.ts // 常规工具方法 ├── tests // 单元测试相关 │ ├── PuppeteerEnvironment.js │ ├── beforeTest.js │ ├── getBrowser.js │ ├── run-tests.js │ └── setupTests.js ├── tsconfig.json // ts 配置文件 ├── types // 全局类型声明文件 │ ├── base.ts │ ├── postcss-px2viewport.d.ts │ └── userInfo │ ├── data.d.ts │ └── service.ts ├── yarn-error.log └── yarn.lock
-```
+├── README.md // 项目介绍
+├── config // 配置文件夹
+│   ├── config.dev.ts //开发时配置
+│   ├── config.ts // 基本配置
+│   ├── defaultSettings.ts // 默认设置
+│   ├── iThingsapi.json // openApi导出的JSON
+│   ├── proxy.ts // 本地开发时代理配置
+│   └── routes.ts // 路由表
+├── deploy.sh // 部署脚本
+├── jest.config.js // 单元测试相关
+├── jsconfig.json // 单元测试相关
+├── mock // 本地 mock 文件夹
+│   └── user.ts
+├── package.json // 依赖
+├── public // 公共资源目录
+│   ├── CNAME
+│   ├── favicon.ico
+│   ├── favicon.png
+│   ├── icons
+│   │   ├── icon-128x128.png
+│   │   ├── icon-192x192.png
+│   │   ├── icon-512x512.png
+│   │   ├── icon_data_01.png
+│   │   └── logo.png
+│   └── pro_icon.svg
+├── src // 主文件夹
+│   ├── access.ts // plugin-access 插件依赖文件
+│   ├── app.tsx // 应用入口
+│   ├── assets // 静态资源
+│   │   ├── icons
+│   │   └── img
+│   ├── components // 公共组件目录
+│   │   ├── Footer
+│   │   ├── HeaderDropdown
+│   │   └── RightContent
+│   ├── global.less
+│   ├── global.tsx
+│   ├── hooks // 自定义 hook 文件夹
+│   │   ├── useTitle.ts
+│   ├── layouts // 布局组件
+│   │   ├── BasicLayout.tsx
+│   │   └── BlankLayout.tsx
+│   ├── manifest.json
+│   ├── pages // 页面文件夹
+│   │   ├── 404.tsx
+│   │   ├── Admin.tsx
+│   │   ├── Welcome.less
+│   │   ├── Welcome.tsx
+│   │   ├── device // 设备模块
+│   │   ├── document.ejs
+│   │   ├── product // 产品模块
+│   │   └── user // 用户登录模块
+│   ├── service-worker.js
+│   ├── services // 由 openApi 生成的异步请求文件，使用方法见 pages/user
+│   │   └── iThingsapi
+│   ├── typings.d.ts // 类型声明
+│   └── utils // 工具方法目录
+│       ├── const.ts // 常量表
+│       ├── date.ts // 时间|日期相关方法
+│       ├── iconMap.ts // 菜单图表对应Map
+│       ├── request.ts // 封装的请求相关
+│       └── utils.ts // 常规工具方法
+├── tests // 单元测试相关
+│   ├── PuppeteerEnvironment.js
+│   ├── beforeTest.js
+│   ├── getBrowser.js
+│   ├── run-tests.js
+│   └── setupTests.js
+├── tsconfig.json // ts 配置文件
+├── types // 全局类型声明文件
+│   ├── base.ts
+│   ├── postcss-px2viewport.d.ts
+│   └── userInfo
+│       ├── data.d.ts
+│       └── service.ts
+├── yarn-error.log
+└── yarn.lock
