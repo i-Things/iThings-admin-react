@@ -2,10 +2,10 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Descriptions, Tabs } from 'antd';
 import React from 'react';
 import { useParams } from 'umi';
-import DevicePage from '../device/index';
-import ModelPage from '../model/index';
-import ProductInfoPage from '../productInfo/index';
-import TopicPage from '../topic/index';
+import DevicePage from './pages/device/index';
+import ModelPage from './pages/model/index';
+import ProductInfoPage from './pages/productInfo/index';
+import TopicPage from './pages/topic/index';
 
 const { TabPane } = Tabs;
 const IndexPage: React.FC = () => {

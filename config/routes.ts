@@ -36,7 +36,7 @@ export default [
             name: '产品详情',
             hideInMenu: true,
             path: '/deviceManger/product/detail/:id',
-            component: './product/productDetail/index',
+            component: './product/detail/index',
           },
           {
             name: '设备',
@@ -47,7 +47,7 @@ export default [
             name: '设备详情',
             hideInMenu: true,
             path: '/deviceManger/device/detail/:id',
-            component: './device/deviceDetail/index',
+            component: './device/detail/index',
           },
         ],
       },

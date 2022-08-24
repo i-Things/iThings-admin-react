@@ -3,15 +3,15 @@ import { Card, Descriptions, Tabs } from 'antd';
 import React from 'react';
 import { useParams } from 'umi';
 
-import DeviceInfoPage from '../deviceInfo/index';
+import DeviceInfoPage from './pages/deviceInfo/index';
 
-import CloudLogPage from '../cloudLog/index';
-import DeviceCloudLogPage from '../deviceCloudLog/index';
-import DeviceLocalLogPage from '../deviceLocalLog/index';
+import CloudLogPage from './pages/cloudLog/index';
+import DeviceCloudLogPage from './pages/deviceCloudLog/index';
+import DeviceLocalLogPage from './pages/deviceLocalLog/index';
 
-import DeviceShadowPage from '../deviceShadow/index';
-import GroupPage from '../group/index';
-import { default as OnlineDebugPage, default as SubDevicePage } from '../onlineDebug/index';
+import DeviceShadowPage from './pages/deviceShadow/index';
+import GroupPage from './pages/group/index';
+import { default as OnlineDebugPage, default as SubDevicePage } from './pages/onlineDebug/index';
 const { TabPane } = Tabs;
 const IndexPage: React.FC = () => {
   const params = useParams() as { id: string };

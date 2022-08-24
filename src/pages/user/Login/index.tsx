@@ -79,10 +79,10 @@ const Login: React.FC = () => {
     <div className={styles.container}>
       <Row>
         <Col flex="auto">
-          <div className={styles.contentWrap}>
+          <div className={styles['content-wrap']}>
             <div className={styles.content}>
               <p className={styles.title}>iThings</p>
-              <p className={styles.subTitle}>欢迎使用</p>
+              <p className={styles['sub-title']}>欢迎使用</p>
               <LoginForm
                 initialValues={{
                   userID: 'administrator',
@@ -128,7 +128,7 @@ const Login: React.FC = () => {
                   }}
                   captchaProps={{
                     size: 'large',
-                    className: styles.codeInput,
+                    className: styles['code-input'],
                   }}
                   placeholder={'请输入验证码'}
                   captchaTextRender={() => {
