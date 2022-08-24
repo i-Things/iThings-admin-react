@@ -2,10 +2,12 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import { stringify } from "querystring";
-import { history } from "umi";
-import { extend } from "umi-request";
-import { getTimestamp, getToken, setToken, setUID } from "./utils";
+import { notification } from 'antd';
+import { stringify } from 'querystring';
+import { history } from 'umi';
+import { extend } from 'umi-request';
+import { GUIDKEY, iThingsSetToken, TOKENKEY } from './const';
+import { getTimestamp, getToken, setToken, setUID } from './utils';
 
 // const codeMessage = {
 //   200: '服务器成功返回请求的数据。',
@@ -38,22 +40,22 @@ const errorHandler = (error: { response: Response }): Response => {
       .then((v) => {
         try {
           const data = JSON.parse(v);
-          // notification.error({
-          //   message: `请求错误, 错误码:${data.code}`,
-          //   description: data.message || data.msg,
-          // });
+          notification.error({
+            message: `请求错误, 错误码:${data.code}`,
+            description: data.message || data.msg,
+          });
         } catch {
-          // notification.error({
-          //   message: `请求错误, 错误码:${response.status}`,
-          //   description: v,
-          // });
+          notification.error({
+            message: `请求错误, 错误码:${response.status}`,
+            description: v,
+          });
         }
       });
   } else if (!response) {
-    // notification.error({
-    //   description: "您的网络发生异常，无法连接服务器",
-    //   message: "网络异常",
-    // });
+    notification.error({
+      description: '您的网络发生异常，无法连接服务器',
+      message: '网络异常',
+    });
   }
 
   return response;
@@ -69,9 +71,13 @@ const redirectLoginPage = () => {
 // 请求拦截
 const authInterceptor = (url: string, options: any) => {
   const token = getToken();
-  options.headers["fmcs-guid"] = getTimestamp();
+  options.headers[GUIDKEY] = getTimestamp();
   if (token && options.headers) {
-    options.headers["fmcs-token"] = token;
+    options.headers[TOKENKEY] = token;
+  }
+  const IThingsSetTokenValue = localStorage.getItem('iThingsSetToken');
+  if (IThingsSetTokenValue) {
+    options.headers[TOKENKEY] = IThingsSetTokenValue;
   }
   return {
     url,
@@ -80,10 +86,17 @@ const authInterceptor = (url: string, options: any) => {
 };
 
 //响应拦截器
-const responseInterceptors = (response: any, options: any) => {
-  if (response.status === 401 && window.location.pathname !== "/user/login") {
-    setToken("");
-    setUID("");
+const responseInterceptors = (response: any) => {
+  const IThingsSetTokenValue = response.headers[iThingsSetToken];
+  if (IThingsSetTokenValue) {
+    localStorage.setItem('iThingsSetToken', IThingsSetTokenValue);
+  } else {
+    localStorage.setItem('iThingsSetToken', '');
+  }
+
+  if (response.status === 401 && window.location.pathname !== '/user/login') {
+    setToken('');
+    setUID('');
     return redirectLoginPage();
   }
   return response;
@@ -94,12 +107,12 @@ const responseInterceptors = (response: any, options: any) => {
  */
 const request = extend({
   errorHandler, // 默认错误处理
-  credentials: "include", // 默认请求是否带上cookie
+  credentials: 'include', // 默认请求是否带上cookie
   timeout: 200000,
 });
 
 export const stream = extend({
-  credentials: "include",
+  credentials: 'include',
   parseResponse: false,
 });
 

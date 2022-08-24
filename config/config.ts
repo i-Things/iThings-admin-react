@@ -1,9 +1,9 @@
-import { join } from "path";
-import px2viewport from "postcss-px2viewport";
-import { defineConfig } from "umi";
-import defaultSettings from "./defaultSettings";
-import proxy from "./proxy";
-import routes from "./routes";
+import { join } from 'path';
+import px2viewport from 'postcss-px2viewport';
+import { defineConfig } from 'umi';
+import defaultSettings from './defaultSettings';
+import proxy from './proxy';
+import routes from './routes';
 
 const { REACT_APP_ENV } = process.env;
 
@@ -20,7 +20,7 @@ export default defineConfig({
     ...defaultSettings,
   },
   dynamicImport: {
-    loading: "@ant-design/pro-layout/es/PageLoading",
+    loading: '@ant-design/pro-layout/es/PageLoading',
   },
   targets: {
     ie: 11,
@@ -28,30 +28,28 @@ export default defineConfig({
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
-    "primary-color": defaultSettings.primaryColor,
+    'primary-color': defaultSettings.primaryColor,
   },
   // esbuild is father build tools
   // https://umijs.org/plugins/plugin-esbuild
   esbuild: {},
   title: false,
   ignoreMomentLocale: true,
-  proxy: proxy[REACT_APP_ENV || "dev"],
+  proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
-    basePath: "/",
+    basePath: '/',
   },
   fastRefresh: {},
   openAPI: [
     {
       requestLibPath: "import  request  from '@/utils/request'",
-      // 或者使用在线的版本
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-      schemaPath: join(__dirname, "fmcsapi.json"),
+      schemaPath: join(__dirname, 'iThingsapi.json'),
       mock: false,
-      projectName: "fmcsapi",
+      projectName: 'iThingsapi',
     },
   ],
   nodeModulesTransform: {
-    type: "none",
+    type: 'none',
   },
   // mfsu: {},
   webpack5: {},

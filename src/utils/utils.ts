@@ -1,16 +1,18 @@
+import { GUIDKEY, TOKENKEY } from './const';
+
 // 判断是否为移动端
 export const isMobile = () => {
   return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
 };
 
-export const TOKEN_PREFIX = "fmcs-";
+export const TOKEN_PREFIX = 'fmcs-';
 
 export const setToken = (token: string) => {
   localStorage.setItem(`${TOKEN_PREFIX}-token`, token);
 };
 
 export const getToken = () => {
-  return localStorage.getItem(`${TOKEN_PREFIX}-token`) ?? "";
+  return localStorage.getItem(`${TOKEN_PREFIX}-token`) ?? '';
 };
 
 export const setUID = (uid: string) => {
@@ -18,7 +20,7 @@ export const setUID = (uid: string) => {
 };
 
 export const getUID = () => {
-  return localStorage.getItem(`${TOKEN_PREFIX}-UID`) ?? "";
+  return Number(localStorage.getItem(`${TOKEN_PREFIX}-UID`)) ?? 0;
 };
 
 // 获取当前的时间戳，单位为 毫秒
@@ -28,13 +30,13 @@ export const getTimestamp = () => {
 
 export const apiParamsGUID = () => {
   return {
-    "fmcs-guid": new Date().getTime() + "",
+    [GUIDKEY]: new Date().getTime() + '',
   };
 };
 
 export const apiParams = () => {
   return {
-    "fmcs-guid": new Date().getTime() + "",
-    "fmcs-token": getToken(),
+    [GUIDKEY]: new Date().getTime() + '',
+    [TOKENKEY]: getToken(),
   };
 };

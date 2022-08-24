@@ -8,24 +8,24 @@
  */
 export default {
   dev: {
-    "/api/": {
-      target: "http://150.158.154.103:7777",
+    '/api/': {
+      target: 'http://106.15.225.172:7777',
       changeOrigin: true,
-      pathRewrite: { "^/api": "/api" },
+      pathRewrite: { '^/api': '/api' },
     },
   },
   test: {
-    "/api/": {
-      target: "https://preview.pro.ant.design",
+    '/api/': {
+      target: 'https://preview.pro.ant.design',
       changeOrigin: true,
-      pathRewrite: { "^": "" },
+      pathRewrite: { '^': '' },
     },
   },
   pre: {
-    "/api/": {
-      target: "your pre url",
+    '/api/': {
+      target: 'your pre url',
       changeOrigin: true,
-      pathRewrite: { "^": "" },
+      pathRewrite: { '^': '' },
     },
   },
 };

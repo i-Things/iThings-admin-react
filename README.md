@@ -46,4 +46,4 @@ yarn test
 
 ## 更多
 
-文件命名规范 https://cosmos-x.gitbook.io/react-development-guides/1.-app-zong-lan/wen-jian-he-wen-jian-jia-shuo-ming
+文件命名规范 <https://cosmos-x.gitbook.io/react-development-guides/1.-app-zong-lan/wen-jian-he-wen-jian-jia-shuo-ming> 文件目录结构划分

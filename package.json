@@ -18,7 +18,7 @@
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
     "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
     "lint:prettier": "prettier -c --write \"src/**/*\" --end-of-line auto",
-    "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
+    "lint:style": "stylelint --fix \"src/**/*.less\" --custom-syntax postcss-less",
     "openapi": "umi openapi",
     "precommit": "lint-staged",
     "prettier": "prettier -c --write \"src/**/*\"",
@@ -42,7 +42,7 @@
     }
   },
   "lint-staged": {
-    "**/*.less": "stylelint --syntax less",
+    "**/*.less": "stylelint --custom-syntax postcss-less",
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write",
@@ -89,6 +89,7 @@
     "ezuikit-js": "^0.6.1",
     "flv.js": "^1.6.2",
     "gg-editor": "^2.0.2",
+    "global": "^4.4.0",
     "lodash": "^4.17.21",
     "lodash-decorators": "^6.0.0",
     "moment": "^2.25.3",
@@ -102,8 +103,12 @@
     "react-fittext": "^1.0.0",
     "react-helmet-async": "^1.0.4",
     "react-router": "^4.3.1",
+    "stylelint-config-css-modules": "^4.1.0",
+    "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-standard": "^28.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.5.0",
     "swagger-ui-react": "^4.12.0",
+    "tree-node-cli": "^1.5.2",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10"
   },

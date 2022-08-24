@@ -1,31 +1,29 @@
-import {
-  LogoutOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Avatar, Menu, Spin } from "antd";
-import { stringify } from "querystring";
-import type { MenuInfo } from "rc-menu/lib/interface";
-import React, { useCallback } from "react";
-import { history, useModel } from "umi";
-import HeaderDropdown from "../HeaderDropdown";
-import styles from "./index.less";
+import { LogoutOutlined } from '@ant-design/icons';
+import { Avatar, Menu, Spin } from 'antd';
+import { stringify } from 'querystring';
+import type { MenuInfo } from 'rc-menu/lib/interface';
+import React, { useCallback } from 'react';
+import { history, useModel } from 'umi';
+import HeaderDropdown from '../HeaderDropdown';
+import styles from './index.less';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
 };
 
+const defaultImgUrl =
+  'https://p26-passport.byteacctimg.com/img/user-avatar/d7e592d60c58f00ecb4957f1de203dfa~300x300.image';
+
 /**
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  // await outLogin();
   const { query = {}, pathname } = history.location;
   const { redirect } = query;
   // Note: There may be security issues, please note
-  if (window.location.pathname !== "/user/login" && !redirect) {
+  if (window.location.pathname !== '/user/login' && !redirect) {
     history.replace({
-      pathname: "/user/login",
+      pathname: '/user/login',
       search: stringify({
         redirect: pathname,
       }),
@@ -33,20 +31,20 @@ const loginOut = async () => {
   }
 };
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
-  const { initialState, setInitialState } = useModel("@@initialState");
+const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({}) => {
+  const { initialState, setInitialState } = useModel('@@initialState');
 
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       const { key } = event;
-      if (key === "logout") {
+      if (key === 'logout') {
         setInitialState((s) => ({ ...s, currentUser: undefined }));
         loginOut();
         return;
       }
       history.push(`/account/${key}`);
     },
-    [setInitialState]
+    [setInitialState],
   );
 
   const loading = (
@@ -73,20 +71,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
-        <Menu.Item key="center">
-          <UserOutlined />
-          个人中心
-        </Menu.Item>
-      )}
-      {menu && (
-        <Menu.Item key="settings">
-          <SettingOutlined />
-          个人设置
-        </Menu.Item>
-      )}
-      {menu && <Menu.Divider />}
-
       <Menu.Item key="logout">
         <LogoutOutlined />
         退出登录
@@ -99,7 +83,8 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         <Avatar
           size="small"
           className={styles.avatar}
-          src={currentUser.headImgUrl}
+          // src={currentUser.headImgUrl || defaultImgUrl}
+          src={defaultImgUrl}
           alt="avatar"
         />
         <span className={`${styles.name} anticon`}>{currentUser.userName}</span>
