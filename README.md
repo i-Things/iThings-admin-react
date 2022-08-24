@@ -56,6 +56,7 @@ yarn test
 
 ## 目录结构
 
+```md
 ├── README.md // 项目介绍
 ├── config // 配置文件夹
 │   ├── config.dev.ts //开发时配置
@@ -133,3 +134,4 @@ yarn test
 │       └── service.ts
 ├── yarn-error.log
 └── yarn.lock
+```
