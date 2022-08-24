@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import React from 'react';
 import { Link } from 'umi';
+import defaultSettings from '../../config/defaultSettings';
 moment.locale('zh-cn');
 
 const BasicLayout: React.FC = (props) => {
@@ -14,8 +15,7 @@ const BasicLayout: React.FC = (props) => {
 
   return (
     <ProLayout
-      title="iThings"
-      navTheme="light"
+      siderWidth={250}
       rightContentRender={() => <RightContent />}
       disableContentMargin={false}
       footerRender={false}
@@ -40,7 +40,11 @@ const BasicLayout: React.FC = (props) => {
         }
       }}
       subMenuItemRender={(TWTProps, defaultDom) => {
-        return { defaultDom };
+        return (
+          <>
+            <div>{defaultDom}</div>
+          </>
+        );
       }}
       menuDataRender={(menuData) => {
         return menuData.map((item) => {
@@ -63,6 +67,7 @@ const BasicLayout: React.FC = (props) => {
       }}
       collapsedButtonRender={false}
       {...props}
+      {...defaultSettings}
     >
       <div>
         <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
