@@ -58,13 +58,13 @@ export default [
         routes: [
           {
             name: '用户列表',
-            path: '/system/user/list',
+            path: '/system/user/index',
             component: './system/User',
           },
           // {
           //   name: '角色列表',
 
-          //   path: '/system/role/list',
+          //   path: '/system/role/index',
           //   component: './system/Role',
           // },
           // {
