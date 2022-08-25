@@ -22,7 +22,6 @@ import {
   StepsForm,
 } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import styles from './style.less';
 
 const columns: any = [
   {
@@ -163,7 +162,7 @@ const IndexPage: React.FC = () => {
         bordered
         size={'middle'}
         toolBarRender={() => [
-          <Button className={styles.btn} type="primary" onClick={openCreateModal}>
+          <Button type="primary" onClick={openCreateModal}>
             新增
           </Button>,
           <ModalForm<{
@@ -176,7 +175,7 @@ const IndexPage: React.FC = () => {
             formRef={editFormRef}
             title="编辑用户信息"
             trigger={
-              <Button type="primary" onClick={openEditModal} className={styles.btn}>
+              <Button type="primary" onClick={openEditModal}>
                 编辑
               </Button>
             }
@@ -229,7 +228,7 @@ const IndexPage: React.FC = () => {
               ]}
             />
           </ModalForm>,
-          <Button className={styles.btn} danger onClick={showDeleteConfirm}>
+          <Button danger onClick={showDeleteConfirm}>
             删除
           </Button>,
         ]}
