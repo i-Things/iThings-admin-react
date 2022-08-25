@@ -13,14 +13,14 @@ import * as shebeixiaoxi from './shebeixiaoxi';
 import * as wumoxing from './wumoxing';
 import * as yonghuguanli from './yonghuguanli';
 export default {
-  shebeijiaohu,
-  shebeiguanli,
-  shebeixiaoxi,
-  caidanguanli,
-  caidan,
-  chanpinguanli,
-  jiaoseguanli,
   shebeijianquan,
-  yonghuguanli,
   wumoxing,
+  shebeixiaoxi,
+  yonghuguanli,
+  jiaoseguanli,
+  shebeijiaohu,
+  caidan,
+  shebeiguanli,
+  caidanguanli,
+  chanpinguanli,
 };

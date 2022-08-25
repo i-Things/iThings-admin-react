@@ -6,6 +6,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import React from 'react';
+// @ts-ignore
 import { Link } from 'umi';
 import defaultSettings from '../../config/defaultSettings';
 moment.locale('zh-cn');
@@ -19,7 +20,7 @@ const BasicLayout: React.FC = (props) => {
       rightContentRender={() => <RightContent />}
       disableContentMargin={false}
       footerRender={false}
-      menuItemRender={(menuItemProps, defaultDom: any) => {
+      menuItemRender={(menuItemProps: any, defaultDom: any) => {
         if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
           return (
             // @ts-ignore
@@ -39,15 +40,15 @@ const BasicLayout: React.FC = (props) => {
           );
         }
       }}
-      subMenuItemRender={(TWTProps, defaultDom) => {
+      subMenuItemRender={(TWTProps: any, defaultDom: any) => {
         return (
           <>
             <div>{defaultDom}</div>
           </>
         );
       }}
-      menuDataRender={(menuData) => {
-        return menuData.map((item) => {
+      menuDataRender={(menuData: any) => {
+        return menuData.map((item: any) => {
           return {
             ...item,
             icon: (

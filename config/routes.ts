@@ -52,6 +52,18 @@ export default [
         ],
       },
       {
+        path: '/systermManager',
+        name: '系统管理',
+        icon: 'icon_system',
+        routes: [
+          {
+            name: '用户管理',
+            path: '/systermManager/user',
+            component: './systerm',
+          },
+        ],
+      },
+      {
         path: '/',
         redirect: '/deviceManger/product/index',
       },

@@ -56,7 +56,11 @@ export async function postSystemUserCoreCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/system/user/core/create', {
+  return request<{
+    code: number;
+    msg: string;
+    data: { uid?: string; accessToken?: string; accessExpire?: string; refreshAfter?: string };
+  }>('/api/v1/system/user/core/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -192,9 +196,9 @@ export async function postSystemUserInfoUpdate(
   params: API.postSystemUserInfoUpdateParams & {
     // header
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'fmcs-guid'?: string;
+    'iThings-guid'?: string;
     /** 用户token */
-    'fmcs-token'?: string;
+    'iThings-token'?: string;
   },
   body: {
     /** 用户id */
