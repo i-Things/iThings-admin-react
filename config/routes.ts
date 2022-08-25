@@ -52,6 +52,29 @@ export default [
         ],
       },
       {
+        path: '/system',
+        name: '系统管理',
+        icon: 'icon_data_01',
+        routes: [
+          {
+            name: '用户列表',
+            path: '/system/user/list',
+            component: './system/User',
+          },
+          // {
+          //   name: '角色列表',
+
+          //   path: '/system/role/list',
+          //   component: './system/Role',
+          // },
+          // {
+          //   name: '菜单列表',
+          //   path: '/system/menu/list',
+          //   component: './system/Menu',
+          // },
+        ],
+      },
+      {
         path: '/',
         redirect: '/deviceManger/product/index',
       },

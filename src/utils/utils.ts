@@ -25,7 +25,7 @@ export const getUID = () => {
 
 // 获取当前的时间戳，单位为 毫秒
 export const getTimestamp = () => {
-  return new Date().getTime();
+  return new Date().getTime() + '';
 };
 
 export const apiParamsGUID = () => {
