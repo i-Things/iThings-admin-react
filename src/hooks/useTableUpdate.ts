@@ -5,7 +5,7 @@ import { useState } from 'react';
 const useTableUpdate = () => {
   const [editVisible, setEditVisible] = useState(false);
   const updateHanlder = async <T>(
-    createApi: any,
+    updateApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
     params: API.postSystemUserInfoCreateParams & {
       'iThings-guid'?: string;
