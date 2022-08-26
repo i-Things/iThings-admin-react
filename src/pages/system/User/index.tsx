@@ -1,7 +1,6 @@
 import {
   postSystemUserCaptcha,
   postSystemUserCoreCreate,
-  postSystemUserCoreIndex,
   postSystemUserInfoCreate,
   postSystemUserInfoUpdate,
   postSystemUserInfo__openAPI__delete,
@@ -9,7 +8,6 @@ import {
 import { timestampToDateStr } from '@/utils/date';
 import { apiParams, apiParamsGUID } from '@/utils/utils';
 import { ExclamationCircleOutlined, FontColorsOutlined, PlusOutlined } from '@ant-design/icons';
-import type { ParamsType } from '@ant-design/pro-components';
 import {
   ModalForm,
   ProFormCaptcha,
@@ -25,8 +23,11 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Drawer, message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { UserListItem } from './data.d';
+
+import useGetTableList from '@/hooks/useGetTableList';
 const { confirm } = Modal;
 const UserList: React.FC = () => {
+  const { queryPage } = useGetTableList();
   const actionRef = useRef<ActionType>();
   const editFormRef = useRef<any>();
   const [row, setRow] = useState<UserListItem>();
@@ -36,36 +37,6 @@ const UserList: React.FC = () => {
   const [editVisible, setEditVisible] = useState(false);
   const [codeID, setCodeID] = useState<string>('');
   const [captchaURL, setCaptchaURL] = useState<string>('');
-
-  // 页面列表查询
-  const queryPage = async (
-    params: ParamsType & {
-      pageSize?: number | undefined;
-      current?: number | undefined;
-      keyword?: string | undefined;
-    },
-  ): Promise<any> => {
-    const body = {
-      page: {
-        size: params.pageSize,
-        page: params.current,
-      },
-    };
-    const res = await postSystemUserCoreIndex(apiParams(), body);
-
-    if (res instanceof Response) {
-      return {
-        data: [],
-        total: 0,
-      };
-    }
-
-    return {
-      data: res.data.list,
-      total: res.data.total,
-    };
-  };
-
   // 获取数字验证码
   const fetchCaptcha = async () => {
     const prams = apiParamsGUID();
@@ -110,7 +81,7 @@ const UserList: React.FC = () => {
   };
 
   // 删除操作
-  const showDeleteConfirm = (uid) => {
+  const showDeleteConfirm = (uid: string) => {
     // if (!isPass()) {
     //   return;
     // }
@@ -325,6 +296,10 @@ const UserList: React.FC = () => {
     },
   ];
 
+  // useEffect(() => {
+  //   queryPage(queryParams);
+  // }, [refreshFlag]);
+
   return (
     <PageContainer>
       <ProTable<UserListItem>
@@ -354,9 +329,9 @@ const UserList: React.FC = () => {
           body.uid = firstStepFormData.uid;
           return postSystemUserInfoCreate(params, body)
             .then((res) => {
-              console.log('res', res);
               setCreateVisible(false);
               if (res.code === 200) {
+                actionRef.current?.reload();
                 message.success('提交成功');
               }
               return true;
@@ -397,9 +372,11 @@ const UserList: React.FC = () => {
             body.codeID = codeID;
             return postSystemUserCoreCreate(params, body)
               .then((res) => {
-                console.log('res', res);
-                setFirstStepFormData(res.data);
-                return true;
+                if (res.code === 200) {
+                  setFirstStepFormData(res.data);
+                  actionRef.current?.reload();
+                  return true;
+                }
               })
               .catch((error) => {
                 console.log('error', error);
