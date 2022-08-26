@@ -52,13 +52,13 @@ export default [
         ],
       },
       {
-        path: '/system',
+        path: '/systermManager',
         name: '系统管理',
-        icon: 'icon_data_01',
+        icon: 'icon_system',
         routes: [
           {
-            name: '用户列表',
-            path: '/system/user/index',
+            name: '用户管理',
+            path: '/systermManager/user/',
             component: './system/User',
           },
           // {

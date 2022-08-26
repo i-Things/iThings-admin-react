@@ -10,6 +10,8 @@ export async function postThingsDeviceInfoCreate(
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -29,6 +31,8 @@ export async function postThingsDeviceInfo__openAPI__delete(
     productID: string;
     deviceName?: string;
     tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -49,6 +53,7 @@ export async function postThingsDeviceInfoIndex(
     /** 为空时获取所有产品 */
     productID?: string;
     deviceName: string;
+    /** 非模糊查询 为tag的名,value为tag对应的值 */
     tags: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
@@ -67,6 +72,7 @@ export async function postThingsDeviceInfoIndex(
         version?: string;
         logLevel?: number;
         tags?: { key?: string; value?: string }[];
+        isOnline?: string;
       }[];
       total?: number;
       num?: number;
@@ -103,6 +109,7 @@ export async function postThingsDeviceInfoRead(
       version?: string;
       logLevel?: number;
       tags?: { key?: string; value?: string }[];
+      isOnline?: string;
     };
   }>('/api/v1/things/device/info/read', {
     method: 'POST',
@@ -122,6 +129,8 @@ export async function postThingsDeviceInfoUpdate(
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline: string;
   },
   options?: { [key: string]: any },
 ) {

@@ -264,9 +264,9 @@ declare namespace API {
 
   type postSystemUserInfoUpdateParams = {
     /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'fmcs-guid'?: string;
+    'iThings-guid'?: string;
     /** 用户token */
-    'fmcs-token'?: string;
+    'iThings-token'?: string;
   };
 
   type postSystemUserLoginParams = {
@@ -376,6 +376,8 @@ declare namespace API {
     logLevel?: number;
     /** 标签 */
     tags?: { key?: string; value?: string }[];
+    /** 在线状态 1离线 2在线 只读 */
+    isOnline: string;
   };
 
   type shuzhuangjiedian = {
