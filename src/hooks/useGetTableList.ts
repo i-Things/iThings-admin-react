@@ -1,11 +1,9 @@
 import { postSystemUserCoreIndex } from '@/services/iThingsapi/yonghuguanli';
 import { apiParams } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
-import { message } from 'antd';
+import message from 'antd/lib/message';
 
 const useGetTableList = () => {
-  // 模板类型筛选options
-
   const queryPage = async (
     params: ParamsType & {
       pageSize?: number | undefined;
@@ -31,7 +29,6 @@ const useGetTableList = () => {
     } catch (error) {
       message.error((error as Error)?.message);
     }
-
     return {
       data: res?.data?.list,
       total: res?.data?.total,

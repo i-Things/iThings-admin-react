@@ -241,7 +241,6 @@ const UserList: React.FC = () => {
               body.uid = firstStepFormData.uid;
               return postSystemUserInfoUpdate(params, body)
                 .then((res) => {
-                  console.log('res', res);
                   setCreateVisible(false);
                   if (res.code === 200) {
                     message.success('提交成功');
@@ -321,7 +320,6 @@ const UserList: React.FC = () => {
       />
       <StepsForm
         onFinish={async (values) => {
-          console.log(values);
           // 请求创建用户基本信息的接口
           const params = apiParams();
           const body = values as any;
@@ -364,7 +362,6 @@ const UserList: React.FC = () => {
           name="base"
           title="创建用户核心信息"
           onFinish={async (values) => {
-            console.log('base', values);
             // 调用创建用户核心数据的接口
             const params = apiParams();
             const body = values as any;
