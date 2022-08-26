@@ -414,7 +414,9 @@ const UserList: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: '用户名是必填项！',
+                pattern: /^[a-zA-Z][a-zA-Z0-9_-]{6,20}$/,
+                message:
+                  '账号必须以大小写字母开头，且账号只能包含大小写字母，数字，下划线和减号。 长度为6到20位之间',
               },
             ]}
           />
@@ -426,7 +428,8 @@ const UserList: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: '密码是必填项！',
+                pattern: /^.*(?=.{9,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/,
+                message: '密码强度必须为字⺟⼤⼩写+数字+符号，9位以上！',
               },
             ]}
           />
