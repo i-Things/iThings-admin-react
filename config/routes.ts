@@ -58,7 +58,7 @@ export default [
         routes: [
           {
             name: '用户管理',
-            path: '/systermManager/user/',
+            path: '/systermManager/user/index',
             component: './system/User',
           },
           // {
