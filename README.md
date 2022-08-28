@@ -141,3 +141,23 @@ yarn test
 ├── yarn-error.log
 └── yarn.lock
 ```
+
+## 项目架构介绍
+
+react + umi + react hooks + TypeScript + Ant design Pro
+
+Ant design Pro: Ant design Pro 的底座是 umi，umi 是一个 webpack 之上的整合工具。 umi 相比于 webpack 增加了运行时的能力，同时帮助我们配置了很多 webpack 的预设。也减少了 webpack 升级导致的问题。这也是我们能提供插件的原因。
+
+Ant design Pro文档总览: [文档](https://pro.ant.design/zh-CN/docs/overview)
+
+Ant design Pro开发需知： [开发需知](https://pro.ant.design/zh-CN/docs/introduction/)
+
+所使用到的 umi 插件：
+plugin-access，权限管理
+plugin-antd，整合 antd UI 组件
+plugin-initial-state，初始化数据管理
+plugin-layout，配置启用 ant-design-pro 的布局
+plugin-model，基于 hooks 的简易数据流
+
+使用的 react hooks 工具方法库：
+ahooks: [ahooks](https://ahooks.js.org/zh-CN/hooks/use-request/index)
