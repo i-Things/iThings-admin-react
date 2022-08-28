@@ -14,7 +14,7 @@ const useTableUpdate = () => {
   ) => {
     let res;
     try {
-      res = await createApi({ params, body });
+      res = await updateApi({ params, body });
       if (res.code === 200) {
         actionRef.current?.reload();
         setEditVisible(false);

@@ -5,10 +5,12 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import {
   postSystemUserCaptcha,
   postSystemUserCoreCreate,
+  postSystemUserCoreIndex,
   postSystemUserInfoCreate,
   postSystemUserInfoUpdate,
   postSystemUserInfo__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
+import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { apiParams, apiParamsGUID } from '@/utils/utils';
 import { FontColorsOutlined, PlusOutlined } from '@ant-design/icons';
@@ -26,7 +28,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Drawer, message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { UserListItem } from './data.d';
+import type { UserListItem } from './types';
 
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
@@ -78,12 +80,6 @@ const UserList: React.FC = () => {
   //   editFormRef?.current?.setFieldsValue(selectedRows[0]);
   //   setEditVisible(true);
   // };
-
-  // 编辑表单布局
-  const formItemLayout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 14 },
-  };
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; userName: string }) => {
@@ -228,7 +224,9 @@ const UserList: React.FC = () => {
             token: string;
             uid: string;
           }>
-            // width={500}
+            width={550}
+            initialValues={record}
+            key={Math.random()}
             formRef={editFormRef}
             title="编辑用户信息"
             trigger={
@@ -242,8 +240,8 @@ const UserList: React.FC = () => {
               onCancel: () => setEditVisible(false),
             }}
             submitTimeout={2000}
-            {...formItemLayout}
-            // layout={LAYOUT_TYPE_HORIZONTAL}
+            {...FORMITEM_LAYOUT}
+            layout={LAYOUT_TYPE_HORIZONTAL}
             onFinish={async (values) => {
               // 请求编辑用户基本信息的接口
               const params = apiParams();
@@ -325,7 +323,7 @@ const UserList: React.FC = () => {
             <PlusOutlined /> 新建用户
           </Button>,
         ]}
-        request={queryPage}
+        request={(params) => queryPage(postSystemUserCoreIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}

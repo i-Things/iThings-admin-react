@@ -1,10 +1,10 @@
-import { postSystemUserCoreIndex } from '@/services/iThingsapi/yonghuguanli';
 import { apiParams } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 
 const useGetTableList = () => {
   const queryPage = async (
+    queryApi: any,
     params: ParamsType & {
       pageSize?: number | undefined;
       current?: number | undefined;
@@ -19,7 +19,7 @@ const useGetTableList = () => {
     };
     let res;
     try {
-      res = await postSystemUserCoreIndex(apiParams(), body);
+      res = await queryApi(apiParams(), body);
       if (res instanceof Response) {
         return {
           data: [],

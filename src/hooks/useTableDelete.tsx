@@ -9,7 +9,7 @@ const useTableDelete = () => {
     params: API.postSystemUserInfoCreateParams & {
       'iThings-guid'?: string;
     },
-    record: { uid: string; userName: string },
+    record: { uid: string; userName?: string },
   ) => {
     confirm({
       title: '你确定要删除该用户信息吗？',

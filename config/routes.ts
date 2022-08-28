@@ -61,12 +61,12 @@ export default [
             path: '/systermManager/user',
             component: './system/User',
           },
-          // {
-          //   name: '角色列表',
+          {
+            name: '角色管理',
 
-          //   path: '/system/role/index',
-          //   component: './system/Role',
-          // },
+            path: '/systermManager/role',
+            component: './system/Role',
+          },
           // {
           //   name: '菜单列表',
           //   path: '/system/menu/list',
