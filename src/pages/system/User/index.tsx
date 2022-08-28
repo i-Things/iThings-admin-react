@@ -1,3 +1,7 @@
+import useGetTableList from '@/hooks/useGetTableList';
+import useTableCreate from '@/hooks/useTableCreate';
+import useTableDelete from '@/hooks/useTableDelete';
+import useTableUpdate from '@/hooks/useTableUpdate';
 import {
   postSystemUserCaptcha,
   postSystemUserCoreCreate,
@@ -7,7 +11,7 @@ import {
 } from '@/services/iThingsapi/yonghuguanli';
 import { timestampToDateStr } from '@/utils/date';
 import { apiParams, apiParamsGUID } from '@/utils/utils';
-import { ExclamationCircleOutlined, FontColorsOutlined, PlusOutlined } from '@ant-design/icons';
+import { FontColorsOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   ModalForm,
   ProFormCaptcha,
@@ -24,17 +28,18 @@ import { Button, Divider, Drawer, message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { UserListItem } from './data.d';
 
-import useGetTableList from '@/hooks/useGetTableList';
-const { confirm } = Modal;
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
+  const { createHanlder, createVisible, setCreateVisible, firstStepFormData } = useTableCreate();
+  const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
+  const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
   const editFormRef = useRef<any>();
   const [row, setRow] = useState<UserListItem>();
 
-  const [firstStepFormData, setFirstStepFormData] = useState<any>({});
-  const [createVisible, setCreateVisible] = useState(false);
-  const [editVisible, setEditVisible] = useState(false);
+  // const [firstStepFormData, setFirstStepFormData] = useState<any>({});
+  // const [createVisible, setCreateVisible] = useState(false);
+  // const [editVisible, setEditVisible] = useState(false);
   const [codeID, setCodeID] = useState<string>('');
   const [captchaURL, setCaptchaURL] = useState<string>('');
   // 获取数字验证码
@@ -81,30 +86,36 @@ const UserList: React.FC = () => {
   };
 
   // 删除操作
-  const showDeleteConfirm = (uid: string) => {
+  const showDeleteConfirm = (record: { uid: string; userName: string }) => {
     // if (!isPass()) {
     //   return;
     // }
-    confirm({
-      title: '你确定要删除该用户信息吗？',
-      icon: <ExclamationCircleOutlined />,
-      content: `所选用户名: ,删除后无法恢复`,
-      onOk() {
-        const params = apiParamsGUID();
-        const body = {
-          uid,
-        };
-        postSystemUserInfo__openAPI__delete(params, body).then((res) => {
-          if (res.code === 200) {
-            message.success('删除成功');
-            actionRef.current?.reload();
-          }
-        });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
+    const params = apiParamsGUID();
+    const body = {
+      uid: record?.uid,
+      userName: record?.userName,
+    };
+    deleteHanlder(postSystemUserInfo__openAPI__delete, actionRef, params, body);
+    // confirm({
+    //   title: '你确定要删除该用户信息吗？',
+    //   icon: <ExclamationCircleOutlined />,
+    //   content: `所选用户名: ,删除后无法恢复`,
+    //   onOk() {
+    //     const params = apiParamsGUID();
+    //     const body = {
+    //       uid,
+    //     };
+    //     postSystemUserInfo__openAPI__delete(params, body).then((res) => {
+    //       if (res.code === 200) {
+    //         message.success('删除成功');
+    //         actionRef.current?.reload();
+    //       }
+    //     });
+    //   },
+    //   onCancel() {
+    //     console.log('Cancel');
+    //   },
+    // });
   };
 
   const columns: ProColumns<UserListItem>[] = [
@@ -239,17 +250,18 @@ const UserList: React.FC = () => {
               const body = values;
               body.token = firstStepFormData.accessToken;
               body.uid = firstStepFormData.uid;
-              return postSystemUserInfoUpdate(params, body)
-                .then((res) => {
-                  setCreateVisible(false);
-                  if (res.code === 200) {
-                    message.success('提交成功');
-                  }
-                  return true;
-                })
-                .catch((error) => {
-                  console.log(error, 'error');
-                });
+              return updateHanlder<UserListItem>(postSystemUserInfoUpdate, actionRef, params, body);
+              // return postSystemUserInfoUpdate(params, body)
+              //   .then((res) => {
+              //     setCreateVisible(false);
+              //     if (res.code === 200) {
+              //       message.success('提交成功');
+              //     }
+              //     return true;
+              //   })
+              //   .catch((error) => {
+              //     console.log(error, 'error');
+              //   });
             }}
           >
             <ProFormText
@@ -285,7 +297,7 @@ const UserList: React.FC = () => {
             type="primary"
             danger
             onClick={() => {
-              showDeleteConfirm(record?.uid);
+              showDeleteConfirm(record);
             }}
           >
             删除
@@ -325,18 +337,19 @@ const UserList: React.FC = () => {
           const body = values as any;
           body.token = firstStepFormData.accessToken;
           body.uid = firstStepFormData.uid;
-          return postSystemUserInfoCreate(params, body)
-            .then((res) => {
-              setCreateVisible(false);
-              if (res.code === 200) {
-                actionRef.current?.reload();
-                message.success('提交成功');
-              }
-              return true;
-            })
-            .catch((error) => {
-              console.log(error, 'error');
-            });
+          return createHanlder<UserListItem>(postSystemUserInfoCreate, actionRef, params, body);
+          // return postSystemUserInfoCreate(params, body)
+          //   .then((res) => {
+          //     setCreateVisible(false);
+          //     if (res.code === 200) {
+          //       actionRef.current?.reload();
+          //       message.success('提交成功');
+          //     }
+          //     return true;
+          //   })
+          //   .catch((error) => {
+          //     console.log(error, 'error');
+          //   });
         }}
         formProps={{
           validateMessages: {
@@ -367,17 +380,18 @@ const UserList: React.FC = () => {
             const body = values as any;
             body.reqType = 'password';
             body.codeID = codeID;
-            return postSystemUserCoreCreate(params, body)
-              .then((res) => {
-                if (res.code === 200) {
-                  setFirstStepFormData(res.data);
-                  actionRef.current?.reload();
-                  return true;
-                }
-              })
-              .catch((error) => {
-                console.log('error', error);
-              });
+            return createHanlder(postSystemUserCoreCreate, actionRef, params, body);
+            // postSystemUserCoreCreate(params, body)
+            //   .then((res) => {
+            //     if (res.code === 200) {
+            //       setFirstStepFormData(res.data);
+            //       actionRef.current?.reload();
+            //       return true;
+            //     }
+            //   })
+            //   .catch((error) => {
+            //     console.log('error', error);
+            //   });
           }}
         >
           <ProFormText

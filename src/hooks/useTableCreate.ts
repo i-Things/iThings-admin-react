@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 const useTableCreate = () => {
   const [createVisible, setCreateVisible] = useState(false);
+  const [firstStepFormData, setFirstStepFormData] = useState<any>({});
   const createHanlder = async <T>(
     createApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
@@ -15,7 +16,8 @@ const useTableCreate = () => {
     let res;
     try {
       res = await createApi({ params, body });
-      if (res.code === 200) {
+      if (res?.code === 200) {
+        setFirstStepFormData(res?.data);
         actionRef.current?.reload();
         setCreateVisible(false);
         message.success('创建成功');
@@ -29,6 +31,7 @@ const useTableCreate = () => {
     createHanlder,
     createVisible,
     setCreateVisible,
+    firstStepFormData,
   };
 };
 
