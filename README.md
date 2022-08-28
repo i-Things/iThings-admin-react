@@ -172,11 +172,13 @@ ahooks: [ahooks](https://ahooks.js.org/zh-CN/hooks/use-request/index)
 
 ## 具体业务逻辑，文件夹组织方式
 
+```md
 ├── components // 某个业务模块下共有的组件
 │   └── Dialog.tsx // 弹窗组件
 ├── index.tsx // 业务模块主入口
 ├── styles.less // 抽离出来的 less 文件
 └── types.d.ts // 抽离出来的 ts 类型定义文件
+```
 
 ## 本地开发时，热加载比较慢
 
