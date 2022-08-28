@@ -153,10 +153,15 @@ Ant design Pro文档总览: [文档](https://pro.ant.design/zh-CN/docs/overview)
 Ant design Pro开发需知： [开发需知](https://pro.ant.design/zh-CN/docs/introduction/)
 
 所使用到的 umi 插件：
+
 plugin-access，权限管理
+
 plugin-antd，整合 antd UI 组件
+
 plugin-initial-state，初始化数据管理
+
 plugin-layout，配置启用 ant-design-pro 的布局
+
 plugin-model，基于 hooks 的简易数据流
 
 使用的 react hooks 工具方法库：
