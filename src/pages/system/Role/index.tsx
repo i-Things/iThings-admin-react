@@ -10,7 +10,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Drawer, Input, Tabs, Tree } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import CreateOrUpdate from './components/createOrUpdate';
+import CreateOrUpdate from './components/createOrUpdateRole';
 import type { RoleListItem } from './types';
 
 const { TabPane } = Tabs;

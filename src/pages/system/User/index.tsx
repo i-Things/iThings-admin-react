@@ -1,135 +1,46 @@
 import useGetTableList from '@/hooks/useGetTableList';
-import useTableCreate from '@/hooks/useTableCreate';
 import useTableDelete from '@/hooks/useTableDelete';
-import useTableUpdate from '@/hooks/useTableUpdate';
 import {
-  postSystemUserCaptcha,
-  postSystemUserCoreCreate,
   postSystemUserCoreIndex,
-  postSystemUserInfoCreate,
-  postSystemUserInfoUpdate,
   postSystemUserInfo__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
-import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { apiParams, apiParamsGUID } from '@/utils/utils';
-import { FontColorsOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-  ModalForm,
-  ProFormCaptcha,
-  ProFormSelect,
-  ProFormText,
-  StepsForm,
-} from '@ant-design/pro-components';
+import { apiParamsGUID } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Form, message, Modal, Upload } from 'antd';
-import type { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import React, { useRef, useState } from 'react';
+import { Button, Divider } from 'antd';
+import React, { useRef } from 'react';
+import CreateOrUpdate from './components/createOrUpdateUser';
 import type { UserListItem } from './types';
 
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
-  const { createHanlder, createVisible, setCreateVisible, firstStepFormData } = useTableCreate();
-  const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
-  const editFormRef = useRef<any>();
-  const [codeID, setCodeID] = useState<string>('');
-  const [captchaURL, setCaptchaURL] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
+
   // 获取数字验证码
-  const fetchCaptcha = async () => {
-    const prams = apiParamsGUID();
-    const body = {
-      type: 'image',
-      data: '',
-      use: 'login',
-    };
-    postSystemUserCaptcha(prams, body).then((res) => {
-      setCodeID(res?.data?.codeID ?? '');
-      setCaptchaURL(res?.data?.url ?? '');
-    });
-  };
-
-  // 创建用户 modal
-  const openCreateModal = async () => {
-    await fetchCaptcha();
-    setCreateVisible(true);
-  };
-
-  // const isPass = () => {
-  //   if (selectedRowKeys.length === 0) {
-  //     message.info('请选择一条数据');
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // 编辑用户modal
-  // const openEditModal = () => {
-  //   // if (!isPass()) {
-  //   //   return;
-  //   // }
-  //   editFormRef?.current?.setFieldsValue(selectedRows[0]);
-  //   setEditVisible(true);
+  // const fetchCaptcha = async () => {
+  //   const prams = apiParamsGUID();
+  //   const body = {
+  //     type: 'image',
+  //     data: '',
+  //     use: 'login',
+  //   };
+  //   postSystemUserCaptcha(prams, body).then((res) => {
+  //     setCodeID(res?.data?.codeID ?? '');
+  //     setCaptchaURL(res?.data?.url ?? '');
+  //   });
   // };
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string; userName: string }) => {
-    // if (!isPass()) {
-    //   return;
-    // }
+  const showDeleteConfirm = (record: { uid: string }) => {
     const params = apiParamsGUID();
     const body = {
       uid: record?.uid,
-      userName: record?.userName,
     };
     deleteHanlder(postSystemUserInfo__openAPI__delete, actionRef, params, body);
   };
-
-  // 用户头像上传函数
-  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-  };
-
-  const beforeUpload = (file: RcFile) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-  };
-
-  const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
-    if (info.file.status === 'uploading') {
-      console.log(info.file.status);
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
-
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
 
   const columns: ProColumns<UserListItem>[] = [
     {
@@ -231,101 +142,7 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <ModalForm<{
-            userName: string;
-            nickName: string;
-            sex: number;
-            token: string;
-            uid: string;
-          }>
-            width={550}
-            // labelAlign="left"
-            initialValues={record}
-            // key={Math.random()}
-            formRef={editFormRef}
-            title="编辑用户信息"
-            trigger={
-              <Button type="primary" onClick={() => setEditVisible(true)}>
-                编辑
-              </Button>
-            }
-            visible={editVisible}
-            autoFocusFirstInput
-            modalProps={{
-              onCancel: () => setEditVisible(false),
-            }}
-            submitTimeout={2000}
-            {...FORMITEM_LAYOUT}
-            layout={LAYOUT_TYPE_HORIZONTAL}
-            onFinish={async (values) => {
-              // 请求编辑用户基本信息的接口
-              const params = apiParams();
-              const body = values;
-              body.token = firstStepFormData.accessToken;
-              body.uid = firstStepFormData.uid;
-              return updateHanlder<UserListItem>(postSystemUserInfoUpdate, actionRef, params, body);
-            }}
-          >
-            <ProFormText
-              name="userName"
-              width="md"
-              label="用户名"
-              placeholder="请输入用户名"
-              rules={[
-                {
-                  required: true,
-                  message: '用户名是必填项！',
-                },
-              ]}
-            />
-            <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
-            <ProFormSelect
-              width="md"
-              name="sex"
-              label="性别"
-              request={async () => [
-                { label: '男性', value: 1 },
-                { label: '女性', value: 2 },
-              ]}
-            />
-            <ProFormText name="country" width="md" label="国家" placeholder="请输入所在国家" />
-            <ProFormText name="province" width="md" label="省份" placeholder="请输入所在省份" />
-            <ProFormText name="city" width="md" label="城市" placeholder="请输入所在城市" />
-            <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" />
-            {/* <ProFormUploadDragger
-              name="headImgUrl"
-              title={!imageUrl && '请上传头像，并且图片大小小于2M'}
-              description=" "
-              label="头像"
-              icon=" "
-              max={1}
-              action=""
-              onChange={handleChange}
-            >
-              {imageUrl ? (
-                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-              ) : (
-                uploadButton
-              )}
-            </ProFormUploadDragger> */}
-
-            <Form.Item label="头像" name="headImgUrl">
-              <Upload
-                name="avatar"
-                listType="picture-card"
-                showUploadList={false}
-                action=""
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {imageUrl ? (
-                  <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-                ) : (
-                  uploadButton
-                )}
-              </Upload>
-            </Form.Item>
-          </ModalForm>
+          <CreateOrUpdate flag="update" record={record} actionRef={actionRef} />
           <Divider type="vertical" />
           <Button
             type="primary"
@@ -350,152 +167,12 @@ const UserList: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        toolBarRender={() => [
-          <Button type="primary" onClick={openCreateModal}>
-            <PlusOutlined /> 新建用户
-          </Button>,
-        ]}
+        toolBarRender={() => [<CreateOrUpdate flag="create" actionRef={actionRef} />]}
         request={(params) => queryPage(postSystemUserCoreIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
       />
-      <StepsForm
-        onFinish={async (values) => {
-          // 请求创建用户基本信息的接口
-          const params = apiParams();
-          const body = values as any;
-          body.token = firstStepFormData.accessToken;
-          body.uid = firstStepFormData.uid;
-          return createHanlder<UserListItem>(postSystemUserInfoCreate, actionRef, params, body);
-        }}
-        formProps={{
-          validateMessages: {
-            required: '此项为必填项',
-          },
-        }}
-        stepsFormRender={(dom, submitter) => {
-          return (
-            <Modal
-              title="创建用户"
-              width={800}
-              onCancel={() => setCreateVisible(false)}
-              visible={createVisible}
-              footer={submitter}
-              destroyOnClose
-            >
-              {dom}
-            </Modal>
-          );
-        }}
-      >
-        <StepsForm.StepForm
-          name="base"
-          title="创建用户核心信息"
-          onFinish={async (values) => {
-            // 调用创建用户核心数据的接口
-            const params = apiParams();
-            const body = values as any;
-            body.reqType = 'password';
-            body.codeID = codeID;
-            return createHanlder(postSystemUserCoreCreate, actionRef, params, body);
-          }}
-        >
-          <ProFormText
-            name="identity"
-            width="md"
-            label="用户名"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                pattern: /^[a-zA-Z][a-zA-Z0-9_-]{6,20}$/,
-                message:
-                  '账号必须以大小写字母开头，且账号只能包含大小写字母，数字，下划线和减号。 长度为6到20位之间',
-              },
-            ]}
-          />
-          <ProFormText.Password
-            name="password"
-            width="md"
-            label="密码"
-            placeholder="请输入密码"
-            rules={[
-              {
-                required: true,
-                pattern: /^.*(?=.{9,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/,
-                message: '密码强度必须为字⺟⼤⼩写+数字+符号，9位以上！',
-              },
-            ]}
-          />
-          <ProFormSelect
-            width="md"
-            name="role"
-            label="用户角色"
-            rules={[
-              {
-                required: true,
-                message: '用户角色是必填项！',
-              },
-            ]}
-            request={async () => [
-              { label: 'admin', value: 1 },
-              { label: '供应商', value: 2 },
-              { label: 'user', value: 3 },
-            ]}
-          />
-          <ProFormCaptcha
-            countDown={1}
-            label="验证码"
-            rules={[
-              {
-                required: true,
-                message: '验证码是必填项！',
-              },
-            ]}
-            fieldProps={{
-              size: 'large',
-              prefix: <FontColorsOutlined className={'prefixIcon'} />,
-            }}
-            captchaProps={{
-              size: 'large',
-            }}
-            placeholder={'请输入验证码'}
-            captchaTextRender={() => {
-              return <img style={{ width: 130, height: 30 }} src={captchaURL} alt="" />;
-            }}
-            name="code"
-            onGetCaptcha={async () => {
-              await fetchCaptcha();
-              message.success('刷新验证码成功！');
-            }}
-          />
-        </StepsForm.StepForm>
-        <StepsForm.StepForm name="checkbox" title="创建用户基本信息">
-          <ProFormText
-            name="userName"
-            width="md"
-            label="用户名"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                message: '用户名是必填项！',
-              },
-            ]}
-          />
-          <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
-          <ProFormSelect
-            width="md"
-            name="sex"
-            label="性别"
-            request={async () => [
-              { label: '男性', value: 1 },
-              { label: '女性', value: 2 },
-            ]}
-          />
-        </StepsForm.StepForm>
-      </StepsForm>
     </PageContainer>
   );
 };

@@ -1,3 +1,4 @@
+import { apiParams } from '@/utils/utils';
 import type { ActionType } from '@ant-design/pro-table';
 import message from 'antd/lib/message';
 import { useState } from 'react';
@@ -7,14 +8,12 @@ const useTableUpdate = () => {
   const updateHanlder = async <T>(
     updateApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    params: API.postSystemUserInfoCreateParams & {
-      'iThings-guid'?: string;
-    },
+
     body: T,
   ) => {
     let res;
     try {
-      res = await updateApi({ params, body });
+      res = await updateApi(apiParams(), body);
       if (res.code === 200) {
         actionRef.current?.reload();
         setEditVisible(false);

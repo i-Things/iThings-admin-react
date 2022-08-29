@@ -8,7 +8,7 @@ import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-des
 import { Button } from 'antd';
 import { useRef } from 'react';
 import { RoleListItem } from '../types';
-const CreateOrUpdate = (props: { flag: string; record?: any; actionRef: any }) => {
+const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any }) => {
   const { flag, record, actionRef } = props;
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
@@ -45,8 +45,8 @@ const CreateOrUpdate = (props: { flag: string; record?: any; actionRef: any }) =
       autoFocusFirstInput
       modalProps={{
         onCancel: () => {
-          if (flag === 'update') setEditVisible(true);
-          else setCreateVisible(true);
+          if (flag === 'update') setEditVisible(false);
+          else setCreateVisible(false);
         },
       }}
       submitTimeout={2000}
@@ -94,4 +94,4 @@ const CreateOrUpdate = (props: { flag: string; record?: any; actionRef: any }) =
   );
 };
 
-export default CreateOrUpdate;
+export default CreateOrUpdateRole;

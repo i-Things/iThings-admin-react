@@ -1,6 +1,7 @@
 import type { ActionType } from '@ant-design/pro-table';
 import message from 'antd/lib/message';
 import { useState } from 'react';
+import { apiParams } from './../utils/utils';
 
 const useTableCreate = () => {
   const [createVisible, setCreateVisible] = useState(false);
@@ -8,14 +9,12 @@ const useTableCreate = () => {
   const createHanlder = async <T>(
     createApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    params: API.postSystemUserInfoCreateParams & {
-      'iThings-guid'?: string;
-    },
+
     body: T,
   ) => {
     let res;
     try {
-      res = await createApi({ params, body });
+      res = await createApi(apiParams(), body);
       if (res?.code === 200) {
         setFirstStepFormData(res?.data);
         actionRef.current?.reload();
