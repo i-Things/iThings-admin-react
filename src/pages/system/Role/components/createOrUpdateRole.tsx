@@ -1,13 +1,15 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
+import {
+  postSystemRoleCreate,
+  postSystemRoleRoleMenuUpdate,
+} from '@/services/iThingsapi/jiaoseguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
-import { apiParams } from '@/utils/utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { Button } from 'antd';
 import { useRef } from 'react';
-import { RoleListItem } from '../types';
+import type { RoleListItem } from '../types';
 const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any }) => {
   const { flag, record, actionRef } = props;
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
@@ -53,15 +55,12 @@ const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any 
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        const params = apiParams();
         const body = values;
-
         return flag === 'update'
           ? updateHanlder
           : createHanlder<Pick<RoleListItem, 'name' | 'remark' | 'status'>>(
-              postSystemRoleIndex,
+              flag === 'update' ? postSystemRoleRoleMenuUpdate : postSystemRoleCreate,
               actionRef,
-              params,
               body,
             );
       }}

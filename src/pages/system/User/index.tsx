@@ -55,10 +55,10 @@ const UserList: React.FC = () => {
       //   return <a onClick={() => setRow(entity)}>{dom}</a>;
       // },
     },
-    // {
-    //   title: '昵称',
-    //   dataIndex: 'nickName',
-    // },
+    {
+      title: '昵称',
+      dataIndex: 'nickName',
+    },
     {
       title: '手机号',
       dataIndex: 'phone',
@@ -90,14 +90,6 @@ const UserList: React.FC = () => {
       dataIndex: 'lastIP',
       hideInSearch: true,
     },
-    // {
-    //   title: '部门',
-    //   dataIndex: 'deptName',
-    // },
-    // {
-    //   title: '职位',
-    //   dataIndex: 'jobName',
-    // },
     {
       title: '角色',
       dataIndex: 'role',
@@ -116,7 +108,6 @@ const UserList: React.FC = () => {
         2: { text: '未注册', status: 'Error' },
       },
     },
-
     // {
     //   title: '创建人',
     //   dataIndex: 'createBy',

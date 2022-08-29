@@ -1,11 +1,15 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemUserInfoUpdate } from '@/services/iThingsapi/yonghuguanli';
+import {
+  postSystemUserInfoCreate,
+  postSystemUserInfoUpdate,
+} from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { Button, Form, message, Select, Upload } from 'antd';
-import { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload';
+import { Button, Form, message, Select } from 'antd';
+import ImgCrop from 'antd-img-crop';
+import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload';
 import { useRef, useState } from 'react';
 import { UserListItem } from '../types';
 
@@ -37,10 +41,10 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
   };
 
   const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
+    if ((info.file.size as number) / 1024 / 1024 >= 2) return null;
+
     if (info.file.status === 'uploading') {
-      console.log(info.file.status);
-      setLoading(true);
-      return;
+      return setLoading(true);
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
@@ -109,20 +113,29 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
         const body = values;
+        if (flag === 'create') {
+          body.reqType = 'password';
+        }
         return flag === 'update'
           ? updateHanlder
-          : createHanlder<UserListItem>(postSystemUserInfoUpdate, actionRef, body);
+          : createHanlder<UserListItem>(
+              flag === 'update' ? postSystemUserInfoUpdate : postSystemUserInfoCreate,
+              actionRef,
+              body,
+            );
       }}
     >
       <ProFormText
-        name="userName"
+        name="identity"
         width="md"
         label="用户名"
         placeholder="请输入用户名"
         rules={[
           {
             required: true,
-            message: '用户名是必填项！',
+            pattern: /^[a-zA-Z][a-zA-Z0-9_-]{6,20}$/,
+            message:
+              '账号必须以大小写字母开头，且账号只能包含大小写字母，数字，下划线和减号。 长度为6到20位之间',
           },
         ]}
       />
@@ -192,34 +205,38 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
       <ProFormText name="province" width="md" label="省份" placeholder="请输入所在省份" />
       <ProFormText name="city" width="md" label="城市" placeholder="请输入所在城市" />
       <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" />
-      {/* <ProFormUploadDragger
-              name="headImgUrl"
-              title={!imageUrl && '请上传头像，并且图片大小小于2M'}
-              description=" "
-              label="头像"
-              icon=" "
-              max={1}
-              action=""
-              onChange={handleChange}
-            >
-              {imageUrl ? (
-                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-              ) : (
-                uploadButton
-              )}
-            </ProFormUploadDragger> */}
+      {/* <ProFormUploadButton
+        name="headImgUrl"
+        label="头像"
+        icon=" "
+        max={1}
+        action=""
+        fieldProps={{
+          onChange: handleChange,
+          beforeUpload: beforeUpload,
+          listType: 'picture-card',
+        }}
+        extra="请上传jpg/png格式图片,且大小小于2M"
+      >
+        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+      </ProFormUploadButton> */}
 
       <Form.Item label="头像" name="headImgUrl">
-        <Upload
-          name="avatar"
-          listType="picture-card"
-          showUploadList={false}
-          action=""
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-        >
-          {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-        </Upload>
+        <ImgCrop rotate>
+          <Upload
+            listType="picture-card"
+            showUploadList={false}
+            action=""
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {imageUrl ? (
+              <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+            ) : (
+              uploadButton
+            )}
+          </Upload>
+        </ImgCrop>
       </Form.Item>
     </ModalForm>
   );
