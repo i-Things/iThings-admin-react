@@ -4,12 +4,6 @@ import request from '@/utils/request';
 
 /** 获取验证码 POST /api/v1/system/user/captcha */
 export async function postSystemUserCaptcha(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserCaptchaParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  },
   body: {
     /** 用途 */
     use: string;
@@ -27,7 +21,6 @@ export async function postSystemUserCaptcha(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -35,12 +28,6 @@ export async function postSystemUserCaptcha(
 
 /** 创建用户核心信息 POST /api/v1/system/user/core/create */
 export async function postSystemUserCoreCreate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserCoreCreateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  },
   body: {
     /** 注册方式:	phone手机号注册 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序,password密码方式  */
     reqType: string;
@@ -65,7 +52,6 @@ export async function postSystemUserCoreCreate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -73,12 +59,6 @@ export async function postSystemUserCoreCreate(
 
 /** 获取用户核心信息列表 POST /api/v1/system/user/core/index */
 export async function postSystemUserCoreIndex(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserCoreIndexParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  },
   body: {
     page: { page?: number; size?: number };
   },
@@ -108,7 +88,6 @@ export async function postSystemUserCoreIndex(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -116,12 +95,6 @@ export async function postSystemUserCoreIndex(
 
 /** 创建用户基本信息 POST /api/v1/system/user/info/create */
 export async function postSystemUserInfoCreate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserInfoCreateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  },
   body: {
     /** 注册第一步的token */
     token: string;
@@ -157,7 +130,6 @@ export async function postSystemUserInfoCreate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -165,17 +137,9 @@ export async function postSystemUserInfoCreate(
 
 /** 删除用户 POST /api/v1/system/user/info/delete */
 export async function postSystemUserInfo__openAPI__delete(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserInfo__openAPI__deleteParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-    /** 用户token */
-    'iThings-token'?: string;
-  },
   body: {
     /** 用户id */
-    uid?: string;
+    uid: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -184,7 +148,6 @@ export async function postSystemUserInfo__openAPI__delete(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -192,14 +155,6 @@ export async function postSystemUserInfo__openAPI__delete(
 
 /** 更新用户基本数据 POST /api/v1/system/user/info/update */
 export async function postSystemUserInfoUpdate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserInfoUpdateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-    /** 用户token */
-    'iThings-token'?: string;
-  },
   body: {
     /** 用户id */
     uid?: string;
@@ -231,7 +186,6 @@ export async function postSystemUserInfoUpdate(
       headers: {
         'Content-Type': 'application/json',
       },
-      params: { ...params },
       data: body,
       ...(options || {}),
     },
@@ -240,12 +194,6 @@ export async function postSystemUserInfoUpdate(
 
 /** 登录 POST /api/v1/system/user/login */
 export async function postSystemUserLogin(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserLoginParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  },
   body: {
     /** 账号密码登录时需要填写.0,无密码 1，明文 2，md5加密 */
     pwdType: number;
@@ -288,7 +236,6 @@ export async function postSystemUserLogin(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -296,14 +243,6 @@ export async function postSystemUserLogin(
 
 /** 获取用户信息 POST /api/v1/system/user/read */
 export async function postSystemUserRead(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemUserReadParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-    /** 用户token */
-    'iThings-token'?: string;
-  },
   body: {
     /** 用户id */
     uid?: number;
@@ -339,7 +278,6 @@ export async function postSystemUserRead(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });

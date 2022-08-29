@@ -4,12 +4,6 @@ import request from '@/utils/request';
 
 /** 添加角色 POST /api/v1/system/role/create */
 export async function postSystemRoleCreate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemRoleCreateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 角色名称 */
     name: string;
@@ -25,7 +19,6 @@ export async function postSystemRoleCreate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -33,15 +26,9 @@ export async function postSystemRoleCreate(
 
 /** 删除角色 POST /api/v1/system/role/delete */
 export async function postSystemRole__openAPI__delete(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemRole__openAPI__deleteParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 角色编号 */
-    id: number;
+    id: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -50,7 +37,6 @@ export async function postSystemRole__openAPI__delete(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -58,12 +44,6 @@ export async function postSystemRole__openAPI__delete(
 
 /** 获取角色列表 POST /api/v1/system/role/index */
 export async function postSystemRoleIndex(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemRoleIndexParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     page: { page?: number; size?: number };
     /** 按编号查找角色 */
@@ -90,7 +70,6 @@ export async function postSystemRoleIndex(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -98,12 +77,6 @@ export async function postSystemRoleIndex(
 
 /** 更新角色对应菜单列表 POST /api/v1/system/role/role-menu/update */
 export async function postSystemRoleRoleMenuUpdate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemRoleRoleMenuUpdateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 角色编号 */
     id: number;
@@ -117,7 +90,6 @@ export async function postSystemRoleRoleMenuUpdate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -125,12 +97,6 @@ export async function postSystemRoleRoleMenuUpdate(
 
 /** 更新角色 POST /api/v1/system/role/update */
 export async function postSystemRoleUpdate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemRoleUpdateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 编号 */
     id: number;
@@ -148,7 +114,6 @@ export async function postSystemRoleUpdate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
