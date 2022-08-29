@@ -13,20 +13,19 @@ import {
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { apiParams, apiParamsGUID } from '@/utils/utils';
-import { FontColorsOutlined, PlusOutlined } from '@ant-design/icons';
+import { FontColorsOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   ModalForm,
   ProFormCaptcha,
   ProFormSelect,
   ProFormText,
-  ProFormUploadDragger,
   StepsForm,
 } from '@ant-design/pro-components';
-import ProDescriptions from '@ant-design/pro-descriptions';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Drawer, message, Modal } from 'antd';
+import { Button, Divider, Form, message, Modal, Upload } from 'antd';
+import type { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useRef, useState } from 'react';
 import type { UserListItem } from './types';
 
@@ -37,13 +36,10 @@ const UserList: React.FC = () => {
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
   const editFormRef = useRef<any>();
-  const [row, setRow] = useState<UserListItem>();
-
-  // const [firstStepFormData, setFirstStepFormData] = useState<any>({});
-  // const [createVisible, setCreateVisible] = useState(false);
-  // const [editVisible, setEditVisible] = useState(false);
   const [codeID, setCodeID] = useState<string>('');
   const [captchaURL, setCaptchaURL] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>();
   // 获取数字验证码
   const fetchCaptcha = async () => {
     const prams = apiParamsGUID();
@@ -92,27 +88,48 @@ const UserList: React.FC = () => {
       userName: record?.userName,
     };
     deleteHanlder(postSystemUserInfo__openAPI__delete, actionRef, params, body);
-    // confirm({
-    //   title: '你确定要删除该用户信息吗？',
-    //   icon: <ExclamationCircleOutlined />,
-    //   content: `所选用户名: ,删除后无法恢复`,
-    //   onOk() {
-    //     const params = apiParamsGUID();
-    //     const body = {
-    //       uid,
-    //     };
-    //     postSystemUserInfo__openAPI__delete(params, body).then((res) => {
-    //       if (res.code === 200) {
-    //         message.success('删除成功');
-    //         actionRef.current?.reload();
-    //       }
-    //     });
-    //   },
-    //   onCancel() {
-    //     console.log('Cancel');
-    //   },
-    // });
   };
+
+  // 用户头像上传函数
+  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+  };
+
+  const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === 'uploading') {
+      console.log(info.file.status);
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj as RcFile, (url) => {
+        setLoading(false);
+        setImageUrl(url);
+      });
+    }
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
 
   const columns: ProColumns<UserListItem>[] = [
     {
@@ -123,9 +140,9 @@ const UserList: React.FC = () => {
     {
       title: '用户名',
       dataIndex: 'userName',
-      render: (dom, entity) => {
-        return <a onClick={() => setRow(entity)}>{dom}</a>;
-      },
+      // render: (dom, entity) => {
+      //   return <a onClick={() => setRow(entity)}>{dom}</a>;
+      // },
     },
     // {
     //   title: '昵称',
@@ -214,9 +231,6 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          {/* <Button type="primary" size="small" onClick={() => setEditVisible(true)}>
-            编辑
-          </Button> */}
           <ModalForm<{
             userName: string;
             nickName: string;
@@ -225,8 +239,9 @@ const UserList: React.FC = () => {
             uid: string;
           }>
             width={550}
+            // labelAlign="left"
             initialValues={record}
-            key={Math.random()}
+            // key={Math.random()}
             formRef={editFormRef}
             title="编辑用户信息"
             trigger={
@@ -249,17 +264,6 @@ const UserList: React.FC = () => {
               body.token = firstStepFormData.accessToken;
               body.uid = firstStepFormData.uid;
               return updateHanlder<UserListItem>(postSystemUserInfoUpdate, actionRef, params, body);
-              // return postSystemUserInfoUpdate(params, body)
-              //   .then((res) => {
-              //     setCreateVisible(false);
-              //     if (res.code === 200) {
-              //       message.success('提交成功');
-              //     }
-              //     return true;
-              //   })
-              //   .catch((error) => {
-              //     console.log(error, 'error');
-              //   });
             }}
           >
             <ProFormText
@@ -288,7 +292,39 @@ const UserList: React.FC = () => {
             <ProFormText name="province" width="md" label="省份" placeholder="请输入所在省份" />
             <ProFormText name="city" width="md" label="城市" placeholder="请输入所在城市" />
             <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" />
-            <ProFormUploadDragger name="drag-pic" label="头像" />
+            {/* <ProFormUploadDragger
+              name="headImgUrl"
+              title={!imageUrl && '请上传头像，并且图片大小小于2M'}
+              description=" "
+              label="头像"
+              icon=" "
+              max={1}
+              action=""
+              onChange={handleChange}
+            >
+              {imageUrl ? (
+                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+              ) : (
+                uploadButton
+              )}
+            </ProFormUploadDragger> */}
+
+            <Form.Item label="头像" name="headImgUrl">
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                showUploadList={false}
+                action=""
+                beforeUpload={beforeUpload}
+                onChange={handleChange}
+              >
+                {imageUrl ? (
+                  <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </Form.Item>
           </ModalForm>
           <Divider type="vertical" />
           <Button
@@ -304,10 +340,6 @@ const UserList: React.FC = () => {
       ),
     },
   ];
-
-  // useEffect(() => {
-  //   queryPage(queryParams);
-  // }, [refreshFlag]);
 
   return (
     <PageContainer>
@@ -336,18 +368,6 @@ const UserList: React.FC = () => {
           body.token = firstStepFormData.accessToken;
           body.uid = firstStepFormData.uid;
           return createHanlder<UserListItem>(postSystemUserInfoCreate, actionRef, params, body);
-          // return postSystemUserInfoCreate(params, body)
-          //   .then((res) => {
-          //     setCreateVisible(false);
-          //     if (res.code === 200) {
-          //       actionRef.current?.reload();
-          //       message.success('提交成功');
-          //     }
-          //     return true;
-          //   })
-          //   .catch((error) => {
-          //     console.log(error, 'error');
-          //   });
         }}
         formProps={{
           validateMessages: {
@@ -379,17 +399,6 @@ const UserList: React.FC = () => {
             body.reqType = 'password';
             body.codeID = codeID;
             return createHanlder(postSystemUserCoreCreate, actionRef, params, body);
-            // postSystemUserCoreCreate(params, body)
-            //   .then((res) => {
-            //     if (res.code === 200) {
-            //       setFirstStepFormData(res.data);
-            //       actionRef.current?.reload();
-            //       return true;
-            //     }
-            //   })
-            //   .catch((error) => {
-            //     console.log('error', error);
-            //   });
           }}
         >
           <ProFormText
@@ -487,29 +496,6 @@ const UserList: React.FC = () => {
           />
         </StepsForm.StepForm>
       </StepsForm>
-
-      <Drawer
-        width={600}
-        visible={!!row}
-        onClose={() => {
-          setRow(undefined);
-        }}
-        closable={false}
-      >
-        {row?.id && (
-          <ProDescriptions<UserListItem>
-            column={2}
-            title={row?.id}
-            request={async () => ({
-              data: row || {},
-            })}
-            params={{
-              id: row?.id,
-            }}
-            columns={columns}
-          />
-        )}
-      </Drawer>
     </PageContainer>
   );
 };
