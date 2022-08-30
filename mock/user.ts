@@ -83,35 +83,6 @@ async function postV1SystemUserCaptcha(req: Request, res: Response) {
   });
 }
 
-// 角色
-async function postSystemRoleIndex(req: Request, res: Response) {
-  return res.json({
-    code: 0,
-    msg: 'string',
-    data: {
-      list: [
-        {
-          uid: '123',
-          name: 'user',
-          status: 1,
-          remark: 'aqwww',
-          createdTime: 1661830593000,
-          roleMenuID: [1, 2, 3],
-        },
-        {
-          uid: '123',
-          name: 'user',
-          status: 1,
-          remark: 'aqwww',
-          createdTime: 1661830593000,
-          roleMenuID: [1, 2, 3],
-        },
-      ],
-      total: 1,
-    },
-  });
-}
-
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
 
 /**
@@ -302,5 +273,4 @@ export default {
   'POST /api/v1/system/user/login': postV1SystemUserLogin,
   'POST /api/v1/system/user/read': postV1SystemUserInfoIndex,
   'POST /api/v1/system/user/captcha': postV1SystemUserCaptcha,
-  'POST /api/v1/system/role/index': postSystemRoleIndex,
 };

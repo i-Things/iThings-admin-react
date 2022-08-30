@@ -55,7 +55,7 @@ const CreateOrUpdateRole: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        const body = values;
+        const body = { ...values, id: record?.uid };
         if (flag === 'update')
           return await updateHanlder<RoleListItem>(postSystemRoleRoleMenuUpdate, actionRef, body);
         else return await createHanlder<RoleListItem>(postSystemRoleCreate, actionRef, body);
@@ -74,17 +74,16 @@ const CreateOrUpdateRole: React.FC<{
         ]}
       />
       <ProFormTextArea name="remark" width="md" label="备注" placeholder="请输入备注" />
-      {flag === 'update' && (
-        <ProFormSelect
-          width="md"
-          name="status"
-          label="状态"
-          request={async () => [
-            { label: '启用', value: 1 },
-            { label: '禁用', value: 2 },
-          ]}
-        />
-      )}
+
+      <ProFormSelect
+        width="md"
+        name="status"
+        label="状态"
+        request={async () => [
+          { label: '启用', value: 1 },
+          { label: '禁用', value: 2 },
+        ]}
+      />
     </ModalForm>
   );
 };

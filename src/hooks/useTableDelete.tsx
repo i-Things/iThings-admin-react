@@ -6,16 +6,16 @@ const useTableDelete = () => {
   const deleteHanlder = (
     deleteApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    record: { uid: string; userName?: string },
+    record: { uid: string; name?: string },
   ) => {
     confirm({
       title: '你确定要删除该用户信息吗？',
       icon: <ExclamationCircleOutlined />,
-      content: `所选用户名: ${record?.userName},删除后无法恢复`,
+      content: `所选用户名: ${record?.name},删除后无法恢复`,
       async onOk() {
         let res;
         try {
-          res = await deleteApi(params, record?.uid);
+          res = await deleteApi({ id: record?.uid });
           if (res.code === 200) {
             actionRef.current?.reload();
             message.success('删除成功');

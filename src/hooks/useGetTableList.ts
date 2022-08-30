@@ -25,13 +25,15 @@ const useGetTableList = () => {
           total: 0,
         };
       }
+      if (res.code === 200) {
+        return {
+          data: res?.data?.list,
+          total: res?.data?.total,
+        };
+      }
     } catch (error) {
       message.error((error as Error)?.message);
     }
-    return {
-      data: res?.data?.list,
-      total: res?.data?.total,
-    };
   };
   return {
     queryPage,

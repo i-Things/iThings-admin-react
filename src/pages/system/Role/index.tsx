@@ -25,11 +25,11 @@ const RoleList: React.FC = () => {
   const [, setSelectedKey] = useState<number[]>([]);
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string }) => {
-    const body = {
-      uid: record?.uid,
-    };
-    deleteHanlder(postSystemRole__openAPI__delete, actionRef, body);
+  const showDeleteConfirm = (record: { uid: string; name: string }) => {
+    // const body = {
+    //   id: record?.uid,
+    // };
+    deleteHanlder(postSystemRole__openAPI__delete, actionRef, record);
   };
 
   // 树组件onCheck
@@ -66,9 +66,10 @@ const RoleList: React.FC = () => {
     {
       title: '状态',
       dataIndex: 'status',
+      valueType: 'select',
       valueEnum: {
         1: { text: '启用', status: 'Success' },
-        0: { text: '禁用', status: 'Error' },
+        2: { text: '禁用', status: 'Error' },
       },
     },
     {
@@ -99,7 +100,7 @@ const RoleList: React.FC = () => {
             type="primary"
             danger
             onClick={() => {
-              showDeleteConfirm(record.id);
+              showDeleteConfirm(record);
             }}
           >
             删除
