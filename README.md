@@ -141,3 +141,58 @@ yarn test
 ├── yarn-error.log
 └── yarn.lock
 ```
+
+## 项目架构介绍
+
+react + umi + react hooks + TypeScript + Ant design Pro
+
+Ant design Pro: Ant design Pro 的底座是 umi，umi 是一个 webpack 之上的整合工具。 umi 相比于 webpack 增加了运行时的能力，同时帮助我们配置了很多 webpack 的预设。也减少了 webpack 升级导致的问题。这也是我们能提供插件的原因。
+
+Ant design Pro文档总览: [文档](https://pro.ant.design/zh-CN/docs/overview)
+
+Ant design Pro开发需知： [开发需知](https://pro.ant.design/zh-CN/docs/introduction/)
+
+所使用到的 umi 插件：
+
+plugin-access，权限管理
+
+plugin-antd，整合 antd UI 组件
+
+plugin-initial-state，初始化数据管理
+
+plugin-layout，配置启用 ant-design-pro 的布局
+
+plugin-model，基于 hooks 的简易数据流
+
+使用的 react hooks 工具方法库：
+
+ahooks: [ahooks](https://ahooks.js.org/zh-CN/hooks/use-request/index)
+
+## 分支规范
+
+采取 mtr 分支模型：
+
+一个功能，就是一个 feat 分支。命令规范为 feat-xxx。(举个🌰： feat-user)
+
+开发及代码提交步骤： 本地开发 ==> 代码提交前的代码检查(已配置git hooks, 代码提交前会自动检查) ==> 代码检查通过 ==> 代码提交到 test 分支 ==> 告知团队其他成员代码已提交，请帮忙 code review ==> code review 通过   ==> 合并到 test 分支  ==> 测试环境验证完毕 ==> 合并到 master 分支。
+
+## 具体业务逻辑，文件夹组织方式
+
+```md
+├── components // 某个业务模块下共有的组件
+│   └── Dialog.tsx // 弹窗组件
+├── index.tsx // 业务模块主入口
+├── styles.less // 抽离出来的 less 文件
+└── types.d.ts // 抽离出来的 ts 类型定义文件
+```
+
+## 本地开发时，热加载比较慢
+
+react 也有解决方案：
+
+1. vite 进行本地开发的热加载方案.
+2. 使用 mfsu . // 开启方法，config/confog.ts 文件中配置  mfsu.
+
+## openAPI 使用方法介绍
+
+![opanAPI](https://tva1.sinaimg.cn/large/e6c9d24egy1h5mtjmhv68g213l0khkjr.gif)

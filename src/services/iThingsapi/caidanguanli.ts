@@ -4,12 +4,6 @@ import request from '@/utils/request';
 
 /** 添加菜单 POST /api/v1/system/menu/create */
 export async function postSystemMenuCreate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemMenuCreateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 菜单名称 */
     name: string;
@@ -33,7 +27,6 @@ export async function postSystemMenuCreate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -41,12 +34,6 @@ export async function postSystemMenuCreate(
 
 /** 删除菜单 POST /api/v1/system/menu/delete */
 export async function postSystemMenu__openAPI__delete(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemMenu__openAPI__deleteParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 菜单编号 */
     id: number;
@@ -58,7 +45,6 @@ export async function postSystemMenu__openAPI__delete(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -66,12 +52,6 @@ export async function postSystemMenu__openAPI__delete(
 
 /** 获取菜单列表 POST /api/v1/system/menu/index */
 export async function postSystemMenuIndex(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemMenuIndexParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     page: { page?: number; size?: number };
   },
@@ -94,7 +74,6 @@ export async function postSystemMenuIndex(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });
@@ -102,12 +81,6 @@ export async function postSystemMenuIndex(
 
 /** 更新菜单 POST /api/v1/system/menu/update */
 export async function postSystemMenuUpdate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postSystemMenuUpdateParams & {
-    // header
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  },
   body: {
     /** 编号 */
     id: number;
@@ -133,7 +106,6 @@ export async function postSystemMenuUpdate(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: { ...params },
     data: body,
     ...(options || {}),
   });

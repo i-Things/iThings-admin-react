@@ -190,97 +190,6 @@ declare namespace API {
     users?: string[];
   };
 
-  type postSystemMenu__openAPI__deleteParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemMenuCreateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemMenuIndexParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemMenuUpdateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemRole__openAPI__deleteParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemRoleCreateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemRoleIndexParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemRoleRoleMenuUpdateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemRoleUpdateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid': string;
-  };
-
-  type postSystemUserCaptchaParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  };
-
-  type postSystemUserCoreCreateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  };
-
-  type postSystemUserCoreIndexParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  };
-
-  type postSystemUserInfo__openAPI__deleteParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-    /** 用户token */
-    'iThings-token'?: string;
-  };
-
-  type postSystemUserInfoCreateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  };
-
-  type postSystemUserInfoUpdateParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-    /** 用户token */
-    'iThings-token'?: string;
-  };
-
-  type postSystemUserLoginParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-  };
-
-  type postSystemUserReadParams = {
-    /** 时间戳的字符串，精确到毫秒，用于后端日志追踪 */
-    'iThings-guid'?: string;
-    /** 用户token */
-    'iThings-token'?: string;
-  };
-
   type Product = {
     createdTime?: string;
     currency?: string;
@@ -377,7 +286,7 @@ declare namespace API {
     /** 标签 */
     tags?: { key?: string; value?: string }[];
     /** 在线状态 1离线 2在线 只读 */
-    isOnline: string;
+    isOnline: number;
   };
 
   type shuzhuangjiedian = {
