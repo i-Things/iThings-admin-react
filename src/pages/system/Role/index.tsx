@@ -4,7 +4,6 @@ import {
   postSystemRoleIndex,
   postSystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
-import { apiParamsGUID } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -26,11 +25,10 @@ const RoleList: React.FC = () => {
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string }) => {
-    const params = apiParamsGUID();
     const body = {
       uid: record?.uid,
     };
-    deleteHanlder(postSystemRole__openAPI__delete, actionRef, params, body);
+    deleteHanlder(postSystemRole__openAPI__delete, actionRef, body);
   };
 
   // 树组件onCheck
@@ -217,12 +215,7 @@ const RoleList: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        toolBarRender={() => [
-          // <Button type="primary" onClick={() => setCreateVisible(true)}>
-          //   <PlusOutlined /> 新建角色
-          // </Button>,
-          <CreateOrUpdate flag="create" actionRef={actionRef} />,
-        ]}
+        toolBarRender={() => [<CreateOrUpdate flag="create" actionRef={actionRef} />]}
         request={(params) => queryPage(postSystemRoleIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}

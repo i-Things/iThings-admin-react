@@ -16,11 +16,7 @@ const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any 
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
   return (
-    <ModalForm<{
-      name: string;
-      remark: string;
-      status: number;
-    }>
+    <ModalForm<RoleListItem>
       width={550}
       initialValues={record}
       key={Math.random()}

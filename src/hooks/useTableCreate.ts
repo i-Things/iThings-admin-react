@@ -1,7 +1,6 @@
 import type { ActionType } from '@ant-design/pro-table';
 import message from 'antd/lib/message';
 import { useState } from 'react';
-import { apiParams } from './../utils/utils';
 
 const useTableCreate = () => {
   const [createVisible, setCreateVisible] = useState(false);
@@ -9,12 +8,11 @@ const useTableCreate = () => {
   const createHanlder = async <T>(
     createApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-
     body: T,
   ) => {
     let res;
     try {
-      res = await createApi(apiParams(), body);
+      res = await createApi({ ...body, reqType: 'password' });
       if (res?.code === 200) {
         setFirstStepFormData(res?.data);
         actionRef.current?.reload();

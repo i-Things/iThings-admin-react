@@ -5,62 +5,60 @@ import {
   postSystemUserInfoUpdate,
 } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { Button, Form, message, Select } from 'antd';
-import ImgCrop from 'antd-img-crop';
-import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload';
-import { useRef, useState } from 'react';
-import { UserListItem } from '../types';
+import { Button, Form, Select } from 'antd';
+import { useRef } from 'react';
+import type { UserListItem } from '../types';
 
 const { Option } = Select;
 const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any }) => {
   const { flag, record, actionRef } = props;
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
+  // const [loading, setLoading] = useState(false);
+  // const [imageUrl, setImageUrl] = useState<string>();
   const editFormRef = useRef<any>();
 
-  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-  };
+  // const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+  //   const reader = new FileReader();
+  //   reader.addEventListener('load', () => callback(reader.result as string));
+  //   reader.readAsDataURL(img);
+  // };
 
-  const beforeUpload = (file: RcFile) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-  };
+  // const beforeUpload = (file: RcFile) => {
+  //   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  //   if (!isJpgOrPng) {
+  //     message.error('You can only upload JPG/PNG file!');
+  //   }
+  //   const isLt2M = file.size / 1024 / 1024 < 2;
+  //   if (!isLt2M) {
+  //     message.error('Image must smaller than 2MB!');
+  //   }
+  //   return isJpgOrPng && isLt2M;
+  // };
 
-  const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
-    if ((info.file.size as number) / 1024 / 1024 >= 2) return null;
+  // const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
+  //   if ((info.file.size as number) / 1024 / 1024 >= 2) return null;
 
-    if (info.file.status === 'uploading') {
-      return setLoading(true);
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
+  //   if (info.file.status === 'uploading') {
+  //     return setLoading(true);
+  //   }
+  //   if (info.file.status === 'done') {
+  //     // Get this url from response in real world.
+  //     getBase64(info.file.originFileObj as RcFile, (url) => {
+  //       setLoading(false);
+  //       setImageUrl(url);
+  //     });
+  //   }
+  // };
 
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
+  // const uploadButton = (
+  //   <div>
+  //     {loading ? <LoadingOutlined /> : <PlusOutlined />}
+  //     <div style={{ marginTop: 8 }}>Upload</div>
+  //   </div>
+  // );
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -71,13 +69,7 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
     </Form.Item>
   );
   return (
-    <ModalForm<{
-      userName: string;
-      nickName: string;
-      sex: number;
-      token: string;
-      uid: string;
-    }>
+    <ModalForm<UserListItem>
       // labelAlign="left"
       initialValues={record}
       // key={Math.random()}
@@ -113,9 +105,6 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
         const body = values;
-        if (flag === 'create') {
-          body.reqType = 'password';
-        }
         return flag === 'update'
           ? updateHanlder
           : createHanlder<UserListItem>(
@@ -221,7 +210,7 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
         {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
       </ProFormUploadButton> */}
 
-      <Form.Item label="头像" name="headImgUrl">
+      {/* <Form.Item label="头像" name="headImgUrl">
         <ImgCrop rotate>
           <Upload
             listType="picture-card"
@@ -237,7 +226,7 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
             )}
           </Upload>
         </ImgCrop>
-      </Form.Item>
+      </Form.Item> */}
     </ModalForm>
   );
 };

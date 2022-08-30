@@ -5,7 +5,6 @@ import {
   postSystemUserInfo__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
 import { timestampToDateStr } from '@/utils/date';
-import { apiParamsGUID } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -35,11 +34,10 @@ const UserList: React.FC = () => {
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string }) => {
-    const params = apiParamsGUID();
     const body = {
       uid: record?.uid,
     };
-    deleteHanlder(postSystemUserInfo__openAPI__delete, actionRef, params, body);
+    deleteHanlder(postSystemUserInfo__openAPI__delete, actionRef, body);
   };
 
   const columns: ProColumns<UserListItem>[] = [

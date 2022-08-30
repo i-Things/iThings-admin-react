@@ -6,9 +6,6 @@ const useTableDelete = () => {
   const deleteHanlder = (
     deleteApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    params: API.postSystemUserInfoCreateParams & {
-      'iThings-guid'?: string;
-    },
     record: { uid: string; userName?: string },
   ) => {
     confirm({
