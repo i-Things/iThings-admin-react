@@ -39,6 +39,7 @@ const columns: ProColumns<productInfo>[] = [
     key: 'productID',
     title: '产品id',
     dataIndex: 'productID',
+    search: false,
   },
   {
     key: 'deviceType',
@@ -61,6 +62,7 @@ const columns: ProColumns<productInfo>[] = [
     key: 'createdTime',
     title: '创建时间',
     dataIndex: 'createdTime',
+    search: false,
     render: (text: any) => (text == '-' ? text : timestampToDateStr(text)),
   },
   {
@@ -71,7 +73,7 @@ const columns: ProColumns<productInfo>[] = [
       <a
         key="show"
         onClick={() => {
-          history.push('/deviceManger/product/detail/123');
+          history.push('/deviceManger/product/detail/' + record.productID);
         }}
       >
         查看
@@ -117,13 +119,14 @@ const IndexPage: React.FC = () => {
   };
 
   const queryPage = async (params: any): Promise<any> => {
+    console.log('queryPage:params:', params);
     const body = {
       page: {
         size: params.pageSize,
         page: params.current,
       },
-      deviceType: 0,
-      productName: '',
+      deviceType: Number(params.deviceType),
+      productName: params.productName,
     };
     const res = await postThingsProductInfoIndex(body);
 
@@ -146,7 +149,11 @@ const IndexPage: React.FC = () => {
         rowKey="productID"
         actionRef={actionRef}
         request={queryPage}
-        search={false}
+        search={{
+          defaultCollapsed: false,
+          span: 12,
+          labelWidth: 'auto',
+        }}
         tableAlertRender={false}
         columns={columns}
         bordered
@@ -177,6 +184,7 @@ const IndexPage: React.FC = () => {
               if (res.code === 200) {
                 message.success('提交成功');
               }
+              actionRef.current?.reload();
               return true;
             })
             .catch((error) => {
