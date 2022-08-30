@@ -9,7 +9,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Drawer, Input, Tabs, Tree } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import CreateOrUpdate from './components/createOrUpdateRole';
+import CreateOrUpdateRole from './components/createOrUpdateRole';
 import type { RoleListItem } from './types';
 
 const { TabPane } = Tabs;
@@ -107,69 +107,7 @@ const RoleList: React.FC = () => {
             设置权限
           </Button>
           <Divider type="vertical" />
-          {/* <ModalForm<{
-            userName: string;
-            nickName: string;
-            sex: number;
-            token: string;
-            uid: string;
-          }>
-            width={550}
-            initialValues={record}
-            key={Math.random()}
-            formRef={editFormRef}
-            title="编辑用户信息"
-            trigger={
-              <Button type="primary" onClick={() => setEditVisible(true)}>
-                编辑
-              </Button>
-            }
-            visible={editVisible}
-            autoFocusFirstInput
-            modalProps={{
-              onCancel: () => setEditVisible(false),
-            }}
-            submitTimeout={2000}
-            {...formItemLayout}
-            layout={LAYOUT_TYPE_HORIZONTAL}
-            onFinish={async (values) => {
-              // 请求编辑用户基本信息的接口
-              const params = apiParams();
-              const body = values;
-              body.token = firstStepFormData.accessToken;
-              body.uid = firstStepFormData.uid;
-              return updateHanlder<RoleListItem>(
-                postSystemRoleRoleMenuUpdate,
-                actionRef,
-                params,
-                body,
-              );
-            }}
-          >
-            <ProFormText
-              name="name"
-              width="md"
-              label="角色名称"
-              placeholder="请输入角色名称"
-              rules={[
-                {
-                  required: true,
-                  message: '角色名称是必填项！',
-                },
-              ]}
-            />
-            <ProFormTextArea name="remark" width="md" label="备注" placeholder="请输入备注" />
-            <ProFormSelect
-              width="md"
-              name="status"
-              label="状态"
-              request={async () => [
-                { label: '启用', value: 1 },
-                { label: '禁用', value: 2 },
-              ]}
-            />
-          </ModalForm> */}
-          <CreateOrUpdate flag="create" record={record} actionRef={actionRef} />,
+          <CreateOrUpdateRole flag="create" record={record} actionRef={actionRef} />,
           <Divider type="vertical" />
           <Button
             type="primary"
@@ -215,7 +153,9 @@ const RoleList: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        toolBarRender={() => [<CreateOrUpdate flag="create" actionRef={actionRef} />]}
+        toolBarRender={() => [
+          <CreateOrUpdateRole flag="create" actionRef={actionRef} key="createRole" />,
+        ]}
         request={(params) => queryPage(postSystemRoleIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}

@@ -1,7 +1,7 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import {
-  postSystemUserInfoCreate,
+  postSystemUserCoreCreate,
   postSystemUserInfoUpdate,
 } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
@@ -62,7 +62,7 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
+      <Select style={{ width: 60 }} defaultValue="86">
         <Option value="86">+86</Option>
         <Option value="87">+87</Option>
       </Select>
@@ -70,9 +70,7 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
   );
   return (
     <ModalForm<UserListItem>
-      // labelAlign="left"
       initialValues={record}
-      // key={Math.random()}
       formRef={editFormRef}
       title={flag === 'update' ? '编辑用户信息' : '新建用户'}
       trigger={
@@ -104,18 +102,15 @@ const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any 
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
+        // const modalFlag: boolean = false;
         const body = values;
-        return flag === 'update'
-          ? updateHanlder
-          : createHanlder<UserListItem>(
-              flag === 'update' ? postSystemUserInfoUpdate : postSystemUserInfoCreate,
-              actionRef,
-              body,
-            );
+        if (flag === 'update')
+          return await updateHanlder<UserListItem>(postSystemUserInfoUpdate, actionRef, body);
+        else return await createHanlder<UserListItem>(postSystemUserCoreCreate, actionRef, body);
       }}
     >
       <ProFormText
-        name="identity"
+        name="userName"
         width="md"
         label="用户名"
         placeholder="请输入用户名"

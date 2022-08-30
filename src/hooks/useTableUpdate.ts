@@ -20,7 +20,7 @@ const useTableUpdate = () => {
     } catch (error) {
       message.error((error as Error)?.message);
     }
-    return res;
+    return res.status === 200 ? true : false;
   };
   return {
     updateHanlder,

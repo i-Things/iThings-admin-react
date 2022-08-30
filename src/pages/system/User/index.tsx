@@ -10,9 +10,8 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider } from 'antd';
 import React, { useRef } from 'react';
-import CreateOrUpdate from './components/createOrUpdateUser';
+import CreateOrUpdateUser from './components/createOrUpdateUser';
 import type { UserListItem } from './types';
-
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
@@ -131,7 +130,7 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <CreateOrUpdate flag="update" record={record} actionRef={actionRef} />
+          <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} />
           <Divider type="vertical" />
           <Button
             type="primary"
@@ -156,7 +155,9 @@ const UserList: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        toolBarRender={() => [<CreateOrUpdate flag="create" actionRef={actionRef} />]}
+        toolBarRender={() => [
+          <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
+        ]}
         request={(params) => queryPage(postSystemUserCoreIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}

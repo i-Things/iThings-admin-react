@@ -52,19 +52,18 @@ export default [
         ],
       },
       {
-        path: '/systermManager',
+        path: '/systemManager',
         name: '系统管理',
         icon: 'icon_system',
         routes: [
           {
             name: '用户管理',
-            path: '/systermManager/user',
+            path: '/systemManager/user',
             component: './system/User',
           },
           {
             name: '角色管理',
-
-            path: '/systermManager/role',
+            path: '/systemManager/role',
             component: './system/Role',
           },
           // {
