@@ -1,4 +1,3 @@
-import { apiParams } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 
@@ -19,7 +18,7 @@ const useGetTableList = () => {
     };
     let res;
     try {
-      res = await queryApi(apiParams(), body);
+      res = await queryApi(body);
       if (res instanceof Response) {
         return {
           data: [],

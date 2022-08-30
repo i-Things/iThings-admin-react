@@ -4,10 +4,11 @@ import {
   postSystemRoleIndex,
   postSystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
+import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Drawer, Input, Tabs, Tree } from 'antd';
+import { Button, Divider, Drawer, Tabs, Tree } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import CreateOrUpdateRole from './components/createOrUpdateRole';
 import type { RoleListItem } from './types';
@@ -41,7 +42,7 @@ const RoleList: React.FC = () => {
   const columns: ProColumns<RoleListItem>[] = [
     {
       title: '编号',
-      dataIndex: 'id',
+      dataIndex: 'uid',
       hideInSearch: true,
     },
     {
@@ -71,26 +72,11 @@ const RoleList: React.FC = () => {
       },
     },
     {
-      title: '创建人',
-      dataIndex: 'createBy',
-      hideInSearch: true,
-    },
-    {
       title: '创建时间',
-      dataIndex: 'createTime',
-      sorter: true,
+      dataIndex: 'createdTime',
       valueType: 'dateTime',
       hideInSearch: true,
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return <Input {...rest} placeholder="请输入异常原因！" />;
-        }
-        return defaultRender(item);
-      },
+      renderText: (text) => timestampToDateStr(text),
     },
     {
       title: '操作',
@@ -107,7 +93,7 @@ const RoleList: React.FC = () => {
             设置权限
           </Button>
           <Divider type="vertical" />
-          <CreateOrUpdateRole flag="create" record={record} actionRef={actionRef} />,
+          <CreateOrUpdateRole flag="update" record={record} actionRef={actionRef} />
           <Divider type="vertical" />
           <Button
             type="primary"

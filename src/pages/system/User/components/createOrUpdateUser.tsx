@@ -7,13 +7,17 @@ import {
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { ActionType } from '@ant-design/pro-table';
 import { Button, Form, Select } from 'antd';
 import { useRef } from 'react';
 import type { UserListItem } from '../types';
 
 const { Option } = Select;
-const CreateOrUpdateUser = (props: { flag: string; record?: any; actionRef: any }) => {
-  const { flag, record, actionRef } = props;
+const CreateOrUpdateUser: React.FC<{
+  flag: string;
+  record?: UserListItem;
+  actionRef: React.MutableRefObject<ActionType | undefined>;
+}> = ({ flag, record, actionRef }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   // const [loading, setLoading] = useState(false);

@@ -7,11 +7,15 @@ import {
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useRef } from 'react';
 import type { RoleListItem } from '../types';
-const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any }) => {
-  const { flag, record, actionRef } = props;
+const CreateOrUpdateRole: React.FC<{
+  flag: string;
+  record?: RoleListItem;
+  actionRef: React.MutableRefObject<ActionType | undefined>;
+}> = ({ flag, record, actionRef }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
@@ -21,7 +25,7 @@ const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any 
       initialValues={record}
       key={Math.random()}
       formRef={editFormRef}
-      title={flag === 'update' ? '编辑用户信息' : '新建角色'}
+      title={flag === 'update' ? '编辑角色信息' : '新建角色'}
       trigger={
         <Button
           type="primary"
@@ -34,7 +38,7 @@ const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any 
             '编辑'
           ) : (
             <>
-              <PlusOutlined /> 新建用户
+              <PlusOutlined /> 新建角色
             </>
           )}
         </Button>
@@ -52,13 +56,9 @@ const CreateOrUpdateRole = (props: { flag: string; record?: any; actionRef: any 
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
         const body = values;
-        return flag === 'update'
-          ? updateHanlder
-          : createHanlder<Pick<RoleListItem, 'name' | 'remark' | 'status'>>(
-              flag === 'update' ? postSystemRoleRoleMenuUpdate : postSystemRoleCreate,
-              actionRef,
-              body,
-            );
+        if (flag === 'update')
+          return await updateHanlder<RoleListItem>(postSystemRoleRoleMenuUpdate, actionRef, body);
+        else return await createHanlder<RoleListItem>(postSystemRoleCreate, actionRef, body);
       }}
     >
       <ProFormText
