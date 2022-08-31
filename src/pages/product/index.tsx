@@ -3,6 +3,7 @@ import {
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
+import { authMode, autoRegister, deviceType, netType } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -13,6 +14,7 @@ import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import { Button, message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
+
 const { confirm } = Modal;
 
 type productInfo = {
@@ -27,6 +29,13 @@ type productInfo = {
   description: string;
   createdTime: string;
   devStatus: number;
+};
+
+type queryParam = {
+  pageSize: any;
+  current: any;
+  deviceType: any;
+  productName: any;
 };
 
 const columns: ProColumns<productInfo>[] = [
@@ -114,11 +123,10 @@ const IndexPage: React.FC = () => {
   const [createVisible, setCreateVisible] = useState(false);
 
   const openCreateModal = async () => {
-    // await fetchCaptcha();
     setCreateVisible(true);
   };
 
-  const queryPage = async (params: any): Promise<any> => {
+  const queryPage = async (params: queryParam): Promise<any> => {
     console.log('queryPage:params:', params);
     const body = {
       page: {
@@ -145,7 +153,7 @@ const IndexPage: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<any>
+      <ProTable<productInfo, queryParam>
         rowKey="productID"
         actionRef={actionRef}
         request={queryPage}
@@ -166,7 +174,6 @@ const IndexPage: React.FC = () => {
       />
 
       <ModalForm<productInfo>
-        //formRef={editFormRef}
         title="创建产品"
         visible={createVisible}
         autoFocusFirstInput
@@ -176,7 +183,6 @@ const IndexPage: React.FC = () => {
         submitTimeout={2000}
         onFinish={async (values) => {
           const body = values;
-          //body.uid = selectedRowKeys[0];
           return postThingsProductInfoCreate(body)
             .then((res) => {
               console.log('res', res);
@@ -209,43 +215,15 @@ const IndexPage: React.FC = () => {
           width="md"
           name="deviceType"
           label="设备类型"
-          request={async () => [
-            { label: '设备', value: 1 },
-            { label: '网关', value: 2 },
-            { label: '子设备', value: 3 },
-          ]}
+          request={async () => deviceType}
         />
-        <ProFormSelect
-          width="md"
-          name="netType"
-          label="通讯方式"
-          request={async () => [
-            { label: '其他', value: 1 },
-            { label: 'wi-fi', value: 2 },
-            { label: '2G/3G/4G', value: 3 },
-            { label: '5G', value: 4 },
-            { label: 'BLE', value: 5 },
-            { label: 'LoRaWAN', value: 6 },
-          ]}
-        />
-        <ProFormSelect
-          width="md"
-          name="authMode"
-          label="认证方式"
-          request={async () => [
-            { label: '账密认证', value: 1 },
-            { label: '秘钥认证', value: 2 },
-          ]}
-        />
+        <ProFormSelect width="md" name="netType" label="通讯方式" request={async () => netType} />
+        <ProFormSelect width="md" name="authMode" label="认证方式" request={async () => authMode} />
         <ProFormSelect
           width="md"
           name="autoRegister"
           label="动态注册"
-          request={async () => [
-            { label: '关闭', value: 1 },
-            { label: '打开', value: 2 },
-            { label: '打开并自动创建设备', value: 2 },
-          ]}
+          request={async () => autoRegister}
         />
       </ModalForm>
     </PageContainer>
