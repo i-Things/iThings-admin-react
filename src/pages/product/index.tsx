@@ -17,10 +17,10 @@ import React, { useRef } from 'react';
 const { confirm } = Modal;
 
 type queryParam = {
-  pageSize: any;
-  current: any;
-  deviceType: any;
-  productName: any;
+  pageSize: number;
+  current: number;
+  deviceType: number;
+  productName: string;
 };
 
 const columns: ProColumns<PRODUCT.productInfo>[] = [
@@ -96,7 +96,6 @@ const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const queryPage = async (params: queryParam): Promise<any> => {
-    console.log('queryPage:params:', params);
     const body = {
       page: {
         size: params.pageSize,
