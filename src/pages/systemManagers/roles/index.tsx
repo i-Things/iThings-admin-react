@@ -10,7 +10,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Drawer, Tabs, Tree } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import CreateOrUpdateRole from './components/createOrUpdateRole';
+import CreateOrUpdateRole from './components/CreateOrUpdateRole';
 import type { RoleListItem } from './types';
 
 const { TabPane } = Tabs;
@@ -134,7 +134,7 @@ const RoleList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<RoleListItem>
-        headerTitle="用户管理"
+        headerTitle="角色管理"
         actionRef={actionRef}
         rowKey="uid"
         search={{

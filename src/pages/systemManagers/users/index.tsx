@@ -10,7 +10,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider } from 'antd';
 import React, { useRef } from 'react';
-import CreateOrUpdateUser from './components/createOrUpdateUser';
+import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();

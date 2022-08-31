@@ -23,54 +23,54 @@ export default [
     layout: false,
     routes: [
       {
-        path: '/deviceManger',
+        path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',
         routes: [
           {
             name: '产品',
-            path: '/deviceManger/product/index',
-            component: './product/index',
+            path: '/deviceMangers/products/index',
+            component: './deviceMangers/products/index',
           },
           {
             name: '产品详情',
             hideInMenu: true,
-            path: '/deviceManger/product/detail/:id',
-            component: './product/detail/index',
+            path: '/deviceMangers/products/details/:id',
+            component: './deviceMangers/products/details/index',
           },
           {
             name: '设备',
-            path: '/deviceManger/device/index',
-            component: './device/index',
+            path: '/deviceMangers/devices/index',
+            component: './deviceMangers/devices/index',
           },
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceManger/device/detail/:id',
-            component: './device/detail/index',
+            path: '/deviceMangers/devices/detail/:id',
+            component: './deviceMangers/devices/details/index',
           },
         ],
       },
       {
-        path: '/systemManager',
+        path: '/systemManagers',
         name: '系统管理',
         icon: 'icon_system',
         routes: [
           {
             name: '用户管理',
-            path: '/systemManager/user',
-            component: './system/User',
+            path: '/systemManagers/users/index',
+            component: './systemManagers/users/index',
           },
           {
             name: '角色管理',
-            path: '/systemManager/role',
-            component: './system/Role',
+            path: '/systemManagers/roles/index',
+            component: './systemManagers/roles/index',
           },
-          // {
-          //   name: '菜单列表',
-          //   path: '/system/menu/list',
-          //   component: './system/Menu',
-          // },
+          {
+            name: '菜单管理',
+            path: '/systemManagers/menus/index',
+            component: './systemManagers/menus/index',
+          },
         ],
       },
       {
