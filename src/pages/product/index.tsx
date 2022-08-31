@@ -1,35 +1,20 @@
+import { CreateForm } from '@/pages/product/createForm';
 import {
-  postThingsProductInfoCreate,
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
-import { authMode, autoRegister, deviceType, netType } from '@/utils/const';
+import { deviceTypeValue } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ProColumns } from '@ant-design/pro-components';
-import { ModalForm, ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import { Button, message, Modal } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 const { confirm } = Modal;
-
-type productInfo = {
-  productID: string;
-  productName: string;
-  netType: number;
-  dataProto: number;
-  deviceType: number;
-  authMode: number;
-  autoRegister: number;
-  categoryID: number;
-  description: string;
-  createdTime: string;
-  devStatus: number;
-};
 
 type queryParam = {
   pageSize: any;
@@ -38,7 +23,7 @@ type queryParam = {
   productName: any;
 };
 
-const columns: ProColumns<productInfo>[] = [
+const columns: ProColumns<PRODUCT.productInfo>[] = [
   {
     key: 'productName',
     title: '产品名称',
@@ -54,18 +39,7 @@ const columns: ProColumns<productInfo>[] = [
     key: 'deviceType',
     title: '设备类型',
     dataIndex: 'deviceType',
-    //1:设备,2:网关,3:子设备
-    valueEnum: {
-      1: {
-        text: '设备',
-      },
-      2: {
-        text: '网关',
-      },
-      3: {
-        text: '子设备',
-      },
-    },
+    valueEnum: deviceTypeValue,
   },
   {
     key: 'createdTime',
@@ -120,11 +94,6 @@ const columns: ProColumns<productInfo>[] = [
 
 const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const [createVisible, setCreateVisible] = useState(false);
-
-  const openCreateModal = async () => {
-    setCreateVisible(true);
-  };
 
   const queryPage = async (params: queryParam): Promise<any> => {
     console.log('queryPage:params:', params);
@@ -144,16 +113,14 @@ const IndexPage: React.FC = () => {
         total: 0,
       };
     }
-
     return {
       data: res.data.list,
       total: res.data.total,
     };
   };
-
   return (
     <PageContainer>
-      <ProTable<productInfo, queryParam>
+      <ProTable<PRODUCT.productInfo, queryParam>
         rowKey="productID"
         actionRef={actionRef}
         request={queryPage}
@@ -166,66 +133,8 @@ const IndexPage: React.FC = () => {
         columns={columns}
         bordered
         size={'middle'}
-        toolBarRender={() => [
-          <Button type="primary" onClick={openCreateModal}>
-            新增
-          </Button>,
-        ]}
+        toolBarRender={() => [<CreateForm onCommit={() => actionRef.current?.reload()} />]}
       />
-
-      <ModalForm<productInfo>
-        title="创建产品"
-        visible={createVisible}
-        autoFocusFirstInput
-        modalProps={{
-          onCancel: () => setCreateVisible(false),
-        }}
-        submitTimeout={2000}
-        onFinish={async (values) => {
-          const body = values;
-          return postThingsProductInfoCreate(body)
-            .then((res) => {
-              console.log('res', res);
-              setCreateVisible(false);
-              if (res.code === 200) {
-                message.success('提交成功');
-              }
-              actionRef.current?.reload();
-              return true;
-            })
-            .catch((error) => {
-              console.log(error, 'error');
-            });
-        }}
-      >
-        <ProFormText
-          name="productName"
-          width="md"
-          label="产品名称"
-          placeholder="请输入产品名"
-          rules={[
-            {
-              required: true,
-              message: '必填项！',
-            },
-          ]}
-        />
-        <ProFormText name="description" width="md" label="产品描述" placeholder="请输入产品描述" />
-        <ProFormRadio.Group
-          width="md"
-          name="deviceType"
-          label="设备类型"
-          request={async () => deviceType}
-        />
-        <ProFormSelect width="md" name="netType" label="通讯方式" request={async () => netType} />
-        <ProFormSelect width="md" name="authMode" label="认证方式" request={async () => authMode} />
-        <ProFormSelect
-          width="md"
-          name="autoRegister"
-          label="动态注册"
-          request={async () => autoRegister}
-        />
-      </ModalForm>
     </PageContainer>
   );
 };
