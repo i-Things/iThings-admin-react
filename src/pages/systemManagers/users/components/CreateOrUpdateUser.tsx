@@ -1,9 +1,6 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import {
-  postSystemUserCoreCreate,
-  postSystemUserInfoUpdate,
-} from '@/services/iThingsapi/yonghuguanli';
+import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanlixin';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
@@ -109,8 +106,8 @@ const CreateOrUpdateUser: React.FC<{
         // const modalFlag: boolean = false;
         const body = values;
         if (flag === 'update')
-          return await updateHanlder<UserListItem>(postSystemUserInfoUpdate, actionRef, body);
-        else return await createHanlder<UserListItem>(postSystemUserCoreCreate, actionRef, body);
+          return await updateHanlder<UserListItem>(postSystemUserUpdate, actionRef, body);
+        else return await createHanlder<UserListItem>(postSystemUserCreate, actionRef, body);
       }}
     >
       <ProFormText

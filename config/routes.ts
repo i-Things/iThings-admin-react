@@ -75,7 +75,7 @@ export default [
       },
       {
         path: '/',
-        redirect: '/deviceManger/product/index',
+        redirect: '/deviceMangers/products/index',
       },
       {
         component: '404',

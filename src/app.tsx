@@ -1,7 +1,7 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
 import { history } from 'umi';
-import { postSystemUserRead } from './services/iThingsapi/yonghuguanli';
+import { postSystemUserRead } from './services/iThingsapi/yonghuguanlixin';
 import { getToken, getUID } from './utils/utils';
 
 const loginPath = '/user/login';

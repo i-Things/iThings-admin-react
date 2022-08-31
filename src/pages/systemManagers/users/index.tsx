@@ -1,9 +1,9 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
 import {
-  postSystemUserCoreIndex,
-  postSystemUserInfo__openAPI__delete,
-} from '@/services/iThingsapi/yonghuguanli';
+  postSystemUserIndex,
+  postSystemUser__openAPI__delete,
+} from '@/services/iThingsapi/yonghuguanlixin';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -36,7 +36,7 @@ const UserList: React.FC = () => {
     const body = {
       uid: record?.uid,
     };
-    deleteHanlder(postSystemUserInfo__openAPI__delete, actionRef, body);
+    deleteHanlder(postSystemUser__openAPI__delete, actionRef, body);
   };
 
   const columns: ProColumns<UserListItem>[] = [
@@ -158,7 +158,7 @@ const UserList: React.FC = () => {
         toolBarRender={() => [
           <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
         ]}
-        request={(params) => queryPage(postSystemUserCoreIndex, params)}
+        request={(params) => queryPage(postSystemUserIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
