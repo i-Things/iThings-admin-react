@@ -5,13 +5,14 @@ import {
   postSystemMenu__openAPI__delete,
 } from '@/services/iThingsapi/caidanguanli';
 
+import { spanTree } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
-import type { RoleListItem } from './types';
+import type { menuListItem } from './types';
 
 const MenuList: React.FC = () => {
   const { queryPage } = useGetTableList();
@@ -26,7 +27,7 @@ const MenuList: React.FC = () => {
     deleteHanlder(postSystemMenu__openAPI__delete, actionRef, record);
   };
 
-  const columns: ProColumns<RoleListItem>[] = [
+  const columns: ProColumns<menuListItem>[] = [
     {
       title: '编号',
       dataIndex: 'id',
@@ -45,7 +46,6 @@ const MenuList: React.FC = () => {
     {
       title: '路由path',
       dataIndex: 'path',
-      hideInSearch: true,
     },
     {
       title: '父节点',
@@ -91,10 +91,10 @@ const MenuList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<RoleListItem>
+      <ProTable<menuListItem>
         headerTitle="菜单管理"
         actionRef={actionRef}
-        rowKey="uid"
+        rowKey="id"
         search={{
           labelWidth: 100,
         }}
@@ -105,6 +105,7 @@ const MenuList: React.FC = () => {
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
+        postData={(data) => spanTree(data, 0, 'parentID')}
       />
     </PageContainer>
   );

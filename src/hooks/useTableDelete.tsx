@@ -9,9 +9,9 @@ const useTableDelete = () => {
     record: { uid: string; name?: string },
   ) => {
     confirm({
-      title: '你确定要删除该用户信息吗？',
+      title: '是否删除记录?',
       icon: <ExclamationCircleOutlined />,
-      content: `所选用户名: ${record?.name},删除后无法恢复`,
+      content: `所选记录: ${record?.name},  删除后无法恢复`,
       async onOk() {
         let res;
         try {

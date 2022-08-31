@@ -182,7 +182,7 @@ async function postSystemMenuIndex(req: Request, res: Response) {
     msg: 'string',
     data: {
       list: menuList,
-      total: 1,
+      total: 19,
     },
   });
 }
@@ -205,7 +205,7 @@ async function postSystemMenuUpdate(req: Request, res: Response) {
   });
 }
 async function postSystemMenu__openAPI__delete(req: Request, res: Response) {
-  menuList = menuList.filter((item) => item.uid != req.body?.id);
+  menuList = menuList.filter((item) => item.id != req.body?.id);
   return res.json({
     code: 200,
     msg: '添加成功',
