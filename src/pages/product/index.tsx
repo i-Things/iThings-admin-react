@@ -85,7 +85,7 @@ const columns: ProColumns<productInfo>[] = [
           confirm({
             title: '你确定要删除该产品吗？',
             icon: <ExclamationCircleOutlined />,
-            content: `所选产品名: ${record.productName},删除后无法恢复`,
+            content: `所选产品名: ${record?.productName ?? ''},删除后无法恢复`,
             onOk() {
               const body = {
                 productID: record.productID,
