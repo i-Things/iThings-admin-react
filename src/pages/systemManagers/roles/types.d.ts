@@ -1,3 +1,4 @@
+import type { menuListItem } from '../menus/types';
 export interface RoleListItem {
   uid: string;
   name: string;
@@ -5,7 +6,14 @@ export interface RoleListItem {
   status: string;
   createTime: string;
   option: string;
+  roleMenuID?: number[];
 }
+
+export type treeListItem = menuListItem & {
+  key: string;
+  title: string;
+  label: string;
+};
 
 export interface RoleListPagination {
   total: number;
@@ -22,6 +30,6 @@ export interface RoleListParams {
   pageSize?: number;
   current?: number;
   currentPage?: number;
-  filter?: { [key: string]: any[] };
-  sorter?: { [key: string]: any };
+  filter?: Record<string, any[]>;
+  sorter?: Record<string, any>;
 }

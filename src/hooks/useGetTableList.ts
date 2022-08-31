@@ -19,6 +19,7 @@ const useGetTableList = () => {
     let res;
     try {
       res = await queryApi(body);
+
       if (res instanceof Response) {
         return {
           data: [],

@@ -8,9 +8,10 @@ import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Drawer, Tabs, Tree } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, Divider, Drawer, Tabs } from 'antd';
+import React, { useRef, useState } from 'react';
 import CreateOrUpdateRole from './components/CreateOrUpdateRole';
+import MenuForm from './components/MenuForm';
 import type { RoleListItem } from './types';
 
 const { TabPane } = Tabs;
@@ -20,9 +21,7 @@ const RoleList: React.FC = () => {
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
-
-  const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
-  const [, setSelectedKey] = useState<number[]>([]);
+  const [roleMenuID, setRoleMenuID] = useState([]);
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; name: string }) => {
@@ -32,12 +31,9 @@ const RoleList: React.FC = () => {
     deleteHanlder(postSystemRole__openAPI__delete, actionRef, record);
   };
 
-  // 树组件onCheck
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const onCheck = (checkedKeys: React.Key[]) => {
-    setCheckedKeys(checkedKeys);
-    setSelectedKey(checkedKeys.map((i) => Number(i)));
-  };
+  // const queryList = (params) => {
+  //   queryPage(postSystemRoleIndex, params).then((res) => setRoleMenuID(res?.roleMenuID));
+  // };
 
   const columns: ProColumns<RoleListItem>[] = [
     {
@@ -89,6 +85,7 @@ const RoleList: React.FC = () => {
             type="primary"
             onClick={() => {
               setDrawerVisible(true);
+              setRoleMenuID(record?.roleMenuID);
             }}
           >
             设置权限
@@ -109,27 +106,6 @@ const RoleList: React.FC = () => {
       ),
     },
   ];
-
-  useEffect(() => {
-    if (drawerVisible) {
-      setSelectedKey([]);
-      setCheckedKeys([]);
-      // queryMenuByRoleId({ id: currentData.id }).then((res) => {
-      //   let tr = toTree(res.allData, 0, 'parentId');
-      //   // @ts-ignore
-      //   setTreeData(tr);
-
-      //   if (res.userData) {
-      //     // @ts-ignore
-      //     let map = res.userData.map(r => r+'');
-      //     setSelectedKey(map);
-      //     setCheckedKeys(map);
-
-      //     console.log(tr);
-      //   }
-      // });
-    }
-  }, [drawerVisible]);
 
   return (
     <PageContainer>
@@ -159,13 +135,7 @@ const RoleList: React.FC = () => {
       >
         <Tabs defaultActiveKey="1">
           <TabPane tab="角色菜单" key="1">
-            <Tree
-              checkable
-              defaultExpandAll={true}
-              onCheck={onCheck}
-              checkedKeys={checkedKeys}
-              // treeData={treeData}
-            />
+            <MenuForm drawerVisible={drawerVisible} roleMenuID={roleMenuID} />
           </TabPane>
           <TabPane tab="角色api" key="2">
             Content of Tab Pane 2
