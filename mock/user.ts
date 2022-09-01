@@ -35,7 +35,8 @@ async function postV1SystemUserLogin(req: Request, res: Response) {
         role: 'string',
       },
       token: {
-        accessToken: 'string',
+        accessToken:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOjE3NDAzNTgwNTcwMzgxODg1NDQsImV4cCI6MTY2MjAwNDg1MiwiaWF0IjoxNjYyMDAxMjUyLCJSb2xlIjowfQ.0dyT3AF-ZCHsZVt5fd0zufe6u4O-DY6zM5Va0MmWiVo',
         accessExpire: 'string',
         refreshAfter: 'string',
       },

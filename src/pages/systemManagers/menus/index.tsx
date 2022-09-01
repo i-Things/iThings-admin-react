@@ -13,9 +13,13 @@ import { Button, Divider } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
 import type { menuListItem } from './types';
-
+export enum flagStatus {
+  ADD = 'add',
+  CREATE = 'create',
+  UPDATE = 'update',
+}
 const MenuList: React.FC = () => {
-  const { queryPage } = useGetTableList();
+  const { queryPage, cascaderOptions } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
 
@@ -72,11 +76,15 @@ const MenuList: React.FC = () => {
           {/* <Button type="primary" onClick={() => {}}>
             添加子菜单
           </Button> */}
-          <CreateOrUpdateMenu flag="update" record={record} actionRef={actionRef}>
-            添加子菜单
-          </CreateOrUpdateMenu>
+          <CreateOrUpdateMenu flag={flagStatus.ADD} record={record} actionRef={actionRef} />
+
           <Divider type="vertical" />
-          <CreateOrUpdateMenu flag="update" record={record} actionRef={actionRef} />
+          <CreateOrUpdateMenu
+            flag={flagStatus.UPDATE}
+            record={record}
+            actionRef={actionRef}
+            cascaderOptions={cascaderOptions}
+          />
           <Divider type="vertical" />
           <Button
             type="primary"
@@ -107,13 +115,13 @@ const MenuList: React.FC = () => {
           },
         }}
         toolBarRender={() => [
-          <CreateOrUpdateMenu flag="create" actionRef={actionRef} key="createRole" />,
+          <CreateOrUpdateMenu flag={flagStatus.CREATE} actionRef={actionRef} key="createRole" />,
         ]}
         request={(params) => queryPage(postSystemMenuIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
-        postData={(data) => spanTree(data, 0, 'parentID')}
+        postData={(data) => spanTree(data, 1, 'parentID')}
       />
     </PageContainer>
   );

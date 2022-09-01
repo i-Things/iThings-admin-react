@@ -1,7 +1,11 @@
+import { spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
-
+import { useState } from 'react';
+import { menuListItem } from './../pages/systemManagers/menus/types.d';
+import type { Option } from './types';
 const useGetTableList = () => {
+  const [cascaderOptions, setCascaderOptions] = useState<Option[]>([]);
   const queryPage = async (
     queryApi: any,
     params: ParamsType & {
@@ -20,6 +24,18 @@ const useGetTableList = () => {
     let res;
     try {
       res = await queryApi(body);
+      if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
+        const treeList = res.data.list.map((item: Option & menuListItem) => {
+          return {
+            ...item,
+            key: item?.id + '',
+            label: item?.name,
+            value: item?.id,
+          };
+        });
+
+        setCascaderOptions(spanTree(treeList, 1, 'parentID'));
+      }
 
       if (res instanceof Response) {
         return {
@@ -39,6 +55,7 @@ const useGetTableList = () => {
   };
   return {
     queryPage,
+    cascaderOptions,
   };
 };
 

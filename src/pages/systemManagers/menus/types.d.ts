@@ -1,5 +1,6 @@
 export interface menuListItem {
   id: number;
+  uid: number;
   name: string;
   icon: string;
   path: string;

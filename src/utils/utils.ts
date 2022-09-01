@@ -47,7 +47,7 @@ export const apiParams = () => {
  * @param {*} pid 父级id
  * @param key
  */
-export function spanTree(data: any, pid = 0, key = 'pid') {
+export function spanTree(data: any, pid = 1, key = 'pid') {
   const result = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const i in data) {

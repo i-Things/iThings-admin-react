@@ -46,7 +46,8 @@ const MenuForm: React.FC<{
             title: item?.name,
           };
         });
-        const tr: DataNode[] = spanTree(treeList, 0, 'parentID');
+        const tr: DataNode[] = spanTree(treeList, 1, 'parentID');
+
         setTreeData(tr);
         if (currentData?.roleMenuID) {
           const map = currentData?.roleMenuID.map((r) => r + '');

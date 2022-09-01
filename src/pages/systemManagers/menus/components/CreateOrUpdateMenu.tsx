@@ -3,48 +3,58 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
-import { ModalForm, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormCascader, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useRef } from 'react';
-import type { RoleListItem } from '../types';
+import { flagStatus } from '..';
+import type { menuListItem } from '../types';
 const CreateOrUpdateMenu: React.FC<{
-  flag: string;
-  record?: RoleListItem;
+  flag: flagStatus;
+  record?: menuListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
-}> = ({ flag, record, actionRef }) => {
+  cascaderOptions: any;
+}> = ({ flag, record, actionRef, cascaderOptions }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
+
+  const returnTitle = {
+    [flagStatus.ADD]: (
+      <>
+        <PlusOutlined /> 添加子菜单
+      </>
+    ),
+    [flagStatus.UPDATE]: '编辑',
+    [flagStatus.CREATE]: (
+      <>
+        <PlusOutlined /> 新建根菜单
+      </>
+    ),
+  };
   return (
-    <ModalForm<RoleListItem>
+    <ModalForm<menuListItem>
       width={550}
       initialValues={record}
       key={Math.random()}
       formRef={editFormRef}
-      title={flag === 'update' ? '编辑菜单信息' : '新建菜单'}
+      title={flag === flagStatus.UPDATE ? '编辑' : '新建菜单'}
       trigger={
         <Button
           type="primary"
           onClick={() => {
-            if (flag === 'update') setEditVisible(true);
+            if (flag === flagStatus.UPDATE) setEditVisible(true);
             else setCreateVisible(true);
           }}
         >
-          {flag === 'update' ? (
-            '编辑'
-          ) : (
-            <>
-              <PlusOutlined /> 新建根菜单
-            </>
-          )}
+          {returnTitle[flag]}
         </Button>
       }
-      visible={flag === 'update' ? editVisible : createVisible}
+      visible={flag === flagStatus.UPDATE ? editVisible : createVisible}
       autoFocusFirstInput
       modalProps={{
         onCancel: () => {
-          if (flag === 'update') setEditVisible(false);
+          if (flag === flagStatus.UPDATE) setEditVisible(false);
           else setCreateVisible(false);
         },
       }}
@@ -52,18 +62,28 @@ const CreateOrUpdateMenu: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        const body = { ...values, id: record?.uid };
-        if (flag === 'update')
-          return await updateHanlder<RoleListItem>(postSystemMenuUpdate, actionRef, body);
-        else return await createHanlder<RoleListItem>(postSystemMenuCreate, actionRef, body);
+        // parentID要取 parentID[1]
+        const body = { ...values, id: record?.uid as number };
+        if (flag === flagStatus.UPDATE)
+          return await updateHanlder<menuListItem>(postSystemMenuUpdate, actionRef, body);
+        else return await createHanlder<menuListItem>(postSystemMenuCreate, actionRef, body);
       }}
     >
-      <ProFormText
-        name="parentID"
+      <ProFormCascader
         width="md"
+        name="parentID"
         label="父菜单ID"
-        disabled
-        fieldProps={{ defaultValue: '根菜单' }}
+        rules={[
+          {
+            required: true,
+            message: '父菜单是必填项！',
+          },
+        ]}
+        fieldProps={{
+          options: cascaderOptions,
+          disabled: flag !== flagStatus.UPDATE,
+          defaultValue: record?.name ?? '',
+        }}
       />
       <ProFormText
         name="name"
