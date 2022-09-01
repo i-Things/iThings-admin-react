@@ -1,37 +1,50 @@
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import {
+  postThingsDeviceInfoIndex,
+  postThingsDeviceInfo__openAPI__delete,
+} from '@/services/iThingsapi/shebeiguanli';
+import { timestampToDateStr } from '@/utils/date';
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import type { ActionType } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Dropdown, Menu, Space, Tag } from 'antd';
-import { useRef } from 'react';
-import { history } from 'umi';
-import request from 'umi-request';
+import { Button, message, Modal } from 'antd';
 
-type GithubIssueItem = {
-  url: string;
-  id: number;
-  number: number;
-  title: string;
-  labels: {
-    name: string;
-    color: string;
-  }[];
-  state: string;
-  comments: number;
-  created_at: string;
-  updated_at: string;
-  closed_at?: string;
+import React, { useRef, useState } from 'react';
+import { history } from 'umi';
+const { confirm } = Modal;
+
+const showDeleteConfirm = (record: any) => {
+  confirm({
+    title: '你确定要删除该设备吗？',
+    icon: <ExclamationCircleOutlined />,
+    content: `该设备删除后无法恢复`,
+    onOk() {
+      const body = {
+        projectID: record.projectID,
+        isOnline: record.isOnline,
+      };
+      console.log(body);
+      postThingsDeviceInfo__openAPI__delete(body).then((res) => {
+        if (res.code === 200) {
+          message.success('删除成功');
+        }
+      });
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
 };
 
-const columns: ProColumns<GithubIssueItem>[] = [
+const columns: any = [
   {
     dataIndex: 'index',
     valueType: 'indexBorder',
     width: 48,
   },
   {
-    title: '标题',
-    dataIndex: 'title',
+    title: '设备名称',
+    dataIndex: 'deviceName',
     copyable: true,
     ellipsis: true,
     tip: '标题过长会自动收缩',
@@ -45,75 +58,92 @@ const columns: ProColumns<GithubIssueItem>[] = [
     },
   },
   {
-    disable: true,
-    title: '状态',
-    dataIndex: 'state',
+    title: '设备密钥',
+    dataIndex: 'secret',
+    ellipsis: true,
+  },
+  {
+    title: '固定版本',
+    dataIndex: 'version',
+  },
+  {
+    title: '日志级别',
+    dataIndex: 'logLevel',
     filters: true,
     onFilter: true,
-    ellipsis: true,
     valueType: 'select',
     valueEnum: {
-      all: { text: '超长'.repeat(50) },
-      open: {
-        text: '未解决',
-        status: 'Error',
+      1: {
+        text: '关闭',
+        status: '1',
       },
-      closed: {
-        text: '已解决',
-        status: 'Success',
-        disabled: true,
+      2: {
+        text: '错误',
+        status: '2',
       },
-      processing: {
-        text: '解决中',
-        status: 'Processing',
+      3: {
+        text: '警告',
+        status: '3',
+      },
+      4: {
+        text: '信息',
+        status: '4',
+      },
+      5: {
+        text: '调试',
+        status: '5',
       },
     },
   },
   {
-    disable: true,
-    title: '标签',
-    dataIndex: 'labels',
-    search: false,
-    renderFormItem: (_, { defaultRender }) => {
-      return defaultRender(_);
+    title: '在线状态',
+    dataIndex: 'isOnline',
+    filters: true,
+    onFilter: true,
+    valueType: 'select',
+    valueEnum: {
+      1: {
+        text: '离线',
+        status: '1',
+      },
+      2: {
+        text: '在线',
+        status: '2',
+      },
     },
-    render: (_, record) => (
-      <Space>
-        {record.labels.map(({ name, color }) => (
-          <Tag color={color} key={name}>
-            {name}
-          </Tag>
-        ))}
-      </Space>
-    ),
   },
   {
-    title: '创建时间',
-    key: 'showTime',
-    dataIndex: 'created_at',
+    title: '激活时间',
+    key: 'firstLogin',
+    dataIndex: 'firstLogin',
     valueType: 'dateTime',
     sorter: true,
     hideInSearch: true,
+    render: (text: any) => (['0', '-'].includes(text) ? '-' : timestampToDateStr(text)),
+  },
+  {
+    title: '最后上线时间',
+    key: 'lastLogin',
+    dataIndex: 'lastLogin',
+    valueType: 'dateTime',
+    sorter: true,
+    hideInSearch: true,
+    render: (text: any) => (['0', '-'].includes(text) ? '-' : timestampToDateStr(text)),
   },
   {
     title: '创建时间',
-    dataIndex: 'created_at',
-    valueType: 'dateRange',
-    hideInTable: true,
-    search: {
-      transform: (value) => {
-        return {
-          startTime: value[0],
-          endTime: value[1],
-        };
-      },
-    },
+    key: 'createdTime',
+    dataIndex: 'createdTime',
+    valueType: 'dateTime',
+    sorter: true,
+    hideInSearch: true,
+    render: (text: any) => (['0', '-'].includes(text) ? '-' : timestampToDateStr(text)),
   },
   {
     title: '操作',
     valueType: 'option',
     key: 'option',
-    render: (text, record, _, action) => [
+    render: (text: any, record: any, _: any, action: any) => [
       <a
         key="editable"
         onClick={() => {
@@ -132,7 +162,11 @@ const columns: ProColumns<GithubIssueItem>[] = [
       </a>,
       <TableDropdown
         key="actionGroup"
-        onSelect={() => action?.reload()}
+        onSelect={(key) => {
+          if (key === 'delete') {
+            showDeleteConfirm(record);
+          }
+        }}
         menus={[
           { key: 'copy', name: '复制' },
           { key: 'delete', name: '删除' },
@@ -142,41 +176,47 @@ const columns: ProColumns<GithubIssueItem>[] = [
   },
 ];
 
-const menu = (
-  <Menu
-    items={[
-      {
-        label: '1st item',
-        key: '1',
-      },
-      {
-        label: '2nd item',
-        key: '1',
-      },
-      {
-        label: '3rd item',
-        key: '1',
-      },
-    ]}
-  />
-);
-
 const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const [setCreateVisible] = useState(false);
+
+  const openCreateModal = async () => {
+    // @ts-ignore
+    setCreateVisible(true);
+  };
+
+  const queryPage = async (params: any): Promise<any> => {
+    const body = {
+      page: {
+        size: params.pageSize,
+        page: params.current,
+      },
+      // productID: '246EUXwpfVu',
+      // deviceName: '',
+      // tags: []
+    };
+    const res = await postThingsDeviceInfoIndex(body);
+
+    if (res instanceof Response) {
+      return {
+        data: [],
+        total: 0,
+      };
+    }
+    return {
+      data: res.data.list,
+      total: res.data.total,
+    };
+  };
+
   return (
     <PageContainer>
-      <ProTable<GithubIssueItem>
+      <ProTable<any>
+        rowKey="modelID"
         columns={columns}
         actionRef={actionRef}
         cardBordered
-        request={async (params = {}, sort, filter) => {
-          console.log(sort, filter);
-          return request<{
-            data: GithubIssueItem[];
-          }>('https://proapi.azurewebsites.net/github/issues', {
-            params,
-          });
-        }}
+        request={queryPage}
         editable={{
           type: 'multiple',
         }}
@@ -187,7 +227,6 @@ const IndexPage: React.FC = () => {
             console.log('value: ', value);
           },
         }}
-        rowKey="id"
         search={{
           labelWidth: 'auto',
         }}
@@ -209,20 +248,15 @@ const IndexPage: React.FC = () => {
           },
         }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
         headerTitle="高级表格"
         toolBarRender={() => [
-          <Button key="button" icon={<PlusOutlined />} type="primary">
+          <Button key="button" icon={<PlusOutlined />} onClick={openCreateModal} type="primary">
             新建
           </Button>,
-          <Dropdown key="menu" overlay={menu}>
-            <Button>
-              <EllipsisOutlined />
-            </Button>
-          </Dropdown>,
         ]}
       />
     </PageContainer>

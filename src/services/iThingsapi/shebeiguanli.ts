@@ -28,7 +28,7 @@ export async function postThingsDeviceInfoCreate(
 /** 删除设备 POST /api/v1/things/device/info/delete */
 export async function postThingsDeviceInfo__openAPI__delete(
   body: {
-    productID: string;
+    productID?: string;
     deviceName?: string;
     tags?: { key?: string; value?: string }[];
     /** 1离线 2在线 只读 */
@@ -52,9 +52,9 @@ export async function postThingsDeviceInfoIndex(
     page: { page?: number; size?: number };
     /** 为空时获取所有产品 */
     productID?: string;
-    deviceName: string;
+    // deviceName?: string;
     /** 非模糊查询 为tag的名,value为tag对应的值 */
-    tags: { key?: string; value?: string }[];
+    // tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
 ) {
