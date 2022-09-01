@@ -38,7 +38,7 @@ const Login: React.FC = () => {
         userID: values.userID,
         pwdType: 1,
         password: values.password,
-        loginType: 'img',
+        loginType: 'pwd',
         code: values.code,
         codeID: codeID,
       };

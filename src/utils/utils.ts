@@ -20,7 +20,7 @@ export const setUID = (uid: string) => {
 };
 
 export const getUID = () => {
-  return Number(localStorage.getItem(`${TOKEN_PREFIX}-UID`)) ?? 0;
+  return localStorage.getItem(`${TOKEN_PREFIX}-UID`) ?? 0;
 };
 
 // 获取当前的时间戳，单位为 毫秒
