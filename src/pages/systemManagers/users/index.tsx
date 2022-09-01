@@ -55,16 +55,6 @@ const UserList: React.FC = () => {
       search: false,
     },
     {
-      title: '手机号',
-      dataIndex: 'phone',
-      search: false,
-    },
-    {
-      title: '邮箱',
-      dataIndex: 'email',
-      search: false,
-    },
-    {
       title: '微信',
       dataIndex: 'wechat',
       search: false,
