@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         userID: values.userID,
         pwdType: 2,
         password: MD5(values.password).toString(),
-        loginType: 'img',
+        loginType: 'pwd',
         code: values.code,
         codeID: codeID,
       };

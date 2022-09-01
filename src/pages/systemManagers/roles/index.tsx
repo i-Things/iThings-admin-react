@@ -1,7 +1,9 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
+import useTableUpdate from '@/hooks/useTableUpdate';
 import {
   postSystemRoleIndex,
+  postSystemRoleRoleMenuUpdate,
   postSystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
 import { timestampToDateStr } from '@/utils/date';
@@ -19,9 +21,10 @@ const { TabPane } = Tabs;
 const RoleList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
+  const { updateHanlder } = useTableUpdate();
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [roleMenuID, setRoleMenuID] = useState([]);
+  const [currentData, setCurrentData] = useState<RoleListItem>();
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; name: string }) => {
@@ -85,7 +88,7 @@ const RoleList: React.FC = () => {
             type="primary"
             onClick={() => {
               setDrawerVisible(true);
-              setRoleMenuID(record?.roleMenuID);
+              setCurrentData(record);
             }}
           >
             设置权限
@@ -135,7 +138,14 @@ const RoleList: React.FC = () => {
       >
         <Tabs defaultActiveKey="1">
           <TabPane tab="角色菜单" key="1">
-            <MenuForm drawerVisible={drawerVisible} roleMenuID={roleMenuID} />
+            <MenuForm
+              drawerVisible={drawerVisible}
+              currentData={currentData as RoleListItem}
+              onSubmit={async (value) => {
+                await updateHanlder(postSystemRoleRoleMenuUpdate, actionRef, value);
+                setDrawerVisible(false);
+              }}
+            />
           </TabPane>
           <TabPane tab="角色api" key="2">
             Content of Tab Pane 2

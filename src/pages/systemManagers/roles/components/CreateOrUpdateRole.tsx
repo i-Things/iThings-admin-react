@@ -1,9 +1,6 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import {
-  postSystemRoleCreate,
-  postSystemRoleRoleMenuUpdate,
-} from '@/services/iThingsapi/jiaoseguanli';
+import { postSystemRoleCreate, postSystemRoleUpdate } from '@/services/iThingsapi/jiaoseguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
@@ -57,7 +54,7 @@ const CreateOrUpdateRole: React.FC<{
       onFinish={async (values) => {
         const body = { ...values, id: record?.uid };
         if (flag === 'update')
-          return await updateHanlder<RoleListItem>(postSystemRoleRoleMenuUpdate, actionRef, body);
+          return await updateHanlder<RoleListItem>(postSystemRoleUpdate, actionRef, body);
         else return await createHanlder<RoleListItem>(postSystemRoleCreate, actionRef, body);
       }}
     >

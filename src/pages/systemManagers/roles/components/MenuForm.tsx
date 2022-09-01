@@ -10,28 +10,28 @@ const FormItem = Form.Item;
 
 const MenuForm: React.FC<{
   drawerVisible: boolean;
-  roleMenuID: string[];
-  record: Partial<RoleListItem>;
+  currentData: Partial<RoleListItem>;
+  onSubmit: (values: { id: number; menuID: number[] }) => void;
 }> = (props) => {
   const { queryPage } = useGetTableList();
+
   const [form] = Form.useForm();
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedKey, setSelectedKey] = useState<string[]>([]);
+  const [selectedKey, setSelectedKey] = useState<string[] | number[]>([]);
 
-  const { drawerVisible, roleMenuID } = props;
+  const { drawerVisible, currentData, onSubmit } = props;
 
-  // const handleFinish = (values) => {
+  const handleFinish = () => {
+    const body = {
+      id: Number(currentData.uid) || 0,
+      menuID: selectedKey as number[],
+    };
+    console.log(body);
 
-  //   if (onSubmit) {
-  //     const data = {
-  //       roleId: record.id || 0,
-  //       menuIds: selectedKey,
-  //     };
-  //     // onSubmit(data);
-  //   }
-  // };
+    onSubmit(body);
+  };
 
   useEffect(() => {
     if (drawerVisible) {
@@ -48,8 +48,8 @@ const MenuForm: React.FC<{
         });
         const tr: DataNode[] = spanTree(treeList, 0, 'parentID');
         setTreeData(tr);
-        if (roleMenuID) {
-          const map = roleMenuID.map((r) => r + '');
+        if (currentData?.roleMenuID) {
+          const map = currentData?.roleMenuID.map((r) => r + '');
           setSelectedKey(map);
           setCheckedKeys(map);
         }
@@ -81,7 +81,7 @@ const MenuForm: React.FC<{
   };
 
   return (
-    <Form form={form}>
+    <Form form={form} onFinish={handleFinish}>
       <Form.Item wrapperCol={{ offset: 20, span: 10 }}>
         <Button type="primary" htmlType="submit">
           保存

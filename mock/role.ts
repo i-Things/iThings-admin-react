@@ -15,7 +15,7 @@ let roleList = [
     status: 2,
     remark: 'aqwww',
     createdTime: 1661830593000,
-    roleMenuID: [4, 19],
+    roleMenuID: [19],
   },
 ];
 
@@ -55,10 +55,18 @@ async function postSystemRole__openAPI__delete(req: Request, res: Response) {
     data: roleList,
   });
 }
+async function postSystemRoleRoleMenuUpdate(req: Request, res: Response) {
+  return res.json({
+    code: 200,
+    msg: '添加成功',
+    data: roleList,
+  });
+}
 
 export default {
   'POST /api/v1/system/role/index': postSystemRoleIndex,
   'POST /api/v1/system/role/create': postSystemRoleCreate,
-  'POST /api/v1/system/role/role-menu/update': postSystemRoleUpdate,
+  'POST /api/v1/system/role/update': postSystemRoleUpdate,
   'POST /api/v1/system/role/delete': postSystemRole__openAPI__delete,
+  'POST /api/v1/system/role/role-menu/update': postSystemRoleRoleMenuUpdate,
 };
