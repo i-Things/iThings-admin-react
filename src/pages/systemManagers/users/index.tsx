@@ -43,86 +43,67 @@ const UserList: React.FC = () => {
     {
       title: '编号',
       dataIndex: 'uid',
-      hideInSearch: true,
+      search: false,
     },
     {
       title: '用户名',
       dataIndex: 'userName',
-      // render: (dom, entity) => {
-      //   return <a onClick={() => setRow(entity)}>{dom}</a>;
-      // },
     },
     {
       title: '昵称',
       dataIndex: 'nickName',
+      search: false,
     },
     {
       title: '手机号',
       dataIndex: 'phone',
+      search: false,
     },
     {
       title: '邮箱',
       dataIndex: 'email',
-      hideInSearch: true,
+      search: false,
     },
     {
       title: '微信',
       dataIndex: 'wechat',
-      hideInSearch: true,
+      search: false,
     },
     {
       title: '创建时间',
       dataIndex: 'createdTime',
       valueType: 'dateTime',
-      hideInSearch: true,
+      search: false,
       renderText: (text) => timestampToDateStr(text),
     },
     {
       title: '注册IP',
       dataIndex: 'regIP',
-      hideInSearch: true,
+      search: false,
     },
     {
       title: '最后登录IP',
       dataIndex: 'lastIP',
-      hideInSearch: true,
+      search: false,
     },
     {
       title: '角色',
       dataIndex: 'role',
+      search: false,
       valueEnum: {
         1: 'admin',
         2: '供应商',
         3: 'user',
       },
     },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInSearch: true,
-      valueEnum: {
-        1: { text: '已注册', status: 'Success' },
-        2: { text: '未注册', status: 'Error' },
-      },
-    },
     // {
-    //   title: '创建人',
-    //   dataIndex: 'createBy',
-    //   hideInSearch: true,
-    //   hideInTable: true,
-    // },
-    // {
-    //   title: '更新人',
-    //   dataIndex: 'lastUpdateBy',
-    //   hideInSearch: true,
-    //   hideInTable: true,
-    // },
-    // {
-    //   title: '更新时间',
-    //   dataIndex: 'lastUpdateTime',
-    //   valueType: 'dateTime',
-    //   hideInSearch: true,
-    //   hideInTable: true,
+    //   title: '状态',
+    //   dataIndex: 'status',
+    //   search: false,
+    //   valueEnum: {
+    //     1: { text: '已注册', status: 'Success' },
+    //     2: { text: '未注册', status: 'Error' },
+    //   },
     // },
     {
       title: '操作',
@@ -153,12 +134,17 @@ const UserList: React.FC = () => {
         actionRef={actionRef}
         rowKey="uid"
         search={{
-          labelWidth: 100,
+          labelWidth: 'auto',
+        }}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
         }}
         toolBarRender={() => [
           <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
         ]}
-        request={(params) => queryPage(postSystemUserIndex, params)}
+        request={(params) => queryPage(postSystemUserIndex, { ...params })}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}

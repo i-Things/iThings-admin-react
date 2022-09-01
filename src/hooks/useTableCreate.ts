@@ -11,7 +11,7 @@ const useTableCreate = () => {
   ) => {
     let res;
     try {
-      res = await createApi({ ...body, reqType: 'password' });
+      res = await createApi(body);
       if (res?.code === 200) {
         actionRef.current?.reload();
         setCreateVisible(false);

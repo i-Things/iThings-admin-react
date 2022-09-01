@@ -117,7 +117,12 @@ const RoleList: React.FC = () => {
         actionRef={actionRef}
         rowKey="uid"
         search={{
-          labelWidth: 100,
+          labelWidth: 'auto',
+        }}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
         }}
         toolBarRender={() => [
           <CreateOrUpdateRole flag="create" actionRef={actionRef} key="createRole" />,

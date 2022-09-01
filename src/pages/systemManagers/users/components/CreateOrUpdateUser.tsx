@@ -4,7 +4,7 @@ import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsap
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { ActionType } from '@ant-design/pro-table';
+import type { ActionType } from '@ant-design/pro-table';
 import { Button, Form, Select } from 'antd';
 import { useRef } from 'react';
 import type { UserListItem } from '../types';
@@ -63,7 +63,7 @@ const CreateOrUpdateUser: React.FC<{
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 60 }} defaultValue="86">
+      <Select style={{ width: 70 }} defaultValue="86">
         <Option value="86">+86</Option>
         <Option value="87">+87</Option>
       </Select>
@@ -104,9 +104,12 @@ const CreateOrUpdateUser: React.FC<{
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
         // const modalFlag: boolean = false;
-        const body = values;
+        const body = { ...values, reqType: 'pwd' };
         if (flag === 'update')
-          return await updateHanlder<UserListItem>(postSystemUserUpdate, actionRef, body);
+          return await updateHanlder<UserListItem>(postSystemUserUpdate, actionRef, {
+            ...body,
+            uid: record?.uid as string,
+          });
         else return await createHanlder<UserListItem>(postSystemUserCreate, actionRef, body);
       }}
     >
@@ -161,6 +164,7 @@ const CreateOrUpdateUser: React.FC<{
         label="邮箱"
         width="md"
         placeholder="请输入邮箱"
+        fieldProps={{ defaultValue: record?.email ?? '' }}
         rules={[
           {
             type: 'email',
@@ -174,9 +178,10 @@ const CreateOrUpdateUser: React.FC<{
         width="md"
         fieldProps={{
           addonBefore: prefixSelector,
+          defaultValue: record?.phone ?? '',
         }}
       />
-      <ProFormText name="Wechat" label="微信ID" width="md" />
+      <ProFormText name="wechat" label="微信ID" width="md" />
       <ProFormSelect
         width="md"
         name="sex"

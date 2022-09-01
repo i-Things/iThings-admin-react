@@ -99,7 +99,12 @@ const MenuList: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         search={{
-          labelWidth: 100,
+          labelWidth: 'auto',
+        }}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
         }}
         toolBarRender={() => [
           <CreateOrUpdateMenu flag="create" actionRef={actionRef} key="createRole" />,

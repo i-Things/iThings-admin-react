@@ -11,6 +11,7 @@ const useGetTableList = () => {
     },
   ): Promise<any> => {
     const body = {
+      ...params,
       page: {
         size: params.pageSize,
         page: params.current,

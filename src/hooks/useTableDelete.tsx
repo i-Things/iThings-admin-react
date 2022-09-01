@@ -11,11 +11,11 @@ const useTableDelete = () => {
     confirm({
       title: '是否删除记录?',
       icon: <ExclamationCircleOutlined />,
-      content: `所选记录: ${record?.name ?? '未知记录'},  删除后无法恢复`,
+      content: `所选记录: ${record?.uid ?? '未知记录'},  删除后无法恢复`,
       async onOk() {
         let res;
         try {
-          res = await deleteApi({ id: record?.uid });
+          res = await deleteApi(record);
           if (res.code === 200) {
             actionRef.current?.reload();
             message.success('删除成功');
