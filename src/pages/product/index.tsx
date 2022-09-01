@@ -46,7 +46,7 @@ const columns: ProColumns<PRODUCT.productInfo>[] = [
     title: '创建时间',
     dataIndex: 'createdTime',
     search: false,
-    render: (text: any) => (text == '-' ? text : timestampToDateStr(text)),
+    renderText: (text: string) => (text == '-' ? text : timestampToDateStr(Number(text))),
   },
   {
     title: '操作',
@@ -71,7 +71,7 @@ const columns: ProColumns<PRODUCT.productInfo>[] = [
             content: `所选产品名: ${record?.productName ?? ''},删除后无法恢复`,
             onOk() {
               const body = {
-                productID: record.productID,
+                productID: record?.productID ?? '',
               };
               postThingsProductInfo__openAPI__delete(body).then((res) => {
                 if (res.code === 200) {
@@ -95,7 +95,9 @@ const columns: ProColumns<PRODUCT.productInfo>[] = [
 const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
-  const queryPage = async (params: queryParam): Promise<any> => {
+  const queryPage = async (
+    params: queryParam,
+  ): Promise<{ data?: PRODUCT.productInfo[]; total?: number }> => {
     const body = {
       page: {
         size: params.pageSize,
