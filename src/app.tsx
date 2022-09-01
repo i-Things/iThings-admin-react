@@ -23,7 +23,6 @@ export async function getInitialState(): Promise<{
     try {
       const token = getToken();
       const uid = getUID();
-
       if (!token || !uid) {
         history.push(loginPath);
       }

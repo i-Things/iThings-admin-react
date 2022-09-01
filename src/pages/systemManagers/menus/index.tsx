@@ -69,9 +69,12 @@ const MenuList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button type="primary" onClick={() => {}}>
+          {/* <Button type="primary" onClick={() => {}}>
             添加子菜单
-          </Button>
+          </Button> */}
+          <CreateOrUpdateMenu flag="update" record={record} actionRef={actionRef}>
+            添加子菜单
+          </CreateOrUpdateMenu>
           <Divider type="vertical" />
           <CreateOrUpdateMenu flag="update" record={record} actionRef={actionRef} />
           <Divider type="vertical" />
