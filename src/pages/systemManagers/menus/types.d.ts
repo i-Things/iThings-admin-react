@@ -4,7 +4,8 @@ export interface menuListItem {
   name: string;
   icon: string;
   path: string;
-  parentID: number;
+  parentID: number | string | number[];
   order: number;
   component: string;
+  redirect?: string;
 }

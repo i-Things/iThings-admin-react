@@ -5,7 +5,8 @@ import { useState } from 'react';
 import type { menuListItem } from './../pages/systemManagers/menus/types.d';
 import type { Option } from './types';
 const useGetTableList = () => {
-  const [cascaderOptions, setCascaderOptions] = useState<Option[]>([]);
+  const [cascaderOptions, setCascaderOptions] = useState<Option[] & menuListItem[]>([]);
+  const [flatOptions, setFlatOptions] = useState<menuListItem[]>([]);
   const queryPage = async (
     queryApi: any,
     params: ParamsType & {
@@ -25,6 +26,7 @@ const useGetTableList = () => {
     try {
       res = await queryApi(body);
       if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
+        setFlatOptions(res.data.list);
         const treeList = res.data.list.map((item: Option & menuListItem) => {
           return {
             ...item,
@@ -56,6 +58,7 @@ const useGetTableList = () => {
   return {
     queryPage,
     cascaderOptions,
+    flatOptions,
   };
 };
 

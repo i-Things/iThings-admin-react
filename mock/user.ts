@@ -36,7 +36,7 @@ async function postV1SystemUserLogin(req: Request, res: Response) {
       },
       token: {
         accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOjE3NDAzNTgwNTcwMzgxODg1NDQsImV4cCI6MTY2MjAwNDg1MiwiaWF0IjoxNjYyMDAxMjUyLCJSb2xlIjowfQ.0dyT3AF-ZCHsZVt5fd0zufe6u4O-DY6zM5Va0MmWiVo',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOjE3NDAzNTgwNTcwMzgxODg1NDQsImV4cCI6MTY2MjEyMzI5OCwiaWF0IjoxNjYyMDg3Mjk4LCJSb2xlIjowfQ.3heobU-kZoEXHiRLCfzd-yHSAb65oG3AydOUnIfuD1U',
         accessExpire: 'string',
         refreshAfter: 'string',
       },

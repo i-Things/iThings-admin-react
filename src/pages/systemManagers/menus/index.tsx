@@ -20,12 +20,12 @@ export enum flagStatus {
   UPDATE = 'update',
 }
 const MenuList: React.FC = () => {
-  const { queryPage, cascaderOptions } = useGetTableList();
+  const { queryPage, cascaderOptions, flatOptions } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string; name: string }) => {
+  const showDeleteConfirm = (record: menuListItem) => {
     const body = {
       id: record?.uid,
     };
@@ -81,7 +81,12 @@ const MenuList: React.FC = () => {
           {/* <Button type="primary" onClick={() => {}}>
             添加子菜单
           </Button> */}
-          <CreateOrUpdateMenu flag={flagStatus.ADD} record={record} actionRef={actionRef} />
+          <CreateOrUpdateMenu
+            flag={flagStatus.ADD}
+            record={record}
+            actionRef={actionRef}
+            flatOptions={flatOptions}
+          />
 
           <Divider type="vertical" />
           <CreateOrUpdateMenu
@@ -89,6 +94,7 @@ const MenuList: React.FC = () => {
             record={record}
             actionRef={actionRef}
             cascaderOptions={cascaderOptions}
+            flatOptions={flatOptions}
           />
           <Divider type="vertical" />
           <Button
@@ -114,7 +120,12 @@ const MenuList: React.FC = () => {
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         toolBarRender={() => [
-          <CreateOrUpdateMenu flag={flagStatus.CREATE} actionRef={actionRef} key="createRole" />,
+          <CreateOrUpdateMenu
+            flag={flagStatus.CREATE}
+            actionRef={actionRef}
+            key="createRole"
+            flatOptions={flatOptions}
+          />,
         ]}
         request={(params) => queryPage(postSystemMenuIndex, params)}
         columns={columns}

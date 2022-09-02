@@ -1,3 +1,4 @@
+import type { Option } from '@/hooks/types';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
@@ -13,12 +14,16 @@ const CreateOrUpdateMenu: React.FC<{
   flag: flagStatus;
   record?: menuListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
-  cascaderOptions: any;
-}> = ({ flag, record, actionRef, cascaderOptions }) => {
+  cascaderOptions?: menuListItem[] & Option[];
+  flatOptions: menuListItem[];
+}> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
-
+  const initialValues = {
+    ...record,
+    parentID: flag === flagStatus.CREATE ? '根目录' : record?.name,
+  };
   const returnTitle = {
     [flagStatus.ADD]: (
       <>
@@ -32,10 +37,11 @@ const CreateOrUpdateMenu: React.FC<{
       </>
     ),
   };
+
   return (
     <ModalForm<menuListItem>
       width={550}
-      initialValues={record}
+      initialValues={initialValues}
       key={Math.random()}
       formRef={editFormRef}
       title={flag === flagStatus.UPDATE ? '编辑' : '新建菜单'}
@@ -62,8 +68,18 @@ const CreateOrUpdateMenu: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        // parentID要取 parentID[1]
-        const body = { ...values, id: record?.uid as number };
+        console.log(values);
+        console.log(flatOptions);
+        let parentID: number = 1;
+
+        if (values.parentID === '根目录') parentID = 1;
+        else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
+          parentID = values.parentID[1];
+        else {
+          const name = values.parentID as string;
+          parentID = flatOptions.filter((item) => item.name === name)[0].id;
+        }
+        const body = { ...values, id: record?.uid as number, parentID };
         if (flag === flagStatus.UPDATE)
           return await updateHanlder<menuListItem>(postSystemMenuUpdate, actionRef, body);
         else return await createHanlder<menuListItem>(postSystemMenuCreate, actionRef, body);
@@ -82,7 +98,6 @@ const CreateOrUpdateMenu: React.FC<{
         fieldProps={{
           options: cascaderOptions,
           disabled: flag !== flagStatus.UPDATE,
-          defaultValue: record?.name ?? '',
         }}
       />
       <ProFormText
