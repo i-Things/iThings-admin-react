@@ -53,7 +53,7 @@ export async function postThingsProductInfoIndex(
   body: {
     page: { page?: number; size?: number };
     deviceType: number;
-    productName: string;
+    productName?: string;
   },
   options?: { [key: string]: any },
 ) {
