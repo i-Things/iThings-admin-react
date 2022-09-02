@@ -3,13 +3,15 @@ import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
-import { PlusOutlined } from '@ant-design/icons';
+import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormCascader, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useRef } from 'react';
 import { flagStatus } from '..';
+import '../styles.less';
 import type { menuListItem } from '../types';
+
 const CreateOrUpdateMenu: React.FC<{
   flag: flagStatus;
   record?: menuListItem;
@@ -44,7 +46,7 @@ const CreateOrUpdateMenu: React.FC<{
       initialValues={initialValues}
       key={Math.random()}
       formRef={editFormRef}
-      title={flag === flagStatus.UPDATE ? '编辑' : '新建菜单'}
+      title={flag === flagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
       trigger={
         <Button
           type="primary"
@@ -71,7 +73,6 @@ const CreateOrUpdateMenu: React.FC<{
         console.log(values);
         console.log(flatOptions);
         let parentID: number = 1;
-
         if (values.parentID === '根目录') parentID = 1;
         else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
           parentID = values.parentID[1];
@@ -85,6 +86,10 @@ const CreateOrUpdateMenu: React.FC<{
         else return await createHanlder<menuListItem>(postSystemMenuCreate, actionRef, body);
       }}
     >
+      <section className="menu-tool-tip">
+        <ExclamationCircleTwoTone className="menu-icon" twoToneColor="#ed6a0c" />
+        新增菜单，需要在角色管理内配置权限才可使用
+      </section>
       <ProFormCascader
         width="md"
         name="parentID"
