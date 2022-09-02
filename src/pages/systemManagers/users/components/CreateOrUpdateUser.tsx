@@ -3,13 +3,14 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanlixin';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
+import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
-import { Button, Form, Select } from 'antd';
+import { Button } from 'antd';
 import { useRef } from 'react';
 import type { UserListItem } from '../types';
 
-const { Option } = Select;
+// const { Option } = Select;
 const CreateOrUpdateUser: React.FC<{
   flag: string;
   record?: UserListItem;
@@ -19,7 +20,7 @@ const CreateOrUpdateUser: React.FC<{
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   // const [loading, setLoading] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
-  const editFormRef = useRef<any>();
+  const editFormRef = useRef<ProFormInstance<UserListItem>>();
 
   // const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   //   const reader = new FileReader();
@@ -61,14 +62,14 @@ const CreateOrUpdateUser: React.FC<{
   //   </div>
   // );
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }} defaultValue="86">
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+  // const prefixSelector = (
+  //   <Form.Item name="prefix" noStyle>
+  //     <Select style={{ width: 70 }} defaultValue="86">
+  //       <Option value="86">+86</Option>
+  //       <Option value="87">+87</Option>
+  //     </Select>
+  //   </Form.Item>
+  // );
   return (
     <ModalForm<UserListItem>
       initialValues={record}
@@ -159,7 +160,7 @@ const CreateOrUpdateUser: React.FC<{
         ]}
       />
       <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
-      <ProFormText
+      {/* <ProFormText
         name="Email"
         label="邮箱"
         width="md"
@@ -180,7 +181,7 @@ const CreateOrUpdateUser: React.FC<{
           addonBefore: prefixSelector,
           defaultValue: record?.phone ?? '',
         }}
-      />
+      /> */}
       <ProFormText name="wechat" label="微信ID" width="md" />
       <ProFormSelect
         width="md"

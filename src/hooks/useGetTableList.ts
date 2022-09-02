@@ -2,16 +2,16 @@ import { spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
-import { menuListItem } from './../pages/systemManagers/menus/types.d';
+import type { menuListItem } from './../pages/systemManagers/menus/types.d';
 import type { Option } from './types';
 const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState<Option[]>([]);
   const queryPage = async (
     queryApi: any,
     params: ParamsType & {
-      pageSize?: number | undefined;
-      current?: number | undefined;
-      keyword?: string | undefined;
+      pageSize?: number;
+      current?: number;
+      keyword?: string;
     },
   ): Promise<any> => {
     const body = {

@@ -4,6 +4,7 @@ import {
   postSystemUserIndex,
   postSystemUser__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanlixin';
+import { PROTABLE_OPTIONS, ROLE_VALUE_ENUM, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -32,11 +33,15 @@ const UserList: React.FC = () => {
   // };
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string }) => {
+  const showDeleteConfirm = (record: { uid: string; userName: string }) => {
     const body = {
       uid: record?.uid,
     };
-    deleteHanlder(postSystemUser__openAPI__delete, actionRef, body);
+    deleteHanlder(postSystemUser__openAPI__delete, actionRef, {
+      title: '是否删除当前用户',
+      content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
+      body,
+    });
   };
 
   const columns: ProColumns<UserListItem>[] = [
@@ -52,6 +57,16 @@ const UserList: React.FC = () => {
     {
       title: '昵称',
       dataIndex: 'nickName',
+      search: false,
+    },
+    {
+      title: '手机号',
+      dataIndex: 'phone',
+      search: false,
+    },
+    {
+      title: '邮箱',
+      dataIndex: 'email',
       search: false,
     },
     {
@@ -80,11 +95,7 @@ const UserList: React.FC = () => {
       title: '角色',
       dataIndex: 'role',
       search: false,
-      valueEnum: {
-        1: 'admin',
-        2: '供应商',
-        3: 'user',
-      },
+      valueEnum: ROLE_VALUE_ENUM,
     },
     // {
     //   title: '状态',
@@ -123,14 +134,8 @@ const UserList: React.FC = () => {
         headerTitle="用户管理"
         actionRef={actionRef}
         rowKey="uid"
-        search={{
-          labelWidth: 'auto',
-        }}
-        options={{
-          setting: {
-            listsHeight: 400,
-          },
-        }}
+        search={SEARCH_CONFIGURE}
+        options={PROTABLE_OPTIONS}
         toolBarRender={() => [
           <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
         ]}

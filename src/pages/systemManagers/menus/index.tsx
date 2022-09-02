@@ -4,6 +4,7 @@ import {
   postSystemMenuIndex,
   postSystemMenu__openAPI__delete,
 } from '@/services/iThingsapi/caidanguanli';
+import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 
 import { spanTree } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -25,10 +26,14 @@ const MenuList: React.FC = () => {
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; name: string }) => {
-    // const body = {
-    //   id: record?.uid,
-    // };
-    deleteHanlder(postSystemMenu__openAPI__delete, actionRef, record);
+    const body = {
+      id: record?.uid,
+    };
+    deleteHanlder(postSystemMenu__openAPI__delete, actionRef, {
+      title: '是否删除当前菜单',
+      content: `所选菜单: ${record?.name ?? '未知菜单'},  删除后无法恢复，请确认`,
+      body,
+    });
   };
 
   const columns: ProColumns<menuListItem>[] = [
@@ -106,14 +111,8 @@ const MenuList: React.FC = () => {
         headerTitle="菜单管理"
         actionRef={actionRef}
         rowKey="id"
-        search={{
-          labelWidth: 'auto',
-        }}
-        options={{
-          setting: {
-            listsHeight: 400,
-          },
-        }}
+        search={SEARCH_CONFIGURE}
+        options={PROTABLE_OPTIONS}
         toolBarRender={() => [
           <CreateOrUpdateMenu flag={flagStatus.CREATE} actionRef={actionRef} key="createRole" />,
         ]}

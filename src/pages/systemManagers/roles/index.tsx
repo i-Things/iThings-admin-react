@@ -6,6 +6,7 @@ import {
   postSystemRoleRoleMenuUpdate,
   postSystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
+import { PROTABLE_OPTIONS, SEARCH_CONFIGURE, STATUS_VALUE_ENUM } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -28,10 +29,14 @@ const RoleList: React.FC = () => {
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; name: string }) => {
-    // const body = {
-    //   id: record?.uid,
-    // };
-    deleteHanlder(postSystemRole__openAPI__delete, actionRef, record);
+    const body = {
+      id: record?.uid,
+    };
+    deleteHanlder(postSystemRole__openAPI__delete, actionRef, {
+      title: '是否删除当前角色',
+      content: `所选角色: ${record?.name ?? '未知角色'},  删除后无法恢复，请确认`,
+      body,
+    });
   };
 
   // const queryList = (params) => {
@@ -66,10 +71,7 @@ const RoleList: React.FC = () => {
       title: '状态',
       dataIndex: 'status',
       valueType: 'select',
-      valueEnum: {
-        1: { text: '启用', status: 'Success' },
-        2: { text: '禁用', status: 'Error' },
-      },
+      valueEnum: STATUS_VALUE_ENUM,
     },
     {
       title: '创建时间',
@@ -116,14 +118,8 @@ const RoleList: React.FC = () => {
         headerTitle="角色管理"
         actionRef={actionRef}
         rowKey="uid"
-        search={{
-          labelWidth: 'auto',
-        }}
-        options={{
-          setting: {
-            listsHeight: 400,
-          },
-        }}
+        search={SEARCH_CONFIGURE}
+        options={PROTABLE_OPTIONS}
         toolBarRender={() => [
           <CreateOrUpdateRole flag="create" actionRef={actionRef} key="createRole" />,
         ]}

@@ -6,16 +6,17 @@ const useTableDelete = () => {
   const deleteHanlder = (
     deleteApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    record: { uid: string; name?: string },
+    deleteMap: { title: string; content: string; body: { uid: string } },
   ) => {
+    const { title, content, body } = deleteMap;
     confirm({
-      title: '是否删除记录?',
+      title,
       icon: <ExclamationCircleOutlined />,
-      content: `所选记录: ${record?.uid ?? '未知记录'},  删除后无法恢复`,
+      content,
       async onOk() {
         let res;
         try {
-          res = await deleteApi(record);
+          res = await deleteApi(body);
           if (res.code === 200) {
             actionRef.current?.reload();
             message.success('删除成功');
