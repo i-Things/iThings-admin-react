@@ -1,4 +1,4 @@
-import { postThingsProductInfoCreate } from '@/services/iThingsapi/chanpinguanli';
+import { postThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
 import {
   authModeForm,
   autoRegisterForm,
@@ -7,6 +7,7 @@ import {
   netTypeForm,
   ProductInfo,
 } from '@/utils/const';
+import { EditOutlined } from '@ant-design/icons';
 import {
   ModalForm,
   ProFormRadio,
@@ -14,28 +15,39 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { Button, message } from 'antd';
+import { Button, Form, message } from 'antd';
 import React, { useState } from 'react';
 
 interface Props {
-  onCommit: () => void;
+  productInfo: ProductInfo;
+  onChange: () => void;
 }
 
-export const CreateForm: React.FC<Props> = ({ onCommit }) => {
+export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
   const [createVisible, setCreateVisible] = useState(false);
   const openCreateModal = async () => {
     setCreateVisible(true);
   };
-  const formCommit = async (values: ProductInfo) => {
-    const body = values;
-    return postThingsProductInfoCreate(body)
+  const formCommit = async (value: ProductInfo) => {
+    const body = {
+      productID: productInfo?.productID ?? '',
+      productName: value.productName,
+      netType: value.netType,
+      dataProto: value.dataProto,
+      deviceType: value.deviceType,
+      authMode: value.authMode,
+      autoRegister: value.autoRegister,
+      categoryID: value.categoryID,
+      description: value.description,
+    };
+    return postThingsProductInfoUpdate(body)
       .then((res) => {
         console.log('res', res);
         setCreateVisible(false);
         if (res.code === 200) {
           message.success('提交成功');
         }
-        onCommit();
+        onChange();
         return true;
       })
       .catch((error) => {
@@ -46,26 +58,28 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
     labelCol: { span: 7 },
     wrapperCol: { span: 32 },
   };
+  const formInstance = Form.useFormInstance<ProductInfo>();
   return (
     <ModalForm<ProductInfo>
       {...formItemLayout}
-      title="创建产品"
+      title="编辑产品信息"
       layout="horizontal"
       visible={createVisible}
       width={480}
-      initialValues={{
-        deviceType: 1,
-        authMode: 1,
-        autoRegister: 1,
-        dataProto: 1,
-        netType: 1,
-      }}
+      form={formInstance}
       modalProps={{
         onCancel: () => setCreateVisible(false),
       }}
       trigger={
-        <Button type="primary" onClick={openCreateModal}>
-          新增
+        <Button
+          type="text"
+          onClick={() => {
+            openCreateModal();
+            formInstance?.setFieldsValue(productInfo);
+          }}
+          icon={<EditOutlined />}
+        >
+          编辑
         </Button>
       }
       submitTimeout={2000}
@@ -87,14 +101,22 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
         width="md"
         name="deviceType"
         label="设备类型"
+        disabled
         request={async () => deviceTypeFrom}
       />
-      <ProFormSelect width="md" name="netType" label="通讯方式" request={async () => netTypeForm} />
       <ProFormSelect
         width="md"
         name="authMode"
         label="认证方式"
+        disabled
         request={async () => authModeForm}
+      />
+      <ProFormSelect
+        width="md"
+        name="dataProto"
+        label="数据协议"
+        disabled
+        request={async () => dataProtoForm}
       />
       <ProFormSelect
         width="md"
@@ -104,9 +126,10 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
       />
       <ProFormSelect
         width="md"
-        name="dataProto"
-        label="数据协议"
-        request={async () => dataProtoForm}
+        disabled
+        name="netType"
+        label="通讯方式"
+        request={async () => netTypeForm}
       />
       <ProFormTextArea
         name="description"

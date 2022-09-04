@@ -3,7 +3,7 @@ import {
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
-import { deviceTypeValue } from '@/utils/const';
+import { deviceTypeValue, ProductInfo } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -23,7 +23,7 @@ type queryParam = {
   productName: string;
 };
 
-const columns: ProColumns<PRODUCT.productInfo>[] = [
+const columns: ProColumns<ProductInfo>[] = [
   {
     key: 'productName',
     title: '产品名称',
@@ -97,7 +97,7 @@ const IndexPage: React.FC = () => {
 
   const queryPage = async (
     params: queryParam,
-  ): Promise<{ data?: PRODUCT.productInfo[]; total?: number }> => {
+  ): Promise<{ data?: ProductInfo[]; total?: number }> => {
     const body = {
       page: {
         size: params.pageSize,
@@ -121,7 +121,7 @@ const IndexPage: React.FC = () => {
   };
   return (
     <PageContainer>
-      <ProTable<PRODUCT.productInfo, queryParam>
+      <ProTable<ProductInfo, queryParam>
         rowKey="productID"
         actionRef={actionRef}
         request={queryPage}
