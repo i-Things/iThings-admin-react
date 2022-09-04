@@ -48,6 +48,8 @@ const BasicLayout: React.FC = (props) => {
         );
       }}
       menuDataRender={(menuData: any) => {
+        console.log(menuData);
+
         return menuData.map((item: any) => {
           return {
             ...item,

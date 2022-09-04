@@ -28,8 +28,6 @@ const MenuForm: React.FC<{
       id: Number(currentData.uid) || 0,
       menuID: selectedKey as number[],
     };
-    console.log(body);
-
     onSubmit(body);
   };
 
