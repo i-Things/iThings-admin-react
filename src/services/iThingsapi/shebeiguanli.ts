@@ -28,11 +28,8 @@ export async function postThingsDeviceInfoCreate(
 /** 删除设备 POST /api/v1/things/device/info/delete */
 export async function postThingsDeviceInfo__openAPI__delete(
   body: {
-    productID?: string;
-    deviceName?: string;
-    tags?: { key?: string; value?: string }[];
-    /** 1离线 2在线 只读 */
-    isOnline: string;
+    productID: string;
+    deviceName: string;
   },
   options?: { [key: string]: any },
 ) {

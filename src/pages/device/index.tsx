@@ -61,21 +61,10 @@ const logLevelList: any = [
 const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const restFormRef = useRef<ProFormInstance>(null);
+  const [modalDisabled, setModalDisabled] = useState(false);
   const [modalVisit, setModalVisit] = useState(false);
+  const [opStatus, setOpStatus] = useState('0'); // 0新增 1编辑 2复制
   const [projectList, setProjectList] = useState([]);
-  const [initialValues, setInitialValues] = useState({
-    productID: '',
-    deviceName: '',
-    createdTime: '',
-    secret: '',
-    firstLogin: '',
-    lastLogin: '',
-    version: '',
-    logLevel: 1,
-    tags: [],
-    isOnline: 2,
-    is_copy: false,
-  });
 
   /**
    * 删除
@@ -88,8 +77,8 @@ const IndexPage: React.FC = () => {
       onOk() {
         console.log(record, '删除');
         const body = {
-          projectID: record.productID,
-          isOnline: record.isOnline,
+          productID: record.productID,
+          deviceName: record.deviceName,
         };
         postThingsDeviceInfo__openAPI__delete(body).then((res) => {
           if (res.code === 200) {
@@ -108,27 +97,28 @@ const IndexPage: React.FC = () => {
    * */
   const handlerEdit = (record: any) => {
     console.log('编辑', record);
-    restFormRef.current?.resetFields();
-    setInitialValues(record);
     setModalVisit(true);
+    setModalDisabled(true);
+    setOpStatus('1');
+    restFormRef?.current?.setFieldsValue(record);
   };
   /**
-   * 编辑
+   * 复制
    * */
   const handlerCopy = (record: any) => {
     console.log('复制', record);
-    restFormRef.current?.resetFields();
-    setInitialValues({ ...record, is_copy: true });
     setModalVisit(true);
+    setOpStatus('2');
+    setModalDisabled(false);
+    restFormRef?.current?.setFieldsValue(record);
   };
   /**
    * 提交设备
    * */
   const createDeviceInfo = async (record: any): Promise<any> => {
-    console.log('新增设备', initialValues, record);
     const res =
-      initialValues.secret && !initialValues.is_copy
-        ? await postThingsDeviceInfoUpdate({ ...initialValues, ...record })
+      opStatus === '1'
+        ? await postThingsDeviceInfoUpdate(record)
         : await postThingsDeviceInfoCreate(record);
     if (res.code === 200) {
       message.success('提交成功');
@@ -394,21 +384,16 @@ const IndexPage: React.FC = () => {
             key="button"
             icon={<PlusOutlined />}
             onClick={() => {
-              restFormRef.current?.resetFields();
-              setInitialValues({
+              setModalVisit(true);
+              setOpStatus('0');
+              setModalDisabled(false);
+              restFormRef?.current?.setFieldsValue({
                 productID: '',
                 deviceName: '',
-                createdTime: '',
-                secret: '',
-                firstLogin: '',
-                lastLogin: '',
-                version: '',
                 logLevel: 1,
                 tags: [],
                 isOnline: 2,
-                is_copy: false,
               });
-              setModalVisit(true);
             }}
             type="primary"
           >
@@ -422,7 +407,6 @@ const IndexPage: React.FC = () => {
         visible={modalVisit}
         onFinish={createDeviceInfo}
         onVisibleChange={setModalVisit}
-        initialValues={initialValues}
         formRef={restFormRef}
       >
         <ProForm.Group>
@@ -431,6 +415,7 @@ const IndexPage: React.FC = () => {
             options={projectList}
             name="productID"
             label="产品"
+            disabled={modalDisabled}
             placeholder="请选择产品"
             rules={[{ required: true, message: '请选择' }]}
           />
@@ -438,6 +423,7 @@ const IndexPage: React.FC = () => {
           <ProFormText
             name="deviceName"
             label="设备名称"
+            disabled={modalDisabled}
             placeholder="请输入设备名称"
             rules={[{ required: true, message: '请输入' }]}
           />
