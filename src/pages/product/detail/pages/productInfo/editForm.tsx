@@ -8,6 +8,7 @@ import {
   ProductInfo,
 } from '@/utils/const';
 import { EditOutlined } from '@ant-design/icons';
+import type { ProFormInstance } from '@ant-design/pro-components';
 import {
   ModalForm,
   ProFormRadio,
@@ -15,8 +16,8 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { Button, Form, message } from 'antd';
-import React, { useState } from 'react';
+import { Button, message } from 'antd';
+import React, { useRef, useState } from 'react';
 
 interface Props {
   productInfo: ProductInfo;
@@ -58,7 +59,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
     labelCol: { span: 7 },
     wrapperCol: { span: 32 },
   };
-  const formInstance = Form.useFormInstance<ProductInfo>();
+  const formRef = useRef<ProFormInstance>();
   return (
     <ModalForm<ProductInfo>
       {...formItemLayout}
@@ -66,7 +67,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
       layout="horizontal"
       visible={createVisible}
       width={480}
-      form={formInstance}
+      formRef={formRef}
       modalProps={{
         onCancel: () => setCreateVisible(false),
       }}
@@ -75,7 +76,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
           type="text"
           onClick={() => {
             openCreateModal();
-            formInstance?.setFieldsValue(productInfo);
+            formRef.current?.setFieldsValue(productInfo);
           }}
           icon={<EditOutlined />}
         >
