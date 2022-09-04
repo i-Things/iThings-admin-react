@@ -9,7 +9,6 @@ import DevicePage from './pages/device/index';
 import ModelPage from './pages/model/index';
 import ProductInfoPage from './pages/productInfo/index';
 import TopicPage from './pages/topic/index';
-
 const { TabPane } = Tabs;
 
 const IndexPage: React.FC = () => {
@@ -19,7 +18,6 @@ const IndexPage: React.FC = () => {
   const onChange = (key: string) => {
     console.log(key);
   };
-  console.log(productInfo);
   const { run } = useRequest(postThingsProductInfoRead, {
     defaultParams: [{ productID: productID }],
     onSuccess: (result) => {
@@ -29,15 +27,19 @@ const IndexPage: React.FC = () => {
       message.error('获取产品信息错误:' + error.message);
     },
   });
-
   return (
-    <PageContainer content={'产品名称:' + productInfo.productName}>
+    <PageContainer>
       <Card>
-        <Descriptions title="产品信息">
-          <Descriptions.Item label="ProductKey">1982992</Descriptions.Item>
+        <Descriptions
+          title="产品信息"
+          bordered
+          column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+        >
+          <Descriptions.Item label="产品名称">{productInfo.productName}</Descriptions.Item>
+          <Descriptions.Item label="产品id">{productInfo.productID}</Descriptions.Item>
         </Descriptions>
       </Card>
-      <Card style={{ marginTop: 10 }}>
+      <Card>
         <Tabs defaultActiveKey="1" onChange={onChange}>
           <TabPane tab="产品信息" key="1">
             <ProductInfoPage

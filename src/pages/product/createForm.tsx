@@ -89,7 +89,6 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
         label="设备类型"
         request={async () => deviceTypeFrom}
       />
-      <ProFormSelect width="md" name="netType" label="通讯方式" request={async () => netTypeForm} />
       <ProFormSelect
         width="md"
         name="authMode"
@@ -98,15 +97,16 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
       />
       <ProFormSelect
         width="md"
-        name="autoRegister"
-        label="动态注册"
-        request={async () => autoRegisterForm}
-      />
-      <ProFormSelect
-        width="md"
         name="dataProto"
         label="数据协议"
         request={async () => dataProtoForm}
+      />
+      <ProFormSelect width="md" name="netType" label="通讯方式" request={async () => netTypeForm} />
+      <ProFormSelect
+        width="md"
+        name="autoRegister"
+        label="动态注册"
+        request={async () => autoRegisterForm}
       />
       <ProFormTextArea
         name="description"

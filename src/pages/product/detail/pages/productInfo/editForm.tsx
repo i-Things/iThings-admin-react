@@ -121,16 +121,16 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
       />
       <ProFormSelect
         width="md"
-        name="autoRegister"
-        label="动态注册"
-        request={async () => autoRegisterForm}
-      />
-      <ProFormSelect
-        width="md"
         disabled
         name="netType"
         label="通讯方式"
         request={async () => netTypeForm}
+      />
+      <ProFormSelect
+        width="md"
+        name="autoRegister"
+        label="动态注册"
+        request={async () => autoRegisterForm}
       />
       <ProFormTextArea
         name="description"
