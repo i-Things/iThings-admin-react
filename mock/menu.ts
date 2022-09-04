@@ -10,15 +10,6 @@ import type { Request, Response } from 'express';
 //     order: 1,
 //     component: './user/Login',
 //   },
-//   // {
-//   //   id: 1,
-//   //   name: '重定向',
-//   //   icon: 'icon_data_01',
-//   //   path: '/',
-//   //   parentID: 1,
-//   //   order: 1,
-//   //   component: './systemManagers/users/index',
-//   // },
 //   {
 //     id: 2,
 //     name: '设备管理',

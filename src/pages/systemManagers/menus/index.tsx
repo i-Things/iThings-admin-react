@@ -27,7 +27,7 @@ const MenuList: React.FC = () => {
   // 删除操作
   const showDeleteConfirm = (record: menuListItem) => {
     const body = {
-      id: record?.uid,
+      id: record?.id,
     };
     deleteHanlder(postSystemMenu__openAPI__delete, actionRef, {
       title: '是否删除当前菜单',
@@ -129,7 +129,7 @@ const MenuList: React.FC = () => {
         ]}
         request={(params) => queryPage(postSystemMenuIndex, params)}
         columns={columns}
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 999999 }}
         size={'middle'}
         postData={(data) => spanTree(data, 1, 'parentID')}
       />

@@ -1,12 +1,6 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { IconMap } from 'antd/lib/result';
-import type { ReactNode } from 'react';
-import React from 'react';
-import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
-import RightContent from './components/RightContent';
-import RootNode from './RootNode';
 import { postSystemMenuIndex } from './services/iThingsapi/caidanguanli';
 import { postSystemUserRead } from './services/iThingsapi/yonghuguanlixin';
 import { getToken, getUID } from './utils/utils';
@@ -78,72 +72,72 @@ export async function getInitialState(): Promise<{
   };
 }
 
-export function rootContainer(container: ReactNode) {
-  // RootNode 是根渲染组件
-  return React.createElement(RootNode, null, container);
-}
+// export function rootContainer(container: ReactNode) {
+//   // RootNode 是根渲染组件
+//   return React.createElement(RootNode, null, container);
+// }
 
-export const layout: RunTimeLayoutConfig = ({ initialState }) => {
-  return {
-    rightContentRender: () => <RightContent />,
-    disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.userInfo?.name,
-    },
-    menuDataRender: (menuData) => {
-      console.log(menuData);
-      return menuData.map((item: any) => {
-        return {
-          ...item,
-          icon: (
-            <img
-              src={IconMap[item.icon as string]}
-              alt=""
-              style={{
-                width: 14,
-                height: 14,
-                marginRight: 5,
-                marginBottom: 5,
-              }}
-            />
-          ),
-        };
-      });
-    },
-    onPageChange: () => {
-      const { location } = history;
-      // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
-      }
-    },
-    menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
-    // 增加一个 loading 的状态
-    // childrenRender: (children, props) => {
-    //   // if (initialState?.loading) return <PageLoading />;
-    //   return (
-    //     <>
-    //       {children}
-    //       {!props.location?.pathname?.includes('/login') && (
-    //         <SettingDrawer
-    //           enableDarkTheme
-    //           settings={initialState?.settings}
-    //           onSettingChange={(settings) => {
-    //             setInitialState((preInitialState) => ({
-    //               ...preInitialState,
-    //               settings,
-    //             }));
-    //           }}
-    //         />
-    //       )}
-    //     </>
-    //   );
-    // },
-    ...initialState?.settings,
-  };
-};
+// export const layout: RunTimeLayoutConfig = ({ initialState }) => {
+//   return {
+//     rightContentRender: () => <RightContent />,
+//     disableContentMargin: false,
+//     waterMarkProps: {
+//       content: initialState?.currentUser?.userInfo?.name,
+//     },
+//     menuDataRender: (menuData) => {
+//       console.log(menuData);
+//       return menuData.map((item: any) => {
+//         return {
+//           ...item,
+//           icon: (
+//             <img
+//               src={IconMap[item.icon as string]}
+//               alt=""
+//               style={{
+//                 width: 14,
+//                 height: 14,
+//                 marginRight: 5,
+//                 marginBottom: 5,
+//               }}
+//             />
+//           ),
+//         };
+//       });
+//     },
+//     onPageChange: () => {
+//       const { location } = history;
+//       // 如果没有登录，重定向到 login
+//       if (!initialState?.currentUser && location.pathname !== loginPath) {
+//         history.push(loginPath);
+//       }
+//     },
+//     menuHeaderRender: undefined,
+//     // 自定义 403 页面
+//     // unAccessible: <div>unAccessible</div>,
+//     // 增加一个 loading 的状态
+//     // childrenRender: (children, props) => {
+//     //   // if (initialState?.loading) return <PageLoading />;
+//     //   return (
+//     //     <>
+//     //       {children}
+//     //       {!props.location?.pathname?.includes('/login') && (
+//     //         <SettingDrawer
+//     //           enableDarkTheme
+//     //           settings={initialState?.settings}
+//     //           onSettingChange={(settings) => {
+//     //             setInitialState((preInitialState) => ({
+//     //               ...preInitialState,
+//     //               settings,
+//     //             }));
+//     //           }}
+//     //         />
+//     //       )}
+//     //     </>
+//     //   );
+//     // },
+//     ...initialState?.settings,
+//   };
+// };
 // export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
 //   return {
 //     rightContentRender: () => <RightContent />,

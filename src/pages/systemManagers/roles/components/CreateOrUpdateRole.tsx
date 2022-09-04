@@ -52,7 +52,7 @@ const CreateOrUpdateRole: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        const body = { ...values, id: record?.uid };
+        const body = { ...values, id: record?.id as number };
         if (flag === 'update')
           return await updateHanlder<RoleListItem>(postSystemRoleUpdate, actionRef, body);
         else return await createHanlder<RoleListItem>(postSystemRoleCreate, actionRef, body);

@@ -3,6 +3,7 @@ import px2viewport from 'postcss-px2viewport';
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+import routes from './routes';
 
 const { REACT_APP_ENV } = process.env;
 
@@ -24,7 +25,7 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
-  // routes,
+  routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': defaultSettings.primaryColor,

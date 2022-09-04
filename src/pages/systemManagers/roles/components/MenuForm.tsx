@@ -25,7 +25,7 @@ const MenuForm: React.FC<{
 
   const handleFinish = () => {
     const body = {
-      id: Number(currentData.uid) || 0,
+      id: Number(currentData.id) || 0,
       menuID: selectedKey as number[],
     };
     onSubmit(body);

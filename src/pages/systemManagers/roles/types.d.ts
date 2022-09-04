@@ -1,6 +1,6 @@
 import type { menuListItem } from '../menus/types';
 export interface RoleListItem {
-  uid: string;
+  id: number;
   name: string;
   remark: string;
   status: string;

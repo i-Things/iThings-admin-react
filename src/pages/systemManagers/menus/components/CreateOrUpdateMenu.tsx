@@ -80,7 +80,12 @@ const CreateOrUpdateMenu: React.FC<{
           const name = values.parentID as string;
           parentID = flatOptions.filter((item) => item.name === name)[0].id;
         }
-        const body = { ...values, id: record?.uid as number, parentID };
+        const body = {
+          ...values,
+          order: Number(values?.order),
+          id: record?.id as number,
+          parentID,
+        };
         if (flag === flagStatus.UPDATE)
           return await updateHanlder<menuListItem>(postSystemMenuUpdate, actionRef, body);
         else return await createHanlder<menuListItem>(postSystemMenuCreate, actionRef, body);

@@ -6,7 +6,7 @@ const useTableDelete = () => {
   const deleteHanlder = (
     deleteApi: any,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    deleteMap: { title: string; content: string; body: { uid: string } },
+    deleteMap: { title: string; content: string; body: { uid?: string; id?: number } },
   ) => {
     const { title, content, body } = deleteMap;
     confirm({

@@ -28,9 +28,9 @@ const RoleList: React.FC = () => {
   const [currentData, setCurrentData] = useState<RoleListItem>();
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string; name: string }) => {
+  const showDeleteConfirm = (record: { id: number; name: string }) => {
     const body = {
-      id: record?.uid,
+      id: record?.id,
     };
     deleteHanlder(postSystemRole__openAPI__delete, actionRef, {
       title: '是否删除当前角色',
@@ -46,7 +46,7 @@ const RoleList: React.FC = () => {
   const columns: ProColumns<RoleListItem>[] = [
     {
       title: '编号',
-      dataIndex: 'uid',
+      dataIndex: 'id',
       hideInSearch: true,
     },
     {
