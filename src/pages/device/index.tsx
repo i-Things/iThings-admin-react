@@ -96,7 +96,6 @@ const IndexPage: React.FC = () => {
    * 编辑
    * */
   const handlerEdit = (record: any) => {
-    console.log('编辑', record);
     setModalVisit(true);
     setModalDisabled(true);
     setOpStatus('1');
@@ -106,7 +105,6 @@ const IndexPage: React.FC = () => {
    * 复制
    * */
   const handlerCopy = (record: any) => {
-    console.log('复制', record);
     setModalVisit(true);
     setOpStatus('2');
     setModalDisabled(false);
@@ -141,15 +139,6 @@ const IndexPage: React.FC = () => {
       dataIndex: 'deviceName',
       copyable: true,
       ellipsis: true,
-      tip: '标题过长会自动收缩',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项为必填项',
-          },
-        ],
-      },
     },
     {
       title: '产品名称',
@@ -279,14 +268,17 @@ const IndexPage: React.FC = () => {
    * 查询数据
    * */
   const queryPage = async (params: any): Promise<any> => {
+    console.log(123, params);
     const body = {
       page: {
         size: params.pageSize,
         page: params.current,
       },
-      // productID: '246EUXwpfVu',
-      // deviceName: '',
-      // tags: []
+      productID: params.productID,
+      deviceName: params.deviceName,
+      logLevel: params.logLevel,
+      isOnline: params.isOnline,
+      version: params.version,
     };
     const res = await postThingsDeviceInfoIndex(body);
 
@@ -359,18 +351,6 @@ const IndexPage: React.FC = () => {
         options={{
           setting: {
             listsHeight: 400,
-          },
-        }}
-        form={{
-          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-          syncToUrl: (values, type) => {
-            if (type === 'get') {
-              return {
-                ...values,
-                created_at: [values.startTime, values.endTime],
-              };
-            }
-            return values;
           },
         }}
         pagination={{
