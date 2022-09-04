@@ -2,11 +2,12 @@ import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli'
 import {
   postThingsDeviceInfoCreate,
   postThingsDeviceInfoIndex,
+  postThingsDeviceInfoUpdate,
   postThingsDeviceInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeiguanli';
 import { timestampToDateStr } from '@/utils/date';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import type { ActionType } from '@ant-design/pro-components';
+import type { ActionType, ProFormInstance } from '@ant-design/pro-components';
 import { ProFormRadio, ProTable, TableDropdown } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, message, Modal } from 'antd';
@@ -30,6 +31,7 @@ const isOnlineList: any = [
     value: 2,
   },
 ];
+
 /**
  * 日志级别列表
  * */
@@ -58,7 +60,21 @@ const logLevelList: any = [
 
 const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const restFormRef = useRef<ProFormInstance>(null);
   const [modalVisit, setModalVisit] = useState(false);
+  const [initialValues, setInitialValues] = useState({
+    productID: '',
+    deviceName: '',
+    createdTime: '',
+    secret: '',
+    firstLogin: '',
+    lastLogin: '',
+    version: '',
+    logLevel: 1,
+    tags: [],
+    isOnline: 2,
+    is_copy: false,
+  });
 
   /**
    * 删除
@@ -69,11 +85,11 @@ const IndexPage: React.FC = () => {
       icon: <ExclamationCircleOutlined />,
       content: `该设备删除后无法恢复`,
       onOk() {
+        console.log(record, '删除');
         const body = {
-          projectID: record.projectID,
+          projectID: record.productID,
           isOnline: record.isOnline,
         };
-        console.log(body);
         postThingsDeviceInfo__openAPI__delete(body).then((res) => {
           if (res.code === 200) {
             message.success('删除成功');
@@ -86,6 +102,40 @@ const IndexPage: React.FC = () => {
       },
     });
   };
+  /**
+   * 编辑
+   * */
+  const handlerEdit = (record: any) => {
+    console.log('编辑', record);
+    restFormRef.current?.resetFields();
+    setInitialValues(record);
+    setModalVisit(true);
+  };
+  /**
+   * 编辑
+   * */
+  const handlerCopy = (record: any) => {
+    console.log('复制', record);
+    restFormRef.current?.resetFields();
+    setInitialValues({ ...record, is_copy: true });
+    setModalVisit(true);
+  };
+  /**
+   * 提交设备
+   * */
+  const createDeviceInfo = async (record: any): Promise<any> => {
+    console.log('新增设备', initialValues, record);
+    const res =
+      initialValues.secret && !initialValues.is_copy
+        ? await postThingsDeviceInfoUpdate({ ...initialValues, ...record })
+        : await postThingsDeviceInfoCreate(record);
+    if (res.code === 200) {
+      message.success('提交成功');
+      actionRef.current?.reload();
+    }
+    return true;
+  };
+
   /**
    * 列信息
    * */
@@ -196,11 +246,11 @@ const IndexPage: React.FC = () => {
       title: '操作',
       valueType: 'option',
       key: 'option',
-      render: (text: any, record: any, _: any, action: any) => [
+      render: (text: any, record: any) => [
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            handlerEdit(record);
           }}
         >
           编辑
@@ -218,6 +268,8 @@ const IndexPage: React.FC = () => {
           onSelect={(key) => {
             if (key === 'delete') {
               showDeleteConfirm(record);
+            } else if (key === 'copy') {
+              handlerCopy(record);
             }
           }}
           menus={[
@@ -280,22 +332,11 @@ const IndexPage: React.FC = () => {
     });
     return list;
   };
-  /**
-   * 新增设备
-   * */
-  const createDeviceInfo = async (record: any): Promise<any> => {
-    const res = await postThingsDeviceInfoCreate(record);
-    if (res.code === 200) {
-      message.success('提交成功');
-      actionRef.current?.reload();
-    }
-    return true;
-  };
 
   return (
     <PageContainer>
       <ProTable<any>
-        rowKey="modelID"
+        rowKey="secret"
         columns={columns}
         actionRef={actionRef}
         cardBordered
@@ -341,6 +382,20 @@ const IndexPage: React.FC = () => {
             key="button"
             icon={<PlusOutlined />}
             onClick={() => {
+              restFormRef.current?.resetFields();
+              setInitialValues({
+                productID: '',
+                deviceName: '',
+                createdTime: '',
+                secret: '',
+                firstLogin: '',
+                lastLogin: '',
+                version: '',
+                logLevel: 1,
+                tags: [],
+                isOnline: 2,
+                is_copy: false,
+              });
               setModalVisit(true);
             }}
             type="primary"
@@ -355,12 +410,8 @@ const IndexPage: React.FC = () => {
         visible={modalVisit}
         onFinish={createDeviceInfo}
         onVisibleChange={setModalVisit}
-        initialValues={{
-          projectId: '',
-          deviceName: '',
-          logLevel: 1,
-          isOnline: 2,
-        }}
+        initialValues={initialValues}
+        formRef={restFormRef}
       >
         <ProForm.Group>
           <ProFormSelect
