@@ -13,7 +13,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Button, message, Modal } from 'antd';
 
 import { ModalForm, ProForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
 
 const { confirm } = Modal;
@@ -62,6 +62,7 @@ const IndexPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const restFormRef = useRef<ProFormInstance>(null);
   const [modalVisit, setModalVisit] = useState(false);
+  const [projectList, setProjectList] = useState([]);
   const [initialValues, setInitialValues] = useState({
     productID: '',
     deviceName: '',
@@ -161,9 +162,13 @@ const IndexPage: React.FC = () => {
       },
     },
     {
-      title: '设备密钥',
-      dataIndex: 'secret',
+      title: '产品名称',
+      dataIndex: 'projectId',
       ellipsis: true,
+      render: (_: any, row: any) => {
+        const find_row = projectList.find((item: any) => item.value === row.productID);
+        return (find_row as any)?.label;
+      },
     },
     {
       title: '固定版本',
@@ -320,7 +325,7 @@ const IndexPage: React.FC = () => {
     const res = await postThingsProductInfoIndex(body);
 
     if (res instanceof Response) {
-      return [];
+      setProjectList([]);
     }
 
     const list: any = [];
@@ -330,8 +335,15 @@ const IndexPage: React.FC = () => {
         value: item.productID,
       });
     });
-    return list;
+    setProjectList(list);
   };
+
+  /**
+   * 监听
+   * */
+  useEffect(() => {
+    queryProjectList();
+  }, []);
 
   return (
     <PageContainer>
@@ -416,7 +428,7 @@ const IndexPage: React.FC = () => {
         <ProForm.Group>
           <ProFormSelect
             width="md"
-            request={queryProjectList}
+            options={projectList}
             name="productID"
             label="产品"
             placeholder="请选择产品"
