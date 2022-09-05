@@ -18,7 +18,8 @@ const CreateOrUpdateMenu: React.FC<{
   actionRef: React.MutableRefObject<ActionType | undefined>;
   cascaderOptions?: menuListItem[] & Option[];
   flatOptions: menuListItem[];
-}> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
+  setCascaderOptions?: React.Dispatch<React.SetStateAction<Option[] & menuListItem[]>>;
+}> = ({ flag, record, actionRef, cascaderOptions, setCascaderOptions, flatOptions }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
@@ -53,13 +54,28 @@ const CreateOrUpdateMenu: React.FC<{
     <ModalForm<menuListItem>
       width={550}
       initialValues={initialValues}
-      key={Math.random()}
       formRef={editFormRef}
       title={flag === flagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
       trigger={
         <Button
           type="primary"
           onClick={() => {
+            const recursion = (pre: Option[] & menuListItem[]) => {
+              pre.map((item) => {
+                if (item.children) recursion(item?.children);
+                if (item.id === record?.id) item.disabled = true;
+              });
+              return pre;
+            };
+            if (flag === flagStatus.UPDATE)
+              (
+                setCascaderOptions as React.Dispatch<
+                  React.SetStateAction<Option[] & menuListItem[]>
+                >
+              )((pre: Option[] & menuListItem[]) => {
+                return recursion(pre);
+              });
+
             if (flag === flagStatus.UPDATE) setEditVisible(true);
             else setCreateVisible(true);
           }}
@@ -86,8 +102,9 @@ const CreateOrUpdateMenu: React.FC<{
         else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
           parentID = values.parentID[1];
         else {
-          const name = values.parentID as string;
-          parentID = flatOptions.filter((item) => item.name === name)[0].id;
+          // const name = values.parentID as string;
+          // parentID = flatOptions.filter((item) => item.name === name)[0].id;
+          parentID = values.parentID[0];
         }
         const body = {
           ...values,
@@ -119,6 +136,15 @@ const CreateOrUpdateMenu: React.FC<{
           disabled: flag !== flagStatus.UPDATE,
           expandTrigger: 'hover',
           changeOnSelect: true,
+          // onChange: (value, option) => {
+          //   console.log(value[0]);
+          //   console.log(option[0]);
+
+          //   if (value[0] === option[0].id) {
+          //     value = '';
+          //     return message.error('不能选择本身');
+          //   }
+          // },
         }}
       />
       <ProFormText

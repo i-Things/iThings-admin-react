@@ -6,8 +6,6 @@ import type { menuListItem } from './../pages/systemManagers/menus/types.d';
 import type { Option } from './types';
 const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState<Option[] & menuListItem[]>([]);
-  console.log(cascaderOptions);
-
   const [flatOptions, setFlatOptions] = useState<menuListItem[]>([]);
 
   const queryPage = async (
@@ -66,6 +64,7 @@ const useGetTableList = () => {
   return {
     queryPage,
     cascaderOptions,
+    setCascaderOptions,
     flatOptions,
   };
 };

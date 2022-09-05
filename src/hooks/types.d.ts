@@ -6,6 +6,7 @@ export enum OperationTypeEnum {
 }
 
 export interface Option {
+  id: number | undefined;
   value: string | number;
   label?: React.ReactNode;
   disabled?: boolean;
