@@ -6,8 +6,8 @@ import { dynamic } from 'umi';
 const Component = {
   /** 欢迎页面 */
   Welcome: dynamic(() => import('@/pages/Welcome')),
-  登录: dynamic(() => import('@/pages/user/Login/index')),
-  用户管理: dynamic(() => import('@/pages/systemManagers/users/index')),
+  登录: dynamic(() => import('@/pages/user/login')),
+  用户管理: dynamic(() => import('@/pages/systemManagers/users')),
 };
 
 function dynamicRoutesToUsableRoutes(routes: MenuDataItem[]): MenuDataItem[] {

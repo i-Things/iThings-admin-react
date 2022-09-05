@@ -22,10 +22,19 @@ const CreateOrUpdateMenu: React.FC<{
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
+
+  const rootFlag =
+    flatOptions.filter((item) => item.name === record?.name)[0]?.parentID === 1 ||
+    flag === flagStatus.CREATE;
+
   const initialValues = {
     ...record,
-    parentID: flag === flagStatus.CREATE ? '根目录' : record?.name,
+    // parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
+    parentID: rootFlag
+      ? '根节点'
+      : flatOptions.filter((item) => item.id === record?.parentID)[0]?.name,
   };
+
   const returnTitle = {
     [flagStatus.ADD]: (
       <>
@@ -73,7 +82,7 @@ const CreateOrUpdateMenu: React.FC<{
         console.log(values);
         console.log(flatOptions);
         let parentID: number = 1;
-        if (values.parentID === '根目录') parentID = 1;
+        if (values.parentID === '根节点') parentID = 1;
         else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
           parentID = values.parentID[1];
         else {
@@ -98,7 +107,7 @@ const CreateOrUpdateMenu: React.FC<{
       <ProFormCascader
         width="md"
         name="parentID"
-        label="父菜单ID"
+        label="父节点ID"
         rules={[
           {
             required: true,
@@ -108,6 +117,8 @@ const CreateOrUpdateMenu: React.FC<{
         fieldProps={{
           options: cascaderOptions,
           disabled: flag !== flagStatus.UPDATE,
+          expandTrigger: 'hover',
+          changeOnSelect: true,
         }}
       />
       <ProFormText

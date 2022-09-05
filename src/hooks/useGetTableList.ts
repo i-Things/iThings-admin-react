@@ -6,7 +6,10 @@ import type { menuListItem } from './../pages/systemManagers/menus/types.d';
 import type { Option } from './types';
 const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState<Option[] & menuListItem[]>([]);
+  console.log(cascaderOptions);
+
   const [flatOptions, setFlatOptions] = useState<menuListItem[]>([]);
+
   const queryPage = async (
     queryApi: any,
     params: ParamsType & {
@@ -35,7 +38,12 @@ const useGetTableList = () => {
             value: item?.id,
           };
         });
-
+        treeList.unshift({
+          id: 0,
+          label: '根节点',
+          parentID: 1,
+          value: 1,
+        });
         setCascaderOptions(spanTree(treeList, 1, 'parentID'));
       }
 
