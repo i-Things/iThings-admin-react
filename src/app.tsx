@@ -1,19 +1,20 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
+import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
+import { IconMap } from 'antd/lib/result';
 import { history } from 'umi';
 import { postSystemMenuIndex } from './services/iThingsapi/caidanguanli';
 import { postSystemUserRead } from './services/iThingsapi/yonghuguanlixin';
-import { getToken, getUID } from './utils/utils';
+import { getToken, getUID, spanTree } from './utils/utils';
 const loginPath = '/user/login';
 
-// const loopMenuItem = (menus: any[]): MenuDataItem[] =>
-//   menus.map(({ icon, children, ...item }) => {
-//     return {
-//       ...item,
-//       icon: IconMap[icon as string],
-//       children: children && loopMenuItem(children),
-//     };
-//   });
+const loopMenuItem = (menus: any[]): MenuDataItem[] =>
+  menus.map(({ icon, children, ...item }) => {
+    return {
+      ...item,
+      icon: IconMap[icon as string],
+      children: children && loopMenuItem(children),
+    };
+  });
 
 // const menuDataRender: any = () => {
 //   const item = localStorage.getItem('menuTree') + '';
@@ -48,9 +49,9 @@ export async function getInitialState(): Promise<{
       const body = { uid: uid };
       const msg = await postSystemUserRead(body);
       const menuTree = await postSystemMenuIndex({ page: { page: 1, size: 99999 } });
-      const menuInfo = menuTree?.data?.list;
+      // const menuInfo = menuTree?.data?.list;
 
-      // const menuInfo = loopMenuItem(spanTree(menuTree?.data?.list, 1, 'parentID'));
+      const menuInfo = loopMenuItem(spanTree(menuTree?.data?.list, 1, 'parentID'));
       return { userInfo: msg.data, menuInfo };
     } catch (error) {
       history.push(loginPath);

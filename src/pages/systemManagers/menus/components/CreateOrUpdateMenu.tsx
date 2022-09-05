@@ -102,9 +102,11 @@ const CreateOrUpdateMenu: React.FC<{
         else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
           parentID = values.parentID[1];
         else {
-          // const name = values.parentID as string;
-          // parentID = flatOptions.filter((item) => item.name === name)[0].id;
-          parentID = values.parentID[0];
+          if (typeof values.parentID === 'string') {
+            const name = values.parentID as string;
+            parentID = flatOptions.filter((item) => item.name === name)[0].id;
+            console.log(parentID);
+          } else parentID = values.parentID[0];
         }
         const body = {
           ...values,
@@ -163,6 +165,7 @@ const CreateOrUpdateMenu: React.FC<{
         name="path"
         width="md"
         label="路由path"
+        placeholder="如：/deviceMangers"
         rules={[
           {
             required: true,
@@ -174,6 +177,7 @@ const CreateOrUpdateMenu: React.FC<{
         name="component"
         width="md"
         label="文件路径"
+        placeholder="如：./deviceMangers/index.tsx"
         rules={[
           {
             required: true,
@@ -185,6 +189,7 @@ const CreateOrUpdateMenu: React.FC<{
         name="icon"
         width="md"
         label="图标"
+        placeholder="如：icon_system"
         rules={[
           {
             required: true,
