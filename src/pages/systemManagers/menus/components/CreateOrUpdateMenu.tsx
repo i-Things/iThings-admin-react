@@ -24,16 +24,9 @@ const CreateOrUpdateMenu: React.FC<{
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
 
-  const rootFlag =
-    flatOptions.filter((item) => item.name === record?.name)[0]?.parentID === 1 ||
-    flag === flagStatus.CREATE;
-
   const initialValues = {
     ...record,
-    // parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
-    parentID: rootFlag
-      ? '根节点'
-      : flatOptions.filter((item) => item.id === record?.parentID)[0]?.name,
+    parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
   };
 
   const returnTitle = {

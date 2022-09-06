@@ -1,3 +1,4 @@
+import type { Option } from '@/hooks/types';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
 import {
@@ -10,7 +11,7 @@ import { spanTree } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider } from 'antd';
+import { Button, Divider, message } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
 import type { menuListItem } from './types';
@@ -36,7 +37,7 @@ const MenuList: React.FC = () => {
     });
   };
 
-  const columns: ProColumns<menuListItem>[] = [
+  const columns: ProColumns<menuListItem & Option>[] = [
     {
       title: '编号',
       dataIndex: 'id',
@@ -102,6 +103,8 @@ const MenuList: React.FC = () => {
             type="primary"
             danger
             onClick={() => {
+              if (record?.children)
+                return message.error('有嵌套关系不能够删除，如有需要请先删除子节点');
               showDeleteConfirm(record);
             }}
           >
