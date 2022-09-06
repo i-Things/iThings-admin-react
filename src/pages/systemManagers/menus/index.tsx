@@ -21,7 +21,7 @@ export enum flagStatus {
   UPDATE = 'update',
 }
 const MenuList: React.FC = () => {
-  const { queryPage, cascaderOptions, flatOptions, setCascaderOptions } = useGetTableList();
+  const { queryPage, cascaderOptions, flatOptions } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
 
@@ -96,7 +96,6 @@ const MenuList: React.FC = () => {
             actionRef={actionRef}
             cascaderOptions={cascaderOptions}
             flatOptions={flatOptions}
-            setCascaderOptions={setCascaderOptions}
           />
           <Divider type="vertical" />
           <Button

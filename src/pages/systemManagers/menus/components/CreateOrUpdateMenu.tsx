@@ -7,6 +7,7 @@ import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormCascader, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
+import cloneDeep from 'lodash/cloneDeep';
 import { useRef } from 'react';
 import { flagStatus } from '..';
 import '../styles.less';
@@ -18,15 +19,24 @@ const CreateOrUpdateMenu: React.FC<{
   actionRef: React.MutableRefObject<ActionType | undefined>;
   cascaderOptions?: menuListItem[] & Option[];
   flatOptions: menuListItem[];
-  setCascaderOptions?: React.Dispatch<React.SetStateAction<Option[] & menuListItem[]>>;
-}> = ({ flag, record, actionRef, cascaderOptions, setCascaderOptions, flatOptions }) => {
+}> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
 
+  const options = cloneDeep(cascaderOptions);
+  const rootFlag = flag === flagStatus.CREATE || record?.parentID === 1;
   const initialValues = {
     ...record,
-    parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
+    parentID: rootFlag ? '根节点' : record?.name,
+  };
+
+  const recursion = (pre: Option[] & menuListItem[]) => {
+    pre.map((item) => {
+      if (item.children) recursion(item?.children);
+      if (item.id === record?.id) item.disabled = true;
+    });
+    return pre;
   };
 
   const returnTitle = {
@@ -53,22 +63,6 @@ const CreateOrUpdateMenu: React.FC<{
         <Button
           type="primary"
           onClick={() => {
-            const recursion = (pre: Option[] & menuListItem[]) => {
-              pre.map((item) => {
-                if (item.children) recursion(item?.children);
-                if (item.id === record?.id) item.disabled = true;
-              });
-              return pre;
-            };
-            if (flag === flagStatus.UPDATE)
-              (
-                setCascaderOptions as React.Dispatch<
-                  React.SetStateAction<Option[] & menuListItem[]>
-                >
-              )((pre: Option[] & menuListItem[]) => {
-                return recursion(pre);
-              });
-
             if (flag === flagStatus.UPDATE) setEditVisible(true);
             else setCreateVisible(true);
           }}
@@ -88,8 +82,6 @@ const CreateOrUpdateMenu: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        console.log(values);
-        console.log(flatOptions);
         let parentID: number = 1;
         if (values.parentID === '根节点') parentID = 1;
         else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
@@ -98,7 +90,6 @@ const CreateOrUpdateMenu: React.FC<{
           if (typeof values.parentID === 'string') {
             const name = values.parentID as string;
             parentID = flatOptions.filter((item) => item.name === name)[0].id;
-            console.log(parentID);
           } else parentID = values.parentID[0];
         }
         const body = {
@@ -127,19 +118,13 @@ const CreateOrUpdateMenu: React.FC<{
           },
         ]}
         fieldProps={{
-          options: cascaderOptions,
+          options:
+            flag === flagStatus.UPDATE
+              ? recursion(options as menuListItem[] & Option[])
+              : cascaderOptions,
           disabled: flag !== flagStatus.UPDATE,
           expandTrigger: 'hover',
           changeOnSelect: true,
-          // onChange: (value, option) => {
-          //   console.log(value[0]);
-          //   console.log(option[0]);
-
-          //   if (value[0] === option[0].id) {
-          //     value = '';
-          //     return message.error('不能选择本身');
-          //   }
-          // },
         }}
       />
       <ProFormText
