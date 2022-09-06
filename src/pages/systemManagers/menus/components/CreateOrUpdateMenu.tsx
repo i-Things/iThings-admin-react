@@ -25,10 +25,11 @@ const CreateOrUpdateMenu: React.FC<{
   const editFormRef = useRef<any>();
 
   const options = cloneDeep(cascaderOptions);
-  const rootFlag = flag === flagStatus.CREATE || record?.parentID === 1;
+  // const rootFlag = flag === flagStatus.CREATE || record?.parentID === 1;
+
   const initialValues = {
     ...record,
-    parentID: rootFlag ? '根节点' : record?.name,
+    parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
   };
 
   const recursion = (pre: Option[] & menuListItem[]) => {
@@ -64,7 +65,7 @@ const CreateOrUpdateMenu: React.FC<{
           type="primary"
           onClick={() => {
             if (flag === flagStatus.UPDATE) setEditVisible(true);
-            else setCreateVisible(true);
+            setCreateVisible(true);
           }}
         >
           {returnTitle[flag]}
@@ -75,7 +76,7 @@ const CreateOrUpdateMenu: React.FC<{
       modalProps={{
         onCancel: () => {
           if (flag === flagStatus.UPDATE) setEditVisible(false);
-          else setCreateVisible(false);
+          setCreateVisible(false);
         },
       }}
       submitTimeout={2000}

@@ -66,6 +66,8 @@ const MenuList: React.FC = () => {
       title: '排序',
       dataIndex: 'order',
       hideInSearch: true,
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.order - b.order,
     },
 
     {
