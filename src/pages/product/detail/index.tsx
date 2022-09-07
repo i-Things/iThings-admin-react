@@ -1,5 +1,5 @@
 import { postThingsProductInfoRead } from '@/services/iThingsapi/chanpinguanli';
-import { ProductInfo } from '@/utils/const';
+import { PRODUCT_INFO } from '@/utils/const';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'ahooks';
 import { Card, Descriptions, message, Tabs } from 'antd';
@@ -12,12 +12,10 @@ import TopicPage from './pages/topic/index';
 const { TabPane } = Tabs;
 
 const IndexPage: React.FC = () => {
-  const [productInfo, setProductInfo] = useState<ProductInfo>({ productName: '' });
+  const [productInfo, setProductInfo] = useState<PRODUCT_INFO>({ productName: '' });
   const params = useParams() as { id: string };
   const productID = params.id ?? '';
-  const onChange = (key: string) => {
-    console.log(key);
-  };
+  const onChange = (/*key: string*/) => {};
   const { run } = useRequest(postThingsProductInfoRead, {
     defaultParams: [{ productID: productID }],
     onSuccess: (result) => {

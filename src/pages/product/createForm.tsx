@@ -1,11 +1,11 @@
 import { postThingsProductInfoCreate } from '@/services/iThingsapi/chanpinguanli';
 import {
-  authModeForm,
-  autoRegisterForm,
-  dataProtoForm,
-  deviceTypeFrom,
-  netTypeForm,
-  ProductInfo,
+  AUTH_MODE_FORM,
+  AUTO_REGISTER_FORM,
+  DATA_PROTO_FORM,
+  DEVICE_TYPE_FORM,
+  NET_TYPE_FORM,
+  PRODUCT_INFO,
 } from '@/utils/const';
 import {
   ModalForm,
@@ -26,7 +26,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
   const openCreateModal = async () => {
     setCreateVisible(true);
   };
-  const formCommit = async (values: ProductInfo) => {
+  const formCommit = async (values: PRODUCT_INFO) => {
     const body = values;
     return postThingsProductInfoCreate(body)
       .then((res) => {
@@ -47,7 +47,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
     wrapperCol: { span: 32 },
   };
   return (
-    <ModalForm<ProductInfo>
+    <ModalForm<PRODUCT_INFO>
       {...formItemLayout}
       title="创建产品"
       layout="horizontal"
@@ -87,26 +87,31 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
         width="md"
         name="deviceType"
         label="设备类型"
-        request={async () => deviceTypeFrom}
+        request={async () => DEVICE_TYPE_FORM}
       />
       <ProFormSelect
         width="md"
         name="authMode"
         label="认证方式"
-        request={async () => authModeForm}
+        request={async () => AUTH_MODE_FORM}
       />
       <ProFormSelect
         width="md"
         name="dataProto"
         label="数据协议"
-        request={async () => dataProtoForm}
+        request={async () => DATA_PROTO_FORM}
       />
-      <ProFormSelect width="md" name="netType" label="通讯方式" request={async () => netTypeForm} />
+      <ProFormSelect
+        width="md"
+        name="netType"
+        label="通讯方式"
+        request={async () => NET_TYPE_FORM}
+      />
       <ProFormSelect
         width="md"
         name="autoRegister"
         label="动态注册"
-        request={async () => autoRegisterForm}
+        request={async () => AUTO_REGISTER_FORM}
       />
       <ProFormTextArea
         name="description"

@@ -3,7 +3,7 @@ import {
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
-import { deviceTypeValue, ProductInfo } from '@/utils/const';
+import { DEVICE_TYPE_VALUE, PRODUCT_INFO } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -23,7 +23,7 @@ type queryParam = {
   productName: string;
 };
 
-const columns: ProColumns<ProductInfo>[] = [
+const columns: ProColumns<PRODUCT_INFO>[] = [
   {
     key: 'productName',
     title: '产品名称',
@@ -39,7 +39,7 @@ const columns: ProColumns<ProductInfo>[] = [
     key: 'deviceType',
     title: '设备类型',
     dataIndex: 'deviceType',
-    valueEnum: deviceTypeValue,
+    valueEnum: DEVICE_TYPE_VALUE,
   },
   {
     key: 'createdTime',
@@ -97,7 +97,7 @@ const IndexPage: React.FC = () => {
 
   const queryPage = async (
     params: queryParam,
-  ): Promise<{ data?: ProductInfo[]; total?: number }> => {
+  ): Promise<{ data?: PRODUCT_INFO[]; total?: number }> => {
     const body = {
       page: {
         size: params.pageSize,
@@ -121,7 +121,7 @@ const IndexPage: React.FC = () => {
   };
   return (
     <PageContainer>
-      <ProTable<ProductInfo, queryParam>
+      <ProTable<PRODUCT_INFO, queryParam>
         rowKey="productID"
         actionRef={actionRef}
         request={queryPage}

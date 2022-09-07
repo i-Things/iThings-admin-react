@@ -1,25 +1,14 @@
+import { EVENT_TYPE_DATA, TIME_TYPE_DATA } from '@/utils/const';
 import type { RadioChangeEvent } from 'antd';
 import { DatePicker, Form, Input, Radio, Select, Space, Switch, Table } from 'antd';
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import React, { useState } from 'react';
+
 const { Search } = Input;
 const { Option, OptGroup } = Select;
 
-const eventTypeData = [
-  { id: 0, name: '全部事件类型' },
-  { id: 1, name: '告警' },
-  { id: 2, name: '故障' },
-  { id: 3, name: '信息' },
-];
-const timeTypeData = [
-  { id: 0, name: '30分钟' },
-  { id: 1, name: '1小时' },
-  { id: 2, name: '今天' },
-  { id: 3, name: '昨天' },
-  { id: 4, name: '近7天' },
-];
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -303,7 +292,7 @@ const DevicePage: React.FC = () => {
               style={{ width: 150, marginRight: 20 }}
               onChange={handleEventChange}
             >
-              {eventTypeData.map((type) => (
+              {EVENT_TYPE_DATA.map((type) => (
                 <Option key={type.id}>{type.name}</Option>
               ))}
             </Select>
@@ -311,7 +300,7 @@ const DevicePage: React.FC = () => {
             ''
           )}
           <Radio.Group value={timeType} onChange={timeTypeLogChange} style={{ marginRight: 20 }}>
-            {timeTypeData.map((type) => (
+            {TIME_TYPE_DATA.map((type) => (
               <Radio.Button value={type.id} key={type.id}>
                 {type.name}
               </Radio.Button>

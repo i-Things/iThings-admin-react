@@ -1,16 +1,16 @@
 import { EditForm } from '@/pages/product/detail/pages/productInfo/editForm';
 import {
-  autoRegisterValue,
-  dataProtoValue,
-  deviceTypeValue,
-  netTypeValue,
-  ProductInfo,
+  AUTO_REGISTER_VALUE,
+  DATA_PROTO_VALUE,
+  DEVICE_TYPE_VALUE,
+  NET_TYPE_VALUE,
+  PRODUCT_INFO,
 } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { Descriptions } from 'antd';
 import React from 'react';
 interface Props {
-  productInfo: ProductInfo;
+  productInfo: PRODUCT_INFO;
   onChange: () => void;
 }
 
@@ -24,16 +24,16 @@ const ProductInfoPage: React.FC<Props> = ({ productInfo, onChange }) => {
     >
       <Descriptions.Item label="产品名称">{productInfo.productName}</Descriptions.Item>
       <Descriptions.Item label="设备类型">
-        {deviceTypeValue[productInfo?.deviceType ?? 1].text}
+        {DEVICE_TYPE_VALUE[productInfo?.deviceType ?? 1].text}
       </Descriptions.Item>
       <Descriptions.Item label="通讯方式">
-        {netTypeValue[productInfo?.netType ?? 1].text}
+        {NET_TYPE_VALUE[productInfo?.netType ?? 1].text}
       </Descriptions.Item>
       <Descriptions.Item label="数据协议">
-        {dataProtoValue[productInfo?.dataProto ?? 1].text}
+        {DATA_PROTO_VALUE[productInfo?.dataProto ?? 1].text}
       </Descriptions.Item>
       <Descriptions.Item label="动态注册">
-        {autoRegisterValue[productInfo?.autoRegister ?? 1].text}
+        {AUTO_REGISTER_VALUE[productInfo?.autoRegister ?? 1].text}
       </Descriptions.Item>
       <Descriptions.Item label="创建时间">
         {timestampToDateStr(Number(productInfo.createdTime))}

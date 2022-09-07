@@ -1,11 +1,11 @@
 import { postThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
 import {
-  authModeForm,
-  autoRegisterForm,
-  dataProtoForm,
-  deviceTypeFrom,
-  netTypeForm,
-  ProductInfo,
+  AUTH_MODE_FORM,
+  AUTO_REGISTER_FORM,
+  DATA_PROTO_FORM,
+  DEVICE_TYPE_FORM,
+  NET_TYPE_FORM,
+  PRODUCT_INFO,
 } from '@/utils/const';
 import { EditOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
@@ -20,7 +20,7 @@ import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 
 interface Props {
-  productInfo: ProductInfo;
+  productInfo: PRODUCT_INFO;
   onChange: () => void;
 }
 
@@ -29,17 +29,10 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
   const openCreateModal = async () => {
     setCreateVisible(true);
   };
-  const formCommit = async (value: ProductInfo) => {
+  const formCommit = async (value: PRODUCT_INFO) => {
     const body = {
+      ...value,
       productID: productInfo?.productID ?? '',
-      productName: value.productName,
-      netType: value.netType,
-      dataProto: value.dataProto,
-      deviceType: value.deviceType,
-      authMode: value.authMode,
-      autoRegister: value.autoRegister,
-      categoryID: value.categoryID,
-      description: value.description,
     };
     return postThingsProductInfoUpdate(body)
       .then((res) => {
@@ -61,7 +54,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
   };
   const formRef = useRef<ProFormInstance>();
   return (
-    <ModalForm<ProductInfo>
+    <ModalForm<PRODUCT_INFO>
       {...formItemLayout}
       title="编辑产品信息"
       layout="horizontal"
@@ -103,34 +96,34 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
         name="deviceType"
         label="设备类型"
         disabled
-        request={async () => deviceTypeFrom}
+        request={async () => DEVICE_TYPE_FORM}
       />
       <ProFormSelect
         width="md"
         name="authMode"
         label="认证方式"
         disabled
-        request={async () => authModeForm}
+        request={async () => AUTH_MODE_FORM}
       />
       <ProFormSelect
         width="md"
         name="dataProto"
         label="数据协议"
         disabled
-        request={async () => dataProtoForm}
+        request={async () => DATA_PROTO_FORM}
       />
       <ProFormSelect
         width="md"
         disabled
         name="netType"
         label="通讯方式"
-        request={async () => netTypeForm}
+        request={async () => NET_TYPE_FORM}
       />
       <ProFormSelect
         width="md"
         name="autoRegister"
         label="动态注册"
-        request={async () => autoRegisterForm}
+        request={async () => AUTO_REGISTER_FORM}
       />
       <ProFormTextArea
         name="description"
