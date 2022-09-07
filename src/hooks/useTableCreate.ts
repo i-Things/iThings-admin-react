@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 const useTableCreate = () => {
   const [createVisible, setCreateVisible] = useState(false);
-  const createHanlder = async <T>(
-    createApi: any,
+  const createHanlder = async <T extends Function, k>(
+    createApi: T,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    body: T,
+    body: k,
   ) => {
     let res;
     try {
@@ -20,7 +20,7 @@ const useTableCreate = () => {
     } catch (error) {
       message.error((error as Error)?.message);
     }
-    return res.status === 200 ? true : false;
+    return res.status === 200;
   };
   return {
     createHanlder,

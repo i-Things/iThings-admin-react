@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 const useTableUpdate = () => {
   const [editVisible, setEditVisible] = useState(false);
-  const updateHanlder = async <T>(
-    updateApi: any,
+  const updateHanlder = async <T extends Function, K>(
+    updateApi: T,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    body: T,
+    body: K,
   ) => {
     let res;
     try {
@@ -20,7 +20,7 @@ const useTableUpdate = () => {
     } catch (error) {
       message.error((error as Error)?.message);
     }
-    return res.status === 200 ? true : false;
+    return res.status === 200;
   };
   return {
     updateHanlder,

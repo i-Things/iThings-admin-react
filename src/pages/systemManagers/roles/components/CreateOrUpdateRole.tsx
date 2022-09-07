@@ -16,11 +16,12 @@ const CreateOrUpdateRole: React.FC<{
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
+  type CreateProp = typeof postSystemRoleCreate;
+  type UpdateProp = typeof postSystemRoleUpdate;
   return (
     <ModalForm<RoleListItem>
       width={550}
       initialValues={record}
-      key={Math.random()}
       formRef={editFormRef}
       title={flag === 'update' ? '编辑角色信息' : '新建角色'}
       trigger={
@@ -52,10 +53,19 @@ const CreateOrUpdateRole: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        const body = { ...values, id: record?.id as number };
+        const body = { ...values, id: record?.id as string };
         if (flag === 'update')
-          return await updateHanlder<RoleListItem>(postSystemRoleUpdate, actionRef, body);
-        else return await createHanlder<RoleListItem>(postSystemRoleCreate, actionRef, body);
+          return await updateHanlder<UpdateProp, RoleListItem>(
+            postSystemRoleUpdate,
+            actionRef,
+            body,
+          );
+        else
+          return await createHanlder<CreateProp, RoleListItem>(
+            postSystemRoleCreate,
+            actionRef,
+            body,
+          );
       }}
     >
       <ProFormText

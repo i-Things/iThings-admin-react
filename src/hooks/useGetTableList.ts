@@ -2,20 +2,21 @@ import { spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
-import type { menuListItem } from './../pages/systemManagers/menus/types.d';
-import type { Option } from './types';
+import type { MenuListItem, MenuOption } from './../pages/systemManagers/menus/types.d';
 const useGetTableList = () => {
-  const [cascaderOptions, setCascaderOptions] = useState<Option[] & menuListItem[]>([]);
-  const [flatOptions, setFlatOptions] = useState<menuListItem[]>([]);
-
-  const queryPage = async (
-    queryApi: any,
+  const [cascaderOptions, setCascaderOptions] = useState<MenuOption[]>([]);
+  const [flatOptions, setFlatOptions] = useState<MenuListItem[]>([]);
+  // type fuc = (
+  //   body: ParamsType & { page: { page?: number; size?: number } },
+  // ) => Promise<{ data: { list: Option & ParamsType[] }; total: number }>;
+  const queryPage = async <T extends Function, K>(
+    queryApi: T,
     params: ParamsType & {
       pageSize?: number;
       current?: number;
       keyword?: string;
     },
-  ): Promise<any> => {
+  ): Promise<{ data: K[]; total: number }> => {
     const body = {
       ...params,
       page: {
@@ -28,7 +29,7 @@ const useGetTableList = () => {
       res = await queryApi(body);
       if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
         setFlatOptions(res.data.list);
-        const treeList = res.data.list.map((item: Option & menuListItem) => {
+        const treeList = res.data.list.map((item: MenuOption) => {
           return {
             ...item,
             key: item?.id + '',
@@ -51,15 +52,13 @@ const useGetTableList = () => {
           total: 0,
         };
       }
-      if (res.code === 200) {
-        return {
-          data: res?.data?.list,
-          total: res?.data?.total,
-        };
-      }
     } catch (error) {
       message.error((error as Error)?.message);
     }
+    return {
+      data: res?.data?.list,
+      total: res?.data?.total,
+    };
   };
   return {
     queryPage,

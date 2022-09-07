@@ -1,4 +1,3 @@
-import type { Option } from '@/hooks/types';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
 import {
@@ -6,6 +5,7 @@ import {
   postSystemMenu__openAPI__delete,
 } from '@/services/iThingsapi/caidanguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
+import { timestampToDateStr } from '@/utils/date';
 
 import { spanTree } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -14,7 +14,8 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Divider, message } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
-import type { menuListItem } from './types';
+import type { MenuListItem } from './types';
+
 export enum flagStatus {
   ADD = 'add',
   CREATE = 'create',
@@ -24,20 +25,20 @@ const MenuList: React.FC = () => {
   const { queryPage, cascaderOptions, flatOptions } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
-
+  type QueryProp = typeof postSystemMenuIndex;
   // 删除操作
-  const showDeleteConfirm = (record: menuListItem) => {
+  const showDeleteConfirm = (record: MenuListItem) => {
     const body = {
       id: record?.id,
     };
-    deleteHanlder(postSystemMenu__openAPI__delete, actionRef, {
+    deleteHanlder<{ id: number }>(postSystemMenu__openAPI__delete, actionRef, {
       title: '是否删除当前菜单',
       content: `所选菜单: ${record?.name ?? '未知菜单'},  删除后无法恢复，请确认`,
       body,
     });
   };
 
-  const columns: ProColumns<menuListItem & Option>[] = [
+  const columns: ProColumns<MenuListItem>[] = [
     {
       title: '编号',
       dataIndex: 'id',
@@ -51,11 +52,15 @@ const MenuList: React.FC = () => {
       title: '图标',
       dataIndex: 'icon',
       hideInSearch: true,
-      // valueType: 'textarea',
     },
     {
       title: '路由path',
       dataIndex: 'path',
+    },
+    {
+      title: '路由重定向',
+      dataIndex: 'redirect',
+      hideInSearch: true,
     },
     {
       title: '父节点',
@@ -75,15 +80,20 @@ const MenuList: React.FC = () => {
       dataIndex: 'component',
       hideInSearch: true,
     },
+
+    {
+      title: '创建时间',
+      dataIndex: 'createdTime',
+      valueType: 'dateTime',
+      search: false,
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
-          {/* <Button type="primary" onClick={() => {}}>
-            添加子菜单
-          </Button> */}
           <CreateOrUpdateMenu
             flag={flagStatus.ADD}
             record={record}
@@ -118,7 +128,7 @@ const MenuList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<menuListItem>
+      <ProTable<MenuListItem>
         headerTitle="菜单管理"
         actionRef={actionRef}
         rowKey="id"
@@ -132,7 +142,7 @@ const MenuList: React.FC = () => {
             flatOptions={flatOptions}
           />,
         ]}
-        request={(params) => queryPage(postSystemMenuIndex, params)}
+        request={(params) => queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params)}
         columns={columns}
         pagination={{ pageSize: 999999 }}
         size={'middle'}

@@ -21,7 +21,8 @@ const CreateOrUpdateUser: React.FC<{
   // const [loading, setLoading] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
   const editFormRef = useRef<ProFormInstance<UserListItem>>();
-
+  type CreateProp = typeof postSystemUserCreate;
+  type UpdateProp = typeof postSystemUserUpdate;
   // const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   //   const reader = new FileReader();
   //   reader.addEventListener('load', () => callback(reader.result as string));
@@ -80,7 +81,7 @@ const CreateOrUpdateUser: React.FC<{
           type="primary"
           onClick={() => {
             if (flag === 'update') setEditVisible(true);
-            else setCreateVisible(true);
+            setCreateVisible(true);
           }}
         >
           {flag === 'update' ? (
@@ -97,7 +98,7 @@ const CreateOrUpdateUser: React.FC<{
       modalProps={{
         onCancel: () => {
           if (flag === 'update') setEditVisible(false);
-          else setCreateVisible(false);
+          setCreateVisible(false);
         },
       }}
       submitTimeout={2000}
@@ -107,11 +108,16 @@ const CreateOrUpdateUser: React.FC<{
         // const modalFlag: boolean = false;
         const body = { ...values, reqType: 'pwd' };
         if (flag === 'update')
-          return await updateHanlder<UserListItem>(postSystemUserUpdate, actionRef, {
+          return await updateHanlder<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
             ...body,
             uid: record?.uid as string,
           });
-        else return await createHanlder<UserListItem>(postSystemUserCreate, actionRef, body);
+        else
+          return await createHanlder<CreateProp, UserListItem>(
+            postSystemUserCreate,
+            actionRef,
+            body,
+          );
       }}
     >
       <ProFormText

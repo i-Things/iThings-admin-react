@@ -3,10 +3,16 @@ import type { ActionType } from '@ant-design/pro-table';
 import { message, Modal } from 'antd';
 const { confirm } = Modal;
 const useTableDelete = () => {
-  const deleteHanlder = (
-    deleteApi: any,
+  const deleteHanlder = <T,>(
+    deleteApi: (
+      body: T,
+      options?: Record<string, any> | undefined,
+    ) => Promise<{
+      code: number;
+      msg: string;
+    }>,
     actionRef: React.MutableRefObject<ActionType | undefined>,
-    deleteMap: { title: string; content: string; body: { uid?: string; id?: number } },
+    deleteMap: { title: string; content: string; body: T },
   ) => {
     const { title, content, body } = deleteMap;
     confirm({

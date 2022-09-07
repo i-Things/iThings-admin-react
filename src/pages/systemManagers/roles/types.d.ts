@@ -1,6 +1,6 @@
-import type { menuListItem } from '../menus/types';
+import type { MenuListItem } from '../menus/types';
 export interface RoleListItem {
-  id: number;
+  id: string;
   name: string;
   remark: string;
   status: string;
@@ -9,11 +9,11 @@ export interface RoleListItem {
   roleMenuID?: number[];
 }
 
-export type treeListItem = menuListItem & {
+export interface TreeListItem extends MenuListItem {
   key: string;
   title: string;
   label: string;
-};
+}
 
 export interface RoleListPagination {
   total: number;

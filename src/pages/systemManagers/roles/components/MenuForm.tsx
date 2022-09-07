@@ -4,7 +4,7 @@ import { spanTree } from '@/utils/utils';
 import { Button, Form, Input, Tree } from 'antd';
 import type { DataNode } from 'antd/lib/tree';
 import React, { useEffect, useState } from 'react';
-import type { RoleListItem, treeListItem } from '../types.d';
+import type { RoleListItem, TreeListItem } from '../types.d';
 
 const FormItem = Form.Item;
 
@@ -14,14 +14,14 @@ const MenuForm: React.FC<{
   onSubmit: (values: { id: number; menuID: number[] }) => void;
 }> = (props) => {
   const { queryPage } = useGetTableList();
-
   const [form] = Form.useForm();
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedKey, setSelectedKey] = useState<string[] | number[]>([]);
-
   const { drawerVisible, currentData, onSubmit } = props;
+
+  type QueryProp = typeof postSystemMenuIndex;
 
   const handleFinish = () => {
     const body = {
@@ -35,30 +35,31 @@ const MenuForm: React.FC<{
     if (drawerVisible) {
       setSelectedKey([]);
       setCheckedKeys([]);
-      queryPage(postSystemMenuIndex, { page: 1, size: 999999 }).then((res) => {
-        const treeList = res.data.map((item: treeListItem) => {
-          return {
-            ...item,
-            key: item?.id + '',
-            label: item?.name,
-            title: item?.name,
-          };
-        });
-        const tr: DataNode[] = spanTree(treeList, 1, 'parentID');
+      queryPage<QueryProp, TreeListItem>(postSystemMenuIndex, { page: 1, size: 999999 }).then(
+        (res) => {
+          const treeList = res.data.map((item: TreeListItem) => {
+            return {
+              ...item,
+              key: item?.id + '',
+              label: item?.name,
+              title: item?.name,
+            };
+          });
+          const tr: DataNode[] = spanTree(treeList, 1, 'parentID');
 
-        setTreeData(tr);
-        if (currentData?.roleMenuID) {
-          const map = currentData?.roleMenuID.map((r) => r + '');
-          setSelectedKey(map);
-          setCheckedKeys(map);
-        }
-      });
+          setTreeData(tr);
+          if (currentData?.roleMenuID) {
+            const map = currentData?.roleMenuID.map((r) => r + '');
+            setSelectedKey(map);
+            setCheckedKeys(map);
+          }
+        },
+      );
     }
   }, [drawerVisible]);
 
   const onCheck = (checked: React.Key[]) => {
     setCheckedKeys(checked);
-
     setSelectedKey(checked.map((i) => Number(i)));
   };
   const renderContent = () => {

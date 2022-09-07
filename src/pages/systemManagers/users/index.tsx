@@ -17,6 +17,9 @@ const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHanlder } = useTableDelete();
   const actionRef = useRef<ActionType>();
+  type QueryProp = typeof postSystemUserIndex;
+  // type returnQueryProps = ReturnType<queryProps>
+  // type returnQueryPropsItem = returnQueryProps.data.list
 
   // 获取数字验证码
   // const fetchCaptcha = async () => {
@@ -35,9 +38,9 @@ const UserList: React.FC = () => {
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; userName: string }) => {
     const body = {
-      uid: record?.uid,
+      uid: record?.uid ?? '',
     };
-    deleteHanlder(postSystemUser__openAPI__delete, actionRef, {
+    deleteHanlder<{ uid: string }>(postSystemUser__openAPI__delete, actionRef, {
       title: '是否删除当前用户',
       content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
       body,
@@ -79,7 +82,7 @@ const UserList: React.FC = () => {
       dataIndex: 'createdTime',
       valueType: 'dateTime',
       search: false,
-      renderText: (text) => timestampToDateStr(text),
+      renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '注册IP',
@@ -139,7 +142,7 @@ const UserList: React.FC = () => {
         toolBarRender={() => [
           <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
         ]}
-        request={(params) => queryPage(postSystemUserIndex, { ...params })}
+        request={(params) => queryPage<QueryProp, UserListItem>(postSystemUserIndex, { ...params })}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}

@@ -26,13 +26,14 @@ const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [currentData, setCurrentData] = useState<RoleListItem>();
-
+  type QueryProp = typeof postSystemRoleIndex;
+  type UpdateProp = typeof postSystemRoleRoleMenuUpdate;
   // 删除操作
-  const showDeleteConfirm = (record: { id: number; name: string }) => {
+  const showDeleteConfirm = (record: { id: string; name: string }) => {
     const body = {
       id: record?.id,
     };
-    deleteHanlder(postSystemRole__openAPI__delete, actionRef, {
+    deleteHanlder<{ id: string }>(postSystemRole__openAPI__delete, actionRef, {
       title: '是否删除当前角色',
       content: `所选角色: ${record?.name ?? '未知角色'},  删除后无法恢复，请确认`,
       body,
@@ -78,7 +79,7 @@ const RoleList: React.FC = () => {
       dataIndex: 'createdTime',
       valueType: 'dateTime',
       hideInSearch: true,
-      renderText: (text) => timestampToDateStr(text),
+      renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '操作',
@@ -123,7 +124,7 @@ const RoleList: React.FC = () => {
         toolBarRender={() => [
           <CreateOrUpdateRole flag="create" actionRef={actionRef} key="createRole" />,
         ]}
-        request={(params) => queryPage(postSystemRoleIndex, params)}
+        request={(params) => queryPage<QueryProp, RoleListItem>(postSystemRoleIndex, params)}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
@@ -143,7 +144,13 @@ const RoleList: React.FC = () => {
               drawerVisible={drawerVisible}
               currentData={currentData as RoleListItem}
               onSubmit={async (value) => {
-                await updateHanlder(postSystemRoleRoleMenuUpdate, actionRef, value);
+                await updateHanlder<
+                  UpdateProp,
+                  {
+                    id: number;
+                    menuID: number[];
+                  }
+                >(postSystemRoleRoleMenuUpdate, actionRef, value);
                 setDrawerVisible(false);
               }}
             />

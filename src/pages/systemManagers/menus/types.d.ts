@@ -1,4 +1,5 @@
-export interface menuListItem {
+import type { Option } from '@/hooks/types';
+export interface MenuListItem {
   id: number;
   name: string;
   icon: string;
@@ -6,5 +7,9 @@ export interface menuListItem {
   parentID: number | string | number[];
   order: number;
   component: string;
+  createdTime: string;
   redirect?: string;
+  children?: [];
 }
+
+export interface MenuOption extends MenuListItem, Option {}

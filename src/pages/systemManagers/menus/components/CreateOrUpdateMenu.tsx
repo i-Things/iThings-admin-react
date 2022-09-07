@@ -1,4 +1,3 @@
-import type { Option } from '@/hooks/types';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
@@ -11,14 +10,14 @@ import cloneDeep from 'lodash/cloneDeep';
 import { useRef } from 'react';
 import { flagStatus } from '..';
 import '../styles.less';
-import type { menuListItem } from '../types';
+import type { MenuListItem, MenuOption } from '../types';
 
 const CreateOrUpdateMenu: React.FC<{
   flag: flagStatus;
-  record?: menuListItem;
+  record?: MenuListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
-  cascaderOptions?: menuListItem[] & Option[];
-  flatOptions: menuListItem[];
+  cascaderOptions?: MenuOption[];
+  flatOptions: MenuListItem[];
 }> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
   const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
   const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
@@ -27,12 +26,14 @@ const CreateOrUpdateMenu: React.FC<{
   const options = cloneDeep(cascaderOptions);
   // const rootFlag = flag === flagStatus.CREATE || record?.parentID === 1;
 
+  type CreateProp = typeof postSystemMenuCreate;
+  type UpdateProp = typeof postSystemMenuUpdate;
   const initialValues = {
     ...record,
     parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
   };
 
-  const recursion = (pre: Option[] & menuListItem[]) => {
+  const recursion = (pre: MenuOption[]) => {
     pre.map((item) => {
       if (item.children) recursion(item?.children);
       if (item.id === record?.id) item.disabled = true;
@@ -55,7 +56,7 @@ const CreateOrUpdateMenu: React.FC<{
   };
 
   return (
-    <ModalForm<menuListItem>
+    <ModalForm<MenuListItem>
       width={550}
       initialValues={initialValues}
       formRef={editFormRef}
@@ -100,8 +101,17 @@ const CreateOrUpdateMenu: React.FC<{
           parentID,
         };
         if (flag === flagStatus.UPDATE)
-          return await updateHanlder<menuListItem>(postSystemMenuUpdate, actionRef, body);
-        else return await createHanlder<menuListItem>(postSystemMenuCreate, actionRef, body);
+          return await updateHanlder<UpdateProp, MenuListItem>(
+            postSystemMenuUpdate,
+            actionRef,
+            body,
+          );
+        else
+          return await createHanlder<CreateProp, MenuListItem>(
+            postSystemMenuCreate,
+            actionRef,
+            body,
+          );
       }}
     >
       <section className="menu-tool-tip">
@@ -120,9 +130,7 @@ const CreateOrUpdateMenu: React.FC<{
         ]}
         fieldProps={{
           options:
-            flag === flagStatus.UPDATE
-              ? recursion(options as menuListItem[] & Option[])
-              : cascaderOptions,
+            flag === flagStatus.UPDATE ? recursion(options as MenuOption[]) : cascaderOptions,
           disabled: flag !== flagStatus.UPDATE,
           expandTrigger: 'hover',
           changeOnSelect: true,
