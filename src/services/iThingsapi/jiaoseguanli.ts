@@ -45,9 +45,7 @@ export async function postSystemRole__openAPI__delete(
 /** 获取角色列表 POST /api/v1/system/role/index */
 export async function postSystemRoleIndex(
   body: {
-    page: { page?: number; size?: number };
-    /** 按编号查找角色 */
-    id?: number;
+    page?: { page?: number; size?: number };
     /** 按名称查找角色 */
     name?: string;
     /** 按状态查找角色 */
@@ -57,7 +55,7 @@ export async function postSystemRoleIndex(
 ) {
   return request<{
     total: number;
-    data: {
+    list: {
       id?: number;
       name?: string;
       remark?: string;

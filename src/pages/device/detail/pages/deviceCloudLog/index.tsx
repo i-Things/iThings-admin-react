@@ -1,9 +1,14 @@
+import {
+  postThingsDeviceMsgHubLogIndex,
+  postThingsDeviceMsgSchemaLatestIndex,
+} from '@/services/iThingsapi/shebeixiaoxi';
 import type { RadioChangeEvent } from 'antd';
 import { DatePicker, Form, Input, Radio, Select, Space, Switch, Table } from 'antd';
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import type { attrType, logParamsType, modelType, onoffType } from './data';
 const { Search } = Input;
 const { Option, OptGroup } = Select;
 
@@ -27,7 +32,7 @@ const layout = {
 
 const DevicePage: React.FC = () => {
   const [logType, setLogType] = useState<string>('model');
-  const [modelTypeLog, setModelTypeLog] = useState<string>('attr');
+  const [modelTypeLog, setModelTypeLog] = useState<string>('property');
   const [isRefresh, setRefresh] = useState<boolean>(false);
   const [eventType, setEventType] = useState<string>('0');
   const [timeType, setTimeType] = useState<number>(0);
@@ -37,6 +42,64 @@ const DevicePage: React.FC = () => {
   ]);
   const [attrKeys, setAttrKeys] = useState<string>('');
   const [behaviorKeys, setBehaviorKeys] = useState<string>('');
+
+  // 表格数据
+  const [modelData, setModelData] = useState<attrType[]>([]);
+  const [onoffData, setOnOffData] = useState<onoffType[]>([]);
+  const [contentData, setContentData] = useState<onoffType[]>([]);
+
+  const dataSource: any[] = [];
+
+  // 获取物模型属性日志
+  const fetchModelData = async () => {
+    const body: modelType = {
+      productID: '24EGnrP01ig',
+      deviceName: 'test5',
+      method: modelTypeLog,
+    };
+    if (attrKeys) {
+      body.dataID = [attrKeys];
+    }
+    postThingsDeviceMsgSchemaLatestIndex(body).then((res) => {
+      setModelData(res?.data?.list ?? []);
+    });
+  };
+
+  // 获取上下线日志
+  const fetchOnOffData = async () => {
+    const body: logParamsType = {
+      productID: '24EGnrP01ig',
+      deviceName: 'test5',
+      actions: ['connected', 'disconnected'],
+      timeStart: moment(timeRange[0]).valueOf() + '',
+      timeEnd: moment(timeRange[1]).valueOf() + '',
+      page: {
+        page: 1,
+        size: 20,
+      },
+    };
+    postThingsDeviceMsgHubLogIndex(body).then((res) => {
+      setOnOffData(res?.data?.list ?? []);
+    });
+  };
+
+  // 获取内容日志
+  const fetchContentData = async () => {
+    const body: logParamsType = {
+      productID: '24EGnrP01ig',
+      deviceName: 'test5',
+      actions: ['property', 'event', 'action'],
+      timeStart: moment(timeRange[0]).valueOf() + '',
+      timeEnd: moment(timeRange[1]).valueOf() + '',
+      page: {
+        page: 1,
+        size: 20,
+      },
+    };
+    postThingsDeviceMsgHubLogIndex(body).then((res) => {
+      setContentData(res?.data?.list ?? []);
+    });
+  };
 
   // 设置时间范围
   const resetTimeRange = (value: number) => {
@@ -70,60 +133,103 @@ const DevicePage: React.FC = () => {
     setLogType(value);
     setTimeType(0);
     resetTimeRange(0);
+    if (value === 'model') {
+      fetchModelData();
+    } else if (value === 'onoffline') {
+      fetchOnOffData();
+    } else {
+      fetchContentData();
+    }
   };
   const modelTypeLogChange = (e: RadioChangeEvent) => {
-    setModelTypeLog(e.target.value);
+    const value = e.target.value;
+    setModelTypeLog(value);
     setTimeType(0);
     resetTimeRange(0);
     setAttrKeys('');
     setBehaviorKeys('');
     setEventType('0');
+    console.log('fqq', value, modelTypeLog);
   };
   const refreshChange = (checked: boolean) => {
     console.log(checked, isRefresh);
     setRefresh(checked);
-    console.log(checked, isRefresh);
   };
   const attrSearch = (value: string) => {
     setAttrKeys(value);
-    console.log(attrKeys);
   };
   const behaivorSearch = (value: string) => {
     setBehaviorKeys(value);
     console.log(behaviorKeys);
   };
+  const handleEventChange = (value: string) => {
+    setEventType(value);
+  };
 
-  const dataSource: any[] = [];
+  const timeTypeLogChange = (e: RadioChangeEvent) => {
+    const value: number = e.target.value;
+    setTimeType(value);
+    resetTimeRange(value);
+    if (logType === 'onoffline') {
+      fetchOnOffData();
+    } else if (logType === 'content') {
+      fetchContentData();
+    }
+  };
+
+  const timeRangeChange = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
+    setTimeType(-1);
+    setTimeRange(value);
+    if (logType === 'onoffline') {
+      fetchOnOffData();
+    } else if (logType === 'content') {
+      fetchContentData();
+    }
+  };
+
+  const handleLogTypeChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+  const disabledRangeDate = (current: any) => {
+    return current > moment() || current < moment().add(-7, 'd');
+  };
+
   const attrColumns = [
     {
-      title: '标识符',
-      dataIndex: 'name',
-      key: 'name',
+      title: '数据ID',
+      dataIndex: 'dataID',
+      key: 'dataID',
+      render: (val: string) => val || '-',
     },
     {
-      title: '功能名称',
-      dataIndex: 'age',
-      key: 'age',
+      title: '发送的参数',
+      dataIndex: 'sendValue',
+      key: 'sendValue',
+      render: (val: string) => val || '-',
     },
     {
-      title: '历史数据',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '数据类型',
-      dataIndex: 'address',
-      key: 'address',
+      title: '事件类型',
+      dataIndex: 'type',
+      key: 'type',
+      render: (val: string) => val || '-',
     },
     {
       title: '最新值',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'getValue',
+      key: 'getValue',
+      render: (val: string) => val || '-',
     },
     {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      title: '发生时间',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: (val: string) => {
+        if (val === '0') {
+          return val;
+        } else {
+          return moment(Number(val)).format('YYYY-MM-DD HH:mm:ss.SSS') || '-';
+        }
+      },
     },
   ];
   const eventColumns = [
@@ -173,64 +279,91 @@ const DevicePage: React.FC = () => {
   const contentColumns = [
     {
       title: '时间',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: (val: string) => {
+        if (val === '0') {
+          return val;
+        } else {
+          return moment(Number(val)).format('YYYY-MM-DD HH:mm:ss.SSS') || '-';
+        }
+      },
     },
     {
-      title: '通讯类型',
-      dataIndex: 'age',
-      key: 'age',
+      title: '操作类型',
+      dataIndex: 'action',
+      key: 'action',
+      render: (val: string) => val || '-',
     },
     {
-      title: 'Topic',
-      dataIndex: 'address',
-      key: 'address',
+      title: '请求ID',
+      dataIndex: 'requestID',
+      key: 'requestID',
+      render: (val: string) => val || '-',
     },
     {
-      title: '通信内容',
-      dataIndex: 'address',
-      key: 'address',
+      title: '主题',
+      dataIndex: 'topic',
+      key: 'topic',
+      render: (val: string) => val || '-',
+    },
+    {
+      title: '详细信息',
+      dataIndex: 'content',
+      key: 'content',
+      render: (val: string) => val || '-',
+    },
+    {
+      title: '请求结果状态',
+      dataIndex: 'resultType',
+      key: 'resultType',
+      render: (val: string) => val || '-',
     },
   ];
   const onofflineColumns = [
     {
       title: '时间',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: (val: string) => {
+        if (val === '0') {
+          return val;
+        } else {
+          return moment(Number(val)).format('YYYY-MM-DD HH:mm:ss.SSS') || '-';
+        }
+      },
     },
     {
-      title: '动作',
-      dataIndex: 'age',
-      key: 'age',
+      title: '操作类型',
+      dataIndex: 'action',
+      key: 'action',
+      render: (val: string) => val || '-',
+    },
+    {
+      title: '请求ID',
+      dataIndex: 'requestID',
+      key: 'requestID',
+      render: (val: string) => val || '-',
     },
     {
       title: '详细信息',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'content',
+      key: 'content',
+      render: (val: string) => val || '-',
+    },
+    {
+      title: '请求结果状态',
+      dataIndex: 'resultType',
+      key: 'resultType',
+      render: (val: string) => val || '-',
     },
   ];
 
-  const handleEventChange = (value: string) => {
-    setEventType(value);
-  };
-
-  const timeTypeLogChange = (e: RadioChangeEvent) => {
-    const value: number = e.target.value;
-    setTimeType(value);
-    resetTimeRange(value);
-  };
-
-  const timeRangeChange = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    setTimeType(-1);
-    console.log(value, dateString);
-  };
-
-  const handleLogTypeChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+  useEffect(() => {
+    if (modelTypeLog === 'property') {
+      fetchModelData();
+    }
+  }, [modelTypeLog, attrKeys]);
 
   return (
     <Space direction="vertical" style={{ width: '100%' }}>
@@ -248,15 +381,15 @@ const DevicePage: React.FC = () => {
       {logType == 'model' ? (
         <div>
           <Radio.Group value={modelTypeLog} onChange={modelTypeLogChange} style={{ marginTop: 30 }}>
-            <Radio.Button value="attr">属性</Radio.Button>
+            <Radio.Button value="property">属性</Radio.Button>
             <Radio.Button value="event">事件</Radio.Button>
-            <Radio.Button value="behavior">行为</Radio.Button>
+            <Radio.Button value="action">行为</Radio.Button>
           </Radio.Group>
         </div>
       ) : (
         ''
       )}
-      {logType == 'model' && modelTypeLog == 'attr' ? (
+      {logType == 'model' && modelTypeLog == 'property' ? (
         <div>
           <Search
             placeholder="属性名称/属性标识符"
@@ -264,7 +397,7 @@ const DevicePage: React.FC = () => {
             style={{ width: 200, marginBottom: 20, marginTop: 20 }}
             allowClear
           />
-          <Table pagination={false} size="middle" dataSource={dataSource} columns={attrColumns} />
+          <Table pagination={false} size="middle" dataSource={modelData} columns={attrColumns} />
         </div>
       ) : (
         ''
@@ -295,7 +428,7 @@ const DevicePage: React.FC = () => {
           ''
         )}
       </div>
-      {(logType == 'model' && modelTypeLog != 'attr') || logType != 'model' ? (
+      {(logType == 'model' && modelTypeLog != 'property') || logType != 'model' ? (
         <div style={{ marginBottom: 20, marginTop: 20 }}>
           {modelTypeLog == 'event' ? (
             <Select
@@ -320,11 +453,12 @@ const DevicePage: React.FC = () => {
           <DatePicker.RangePicker
             value={timeRange}
             allowClear={false}
+            disabledDate={disabledRangeDate}
             showTime
             onChange={timeRangeChange}
             format="YYYY-MM-DD HH:mm"
           />
-          {logType == 'model' && modelTypeLog == 'behavior' ? (
+          {logType == 'model' && modelTypeLog == 'action' ? (
             <Search
               placeholder="行为标识符"
               onSearch={behaivorSearch}
@@ -343,23 +477,18 @@ const DevicePage: React.FC = () => {
       ) : (
         ''
       )}
-      {logType == 'model' && modelTypeLog == 'behavior' ? (
+      {logType == 'model' && modelTypeLog == 'action' ? (
         <Table pagination={false} size="middle" dataSource={dataSource} columns={behaivorColumns} />
       ) : (
         ''
       )}
       {logType == 'content' ? (
-        <Table pagination={false} size="middle" dataSource={dataSource} columns={contentColumns} />
+        <Table pagination={false} size="middle" dataSource={contentData} columns={contentColumns} />
       ) : (
         ''
       )}
       {logType == 'onoffline' ? (
-        <Table
-          pagination={false}
-          size="middle"
-          dataSource={dataSource}
-          columns={onofflineColumns}
-        />
+        <Table pagination={false} size="middle" dataSource={onoffData} columns={onofflineColumns} />
       ) : (
         ''
       )}
