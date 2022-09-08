@@ -55,17 +55,9 @@ const CreateOrUpdateRole: React.FC<{
       onFinish={async (values) => {
         const body = { ...values, id: record?.id as string };
         if (flag === 'update')
-          return await updateHandler<UpdateProp, RoleListItem>(
-            postSystemRoleUpdate,
-            actionRef,
-            body,
-          );
-        else
-          return await createHandler<CreateProp, RoleListItem>(
-            postSystemRoleCreate,
-            actionRef,
-            body,
-          );
+          await updateHandler<UpdateProp, RoleListItem>(postSystemRoleUpdate, actionRef, body);
+        else await createHandler<CreateProp, RoleListItem>(postSystemRoleCreate, actionRef, body);
+        editFormRef.current?.resetFields();
       }}
     >
       <ProFormText

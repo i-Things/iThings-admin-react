@@ -106,17 +106,9 @@ const CreateOrUpdateMenu: React.FC<{
           parentID,
         };
         if (flag === flagStatus.UPDATE)
-          return await updateHandler<UpdateProp, MenuListItem>(
-            postSystemMenuUpdate,
-            actionRef,
-            body,
-          );
-        else
-          return await createHandler<CreateProp, MenuListItem>(
-            postSystemMenuCreate,
-            actionRef,
-            body,
-          );
+          await updateHandler<UpdateProp, MenuListItem>(postSystemMenuUpdate, actionRef, body);
+        else await createHandler<CreateProp, MenuListItem>(postSystemMenuCreate, actionRef, body);
+        editFormRef.current?.resetFields();
       }}
     >
       <section className="menu-tool-tip">

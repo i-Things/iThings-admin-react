@@ -114,16 +114,12 @@ const CreateOrUpdateUser: React.FC<{
         // const modalFlag: boolean = false;
         const body = { ...values, reqType: 'pwd' };
         if (flag === 'update')
-          return await updateHandler<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
+          await updateHandler<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
             ...body,
             uid: record?.uid as string,
           });
-        else
-          return await createHandler<CreateProp, UserListItem>(
-            postSystemUserCreate,
-            actionRef,
-            body,
-          );
+        else await createHandler<CreateProp, UserListItem>(postSystemUserCreate, actionRef, body);
+        editFormRef.current?.resetFields();
       }}
     >
       <ProFormText
