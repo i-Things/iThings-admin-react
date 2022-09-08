@@ -83,10 +83,19 @@ const MenuList: React.FC = () => {
 
     {
       title: '创建时间',
-      dataIndex: 'createdTime',
+      dataIndex: 'createTime',
       valueType: 'dateTime',
       search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '是否隐藏',
+      dataIndex: 'hideInMenu',
+      search: false,
+      valueEnum: {
+        1: { text: '是' },
+        2: { text: '否' },
+      },
     },
     {
       title: '操作',

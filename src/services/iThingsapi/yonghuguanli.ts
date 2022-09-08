@@ -287,6 +287,8 @@ export async function postSystemUserUpdate(
     headImgUrl?: string;
     /** 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知 */
     sex?: number;
+    /** 角色 */
+    role?: number;
   },
   options?: { [key: string]: any },
 ) {

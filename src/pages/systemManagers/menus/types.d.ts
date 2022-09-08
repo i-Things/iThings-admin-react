@@ -8,6 +8,7 @@ export interface MenuListItem {
   order: number;
   component: string;
   createdTime: string;
+  hideInMenu: string;
   redirect?: string;
   children?: [];
 }

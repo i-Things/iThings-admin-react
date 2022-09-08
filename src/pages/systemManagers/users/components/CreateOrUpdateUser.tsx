@@ -23,6 +23,12 @@ const CreateOrUpdateUser: React.FC<{
   const editFormRef = useRef<ProFormInstance<UserListItem>>();
   type CreateProp = typeof postSystemUserCreate;
   type UpdateProp = typeof postSystemUserUpdate;
+
+  const ROLE_OPTION = [
+    { label: 'admin', value: 1 },
+    { label: '供应商', value: 2 },
+    { label: 'user', value: 3 },
+  ];
   // const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   //   const reader = new FileReader();
   //   reader.addEventListener('load', () => callback(reader.result as string));
@@ -159,11 +165,7 @@ const CreateOrUpdateUser: React.FC<{
             message: '用户角色是必填项！',
           },
         ]}
-        request={async () => [
-          { label: 'admin', value: 1 },
-          { label: '供应商', value: 2 },
-          { label: 'user', value: 3 },
-        ]}
+        request={async () => ROLE_OPTION}
       />
       <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
       {/* <ProFormText

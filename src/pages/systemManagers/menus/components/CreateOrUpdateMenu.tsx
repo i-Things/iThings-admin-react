@@ -3,7 +3,7 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
-import { ModalForm, ProFormCascader, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormCascader, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
@@ -30,7 +30,7 @@ const CreateOrUpdateMenu: React.FC<{
   type UpdateProp = typeof postSystemMenuUpdate;
   const initialValues = {
     ...record,
-    parentID: flag === flagStatus.CREATE ? '根节点' : record?.name,
+    parentID: flag !== flagStatus.ADD ? '根节点' : record?.name,
   };
 
   const recursion = (pre: MenuOption[]) => {
@@ -54,6 +54,11 @@ const CreateOrUpdateMenu: React.FC<{
       </>
     ),
   };
+
+  const HIDE_IN_MENU_OPTION = [
+    { label: '是', value: 1 },
+    { label: '否', value: 2 },
+  ];
 
   return (
     <ModalForm<MenuListItem>
@@ -84,7 +89,7 @@ const CreateOrUpdateMenu: React.FC<{
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={async (values) => {
-        let parentID: number = 1;
+        let parentID = 1;
         if (values.parentID === '根节点') parentID = 1;
         else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
           parentID = values.parentID[1];
@@ -186,6 +191,13 @@ const CreateOrUpdateMenu: React.FC<{
       />
       <ProFormText name="redirect" width="md" label="路由重定向" />
       <ProFormText name="order" width="md" label="排序" />
+      <ProFormSelect
+        width="md"
+        name="hideInMenu"
+        label="是否隐藏"
+        placeholder="是否在列表隐藏"
+        request={async () => HIDE_IN_MENU_OPTION}
+      />
     </ModalForm>
   );
 };
