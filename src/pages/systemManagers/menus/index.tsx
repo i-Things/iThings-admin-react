@@ -144,7 +144,7 @@ const MenuList: React.FC = () => {
         ]}
         request={(params) => queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params)}
         columns={columns}
-        pagination={{ pageSize: 999999 }}
+        // pagination={{ pageSize: 999999 }}
         size={'middle'}
         postData={(data) => spanTree(data, 1, 'parentID')}
       />

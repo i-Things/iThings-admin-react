@@ -96,7 +96,7 @@ const CreateOrUpdateMenu: React.FC<{
         }
         const body = {
           ...values,
-          order: Number(values?.order),
+          order: values.order ? Number(values?.order) : 1,
           id: record?.id as number,
           parentID,
         };
