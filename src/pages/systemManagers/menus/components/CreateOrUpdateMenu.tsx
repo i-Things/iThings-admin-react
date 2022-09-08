@@ -19,8 +19,8 @@ const CreateOrUpdateMenu: React.FC<{
   cascaderOptions?: MenuOption[];
   flatOptions: MenuListItem[];
 }> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
-  const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
-  const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
+  const { createHandler, createVisible, setCreateVisible } = useTableCreate();
+  const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
 
   const options = cloneDeep(cascaderOptions);
@@ -101,13 +101,13 @@ const CreateOrUpdateMenu: React.FC<{
           parentID,
         };
         if (flag === flagStatus.UPDATE)
-          return await updateHanlder<UpdateProp, MenuListItem>(
+          return await updateHandler<UpdateProp, MenuListItem>(
             postSystemMenuUpdate,
             actionRef,
             body,
           );
         else
-          return await createHanlder<CreateProp, MenuListItem>(
+          return await createHandler<CreateProp, MenuListItem>(
             postSystemMenuCreate,
             actionRef,
             body,

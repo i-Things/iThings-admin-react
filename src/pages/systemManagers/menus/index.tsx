@@ -23,7 +23,7 @@ export enum flagStatus {
 }
 const MenuList: React.FC = () => {
   const { queryPage, cascaderOptions, flatOptions } = useGetTableList();
-  const { deleteHanlder } = useTableDelete();
+  const { deleteHandler } = useTableDelete();
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postSystemMenuIndex;
   // 删除操作
@@ -31,7 +31,7 @@ const MenuList: React.FC = () => {
     const body = {
       id: record?.id,
     };
-    deleteHanlder<{ id: number }>(postSystemMenu__openAPI__delete, actionRef, {
+    deleteHandler<{ id: number }>(postSystemMenu__openAPI__delete, actionRef, {
       title: '是否删除当前菜单',
       content: `所选菜单: ${record?.name ?? '未知菜单'},  删除后无法恢复，请确认`,
       body,

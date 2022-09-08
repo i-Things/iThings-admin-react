@@ -21,8 +21,8 @@ const { TabPane } = Tabs;
 
 const RoleList: React.FC = () => {
   const { queryPage } = useGetTableList();
-  const { deleteHanlder } = useTableDelete();
-  const { updateHanlder } = useTableUpdate();
+  const { deleteHandler } = useTableDelete();
+  const { updateHandler } = useTableUpdate();
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [currentData, setCurrentData] = useState<RoleListItem>();
@@ -33,7 +33,7 @@ const RoleList: React.FC = () => {
     const body = {
       id: record?.id,
     };
-    deleteHanlder<{ id: string }>(postSystemRole__openAPI__delete, actionRef, {
+    deleteHandler<{ id: string }>(postSystemRole__openAPI__delete, actionRef, {
       title: '是否删除当前角色',
       content: `所选角色: ${record?.name ?? '未知角色'},  删除后无法恢复，请确认`,
       body,
@@ -144,7 +144,7 @@ const RoleList: React.FC = () => {
               drawerVisible={drawerVisible}
               currentData={currentData as RoleListItem}
               onSubmit={async (value) => {
-                await updateHanlder<
+                await updateHandler<
                   UpdateProp,
                   {
                     id: number;

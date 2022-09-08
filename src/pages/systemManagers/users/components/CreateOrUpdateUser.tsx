@@ -1,6 +1,6 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanlixin';
+import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -16,8 +16,8 @@ const CreateOrUpdateUser: React.FC<{
   record?: UserListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
 }> = ({ flag, record, actionRef }) => {
-  const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
-  const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
+  const { createHandler, createVisible, setCreateVisible } = useTableCreate();
+  const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
   // const [loading, setLoading] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
   const editFormRef = useRef<ProFormInstance<UserListItem>>();
@@ -108,12 +108,12 @@ const CreateOrUpdateUser: React.FC<{
         // const modalFlag: boolean = false;
         const body = { ...values, reqType: 'pwd' };
         if (flag === 'update')
-          return await updateHanlder<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
+          return await updateHandler<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
             ...body,
             uid: record?.uid as string,
           });
         else
-          return await createHanlder<CreateProp, UserListItem>(
+          return await createHandler<CreateProp, UserListItem>(
             postSystemUserCreate,
             actionRef,
             body,

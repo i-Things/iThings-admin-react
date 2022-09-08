@@ -13,8 +13,8 @@ const CreateOrUpdateRole: React.FC<{
   record?: RoleListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
 }> = ({ flag, record, actionRef }) => {
-  const { createHanlder, createVisible, setCreateVisible } = useTableCreate();
-  const { updateHanlder, editVisible, setEditVisible } = useTableUpdate();
+  const { createHandler, createVisible, setCreateVisible } = useTableCreate();
+  const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
   const editFormRef = useRef<any>();
   type CreateProp = typeof postSystemRoleCreate;
   type UpdateProp = typeof postSystemRoleUpdate;
@@ -55,13 +55,13 @@ const CreateOrUpdateRole: React.FC<{
       onFinish={async (values) => {
         const body = { ...values, id: record?.id as string };
         if (flag === 'update')
-          return await updateHanlder<UpdateProp, RoleListItem>(
+          return await updateHandler<UpdateProp, RoleListItem>(
             postSystemRoleUpdate,
             actionRef,
             body,
           );
         else
-          return await createHanlder<CreateProp, RoleListItem>(
+          return await createHandler<CreateProp, RoleListItem>(
             postSystemRoleCreate,
             actionRef,
             body,

@@ -9,7 +9,12 @@ export async function postThingsDeviceMsgHubLogIndex(
     productID: string;
     timeStart?: string;
     timeEnd?: string;
-    page: { page?: number; size?: number };
+    page?: { page?: number; size?: number };
+    /** connected:上线 disconnected:下线 property:属性 event:事件 action:操作 thing:物模型提交的操作为匹配的日志 */
+    actions?: string[];
+    topics?: string[];
+    content?: string;
+    requestID?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -84,7 +89,7 @@ export async function postThingsDeviceMsgSchemaLogIndex(
     dataID: string;
     timeStart: string;
     timeEnd: string;
-    page: { page?: number; size?: number };
+    page?: { page?: number; size?: number };
   },
   options?: { [key: string]: any },
 ) {
@@ -118,7 +123,7 @@ export async function postThingsDeviceMsgSdkLogIndex(
     productID: string;
     timeStart?: string;
     timeEnd?: string;
-    page: { page?: number; size?: number };
+    page?: { page?: number; size?: number };
   },
   options?: { [key: string]: any },
 ) {

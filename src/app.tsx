@@ -2,8 +2,7 @@ import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-l
 import { PageLoading } from '@ant-design/pro-layout';
 import { IconMap } from 'antd/lib/result';
 import { history } from 'umi';
-import { postSystemMenuIndex } from './services/iThingsapi/caidanguanli';
-import { postSystemUserRead } from './services/iThingsapi/yonghuguanlixin';
+import { postSystemUserRead, postSystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
 import { getToken, getUID, spanTree } from './utils/utils';
 const loginPath = '/user/login';
 
@@ -48,7 +47,7 @@ export async function getInitialState(): Promise<{
 
       const body = { uid: uid };
       const msg = await postSystemUserRead(body);
-      const menuTree = await postSystemMenuIndex({ page: { page: 1, size: 99999 } });
+      const menuTree = await postSystemUserResourceRead({});
       // const menuInfo = menuTree?.data?.list;
 
       const menuInfo = loopMenuItem(spanTree(menuTree?.data?.list, 1, 'parentID'));
@@ -185,7 +184,7 @@ export async function getInitialState(): Promise<{
 // import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 // import { PageLoading } from '@ant-design/pro-layout';
 // import { history } from 'umi';
-// import { postSystemUserRead } from './services/iThingsapi/yonghuguanlixin';
+// import { postSystemUserRead } from './services/iThingsapi/yonghuguanli';
 // import { getToken, getUID } from './utils/utils';
 
 // const loginPath = '/user/login';

@@ -3,7 +3,7 @@ import type { ActionType } from '@ant-design/pro-table';
 import { message, Modal } from 'antd';
 const { confirm } = Modal;
 const useTableDelete = () => {
-  const deleteHanlder = <T,>(
+  const deleteHandler = <T,>(
     deleteApi: (
       body: T,
       options?: Record<string, any> | undefined,
@@ -38,7 +38,7 @@ const useTableDelete = () => {
     });
   };
   return {
-    deleteHanlder,
+    deleteHandler,
   };
 };
 

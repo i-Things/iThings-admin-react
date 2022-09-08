@@ -1,4 +1,4 @@
-import { postSystemUserCaptcha, postSystemUserLogin } from '@/services/iThingsapi/yonghuguanlixin';
+import { postSystemUserCaptcha, postSystemUserLogin } from '@/services/iThingsapi/yonghuguanli';
 import { setToken, setUID } from '@/utils/utils';
 import { FontColorsOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-form';

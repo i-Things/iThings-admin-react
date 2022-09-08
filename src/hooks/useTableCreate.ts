@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const useTableCreate = () => {
   const [createVisible, setCreateVisible] = useState(false);
-  const createHanlder = async <T extends Function, k>(
+  const createHandler = async <T extends Function, k>(
     createApi: T,
     actionRef: React.MutableRefObject<ActionType | undefined>,
     body: k,
@@ -23,7 +23,7 @@ const useTableCreate = () => {
     return res.status === 200;
   };
   return {
-    createHanlder,
+    createHandler,
     createVisible,
     setCreateVisible,
   };

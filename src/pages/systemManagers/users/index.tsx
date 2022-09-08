@@ -3,7 +3,7 @@ import useTableDelete from '@/hooks/useTableDelete';
 import {
   postSystemUserIndex,
   postSystemUser__openAPI__delete,
-} from '@/services/iThingsapi/yonghuguanlixin';
+} from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS, ROLE_VALUE_ENUM, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -15,7 +15,7 @@ import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
-  const { deleteHanlder } = useTableDelete();
+  const { deleteHandler } = useTableDelete();
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postSystemUserIndex;
   // type returnQueryProps = ReturnType<queryProps>
@@ -40,7 +40,7 @@ const UserList: React.FC = () => {
     const body = {
       uid: record?.uid ?? '',
     };
-    deleteHanlder<{ uid: string }>(postSystemUser__openAPI__delete, actionRef, {
+    deleteHandler<{ uid: string }>(postSystemUser__openAPI__delete, actionRef, {
       title: '是否删除当前用户',
       content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
       body,

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const useTableUpdate = () => {
   const [editVisible, setEditVisible] = useState(false);
-  const updateHanlder = async <T extends Function, K>(
+  const updateHandler = async <T extends Function, K>(
     updateApi: T,
     actionRef: React.MutableRefObject<ActionType | undefined>,
     body: K,
@@ -23,7 +23,7 @@ const useTableUpdate = () => {
     return res.status === 200;
   };
   return {
-    updateHanlder,
+    updateHandler,
     editVisible,
     setEditVisible,
   };

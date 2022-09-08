@@ -35,7 +35,7 @@ export async function postSystemUserCreate(
     userName: string;
     /** 明文密码 必输 */
     password: string;
-    /** 用户角色 1-超级管理员 2-运营商 3-普通用户 4-其他用户 */
+    /** 用户角色 */
     role: number;
     /** 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知 */
     sex: number;
@@ -96,11 +96,13 @@ export async function postSystemUser__openAPI__delete(
 export async function postSystemUserIndex(
   body: {
     /** 分页 */
-    page?: { page?: number; size?: number };
+    page: { page?: number; size?: number };
     /** 按用户账号筛选 */
     userName?: string;
     /** 按手机号筛选 */
     phone?: string;
+    /** 按邮箱筛选 */
+    email?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -149,7 +151,7 @@ export async function postSystemUserLogin(
     password: string;
     /** 验证类型 sms 短信验证码 img 图形验证码加账号密码登录 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序 */
     loginType: string;
-    /** 验证码    微信登录填code 登录类型为img时必输 */
+    /** 验证码 微信登录填code 登录类型为img时必输 */
     code?: string;
     /** 验证码编号 微信登录填state 登录类型为img时必输 */
     codeID?: string;
@@ -175,7 +177,7 @@ export async function postSystemUserLogin(
         language?: string;
         headImgUrl?: string;
         createTime?: string;
-        role?: string;
+        role?: number;
         sex?: string;
       };
       token?: { accessToken?: string; accessExpire?: string; refreshAfter?: string };
@@ -194,7 +196,7 @@ export async function postSystemUserLogin(
 export async function postSystemUserRead(
   body: {
     /** 用户id */
-    uid?: string;
+    uid?: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -220,6 +222,35 @@ export async function postSystemUserRead(
       role?: string;
     };
   }>('/api/v1/system/user/read', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取用户资源 POST /api/v1/system/user/resource-read */
+export async function postSystemUserResourceRead(body: {}, options?: { [key: string]: any }) {
+  return request<{
+    code: number;
+    msg: string;
+    data: {
+      menu?: {
+        id?: number;
+        name?: string;
+        parentID?: number;
+        type?: number;
+        path?: string;
+        component?: string;
+        icon?: string;
+        redirect?: string;
+        createTime?: number;
+        order?: number;
+      }[];
+    };
+  }>('/api/v1/system/user/resource-read', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

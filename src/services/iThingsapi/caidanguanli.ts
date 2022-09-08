@@ -9,7 +9,7 @@ export async function postSystemMenuCreate(
     name: string;
     /** 父菜单ID，一级菜单为1 */
     parentID: number;
-    /** 类型   1：目录   2：菜单   3：按钮 */
+    /** 类型 1：目录 2：菜单 3：按钮 */
     type: number;
     /** 系统的path */
     path: string;
@@ -53,7 +53,10 @@ export async function postSystemMenu__openAPI__delete(
 /** 获取菜单列表 POST /api/v1/system/menu/index */
 export async function postSystemMenuIndex(
   body: {
-    page: { page?: number; size?: number };
+    /** 按照菜单名筛选 （只有获取完整菜单时有效） */
+    name?: string;
+    /** 按菜单路径筛选（只有获取完整菜单时有效） */
+    path?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -68,6 +71,7 @@ export async function postSystemMenuIndex(
       component?: string;
       icon?: string;
       redirect?: string;
+      order?: number;
     }[];
   }>('/api/v1/system/menu/index', {
     method: 'POST',
@@ -88,7 +92,7 @@ export async function postSystemMenuUpdate(
     name?: string;
     /** 父菜单ID，一级菜单为1 */
     parentID?: number;
-    /** 类型   1：目录   2：菜单   3：按钮 */
+    /** 类型 1：目录 2：菜单 3：按钮 */
     type?: number;
     /** 系统的path */
     path?: string;
@@ -98,6 +102,8 @@ export async function postSystemMenuUpdate(
     icon?: string;
     /** 路由重定向 */
     redirect?: string;
+    /** 排序 */
+    order?: number;
   },
   options?: { [key: string]: any },
 ) {
