@@ -3,10 +3,11 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemRoleCreate, postSystemRoleUpdate } from '@/services/iThingsapi/jiaoseguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
+import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { RoleListItem } from '../types';
 const CreateOrUpdateRole: React.FC<{
   flag: string;
@@ -15,19 +16,24 @@ const CreateOrUpdateRole: React.FC<{
 }> = ({ flag, record, actionRef }) => {
   const { createHandler, createVisible, setCreateVisible } = useTableCreate();
   const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
-  const editFormRef = useRef<any>();
+  const [editFlag, setEditFlag] = useState(false);
+  const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postSystemRoleCreate;
   type UpdateProp = typeof postSystemRoleUpdate;
+
+  useEffect(() => {
+    editFormRef.current?.setFieldsValue(record);
+  }, [editFlag, record]);
   return (
     <ModalForm<RoleListItem>
       width={550}
-      initialValues={record}
       formRef={editFormRef}
       title={flag === 'update' ? '编辑角色信息' : '新建角色'}
       trigger={
         <Button
           type="primary"
           onClick={() => {
+            setEditFlag(true);
             if (flag === 'update') setEditVisible(true);
             else setCreateVisible(true);
           }}

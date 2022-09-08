@@ -3,11 +3,12 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
+import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { flagStatus } from '..';
 import '../styles.less';
 import type { MenuListItem, MenuOption } from '../types';
@@ -21,7 +22,12 @@ const CreateOrUpdateMenu: React.FC<{
 }> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
   const { createHandler, createVisible, setCreateVisible } = useTableCreate();
   const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
-  const editFormRef = useRef<any>();
+  const [editFlag, setEditFlag] = useState(false);
+  // const [initialValues, setInitialValues] = useState({
+  //   ...record,
+  //   parentID: flag !== flagStatus.ADD ? '根节点' : record?.name,
+  // });
+  const editFormRef = useRef<ProFormInstance>();
 
   const options = cloneDeep(cascaderOptions);
   // const rootFlag = flag === flagStatus.CREATE || record?.parentID === 1;
@@ -60,16 +66,20 @@ const CreateOrUpdateMenu: React.FC<{
     { label: '否', value: 2 },
   ];
 
+  useEffect(() => {
+    editFormRef.current?.setFieldsValue(initialValues);
+  }, [editFlag, record]);
   return (
     <ModalForm<MenuListItem>
       width={550}
-      initialValues={initialValues}
+      // initialValues={initialValues}
       formRef={editFormRef}
       title={flag === flagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
       trigger={
         <Button
           type="primary"
           onClick={() => {
+            setEditFlag(true);
             if (flag === flagStatus.UPDATE) setEditVisible(true);
             setCreateVisible(true);
           }}

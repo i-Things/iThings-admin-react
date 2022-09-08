@@ -7,7 +7,7 @@ import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { UserListItem } from '../types';
 
 // const { Option } = Select;
@@ -18,9 +18,10 @@ const CreateOrUpdateUser: React.FC<{
 }> = ({ flag, record, actionRef }) => {
   const { createHandler, createVisible, setCreateVisible } = useTableCreate();
   const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
+  const [editFlag, setEditFlag] = useState(false);
   // const [loading, setLoading] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
-  const editFormRef = useRef<ProFormInstance<UserListItem>>();
+  const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postSystemUserCreate;
   type UpdateProp = typeof postSystemUserUpdate;
 
@@ -77,15 +78,19 @@ const CreateOrUpdateUser: React.FC<{
   //     </Select>
   //   </Form.Item>
   // );
+
+  useEffect(() => {
+    editFormRef.current?.setFieldsValue(record);
+  }, [editFlag, record]);
   return (
     <ModalForm<UserListItem>
-      initialValues={record}
       formRef={editFormRef}
       title={flag === 'update' ? '编辑用户信息' : '新建用户'}
       trigger={
         <Button
           type="primary"
           onClick={() => {
+            setEditFlag(true);
             if (flag === 'update') setEditVisible(true);
             setCreateVisible(true);
           }}
