@@ -42,6 +42,7 @@ const DevicePage: React.FC = () => {
   ]);
   const [attrKeys, setAttrKeys] = useState<string>('');
   const [behaviorKeys, setBehaviorKeys] = useState<string>('');
+  let contentType: string = 'property';
 
   // 表格数据
   const [modelData, setModelData] = useState<attrType[]>([]);
@@ -84,11 +85,11 @@ const DevicePage: React.FC = () => {
   };
 
   // 获取内容日志
-  const fetchContentData = async () => {
+  const fetchContentData = async (value: string) => {
     const body: logParamsType = {
       productID: '24EGnrP01ig',
       deviceName: 'test5',
-      actions: ['property', 'event', 'action'],
+      actions: [value],
       timeStart: moment(timeRange[0]).valueOf() + '',
       timeEnd: moment(timeRange[1]).valueOf() + '',
       page: {
@@ -96,38 +97,52 @@ const DevicePage: React.FC = () => {
         size: 20,
       },
     };
+    contentType = value;
     postThingsDeviceMsgHubLogIndex(body).then((res) => {
       setContentData(res?.data?.list ?? []);
     });
   };
+  // 时间范围设置-switch改成策略模式
+  const timeRangeValue = {
+    0: function () {
+      return {
+        startTime: moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm'),
+        endTime: moment().format('YYYY-MM-DD HH:mm'),
+      };
+    },
+    1: function () {
+      return {
+        startTime: moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm'),
+        endTime: moment().format('YYYY-MM-DD HH:mm'),
+      };
+    },
+    2: function () {
+      return {
+        startTime: moment().format('YYYY-MM-DD') + ' 00: 00',
+        endTime: moment().format('YYYY-MM-DD') + ' 23: 59',
+      };
+    },
+    3: function () {
+      return {
+        startTime: moment().add(-1, 'd').format('YYYY-MM-DD') + ' 00: 00',
+        endTime: moment().add(-1, 'd').format('YYYY-MM-DD') + ' 23: 59',
+      };
+    },
+    4: function () {
+      return {
+        startTime: moment().add(-6, 'd').format('YYYY-MM-DD') + ' 00: 00',
+        endTime: moment().format('YYYY-MM-DD') + ' 23: 59',
+      };
+    },
+  };
 
   // 设置时间范围
   const resetTimeRange = (value: number) => {
-    let startTime: string = '';
-    let endTime: string = moment().format('YYYY-MM-DD HH:mm');
-    switch (value) {
-      case 0:
-        startTime = moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm');
-        break;
-      case 1:
-        startTime = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm');
-        break;
-      case 2:
-        startTime = moment().format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().format('YYYY-MM-DD') + ' 23: 59';
-        break;
-      case 3:
-        startTime = moment().add(-1, 'd').format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().add(-1, 'd').format('YYYY-MM-DD') + ' 23: 59';
-        break;
-      case 4:
-        startTime = moment().add(-6, 'd').format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().format('YYYY-MM-DD') + ' 23: 59';
-        break;
-    }
-    setTimeRange([moment(startTime), moment(endTime)]);
+    const timeObj = timeRangeValue[value]();
+    setTimeRange([moment(timeObj.startTime), moment(timeObj.endTime)]);
   };
 
+  // 日志类型切换
   const logTypeChange = (e: RadioChangeEvent) => {
     const value = e.target.value;
     setLogType(value);
@@ -138,9 +153,10 @@ const DevicePage: React.FC = () => {
     } else if (value === 'onoffline') {
       fetchOnOffData();
     } else {
-      fetchContentData();
+      fetchContentData('property');
     }
   };
+  // 操作类型切换
   const modelTypeLogChange = (e: RadioChangeEvent) => {
     const value = e.target.value;
     setModelTypeLog(value);
@@ -149,8 +165,8 @@ const DevicePage: React.FC = () => {
     setAttrKeys('');
     setBehaviorKeys('');
     setEventType('0');
-    console.log('fqq', value, modelTypeLog);
   };
+  // 刷新-暂时没用
   const refreshChange = (checked: boolean) => {
     console.log(checked, isRefresh);
     setRefresh(checked);
@@ -166,6 +182,7 @@ const DevicePage: React.FC = () => {
     setEventType(value);
   };
 
+  // 时间范围选择
   const timeTypeLogChange = (e: RadioChangeEvent) => {
     const value: number = e.target.value;
     setTimeType(value);
@@ -173,25 +190,27 @@ const DevicePage: React.FC = () => {
     if (logType === 'onoffline') {
       fetchOnOffData();
     } else if (logType === 'content') {
-      fetchContentData();
+      fetchContentData(contentType);
     }
   };
 
+  // 时间范围自定义选择
   const timeRangeChange = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
     setTimeType(-1);
     setTimeRange(value);
     if (logType === 'onoffline') {
       fetchOnOffData();
     } else if (logType === 'content') {
-      fetchContentData();
+      fetchContentData(contentType);
     }
+  };
+  // 控制时间选择范围为最近一星期
+  const disabledRangeDate = (current: any) => {
+    return current > moment() || current < moment().add(-7, 'd');
   };
 
   const handleLogTypeChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-  const disabledRangeDate = (current: any) => {
-    return current > moment() || current < moment().add(-7, 'd');
+    fetchContentData(value);
   };
 
   const attrColumns = [
@@ -199,12 +218,6 @@ const DevicePage: React.FC = () => {
       title: '数据ID',
       dataIndex: 'dataID',
       key: 'dataID',
-      render: (val: string) => val || '-',
-    },
-    {
-      title: '发送的参数',
-      dataIndex: 'sendValue',
-      key: 'sendValue',
       render: (val: string) => val || '-',
     },
     {
@@ -290,12 +303,6 @@ const DevicePage: React.FC = () => {
       },
     },
     {
-      title: '操作类型',
-      dataIndex: 'action',
-      key: 'action',
-      render: (val: string) => val || '-',
-    },
-    {
       title: '请求ID',
       dataIndex: 'requestID',
       key: 'requestID',
@@ -340,21 +347,9 @@ const DevicePage: React.FC = () => {
       render: (val: string) => val || '-',
     },
     {
-      title: '请求ID',
-      dataIndex: 'requestID',
-      key: 'requestID',
-      render: (val: string) => val || '-',
-    },
-    {
       title: '详细信息',
       dataIndex: 'content',
       key: 'content',
-      render: (val: string) => val || '-',
-    },
-    {
-      title: '请求结果状态',
-      dataIndex: 'resultType',
-      key: 'resultType',
       render: (val: string) => val || '-',
     },
   ];
@@ -406,23 +401,26 @@ const DevicePage: React.FC = () => {
         {logType == 'content' ? (
           <Form {...layout} layout="inline" style={{ marginTop: 20 }}>
             <Form.Item name="note" label="日志类型">
-              <Select defaultValue="lucy" style={{ width: 200 }} onChange={handleLogTypeChange}>
-                <OptGroup label="Manager">
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                </OptGroup>
-                <OptGroup label="Engineer">
-                  <Option value="Yiminghe">yiminghe</Option>
+              <Select
+                defaultValue="property"
+                style={{ width: 200 }}
+                onChange={handleLogTypeChange}
+                placeholder="请选择"
+              >
+                <OptGroup label="物模型topic">
+                  <Option value="property">属性</Option>
+                  <Option value="event">事件</Option>
+                  <Option value="action">行为</Option>
                 </OptGroup>
               </Select>
             </Form.Item>
-            <Form.Item name="gender" label="topic">
+            {/* <Form.Item name="gender" label="topic">
               <Select placeholder="Select a option and change input text above">
                 <Option value="male">male</Option>
                 <Option value="female">female</Option>
                 <Option value="other">other</Option>
               </Select>
-            </Form.Item>
+            </Form.Item> */}
           </Form>
         ) : (
           ''
