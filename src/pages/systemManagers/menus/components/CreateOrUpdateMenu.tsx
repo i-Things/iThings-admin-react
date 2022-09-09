@@ -20,20 +20,19 @@ const CreateOrUpdateMenu: React.FC<{
   cascaderOptions?: MenuOption[];
   flatOptions: MenuListItem[];
 }> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
-  const { createHandler, createVisible, setCreateVisible } = useTableCreate();
-  const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
+  const { createHandler } = useTableCreate();
+  const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
-  // const [initialValues, setInitialValues] = useState({
-  //   ...record,
-  //   parentID: flag !== flagStatus.ADD ? '根节点' : record?.name,
-  // });
+  const [visible, setVisible] = useState(false);
   const editFormRef = useRef<ProFormInstance>();
-
   const options = cloneDeep(cascaderOptions);
-  // const rootFlag = flag === flagStatus.CREATE || record?.parentID === 1;
 
   type CreateProp = typeof postSystemMenuCreate;
   type UpdateProp = typeof postSystemMenuUpdate;
+
+  const onOpen = () => setVisible(true);
+  const onClose = () => setVisible(false);
+
   const initialValues = {
     ...record,
     parentID: flag !== flagStatus.ADD ? '根节点' : record?.name,
@@ -66,13 +65,37 @@ const CreateOrUpdateMenu: React.FC<{
     { label: '否', value: 2 },
   ];
 
+  const formSubmit = async (values: MenuListItem) => {
+    let parentID = 1;
+    if (values.parentID === '根节点') parentID = 1;
+    else if (Array.isArray(values.parentID) && (values.parentID as number[]).length >= 2)
+      parentID = values.parentID[values.parentID.length - 1];
+    else {
+      if (typeof values.parentID === 'string') {
+        const name = values.parentID as string;
+        parentID = flatOptions.filter((item) => item.name === name)[0].id;
+      }
+      parentID = values.parentID[0];
+    }
+    const body = {
+      ...values,
+      order: values.order ? Number(values?.order) : 1,
+      id: record?.id as number,
+      parentID,
+    };
+    if (flag === flagStatus.UPDATE)
+      await updateHandler<UpdateProp, MenuListItem>(postSystemMenuUpdate, actionRef, body);
+    else await createHandler<CreateProp, MenuListItem>(postSystemMenuCreate, actionRef, body);
+    onClose();
+    editFormRef.current?.resetFields();
+  };
+
   useEffect(() => {
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
   return (
     <ModalForm<MenuListItem>
       width={550}
-      // initialValues={initialValues}
       formRef={editFormRef}
       title={flag === flagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
       trigger={
@@ -80,46 +103,21 @@ const CreateOrUpdateMenu: React.FC<{
           type="primary"
           onClick={() => {
             setEditFlag(true);
-            if (flag === flagStatus.UPDATE) setEditVisible(true);
-            setCreateVisible(true);
+            onOpen();
           }}
         >
           {returnTitle[flag]}
         </Button>
       }
-      visible={flag === flagStatus.UPDATE ? editVisible : createVisible}
+      visible={visible}
       autoFocusFirstInput
       modalProps={{
-        onCancel: () => {
-          if (flag === flagStatus.UPDATE) setEditVisible(false);
-          setCreateVisible(false);
-        },
+        onCancel: onClose,
       }}
       submitTimeout={2000}
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
-      onFinish={async (values) => {
-        let parentID = 1;
-        if (values.parentID === '根节点') parentID = 1;
-        else if (Array.isArray(values.parentID) && (values.parentID as number[]).length === 2)
-          parentID = values.parentID[1];
-        else {
-          if (typeof values.parentID === 'string') {
-            const name = values.parentID as string;
-            parentID = flatOptions.filter((item) => item.name === name)[0].id;
-          } else parentID = values.parentID[0];
-        }
-        const body = {
-          ...values,
-          order: values.order ? Number(values?.order) : 1,
-          id: record?.id as number,
-          parentID,
-        };
-        if (flag === flagStatus.UPDATE)
-          await updateHandler<UpdateProp, MenuListItem>(postSystemMenuUpdate, actionRef, body);
-        else await createHandler<CreateProp, MenuListItem>(postSystemMenuCreate, actionRef, body);
-        editFormRef.current?.resetFields();
-      }}
+      onFinish={formSubmit}
     >
       <section className="menu-tool-tip">
         <ExclamationCircleTwoTone className="menu-icon" twoToneColor="#ed6a0c" />

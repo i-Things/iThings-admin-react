@@ -117,13 +117,7 @@ const UserList: React.FC = () => {
         <>
           <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} />
           <Divider type="vertical" />
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
-              showDeleteConfirm(record);
-            }}
-          >
+          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>

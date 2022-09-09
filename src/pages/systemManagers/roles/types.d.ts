@@ -15,6 +15,11 @@ export interface TreeListItem extends MenuListItem {
   label: string;
 }
 
+export interface FormSubmitValueProp {
+  id: number;
+  menuID: number[];
+}
+
 export interface RoleListPagination {
   total: number;
   pageSize: number;

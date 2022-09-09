@@ -14,12 +14,26 @@ const CreateOrUpdateRole: React.FC<{
   record?: RoleListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
 }> = ({ flag, record, actionRef }) => {
-  const { createHandler, createVisible, setCreateVisible } = useTableCreate();
-  const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
+  const { createHandler } = useTableCreate();
+  const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
+  const [visible, setVisible] = useState(false);
+
   const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postSystemRoleCreate;
   type UpdateProp = typeof postSystemRoleUpdate;
+
+  const onOpen = () => setVisible(true);
+  const onClose = () => setVisible(false);
+
+  const formSubmit = async (values: RoleListItem) => {
+    const body = { ...values, id: record?.id as string };
+    if (flag === 'update')
+      await updateHandler<UpdateProp, RoleListItem>(postSystemRoleUpdate, actionRef, body);
+    else await createHandler<CreateProp, RoleListItem>(postSystemRoleCreate, actionRef, body);
+    onClose();
+    editFormRef.current?.resetFields();
+  };
 
   useEffect(() => {
     editFormRef.current?.setFieldsValue(record);
@@ -34,8 +48,7 @@ const CreateOrUpdateRole: React.FC<{
           type="primary"
           onClick={() => {
             setEditFlag(true);
-            if (flag === 'update') setEditVisible(true);
-            else setCreateVisible(true);
+            onOpen();
           }}
         >
           {flag === 'update' ? (
@@ -47,24 +60,15 @@ const CreateOrUpdateRole: React.FC<{
           )}
         </Button>
       }
-      visible={flag === 'update' ? editVisible : createVisible}
+      visible={visible}
       autoFocusFirstInput
       modalProps={{
-        onCancel: () => {
-          if (flag === 'update') setEditVisible(false);
-          else setCreateVisible(false);
-        },
+        onCancel: onClose,
       }}
       submitTimeout={2000}
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
-      onFinish={async (values) => {
-        const body = { ...values, id: record?.id as string };
-        if (flag === 'update')
-          await updateHandler<UpdateProp, RoleListItem>(postSystemRoleUpdate, actionRef, body);
-        else await createHandler<CreateProp, RoleListItem>(postSystemRoleCreate, actionRef, body);
-        editFormRef.current?.resetFields();
-      }}
+      onFinish={formSubmit}
     >
       <ProFormText
         name="name"

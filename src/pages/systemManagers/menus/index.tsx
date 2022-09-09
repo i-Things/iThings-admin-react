@@ -6,7 +6,6 @@ import {
 } from '@/services/iThingsapi/caidanguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-
 import { spanTree } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -25,6 +24,7 @@ const MenuList: React.FC = () => {
   const { queryPage, cascaderOptions, flatOptions } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const actionRef = useRef<ActionType>();
+
   type QueryProp = typeof postSystemMenuIndex;
   // 删除操作
   const showDeleteConfirm = (record: MenuListItem) => {

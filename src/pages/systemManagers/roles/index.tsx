@@ -15,7 +15,7 @@ import { Button, Divider, Drawer, Tabs } from 'antd';
 import React, { useRef, useState } from 'react';
 import CreateOrUpdateRole from './components/CreateOrUpdateRole';
 import MenuForm from './components/MenuForm';
-import type { RoleListItem } from './types';
+import type { FormSubmitValueProp, RoleListItem } from './types';
 
 const { TabPane } = Tabs;
 
@@ -40,9 +40,14 @@ const RoleList: React.FC = () => {
     });
   };
 
-  // const queryList = (params) => {
-  //   queryPage(postSystemRoleIndex, params).then((res) => setRoleMenuID(res?.roleMenuID));
-  // };
+  const formSubmit = async (values: FormSubmitValueProp) => {
+    await updateHandler<UpdateProp, FormSubmitValueProp>(
+      postSystemRoleRoleMenuUpdate,
+      actionRef,
+      values,
+    );
+    setDrawerVisible(false);
+  };
 
   const columns: ProColumns<RoleListItem>[] = [
     {
@@ -99,13 +104,7 @@ const RoleList: React.FC = () => {
           <Divider type="vertical" />
           <CreateOrUpdateRole flag="update" record={record} actionRef={actionRef} />
           <Divider type="vertical" />
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
-              showDeleteConfirm(record);
-            }}
-          >
+          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>
@@ -143,16 +142,7 @@ const RoleList: React.FC = () => {
             <MenuForm
               drawerVisible={drawerVisible}
               currentData={currentData as RoleListItem}
-              onSubmit={async (value) => {
-                await updateHandler<
-                  UpdateProp,
-                  {
-                    id: number;
-                    menuID: number[];
-                  }
-                >(postSystemRoleRoleMenuUpdate, actionRef, value);
-                setDrawerVisible(false);
-              }}
+              onSubmit={formSubmit}
             />
           </TabPane>
           <TabPane tab="角色api" key="2">

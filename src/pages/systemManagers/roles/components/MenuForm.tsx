@@ -20,7 +20,6 @@ const MenuForm: React.FC<{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedKey, setSelectedKey] = useState<string[] | number[]>([]);
   const { drawerVisible, currentData, onSubmit } = props;
-
   type QueryProp = typeof postSystemMenuIndex;
 
   const handleFinish = () => {
@@ -46,7 +45,6 @@ const MenuForm: React.FC<{
             };
           });
           const tr: DataNode[] = spanTree(treeList, 1, 'parentID');
-
           setTreeData(tr);
           if (currentData?.roleMenuID) {
             const map = currentData?.roleMenuID.map((r) => r + '');

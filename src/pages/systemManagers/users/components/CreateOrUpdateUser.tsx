@@ -16,10 +16,10 @@ const CreateOrUpdateUser: React.FC<{
   record?: UserListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
 }> = ({ flag, record, actionRef }) => {
-  const { createHandler, createVisible, setCreateVisible } = useTableCreate();
-  const { updateHandler, editVisible, setEditVisible } = useTableUpdate();
+  const { createHandler } = useTableCreate();
+  const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
   const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postSystemUserCreate;
@@ -30,6 +30,22 @@ const CreateOrUpdateUser: React.FC<{
     { label: '供应商', value: 2 },
     { label: 'user', value: 3 },
   ];
+
+  const onOpen = () => setVisible(true);
+  const onClose = () => setVisible(false);
+
+  const formSubmit = async (values: UserListItem) => {
+    const body = { ...values, reqType: 'pwd' };
+    if (flag === 'update')
+      await updateHandler<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
+        ...body,
+        uid: record?.uid as string,
+      });
+    else await createHandler<CreateProp, UserListItem>(postSystemUserCreate, actionRef, body);
+    onClose();
+    editFormRef.current?.resetFields();
+  };
+
   // const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   //   const reader = new FileReader();
   //   reader.addEventListener('load', () => callback(reader.result as string));
@@ -91,8 +107,7 @@ const CreateOrUpdateUser: React.FC<{
           type="primary"
           onClick={() => {
             setEditFlag(true);
-            if (flag === 'update') setEditVisible(true);
-            setCreateVisible(true);
+            onOpen();
           }}
         >
           {flag === 'update' ? (
@@ -104,28 +119,15 @@ const CreateOrUpdateUser: React.FC<{
           )}
         </Button>
       }
-      visible={flag === 'update' ? editVisible : createVisible}
+      visible={visible}
       autoFocusFirstInput
       modalProps={{
-        onCancel: () => {
-          if (flag === 'update') setEditVisible(false);
-          setCreateVisible(false);
-        },
+        onCancel: onClose,
       }}
       submitTimeout={2000}
       {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_HORIZONTAL}
-      onFinish={async (values) => {
-        // const modalFlag: boolean = false;
-        const body = { ...values, reqType: 'pwd' };
-        if (flag === 'update')
-          await updateHandler<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
-            ...body,
-            uid: record?.uid as string,
-          });
-        else await createHandler<CreateProp, UserListItem>(postSystemUserCreate, actionRef, body);
-        editFormRef.current?.resetFields();
-      }}
+      onFinish={formSubmit}
     >
       <ProFormText
         name="userName"
