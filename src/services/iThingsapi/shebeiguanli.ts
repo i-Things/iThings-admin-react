@@ -11,7 +11,7 @@ export async function postThingsDeviceInfoCreate(
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
     /** 1离线 2在线 只读 */
-    isOnline: string;
+    isOnline: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -29,7 +29,10 @@ export async function postThingsDeviceInfoCreate(
 export async function postThingsDeviceInfo__openAPI__delete(
   body: {
     productID: string;
-    deviceName: string;
+    deviceName?: string;
+    tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -69,7 +72,7 @@ export async function postThingsDeviceInfoIndex(
         version?: string;
         logLevel?: number;
         tags?: { key?: string; value?: string }[];
-        isOnline?: string;
+        isOnline?: number;
       }[];
       total?: number;
       num?: number;
@@ -106,7 +109,7 @@ export async function postThingsDeviceInfoRead(
       version?: string;
       logLevel?: number;
       tags?: { key?: string; value?: string }[];
-      isOnline?: string;
+      isOnline?: number;
     };
   }>('/api/v1/things/device/info/read', {
     method: 'POST',
@@ -127,7 +130,7 @@ export async function postThingsDeviceInfoUpdate(
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
     /** 1离线 2在线 只读 */
-    isOnline: string;
+    isOnline: number;
   },
   options?: { [key: string]: any },
 ) {

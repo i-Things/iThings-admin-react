@@ -1,5 +1,5 @@
 import { postSystemUserCaptcha, postSystemUserLogin } from '@/services/iThingsapi/yonghuguanli';
-import { apiParamsGUID, setToken, setUID } from '@/utils/utils';
+import { setToken, setUID } from '@/utils/utils';
 import { FontColorsOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
 import { Checkbox, Col, message, Row } from 'antd';
@@ -20,14 +20,13 @@ const Login: React.FC = () => {
     }
   };
   const fetchCaptcha = async () => {
-    const prams = apiParamsGUID();
     const body = {
       type: 'sms',
       data: '',
       use: 'login',
     };
 
-    postSystemUserCaptcha(prams, body).then((res) => {
+    postSystemUserCaptcha(body).then((res) => {
       setCodeID(res?.data?.codeID ?? '');
       setCaptchaURL(res?.data?.url ?? '');
     });
@@ -35,18 +34,17 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: loginType) => {
     try {
-      const params = apiParamsGUID();
       const body = {
         userID: values.userID,
         pwdType: 1,
         password: values.password,
-        loginType: 'img',
+        loginType: 'pwd',
         code: values.code,
         codeID: codeID,
       };
 
       // 登录
-      const msg = await postSystemUserLogin(params, body);
+      const msg = await postSystemUserLogin(body);
       if (msg.data.token?.accessToken) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
