@@ -7,7 +7,6 @@ const { TabPane } = Tabs;
 const TopicPage: React.FC = () => {
   return (
     <Card>
-      {' '}
       <Tabs defaultActiveKey="1">
         <TabPane tab="物模型通讯topic" key="1">
           <Schema />
