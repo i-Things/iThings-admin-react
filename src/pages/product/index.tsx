@@ -82,9 +82,7 @@ const columns: ProColumns<PRODUCT_INFO>[] = [
                 },
               );
             },
-            onCancel() {
-              console.log('Cancel');
-            },
+            onCancel() {},
           });
         }}
       >

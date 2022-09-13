@@ -15,7 +15,6 @@ const SendMsg: React.FC<DeviceInfo> = () => {
     };
     return postThingsDeviceInteractSendMsg(body)
       .then((res) => {
-        console.log('res', res);
         if (res.code === 200) {
           message.success('发送成功');
         }
