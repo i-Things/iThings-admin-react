@@ -12,6 +12,14 @@ export function timestampToDateStr(
   }
 }
 
+export function miliTdToDate(date: string): string {
+  if (date === '0') {
+    return date;
+  } else {
+    return moment(Number(date)).format('YYYY-MM-DD HH:mm:ss.SSS') || '-';
+  }
+}
+
 export function dateStrToTimestamp(date: string): number {
   return moment(date, 'YYYY-MM-DD HH:mm:ss').valueOf();
 }

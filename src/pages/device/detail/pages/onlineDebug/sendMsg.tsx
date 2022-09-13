@@ -1,5 +1,6 @@
 import { DeviceInfo } from '@/pages/device/data';
 import { postThingsDeviceInteractSendMsg } from '@/services/iThingsapi/shebeijiaohu';
+import { ResponseCode } from '@/utils/base';
 import { Button, Form, Input, message } from 'antd';
 import React from 'react';
 
@@ -15,7 +16,7 @@ const SendMsg: React.FC<DeviceInfo> = () => {
     };
     return postThingsDeviceInteractSendMsg(body)
       .then((res) => {
-        if (res.code === 200) {
+        if (res.code === ResponseCode.SUCCESS) {
           message.success('发送成功');
         }
         return true;

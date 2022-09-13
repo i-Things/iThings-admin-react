@@ -1,9 +1,10 @@
 import { debugType } from '@/pages/device/detail/pages/onlineDebug/data';
 import SendMsg from '@/pages/device/detail/pages/onlineDebug/sendMsg';
 import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
+import { DefaultPage } from '@/utils/base';
+import { miliTdToDate } from '@/utils/date';
 import { useRequest } from 'ahooks';
 import { Card, Col, message, Row, Table, Tabs } from 'antd';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 const DevicePage: React.FC = () => {
@@ -13,10 +14,7 @@ const DevicePage: React.FC = () => {
   const param = {
     productID: '24GFTgusn1C',
     deviceName: 'test5',
-    page: {
-      page: 1,
-      size: 20,
-    },
+    page: DefaultPage,
   };
   const { run } = useRequest(postThingsDeviceMsgHubLogIndex, {
     defaultParams: [param],
@@ -43,11 +41,7 @@ const DevicePage: React.FC = () => {
       dataIndex: 'timestamp',
       key: 'timestamp',
       render: (val: string) => {
-        if (val === '0') {
-          return val;
-        } else {
-          return moment(Number(val)).format('YYYY-MM-DD HH:mm:ss.SSS') || '-';
-        }
+        return miliTdToDate(val);
       },
     },
     {
