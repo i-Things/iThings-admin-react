@@ -50,7 +50,7 @@ export async function getInitialState(): Promise<{
       const menuTree = await postSystemUserResourceRead({});
       // const menuInfo = menuTree?.data?.list;
 
-      const menuInfo = loopMenuItem(spanTree(menuTree?.data?.list, 1, 'parentID'));
+      const menuInfo = loopMenuItem(spanTree(menuTree?.data?.menu, 1, 'parentID'));
       return { userInfo: msg.data, menuInfo };
     } catch (error) {
       history.push(loginPath);
