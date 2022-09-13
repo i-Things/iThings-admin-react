@@ -73,12 +73,14 @@ const columns: ProColumns<PRODUCT_INFO>[] = [
               const body = {
                 productID: record?.productID ?? '',
               };
-              postThingsProductInfo__openAPI__delete(body).then((res) => {
-                if (res.code === 200) {
-                  message.success('删除成功');
-                  action?.reload();
-                }
-              });
+              postThingsProductInfo__openAPI__delete(body).then(
+                (res: { code: number; msg: string }) => {
+                  if (res.code === 200) {
+                    message.success('删除成功');
+                    action?.reload();
+                  }
+                },
+              );
             },
             onCancel() {
               console.log('Cancel');
