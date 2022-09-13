@@ -6,7 +6,6 @@ import {
 } from '@/services/iThingsapi/caidanguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { spanTree } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -136,6 +135,7 @@ const MenuList: React.FC = () => {
   ];
 
   return (
+    // TODO: 菜单目前只支持单条搜索结果
     <PageContainer>
       <ProTable<MenuListItem>
         headerTitle="菜单管理"
@@ -152,10 +152,10 @@ const MenuList: React.FC = () => {
           />,
         ]}
         request={(params) => queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params)}
+        // expandable={}
         columns={columns}
-        // pagination={{ pageSize: 999999 }}
+        pagination={false}
         size={'middle'}
-        postData={(data) => spanTree(data, 1, 'parentID')}
       />
     </PageContainer>
   );

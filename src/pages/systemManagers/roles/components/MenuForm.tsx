@@ -36,6 +36,7 @@ const MenuForm: React.FC<{
       setCheckedKeys([]);
       queryPage<QueryProp, TreeListItem>(postSystemMenuIndex, { page: 1, size: 999999 }).then(
         (res) => {
+          if (res.data.length === 0) return;
           const treeList = res.data.map((item: TreeListItem) => {
             return {
               ...item,

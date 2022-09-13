@@ -29,7 +29,7 @@ const generateRouter = async (item) => {
   if (item.component !== 'Layout') {
     // router.component = dynamic({
     //   loader: async function () {
-    //     // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
+    //
     //     const { default: HugeA } = await import(/* webpackChunkName: 'p__systemManagers__users__index' */ '../pages/systemManagers/users/index');
     //     return HugeA;
     //   },

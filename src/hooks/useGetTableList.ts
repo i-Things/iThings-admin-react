@@ -6,9 +6,6 @@ import type { MenuListItem, MenuOption } from './../pages/systemManagers/menus/t
 const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState<MenuOption[]>([]);
   const [flatOptions, setFlatOptions] = useState<MenuListItem[]>([]);
-  // type fuc = (
-  //   body: ParamsType & { page: { page?: number; size?: number } },
-  // ) => Promise<{ data: { list: Option & ParamsType[] }; total: number }>;
   const queryPage = async <T extends Function, K>(
     queryApi: T,
     params: ParamsType & {
@@ -17,6 +14,10 @@ const useGetTableList = () => {
       keyword?: string;
     },
   ): Promise<{ data: K[]; total: number }> => {
+    console.log(params);
+    console.log(!params.name);
+    console.log(!params.path);
+
     const body = {
       ...params,
       page: {
@@ -56,7 +57,12 @@ const useGetTableList = () => {
       message.error((error as Error)?.message);
     }
     return {
-      data: res?.data?.list,
+      data:
+        queryApi.prototype.constructor.name === 'postSystemMenuIndex' &&
+        !params.name &&
+        !params.path
+          ? spanTree(res.data.list, 1, 'parentID')
+          : res?.data?.list,
       total: res?.data?.total,
     };
   };
