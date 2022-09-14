@@ -5,6 +5,8 @@ import { useState } from 'react';
 const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState([]);
   const [flatOptions, setFlatOptions] = useState([]);
+  const [dataList, setDataList] = useState<ParamsType[]>([]);
+
   // type fuc = (
   //   body: ParamsType & { page: { page?: number; size?: number } },
   // ) => Promise<{ data: { list: Option & ParamsType[] }; total: number }>;
@@ -51,6 +53,7 @@ const useGetTableList = () => {
           total: 0,
         };
       }
+      if (res.code === 0) setDataList(res?.data?.list);
     } catch (error) {
       message.error((error as Error)?.message);
     }
@@ -64,6 +67,7 @@ const useGetTableList = () => {
     cascaderOptions,
     setCascaderOptions,
     flatOptions,
+    dataList,
   };
 };
 

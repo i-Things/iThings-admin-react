@@ -52,7 +52,10 @@ const GroupList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button type="primary" onClick={() => history.push('/deviceManger/groups/details/123')}>
+          <Button
+            type="primary"
+            onClick={() => history.push(`/deviceMangers/groups/details/${record.groupID}`)}
+          >
             查看
           </Button>
           {/* <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} /> */}
