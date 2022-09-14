@@ -22,7 +22,7 @@ import type { GroupListItem, GroupOption } from '../types';
 const CreateOrUpdateUser: React.FC<{
   flag: string;
   record?: GroupListItem;
-  actionRef: React.MutableRefObject<ActionType | undefined>;
+  actionRef?: React.MutableRefObject<ActionType | undefined>;
   cascaderOptions?: GroupOption[];
   flatOptions: GroupListItem[];
 }> = ({ flag, record, actionRef, cascaderOptions }) => {
@@ -54,20 +54,20 @@ const CreateOrUpdateUser: React.FC<{
     if (flag === 'update')
       await updateHandler<UpdateProp, GroupListItem>(postSystemUserUpdate, actionRef, {
         ...body,
-        uid: record?.uid as string,
+        // uid: record?.uid as string,
       });
     else await createHandler<CreateProp, GroupListItem>(postSystemUserCreate, actionRef, body);
     onClose();
     editFormRef.current?.resetFields();
   };
 
-  const recursion = (pre: GroupOption[]) => {
-    pre.map((item) => {
-      if (item.children) recursion(item?.children);
-      if (item.id === record?.id) item.disabled = true;
-    });
-    return pre;
-  };
+  // const recursion = (pre: GroupOption[]) => {
+  //   pre.map((item) => {
+  //     if (item.children) recursion(item?.children);
+  //     if (item.id === record?.id) item.disabled = true;
+  //   });
+  //   return pre;
+  // };
   useEffect(() => {
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
@@ -122,10 +122,11 @@ const CreateOrUpdateUser: React.FC<{
       <ProFormCascader
         width="md"
         name="parentGroup"
-        label="父组"
+        label="父组ID"
         fieldProps={{
           options:
-            flag === FlagStatus.UPDATE ? recursion(options as GroupOption[]) : cascaderOptions,
+            // flag === FlagStatus.UPDATE ? recursion(options as GroupOption[]) : cascaderOptions,
+            flag === FlagStatus.UPDATE ? (options as GroupOption[]) : cascaderOptions,
           expandTrigger: 'hover',
           changeOnSelect: true,
         }}
