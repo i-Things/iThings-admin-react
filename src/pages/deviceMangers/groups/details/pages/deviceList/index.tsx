@@ -7,12 +7,13 @@ import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider } from 'antd';
-import React, { useRef } from 'react';
+import { Button, Divider, message, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import { history } from 'umi';
 const GroupList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
+  const [selectedRowsState, setSelectedRows] = useState([]);
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postDeviceGroupIndex;
   // 删除操作
@@ -25,6 +26,27 @@ const GroupList: React.FC = () => {
       content: `所选设备: ${record?.groupName ?? '未知设备'},  删除后无法恢复，请确认`,
       body,
     });
+  };
+
+  /**
+   *  批量删除节点
+   * @param selectedRows
+   */
+  const handleRemove = async (selectedRows) => {
+    const hide = message.loading('正在删除');
+    if (!selectedRows) return true;
+    try {
+      await postSystemUser__openAPI__delete({
+        ids: selectedRows.map((row) => row.id),
+      });
+      hide();
+      message.success('删除成功，即将刷新');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('删除失败，请重试');
+      return false;
+    }
   };
 
   const columns: ProColumns<any>[] = [
@@ -77,20 +99,74 @@ const GroupList: React.FC = () => {
   ];
 
   return (
-    <ProTable<any>
-      // headerTitle="设备列表"
-      actionRef={actionRef}
-      rowKey="deviceID"
-      search={SEARCH_CONFIGURE}
-      options={PROTABLE_OPTIONS}
-      toolBarRender={() => [
-        // <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
-      ]}
-      request={(params) => queryPage<QueryProp, any>(postThingsDeviceInfoIndex, { ...params })}
-      columns={columns}
-      pagination={{ pageSize: 10 }}
-      size={'middle'}
-    />
+    <>
+      <ProTable<any>
+        // headerTitle="设备列表"
+        actionRef={actionRef}
+        rowKey="deviceName"
+        search={SEARCH_CONFIGURE}
+        options={PROTABLE_OPTIONS}
+        toolBarRender={() => [
+          // <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
+        ]}
+        rowSelection={{}}
+        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
+          console.log(selectedRows);
+          return (
+            <Space size={24}>
+              <span>
+                已选 {selectedRowKeys.length} 项
+                <a style={{ marginInlineStart: 8 }} onClick={onCleanSelected}>
+                  取消选择
+                </a>
+              </span>
+            </Space>
+          );
+        }}
+        tableAlertOptionRender={() => {
+          return (
+            <Space size={16}>
+              <Button
+                type="primary"
+                danger
+                onClick={async () => {
+                  await handleRemove(selectedRowsState);
+                  setSelectedRows([]);
+                  actionRef.current?.reloadAndRest?.();
+                }}
+              >
+                批量删除
+              </Button>
+            </Space>
+          );
+        }}
+        request={(params) => queryPage<QueryProp, any>(postThingsDeviceInfoIndex, { ...params })}
+        columns={columns}
+        pagination={{ pageSize: 10 }}
+        size={'middle'}
+      />
+      {/* {selectedRowsState?.length > 0 && (
+        <FooterToolbar
+          extra={
+            <div>
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
+            </div>
+          }
+        >
+          <Button
+            type="primary"
+            danger
+            onClick={async () => {
+              await handleRemove(selectedRowsState);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          >
+            批量删除
+          </Button>
+        </FooterToolbar>
+      )} */}
+    </>
   );
 };
 
