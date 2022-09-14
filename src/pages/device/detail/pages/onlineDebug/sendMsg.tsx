@@ -25,16 +25,20 @@ const SendMsg: React.FC<DeviceInfo> = () => {
         console.log(error, 'error');
       });
   };
-  const sendButtonCol = { offset: 2, span: 16 };
+  const sendButtonConfig = {
+    wrapperCol: { offset: 2, span: 16 },
+  };
+  const topicConfig = {
+    labelCol: { span: 2 },
+    wrapperCol: { span: 16 },
+    initialValues: { remember: true },
+    autoComplete: 'off',
+  };
+  const payloadConfig = {
+    rows: 8,
+  };
   return (
-    <Form<sendMsgReq>
-      name="basic"
-      labelCol={{ span: 2 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      autoComplete="off"
-    >
+    <Form<sendMsgReq> name="basic" {...topicConfig} onFinish={onFinish}>
       <Form.Item
         label="topic"
         name="topic"
@@ -48,10 +52,10 @@ const SendMsg: React.FC<DeviceInfo> = () => {
         name="payload"
         rules={[{ required: true, message: '请输入需要发送的内容' }]}
       >
-        <Input.TextArea rows={8} />
+        <Input.TextArea {...payloadConfig} />
       </Form.Item>
 
-      <Form.Item wrapperCol={sendButtonCol}>
+      <Form.Item {...sendButtonConfig}>
         <Button type="primary" htmlType="submit">
           发送
         </Button>

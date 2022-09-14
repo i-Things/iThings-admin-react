@@ -63,6 +63,9 @@ const DevicePage: React.FC = () => {
       render: (val: string) => val || '-',
     },
   ];
+  const debugLogConfig = {
+    scroll: { y: 650 },
+  };
   return (
     <Card>
       <Row>
@@ -79,7 +82,7 @@ const DevicePage: React.FC = () => {
             size="middle"
             dataSource={contentData}
             columns={contentColumns}
-            scroll={{ y: 650 }}
+            {...debugLogConfig}
           />
         </Col>
       </Row>
