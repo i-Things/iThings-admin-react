@@ -2,7 +2,7 @@ import { debugType } from '@/pages/device/detail/pages/onlineDebug/data';
 import SendMsg from '@/pages/device/detail/pages/onlineDebug/sendMsg';
 import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage } from '@/utils/base';
-import { miliTdToDate } from '@/utils/date';
+import { milliTdToDate } from '@/utils/date';
 import { useRequest } from 'ahooks';
 import { Card, Col, message, Row, Table, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -41,7 +41,7 @@ const DevicePage: React.FC = () => {
       dataIndex: 'timestamp',
       key: 'timestamp',
       render: (val: string) => {
-        return miliTdToDate(val);
+        return milliTdToDate(val);
       },
     },
     {

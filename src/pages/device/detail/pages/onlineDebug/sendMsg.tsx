@@ -25,7 +25,7 @@ const SendMsg: React.FC<DeviceInfo> = () => {
         console.log(error, 'error');
       });
   };
-
+  const sendButtonCol = { offset: 2, span: 16 };
   return (
     <Form<sendMsgReq>
       name="basic"
@@ -51,7 +51,7 @@ const SendMsg: React.FC<DeviceInfo> = () => {
         <Input.TextArea rows={8} />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 2, span: 16 }}>
+      <Form.Item wrapperCol={sendButtonCol}>
         <Button type="primary" htmlType="submit">
           发送
         </Button>
