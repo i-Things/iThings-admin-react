@@ -3,17 +3,16 @@ import {
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
+import { ResponseCode } from '@/utils/base';
 import { DEVICE_TYPE_VALUE, PRODUCT_INFO } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { ProColumns } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import { Button, message, Modal } from 'antd';
 import React, { useRef } from 'react';
-
 const { confirm } = Modal;
 
 type queryParam = {
@@ -73,16 +72,16 @@ const columns: any = [
               const body = {
                 productID: record?.productID ?? '',
               };
-              postThingsProductInfo__openAPI__delete(body).then((res) => {
-                if (res.code === 200) {
-                  message.success('删除成功');
-                  action?.reload();
-                }
-              });
+              postThingsProductInfo__openAPI__delete(body).then(
+                (res: { code: number; msg: string }) => {
+                  if (res.code === ResponseCode.SUCCESS) {
+                    message.success('删除成功');
+                    action?.reload();
+                  }
+                },
+              );
             },
-            onCancel() {
-              console.log('Cancel');
-            },
+            onCancel() {},
           });
         }}
       >

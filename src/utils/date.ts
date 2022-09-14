@@ -12,6 +12,15 @@ export function timestampToDateStr(
   }
 }
 
+//毫秒时间戳格式化成字符串
+export function milliTdToDate(date: string, fmt: string = 'YYYY-MM-DD HH:mm:ss.SSS'): string {
+  if (date === '0') {
+    return date;
+  } else {
+    return moment(Number(date)).format(fmt) || '-';
+  }
+}
+
 export function dateStrToTimestamp(date: string): number {
   return moment(date, 'YYYY-MM-DD HH:mm:ss').valueOf();
 }

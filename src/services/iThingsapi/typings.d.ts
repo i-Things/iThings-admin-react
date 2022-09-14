@@ -107,7 +107,7 @@ declare namespace API {
   type Engine = {};
 
   type fenye = {
-    page: { page?: number; size?: number };
+    page?: { page?: number; size?: number };
   };
 
   type guanxishuju = {
@@ -267,9 +267,9 @@ declare namespace API {
   };
 
   type shebeixinxihexinziduan = {
-    /** 产品id */
+    /** 产品id 不可修改 */
     productID: string;
-    /** 设备名称 */
+    /** 设备名称 不可修改 */
     deviceName?: string;
     /** 创建时间 */
     createdTime?: string;

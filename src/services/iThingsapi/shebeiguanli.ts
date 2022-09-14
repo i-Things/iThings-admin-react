@@ -5,13 +5,13 @@ import request from '@/utils/request';
 /** 新增设备 POST /api/v1/things/device/info/create */
 export async function postThingsDeviceInfoCreate(
   body: {
+    /** 不可修改 */
     productID: string;
+    /** 不可修改 */
     deviceName?: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
-    /** 1离线 2在线 只读 */
-    isOnline: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -28,11 +28,10 @@ export async function postThingsDeviceInfoCreate(
 /** 删除设备 POST /api/v1/things/device/info/delete */
 export async function postThingsDeviceInfo__openAPI__delete(
   body: {
+    /** 不可修改 */
     productID: string;
+    /** 不可修改 */
     deviceName?: string;
-    tags?: { key?: string; value?: string }[];
-    /** 1离线 2在线 只读 */
-    isOnline: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -49,7 +48,7 @@ export async function postThingsDeviceInfo__openAPI__delete(
 /** 获取设备列表 POST /api/v1/things/device/info/index */
 export async function postThingsDeviceInfoIndex(
   body: {
-    page: { page?: number; size?: number };
+    page?: { page?: number; size?: number };
     /** 为空时获取所有产品 */
     productID?: string;
     // deviceName?: string;
@@ -124,13 +123,11 @@ export async function postThingsDeviceInfoRead(
 /** 更新设备 POST /api/v1/things/device/info/update */
 export async function postThingsDeviceInfoUpdate(
   body: {
+    /** 不可修改 */
     productID: string;
-    version?: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
-    /** 1离线 2在线 只读 */
-    isOnline: number;
   },
   options?: { [key: string]: any },
 ) {
