@@ -5,11 +5,10 @@ import React, { useRef, useState } from 'react';
 
 import {
   postSystemUserCaptcha,
-  postSystemUserCoreCreate,
-  postSystemUserCoreIndex,
-  postSystemUserInfoCreate,
-  postSystemUserInfoUpdate,
-  postSystemUserInfo__openAPI__delete,
+  postSystemUserCreate,
+  postSystemUserIndex,
+  postSystemUserUpdate,
+  postSystemUser__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
 import { timestampToDateStr } from '@/utils/date';
 import { apiParams, apiParamsGUID } from '@/utils/utils';
@@ -49,7 +48,7 @@ const IndexPage: React.FC = () => {
   const [editVisible, setEditVisible] = useState(false);
   const [captchaURL, setCaptchaURL] = useState<string>('');
   const [codeID, setCodeID] = useState<string>('');
-  const [firstStepFormData, setFirstStepFormData] = useState<any>({});
+  const [firstStepFormData] = useState<any>({});
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selectedRows, setSelectedRows] = useState<any>([]);
   const editFormRef = useRef<any>();
@@ -79,7 +78,7 @@ const IndexPage: React.FC = () => {
         page: params.current,
       },
     };
-    const res = await postSystemUserCoreIndex(apiParams(), body);
+    const res = await postSystemUserIndex(apiParams(), body);
 
     if (res instanceof Response) {
       return {
@@ -122,7 +121,7 @@ const IndexPage: React.FC = () => {
         const body = {
           uid: selectedRowKeys[0],
         };
-        postSystemUserInfo__openAPI__delete(params, body).then((res) => {
+        postSystemUser__openAPI__delete(params, body).then((res) => {
           if (res.code === 200) {
             message.success('删除成功');
             actionRef.current?.reload();
@@ -191,7 +190,7 @@ const IndexPage: React.FC = () => {
               const body = values;
               body.token = firstStepFormData.accessToken;
               body.uid = selectedRowKeys[0];
-              return postSystemUserInfoUpdate(params, body)
+              return postSystemUserUpdate(params, body)
                 .then((res) => {
                   console.log('res', res);
                   setCreateVisible(false);
@@ -242,7 +241,7 @@ const IndexPage: React.FC = () => {
           const body = values as any;
           body.token = firstStepFormData.accessToken;
           body.uid = firstStepFormData.uid;
-          return postSystemUserInfoCreate(params, body)
+          return postSystemUserCreate(params, body)
             .then((res) => {
               console.log('res', res);
               setCreateVisible(false);
@@ -281,19 +280,10 @@ const IndexPage: React.FC = () => {
           onFinish={async (values) => {
             console.log('base', values);
             // 调用创建用户核心数据的接口
-            const params = apiParams();
+            // const params = apiParams();
             const body = values as any;
             body.reqType = 'password';
             body.codeID = codeID;
-            return postSystemUserCoreCreate(params, body)
-              .then((res) => {
-                console.log('res', res);
-                setFirstStepFormData(res.data);
-                return true;
-              })
-              .catch((error) => {
-                console.log('error', error);
-              });
           }}
         >
           <ProFormText

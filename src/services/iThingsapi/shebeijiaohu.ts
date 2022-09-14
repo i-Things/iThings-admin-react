@@ -26,6 +26,27 @@ export async function postThingsDeviceInteractSendAction(
   );
 }
 
+/** 发送消息给设备 POST /api/v1/things/device/interact/send-msg */
+export async function postThingsDeviceInteractSendMsg(
+  body: {
+    topic: string;
+    payload: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.E68890E58A9FE8BF94E59B9EE5AFB9E8B1A1>(
+    '/api/v1/things/device/interact/send-msg',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    },
+  );
+}
+
 /** 同步调用设备属性 POST /api/v1/things/device/interact/send-property */
 export async function postThingsDeviceInteractSendProperty(
   body: {

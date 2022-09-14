@@ -125,7 +125,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
       <a
         key="view"
         onClick={() => {
-          history.push('/deviceManger/device/detail/123');
+          history.push('/deviceMangers/devices/details/123');
         }}
       >
         查看

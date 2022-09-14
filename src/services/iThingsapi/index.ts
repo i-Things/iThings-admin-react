@@ -4,6 +4,7 @@
 // API 唯一标识：
 import * as caidanguanli from './caidanguanli';
 import * as chanpinguanli from './chanpinguanli';
+import * as group from './group';
 import * as jiaoseguanli from './jiaoseguanli';
 import * as shebeiguanli from './shebeiguanli';
 import * as shebeijianquan from './shebeijianquan';
@@ -12,13 +13,14 @@ import * as shebeixiaoxi from './shebeixiaoxi';
 import * as wumoxing from './wumoxing';
 import * as yonghuguanli from './yonghuguanli';
 export default {
-  shebeiguanli,
-  jiaoseguanli,
-  shebeijianquan,
-  yonghuguanli,
   wumoxing,
+  shebeijianquan,
+  shebeiguanli,
   chanpinguanli,
-  shebeijiaohu,
   shebeixiaoxi,
+  shebeijiaohu,
+  yonghuguanli,
+  jiaoseguanli,
   caidanguanli,
+  group,
 };

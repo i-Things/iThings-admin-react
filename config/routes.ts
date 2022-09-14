@@ -23,31 +23,42 @@ export default [
     layout: false,
     routes: [
       {
-        path: '/deviceManger',
+        path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',
         routes: [
           {
             name: '产品',
-            path: '/deviceManger/product/index',
-            component: './product/index',
+            path: '/deviceMangers/products/index',
+            component: './deviceMangers/products/index',
           },
           {
             name: '产品详情',
             hideInMenu: true,
-            path: '/deviceManger/product/detail/:id',
-            component: './product/detail/index',
+            path: '/deviceMangers/products/details/:id',
+            component: './deviceMangers/products/details/index',
           },
           {
             name: '设备',
-            path: '/deviceManger/device/index',
-            component: './device/index',
+            path: '/deviceMangers/devices/index',
+            component: './deviceMangers/devices/index',
           },
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceManger/device/detail/:id',
-            component: './device/detail/index',
+            path: '/deviceMangers/devices/details/:id',
+            component: './deviceMangers/devices/details/index',
+          },
+          {
+            name: '分组',
+            path: '/deviceMangers/groups/index',
+            component: './deviceMangers/groups/index',
+          },
+          {
+            name: '分组详情',
+            hideInMenu: true,
+            path: '/deviceMangers/groups/details/:id',
+            component: './deviceMangers/groups/details/index',
           },
         ],
       },
@@ -65,7 +76,7 @@ export default [
       },
       {
         path: '/',
-        redirect: '/deviceManger/product/index',
+        redirect: '/deviceMangers/products/index',
       },
       {
         component: '404',
