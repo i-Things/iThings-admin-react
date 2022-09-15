@@ -55,6 +55,7 @@ export default [
         path: '/systemManagers',
         name: '系统管理',
         icon: 'icon_system',
+        access: 'canAdmin',
         routes: [
           {
             name: '用户管理',
@@ -75,11 +76,11 @@ export default [
       },
       {
         path: '/',
-        redirect: '/systemManagers/users/index',
+        redirect: '/deviceMangers/products/index',
       },
-      // {
-      //   component: '404',
-      // },
+      {
+        component: '404',
+      },
     ],
   },
 ];

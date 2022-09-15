@@ -14,10 +14,6 @@ const useGetTableList = () => {
       keyword?: string;
     },
   ): Promise<{ data: K[]; total: number }> => {
-    console.log(params);
-    console.log(!params.name);
-    console.log(!params.path);
-
     const body = {
       ...params,
       page: {
