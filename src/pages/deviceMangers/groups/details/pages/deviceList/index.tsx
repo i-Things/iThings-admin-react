@@ -3,8 +3,9 @@ import useTableDelete from '@/hooks/useTableDelete';
 import type { postDeviceGroupIndex } from '@/services/iThingsapi/group';
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { postSystemUser__openAPI__delete } from '@/services/iThingsapi/yonghuguanli';
-import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
+import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { LightFilter, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, message, Space } from 'antd';
@@ -49,6 +50,11 @@ const GroupList: React.FC = () => {
     }
   };
 
+  const PRODUCT_TYPE_OPTION = [
+    { label: '全部产品', value: 1 },
+    { label: 'test001', value: 2 },
+  ];
+
   const columns: ProColumns<any>[] = [
     {
       title: '设备名称/备注名称',
@@ -57,23 +63,19 @@ const GroupList: React.FC = () => {
     {
       title: '设备所属产品ID',
       dataIndex: 'deviceID',
-      search: false,
     },
     {
       title: '节点类型',
       dataIndex: 'nodeType',
-      search: false,
     },
     {
       title: '状态',
       dataIndex: 'status',
-      search: false,
     },
     {
       title: '最后上线时间',
       dataIndex: 'lastLogin',
       valueType: 'dateTime',
-      search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
@@ -101,14 +103,36 @@ const GroupList: React.FC = () => {
   return (
     <>
       <ProTable<any>
-        // headerTitle="设备列表"
+        headerTitle={
+          <Button
+            key="primary"
+            type="primary"
+            onClick={() => {
+              alert('add');
+            }}
+          >
+            添加设备到分组
+          </Button>
+        }
         actionRef={actionRef}
         rowKey="deviceName"
-        search={SEARCH_CONFIGURE}
-        options={PROTABLE_OPTIONS}
-        toolBarRender={() => [
-          // <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
-        ]}
+        // search={SEARCH_CONFIGURE}
+        options={{ ...PROTABLE_OPTIONS, search: true }}
+        search={false}
+        toolbar={{
+          filter: (
+            <LightFilter>
+              <ProFormSelect
+                name="productType"
+                width="md"
+                label="所属产品"
+                placeholder="请选择产品"
+                request={async () => PRODUCT_TYPE_OPTION}
+              />
+            </LightFilter>
+          ),
+          search: <ProFormText name="deviceName" width="md" placeholder="请输入设备名称" />,
+        }}
         rowSelection={{}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
           console.log(selectedRows);
