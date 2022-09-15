@@ -56,7 +56,7 @@ const columns: ProColumns<PRODUCT.productInfo>[] = [
       <a
         key="show"
         onClick={() => {
-          history.push('/deviceManger/product/detail/' + record.productID);
+          history.push('/deviceMangers/product/detail/' + record.productID);
         }}
       >
         查看
