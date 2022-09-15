@@ -1,4 +1,5 @@
 import { postThingsProductInfoRead } from '@/services/iThingsapi/chanpinguanli';
+import { ColumnConfig } from '@/utils/base';
 import { PRODUCT_INFO } from '@/utils/const';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'ahooks';
@@ -28,11 +29,7 @@ const IndexPage: React.FC = () => {
   return (
     <PageContainer>
       <Card>
-        <Descriptions
-          title="产品信息"
-          bordered
-          column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-        >
+        <Descriptions title="产品信息" bordered column={ColumnConfig}>
           <Descriptions.Item label="产品名称">{productInfo.productName}</Descriptions.Item>
           <Descriptions.Item label="产品id">{productInfo.productID}</Descriptions.Item>
         </Descriptions>

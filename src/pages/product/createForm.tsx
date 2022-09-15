@@ -1,4 +1,5 @@
 import { postThingsProductInfoCreate } from '@/services/iThingsapi/chanpinguanli';
+import { ResponseCode } from '@/utils/base';
 import {
   AUTH_MODE_FORM,
   AUTO_REGISTER_FORM,
@@ -32,7 +33,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
       .then((res) => {
         console.log('res', res);
         setCreateVisible(false);
-        if (res.code === 200) {
+        if (res.code === ResponseCode.SUCCESS) {
           message.success('提交成功');
         }
         onCommit();
