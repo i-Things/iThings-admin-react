@@ -30,24 +30,24 @@ export default [
           {
             name: '产品',
             path: '/deviceManger/product/index',
-            component: './product/index',
+            component: './deviceMangers/product/index',
           },
           {
             name: '产品详情',
             hideInMenu: true,
             path: '/deviceManger/product/detail/:id',
-            component: './product/detail/index',
+            component: './deviceMangers/product/detail/index',
           },
           {
             name: '设备',
             path: '/deviceManger/device/index',
-            component: './device/index',
+            component: './deviceMangers/device/index',
           },
           {
             name: '设备详情',
             hideInMenu: true,
             path: '/deviceManger/device/detail/:id',
-            component: './device/detail/index',
+            component: './deviceMangers/device/detail/index',
           },
         ],
       },
