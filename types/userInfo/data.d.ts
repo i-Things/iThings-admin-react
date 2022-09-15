@@ -20,5 +20,6 @@ declare namespace USER {
     regIP?: string;
     status?: number;
     access?: string;
+    role?: number;
   };
 }
