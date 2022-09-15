@@ -245,7 +245,7 @@ export async function postSystemUserLogin(
 export async function postSystemUserRead(
   body: {
     /** 用户id */
-    uid?: number;
+    uid?: string;
   },
   options?: { [key: string]: any },
 ) {
