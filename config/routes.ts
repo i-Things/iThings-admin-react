@@ -12,9 +12,9 @@ export default [
         path: '/user',
         redirect: '/user/login',
       },
-      // {
-      //   component: '404',
-      // },
+      {
+        component: '404',
+      },
     ],
   },
   {
@@ -49,6 +49,9 @@ export default [
             path: '/deviceMangers/devices/detail/:id',
             component: './deviceMangers/devices/details/index',
           },
+          {
+            component: '404',
+          },
         ],
       },
       {
@@ -72,15 +75,18 @@ export default [
             path: '/systemManagers/menus/index',
             component: './systemManagers/menus/index',
           },
+          {
+            component: '404',
+          },
         ],
       },
       {
         path: '/',
         redirect: '/deviceMangers/products/index',
       },
-      // {
-      //   component: '404',
-      // },
+      {
+        component: '404',
+      },
     ],
   },
   {
