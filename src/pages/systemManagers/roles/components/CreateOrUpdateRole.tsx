@@ -4,7 +4,7 @@ import { postSystemRoleCreate, postSystemRoleUpdate } from '@/services/iThingsap
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
-import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
@@ -83,16 +83,6 @@ const CreateOrUpdateRole: React.FC<{
         ]}
       />
       <ProFormTextArea name="remark" width="md" label="备注" placeholder="请输入备注" />
-
-      <ProFormSelect
-        width="md"
-        name="status"
-        label="状态"
-        request={async () => [
-          { label: '启用', value: 1 },
-          { label: '禁用', value: 2 },
-        ]}
-      />
     </ModalForm>
   );
 };

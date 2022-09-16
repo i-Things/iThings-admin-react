@@ -6,7 +6,7 @@ import {
   postSystemRoleRoleMenuUpdate,
   postSystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
-import { PROTABLE_OPTIONS, SEARCH_CONFIGURE, STATUS_VALUE_ENUM } from '@/utils/const';
+import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -72,12 +72,6 @@ const RoleList: React.FC = () => {
           },
         ],
       },
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'select',
-      valueEnum: STATUS_VALUE_ENUM,
     },
     {
       title: '创建时间',

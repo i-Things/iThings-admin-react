@@ -73,11 +73,6 @@ const UserList: React.FC = () => {
       search: false,
     },
     {
-      title: '微信',
-      dataIndex: 'wechat',
-      search: false,
-    },
-    {
       title: '创建时间',
       dataIndex: 'createdTime',
       valueType: 'dateTime',

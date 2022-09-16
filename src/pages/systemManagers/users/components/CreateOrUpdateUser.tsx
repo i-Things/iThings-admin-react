@@ -100,6 +100,7 @@ const CreateOrUpdateUser: React.FC<{
   }, [editFlag, record]);
   return (
     <ModalForm<UserListItem>
+      width={550}
       formRef={editFormRef}
       title={flag === 'update' ? '编辑用户信息' : '新建用户'}
       trigger={
@@ -193,7 +194,6 @@ const CreateOrUpdateUser: React.FC<{
           defaultValue: record?.phone ?? '',
         }}
       /> */}
-      <ProFormText name="wechat" label="微信ID" width="md" />
       <ProFormSelect
         width="md"
         name="sex"
