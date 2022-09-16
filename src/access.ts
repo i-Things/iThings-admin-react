@@ -6,9 +6,9 @@ import type { MenuDataItem } from '@ant-design/pro-layout';
 export default function access(initialState: {
   currentUser?: { userInfo: USER.UserInfoType; menuInfo: MenuDataItem[] } | undefined;
 }) {
-  const { currentUser: userInfo } = initialState || {};
+  const { currentUser } = initialState || {};
 
   return {
-    canAdmin: userInfo && userInfo?.role === 1,
+    canAdmin: currentUser && currentUser.userInfo?.role === 1,
   };
 }
