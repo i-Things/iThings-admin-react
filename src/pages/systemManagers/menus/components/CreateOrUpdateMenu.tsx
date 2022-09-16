@@ -3,6 +3,7 @@ import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
 import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
+import { ICON_OPTION } from '@/utils/iconMap';
 import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormSelect, ProFormText } from '@ant-design/pro-form';
@@ -181,17 +182,15 @@ const CreateOrUpdateMenu: React.FC<{
           },
         ]}
       />
-      <ProFormText
-        name="icon"
+      <ProFormSelect
         width="md"
+        name="icon"
         label="图标"
-        placeholder="如：icon_system"
-        rules={[
-          {
-            required: true,
-            message: '图标是必填项！',
-          },
-        ]}
+        placeholder="请选择"
+        request={async () => ICON_OPTION}
+        fieldProps={{
+          defaultValue: 'icon_data_01',
+        }}
       />
       <ProFormText name="redirect" width="md" label="路由重定向" />
       <ProFormText name="order" width="md" label="排序" />
@@ -201,6 +200,9 @@ const CreateOrUpdateMenu: React.FC<{
         label="是否隐藏"
         placeholder="是否在列表隐藏"
         request={async () => HIDE_IN_MENU_OPTION}
+        fieldProps={{
+          defaultValue: 2,
+        }}
       />
     </ModalForm>
   );
