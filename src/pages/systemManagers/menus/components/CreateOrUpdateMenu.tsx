@@ -33,11 +33,6 @@ const CreateOrUpdateMenu: React.FC<{
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
 
-  const initialValues = {
-    ...record,
-    parentID: flag !== flagStatus.ADD ? '根节点' : record?.name,
-  };
-
   const recursion = (pre: MenuOption[]) => {
     pre.map((item) => {
       if (item.children) recursion(item?.children);
@@ -91,6 +86,17 @@ const CreateOrUpdateMenu: React.FC<{
   };
 
   useEffect(() => {
+    const parentIDFlag = () => {
+      const parentIDString =
+        record?.parentID === 1
+          ? '根节点'
+          : flatOptions.filter((item) => item.id === record?.parentID)[0]?.name;
+      return parentIDString;
+    };
+    const initialValues = {
+      ...record,
+      parentID: flag === flagStatus.CREATE ? '根节点' : parentIDFlag(),
+    };
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
   return (
