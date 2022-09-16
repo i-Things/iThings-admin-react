@@ -1,6 +1,7 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
+import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -9,12 +10,11 @@ import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useRef, useState } from 'react';
-import { flagStatus } from '..';
 import '../styles.less';
 import type { MenuListItem, MenuOption } from '../types';
 
 const CreateOrUpdateMenu: React.FC<{
-  flag: flagStatus;
+  flag: FlagStatus;
   record?: MenuListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   cascaderOptions?: MenuOption[];
@@ -42,13 +42,13 @@ const CreateOrUpdateMenu: React.FC<{
   };
 
   const returnTitle = {
-    [flagStatus.ADD]: (
+    [FlagStatus.ADD]: (
       <>
         <PlusOutlined /> 添加子菜单
       </>
     ),
-    [flagStatus.UPDATE]: '编辑',
-    [flagStatus.CREATE]: (
+    [FlagStatus.UPDATE]: '编辑',
+    [FlagStatus.CREATE]: (
       <>
         <PlusOutlined /> 新建根菜单
       </>
@@ -78,7 +78,7 @@ const CreateOrUpdateMenu: React.FC<{
       id: record?.id as number,
       parentID,
     };
-    if (flag === flagStatus.UPDATE)
+    if (flag === FlagStatus.UPDATE)
       await updateHandler<UpdateProp, MenuListItem>(postSystemMenuUpdate, actionRef, body);
     else await createHandler<CreateProp, MenuListItem>(postSystemMenuCreate, actionRef, body);
     onClose();
@@ -95,7 +95,7 @@ const CreateOrUpdateMenu: React.FC<{
     };
     const initialValues = {
       ...record,
-      parentID: flag === flagStatus.CREATE ? '根节点' : parentIDFlag(),
+      parentID: flag === FlagStatus.CREATE ? '根节点' : parentIDFlag(),
     };
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
@@ -103,7 +103,7 @@ const CreateOrUpdateMenu: React.FC<{
     <ModalForm<MenuListItem>
       width={550}
       formRef={editFormRef}
-      title={flag === flagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
+      title={flag === FlagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
       trigger={
         <Button
           type="primary"
@@ -141,8 +141,8 @@ const CreateOrUpdateMenu: React.FC<{
         ]}
         fieldProps={{
           options:
-            flag === flagStatus.UPDATE ? recursion(options as MenuOption[]) : cascaderOptions,
-          disabled: flag !== flagStatus.UPDATE,
+            flag === FlagStatus.UPDATE ? recursion(options as MenuOption[]) : cascaderOptions,
+          disabled: flag !== FlagStatus.UPDATE,
           expandTrigger: 'hover',
           changeOnSelect: true,
         }}

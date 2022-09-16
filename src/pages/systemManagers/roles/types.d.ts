@@ -13,6 +13,7 @@ export interface TreeListItem extends MenuListItem {
   key: string;
   title: string;
   label: string;
+  value: string;
 }
 
 export interface FormSubmitValueProp {

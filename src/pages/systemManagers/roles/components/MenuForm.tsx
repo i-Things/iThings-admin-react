@@ -5,7 +5,6 @@ import type { DataNode } from 'antd/lib/tree';
 import React, { useEffect, useState } from 'react';
 import type { MenuOption } from '../../menus/types';
 import type { RoleListItem, TreeListItem } from '../types.d';
-
 const FormItem = Form.Item;
 
 const MenuForm: React.FC<{
@@ -13,18 +12,16 @@ const MenuForm: React.FC<{
   currentData: Partial<RoleListItem>;
   onSubmit: (values: { id: number; menuID: number[] }) => void;
 }> = (props) => {
+  const { drawerVisible, currentData, onSubmit } = props;
   const { queryPage } = useGetTableList();
   const [form] = Form.useForm();
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedKey, setSelectedKey] = useState<string[] | number[]>([]);
-  const { drawerVisible, currentData, onSubmit } = props;
   type QueryProp = typeof postSystemMenuIndex;
 
   const handleFinish = () => {
-    console.log(selectedKey);
-
     const body = {
       id: Number(currentData.id) || 0,
       menuID: selectedKey as number[],
@@ -34,11 +31,9 @@ const MenuForm: React.FC<{
   const recursion = (pre: MenuOption[]) => {
     pre.map((item) => {
       if (item.children) recursion(item?.children);
-      else {
-        item.key = item?.id + '';
-        item.label = item?.name + '';
-        item.title = item?.name + '';
-      }
+      item.key = item?.id + '';
+      item.label = item?.name + '';
+      item.title = item?.name + '';
     });
     return pre;
   };
@@ -48,16 +43,8 @@ const MenuForm: React.FC<{
       setCheckedKeys([]);
       queryPage<QueryProp, TreeListItem>(postSystemMenuIndex, {}).then((res) => {
         if (res.data.length === 0) return;
-        const treeList = res.data.map((item: TreeListItem) => {
-          return {
-            ...item,
-            key: item?.id + '',
-            label: item?.name,
-            title: item?.name,
-          };
-        });
-        const tr: DataNode[] = recursion(treeList);
-        setTreeData(tr);
+        const tree = recursion(res.data);
+        setTreeData(tree);
         if (currentData?.roleMenuID) {
           const map = currentData?.roleMenuID.map((r) => r + '');
           setSelectedKey(map);

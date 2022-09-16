@@ -4,6 +4,7 @@ import {
   postSystemMenuIndex,
   postSystemMenu__openAPI__delete,
 } from '@/services/iThingsapi/caidanguanli';
+import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -14,11 +15,6 @@ import React, { useRef } from 'react';
 import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
 import type { MenuListItem } from './types';
 
-export enum flagStatus {
-  ADD = 'add',
-  CREATE = 'create',
-  UPDATE = 'update',
-}
 const MenuList: React.FC = () => {
   const { queryPage, cascaderOptions, flatOptions } = useGetTableList();
   const { deleteHandler } = useTableDelete();
@@ -103,7 +99,7 @@ const MenuList: React.FC = () => {
       render: (_, record) => (
         <>
           <CreateOrUpdateMenu
-            flag={flagStatus.ADD}
+            flag={FlagStatus.ADD}
             record={record}
             actionRef={actionRef}
             flatOptions={flatOptions}
@@ -111,7 +107,7 @@ const MenuList: React.FC = () => {
 
           <Divider type="vertical" />
           <CreateOrUpdateMenu
-            flag={flagStatus.UPDATE}
+            flag={FlagStatus.UPDATE}
             record={record}
             actionRef={actionRef}
             cascaderOptions={cascaderOptions}
@@ -145,7 +141,7 @@ const MenuList: React.FC = () => {
         options={PROTABLE_OPTIONS}
         toolBarRender={() => [
           <CreateOrUpdateMenu
-            flag={flagStatus.CREATE}
+            flag={FlagStatus.CREATE}
             actionRef={actionRef}
             key="createRole"
             flatOptions={flatOptions}
