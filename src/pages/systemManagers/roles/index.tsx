@@ -123,7 +123,12 @@ const RoleList: React.FC = () => {
         toolBarRender={() => [
           <CreateOrUpdateRole flag="create" actionRef={actionRef} key="createRole" />,
         ]}
-        request={(params) => queryPage<QueryProp, RoleListItem>(postSystemRoleIndex, params)}
+        request={(params) =>
+          queryPage<QueryProp, RoleListItem>(postSystemRoleIndex, {
+            ...params,
+            status: Number(params.status),
+          })
+        }
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
