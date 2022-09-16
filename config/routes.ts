@@ -29,51 +29,48 @@ export default [
         routes: [
           {
             name: '产品',
-            path: '/deviceMangers/products/index',
-            component: './deviceMangers/products/index',
+            path: '/deviceMangers/product/index',
+            component: './deviceMangers/product/index',
           },
           {
             name: '产品详情',
             hideInMenu: true,
-            path: '/deviceMangers/products/details/:id',
-            component: './deviceMangers/products/details/index',
+            path: '/deviceMangers/product/detail/:id',
+            component: './deviceMangers/product/detail/index',
           },
           {
             name: '设备',
-            path: '/deviceMangers/devices/index',
-            component: './deviceMangers/devices/index',
+            path: '/deviceMangers/device/index',
+            component: './deviceMangers/device/index',
           },
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceMangers/devices/detail/:id',
-            component: './deviceMangers/devices/details/index',
-          },
-          {
-            component: '404',
+            path: '/deviceMangers/device/detail/:id',
+            component: './deviceMangers/device/detail/index',
           },
         ],
       },
       {
-        path: '/systemManagers',
+        path: '/systemMangers',
         name: '系统管理',
         icon: 'icon_system',
         access: 'canAdmin',
         routes: [
           {
             name: '用户管理',
-            path: '/systemManagers/users/index',
-            component: './systemManagers/users/index',
+            path: '/systemMangers/user/index',
+            component: './systemMangers/user/index',
           },
           {
             name: '角色管理',
-            path: '/systemManagers/roles/index',
-            component: './systemManagers/roles/index',
+            path: '/systemMangers/role/index',
+            component: './systemMangers/role/index',
           },
           {
             name: '菜单管理',
-            path: '/systemManagers/menus/index',
-            component: './systemManagers/menus/index',
+            path: '/systemMangers/menu/index',
+            component: './systemMangers/menu/index',
           },
           {
             component: '404',
@@ -82,7 +79,7 @@ export default [
       },
       {
         path: '/',
-        redirect: '/deviceMangers/products/index',
+        redirect: '/deviceMangers/product/index',
       },
       {
         component: '404',

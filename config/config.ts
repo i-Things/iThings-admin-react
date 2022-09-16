@@ -4,8 +4,6 @@ import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
-const path = require('path');
-const packageName = require('../package.json').name;
 
 const { REACT_APP_ENV } = process.env;
 
@@ -16,7 +14,6 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
   },

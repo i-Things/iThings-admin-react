@@ -2,7 +2,7 @@ import { spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
-import type { MenuListItem, MenuOption } from './../pages/systemManagers/menus/types.d';
+import type { MenuListItem, MenuOption } from '../pages/systemMangers/menus/types';
 const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState<MenuOption[]>([]);
   const [flatOptions, setFlatOptions] = useState<MenuListItem[]>([]);

@@ -4,7 +4,7 @@ import { Button, Form, Input, Tree } from 'antd';
 import type { DataNode } from 'antd/lib/tree';
 import React, { useEffect, useState } from 'react';
 import type { MenuOption } from '../../menus/types';
-import type { RoleListItem, TreeListItem } from '../types.d';
+import type { RoleListItem, TreeListItem } from '../types';
 const FormItem = Form.Item;
 
 const MenuForm: React.FC<{
