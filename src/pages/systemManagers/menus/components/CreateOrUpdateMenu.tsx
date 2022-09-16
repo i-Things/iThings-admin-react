@@ -62,15 +62,10 @@ const CreateOrUpdateMenu: React.FC<{
 
   const formSubmit = async (values: MenuListItem) => {
     let parentID = 1;
-    if (values.parentID === '根节点') parentID = 1;
-    else if (Array.isArray(values.parentID) && (values.parentID as number[]).length >= 2)
-      parentID = values.parentID[values.parentID.length - 1];
+    if (Array.isArray(values.parentID)) parentID = values.parentID[values.parentID.length - 1];
     else {
-      if (typeof values.parentID === 'string') {
-        const name = values.parentID as string;
-        parentID = flatOptions.filter((item) => item.name === name)[0].id;
-      }
-      parentID = values.parentID[0];
+      if (values.parentID === '根节点') parentID = 1;
+      else parentID = flatOptions.filter((item) => item.name === values.parentID)[0].id;
     }
     const body = {
       ...values,
@@ -78,6 +73,7 @@ const CreateOrUpdateMenu: React.FC<{
       id: record?.id as number,
       parentID,
     };
+
     if (flag === FlagStatus.UPDATE)
       await updateHandler<UpdateProp, MenuListItem>(postSystemMenuUpdate, actionRef, body);
     else await createHandler<CreateProp, MenuListItem>(postSystemMenuCreate, actionRef, body);
@@ -86,16 +82,18 @@ const CreateOrUpdateMenu: React.FC<{
   };
 
   useEffect(() => {
-    const parentIDFlag = () => {
-      const parentIDString =
+    const parentIDFlag = {
+      [FlagStatus.CREATE]: '根节点',
+      [FlagStatus.ADD]: record?.name,
+      [FlagStatus.UPDATE]:
         record?.parentID === 1
           ? '根节点'
-          : flatOptions.filter((item) => item.id === record?.parentID)[0]?.name;
-      return parentIDString;
+          : flatOptions.filter((item) => item.id === record?.parentID)[0]?.name,
     };
     const initialValues = {
       ...record,
-      parentID: flag === FlagStatus.CREATE ? '根节点' : parentIDFlag(),
+      //parentID: flag === FlagStatus.CREATE ? '根节点' : parentIDFlag(),
+      parentID: parentIDFlag[flag],
     };
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
