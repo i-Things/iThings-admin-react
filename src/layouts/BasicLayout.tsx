@@ -1,4 +1,5 @@
 import RightContent from '@/components/RightContent';
+import type { MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -48,7 +49,7 @@ const BasicLayout: React.FC = (props) => {
           </>
         );
       }}
-      menuDataRender={() => menuTree}
+      menuDataRender={() => menuTree as MenuDataItem[]}
       collapsedButtonRender={false}
       {...props}
       {...defaultSettings}

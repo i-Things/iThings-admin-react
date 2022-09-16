@@ -12,9 +12,9 @@ export default [
         path: '/user',
         redirect: '/user/login',
       },
-      {
-        component: '404',
-      },
+      // {
+      //   component: '404',
+      // },
     ],
   },
   {
@@ -78,9 +78,13 @@ export default [
         path: '/',
         redirect: '/deviceMangers/products/index',
       },
-      {
-        component: '404',
-      },
+      // {
+      //   component: '404',
+      // },
     ],
+  },
+  {
+    layout: false,
+    component: '404',
   },
 ];
