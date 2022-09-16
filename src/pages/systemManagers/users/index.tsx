@@ -95,15 +95,6 @@ const UserList: React.FC = () => {
       search: false,
       valueEnum: ROLE_VALUE_ENUM,
     },
-    // {
-    //   title: '状态',
-    //   dataIndex: 'status',
-    //   search: false,
-    //   valueEnum: {
-    //     1: { text: '已注册', status: 'Success' },
-    //     2: { text: '未注册', status: 'Error' },
-    //   },
-    // },
     {
       title: '操作',
       dataIndex: 'option',
