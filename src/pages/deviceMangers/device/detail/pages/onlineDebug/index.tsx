@@ -1,11 +1,11 @@
-import { debugType } from '@/pages/device/detail/pages/onlineDebug/data';
-import SendMsg from '@/pages/device/detail/pages/onlineDebug/sendMsg';
 import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage } from '@/utils/base';
 import { milliTdToDate } from '@/utils/date';
 import { useRequest } from 'ahooks';
 import { Card, Col, message, Row, Table, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
+import SendMsg from './components/sendMsg';
+import { debugType } from './data';
 
 const DevicePage: React.FC = () => {
   const { TabPane } = Tabs;

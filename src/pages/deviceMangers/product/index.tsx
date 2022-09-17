@@ -1,4 +1,3 @@
-import { CreateForm } from '@/pages/product/createForm';
 import {
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
@@ -14,6 +13,8 @@ import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import { Button, message, Modal } from 'antd';
 import React, { useRef } from 'react';
+import { CreateForm } from './createForm';
+
 const { confirm } = Modal;
 
 type queryParam = {
@@ -56,7 +57,7 @@ const columns: ProColumns<PRODUCT_INFO>[] = [
       <a
         key="show"
         onClick={() => {
-          history.push('/deviceManger/product/detail/' + record.productID);
+          history.push('/deviceMangers/product/detail/' + record.productID);
         }}
       >
         查看

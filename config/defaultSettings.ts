@@ -6,8 +6,8 @@ const Settings: LayoutSettings & {
 } = {
   navTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#1890ff',
-  layout: 'side',
+  primaryColor: '#2F54EB',
+  layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
@@ -15,7 +15,9 @@ const Settings: LayoutSettings & {
   title: 'iThings',
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  headerHeight: 48,
   iconfontUrl: '',
+  splitMenus: false,
 };
 
 export default Settings;

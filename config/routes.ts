@@ -23,31 +23,31 @@ export default [
     layout: false,
     routes: [
       {
-        path: '/deviceManger',
+        path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',
         routes: [
           {
             name: '产品',
-            path: '/deviceManger/product/index',
-            component: './product/index',
+            path: '/deviceMangers/product/index',
+            component: './deviceMangers/product/index',
           },
           {
             name: '产品详情',
             hideInMenu: true,
-            path: '/deviceManger/product/detail/:id',
-            component: './product/detail/index',
+            path: '/deviceMangers/product/detail/:id',
+            component: './deviceMangers/product/detail/index',
           },
           {
             name: '设备',
-            path: '/deviceManger/device/index',
-            component: './device/index',
+            path: '/deviceMangers/device/index',
+            component: './deviceMangers/device/index',
           },
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceManger/device/detail/:id',
-            component: './device/detail/index',
+            path: '/deviceMangers/device/detail/:id',
+            component: './deviceMangers/device/detail/index',
           },
         ],
       },
@@ -65,7 +65,7 @@ export default [
       },
       {
         path: '/',
-        redirect: '/deviceManger/product/index',
+        redirect: '/deviceMangers/product/index',
       },
       {
         component: '404',

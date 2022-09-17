@@ -1,6 +1,6 @@
-import Schema from '@/pages/product/detail/pages/topic/schema';
 import { Card, Tabs } from 'antd';
 import React from 'react';
+import Schema from './components/schema';
 
 const { TabPane } = Tabs;
 
