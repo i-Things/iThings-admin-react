@@ -8,6 +8,11 @@ interface InfoProps {
   deviceInfo: DeviceInfo;
 }
 
+const STATUS = new Map([
+  [1, '离线'],
+  [2, '在线'],
+]);
+
 const columns: ProColumns<DeviceInfo>[] = [
   {
     title: '设备名称',
@@ -56,11 +61,8 @@ const columns: ProColumns<DeviceInfo>[] = [
     key: 'isOnline',
     dataIndex: 'isOnline',
     valueType: 'select',
-    valueEnum: {
-      1: { text: '离线' },
-      2: { text: '在线' },
-      3: { text: '只读' },
-    },
+    render: (_, record) =>
+      record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
   },
   {
     title: '固件版本',
