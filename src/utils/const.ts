@@ -18,6 +18,22 @@ export const DEVICE_TYPE_VALUE = {
   3: { text: '子设备' },
 };
 
+export const DEVICE_LOG_LEVEL_FORM = [
+  { label: '关闭', value: 1 },
+  { label: '错误', value: 2 },
+  { label: '告警', value: 3 },
+  { label: '信息', value: 4 },
+  { label: '调试', value: 5 },
+];
+
+export const DEVICE_LOG_LEVEL_VALUE = {
+  1: { text: '关闭' },
+  2: { text: '错误' },
+  3: { text: '告警' },
+  4: { text: '信息' },
+  5: { text: '调试' },
+};
+
 export const NET_TYPE_FORM = [
   { label: '其他', value: 1 },
   { label: 'wi-fi', value: 2 },
@@ -61,6 +77,16 @@ export const DATA_PROTO_FORM = [
   { label: '自定义', value: 1 },
   { label: '数据模板', value: 2 },
 ];
+
+export type DEVICE_INFO = {
+  /** 不可修改 */
+  productID: string;
+  /** 不可修改 */
+  deviceName?: string;
+  /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
+  logLevel?: number;
+  tags?: { key?: string; value?: string }[];
+};
 
 export type PRODUCT_INFO = {
   productID?: string;
