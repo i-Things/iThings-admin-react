@@ -1,8 +1,8 @@
-import { DeviceInfo } from '@/pages/device/data';
 import { postThingsDeviceInteractSendMsg } from '@/services/iThingsapi/shebeijiaohu';
 import { ResponseCode } from '@/utils/base';
 import { Button, Form, Input, message } from 'antd';
 import React from 'react';
+import { DeviceInfo } from '../data';
 
 type sendMsgReq = {
   topic: string;

@@ -1,4 +1,3 @@
-import { EditForm } from '@/pages/product/detail/pages/productInfo/editForm';
 import {
   AUTO_REGISTER_VALUE,
   DATA_PROTO_VALUE,
@@ -9,6 +8,7 @@ import {
 import { timestampToDateStr } from '@/utils/date';
 import { Descriptions } from 'antd';
 import React from 'react';
+import { EditForm } from './components/editForm';
 interface Props {
   productInfo: PRODUCT_INFO;
   onChange: () => void;
