@@ -68,7 +68,6 @@ const EditForm: React.FC<ModalProps> = (props) => {
       logLevel: value.log ? value.logLevel : 1,
       productID: deviceInfo.productID ?? '',
       deviceName: deviceInfo.deviceName ?? '',
-      tags: deviceInfo?.tags,
     };
     return postThingsDeviceInfoUpdate(body)
       .then((res) => {

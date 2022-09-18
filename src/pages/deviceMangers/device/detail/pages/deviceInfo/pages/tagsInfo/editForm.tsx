@@ -52,7 +52,6 @@ const EditForm: React.FC<ModalProps> = (props) => {
     const body = {
       ...value,
       productID: deviceInfo.productID ?? '',
-      logLevel: deviceInfo.logLevel ?? 0,
       deviceName: deviceInfo.deviceName ?? '',
     };
     return postThingsDeviceInfoUpdate(body)
