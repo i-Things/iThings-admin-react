@@ -151,7 +151,7 @@ export async function postSystemUserLogin(
     password: string;
     /** 验证类型 sms 短信验证码 img 图形验证码加账号密码登录 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序 */
     loginType: string;
-    /** 验证码 微信登录填code 登录类型为img时必输 */
+    /** 验证码    微信登录填code 登录类型为img时必输 */
     code?: string;
     /** 验证码编号 微信登录填state 登录类型为img时必输 */
     codeID?: string;
@@ -196,7 +196,7 @@ export async function postSystemUserLogin(
 export async function postSystemUserRead(
   body: {
     /** 用户id */
-    uid?: number;
+    uid?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -269,10 +269,6 @@ export async function postSystemUserUpdate(
     userName?: string;
     /** 邮箱 */
     email?: string;
-    /** 手机号 */
-    phone?: string;
-    /** 微信号 */
-    wechat?: string;
     /** 用户的昵称 */
     nickName?: string;
     /** 用户所在城市 */

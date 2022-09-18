@@ -52,9 +52,9 @@ export async function postThingsProductInfo__openAPI__delete(
 export async function postThingsProductInfoIndex(
   body: {
     page?: { page?: number; size?: number };
-    deviceType: number;
-    productName: string;
-    productIDs: string[];
+    deviceType?: number;
+    productName?: string;
+    productIDs?: string[];
   },
   options?: { [key: string]: any },
 ) {

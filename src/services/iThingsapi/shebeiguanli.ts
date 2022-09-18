@@ -8,9 +8,9 @@ export async function postThingsDeviceInfoCreate(
     /** 不可修改 */
     productID: string;
     /** 不可修改 */
-    deviceName?: string;
+    deviceName: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel?: number;
+    logLevel: number;
     tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
@@ -31,7 +31,7 @@ export async function postThingsDeviceInfo__openAPI__delete(
     /** 不可修改 */
     productID: string;
     /** 不可修改 */
-    deviceName?: string;
+    deviceName: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -126,7 +126,7 @@ export async function postThingsDeviceInfoUpdate(
     /** 不可修改 */
     productID: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel?: number;
+    logLevel: number;
     tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
