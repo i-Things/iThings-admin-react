@@ -17,10 +17,6 @@ const IndexPage: React.FC = () => {
   const params = useParams() as { id: string };
   const PID = params.id ?? '';
   const content = '设备ID: ' + PID;
-  const onChange = (key: string) => {
-    console.log(key);
-  };
-  console.log('deviceDetail');
   return (
     <PageContainer content={content}>
       <Card>
@@ -29,7 +25,7 @@ const IndexPage: React.FC = () => {
         </Descriptions>
       </Card>
       <Card style={{ marginTop: 10 }}>
-        <Tabs defaultActiveKey="1" onChange={onChange}>
+        <Tabs defaultActiveKey="1">
           <TabPane tab="设备信息" key="1">
             <DeviceInfoPage />
           </TabPane>
