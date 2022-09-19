@@ -125,6 +125,7 @@ export async function postThingsDeviceInfoUpdate(
   body: {
     /** 不可修改 */
     productID: string;
+    deviceName: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
