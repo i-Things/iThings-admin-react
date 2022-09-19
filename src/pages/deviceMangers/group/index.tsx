@@ -7,14 +7,17 @@ import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Input } from 'antd';
-import React, { useRef } from 'react';
+import { Button, Divider } from 'antd';
+import React, { useRef, useState } from 'react';
 import { history } from 'umi';
 import CreateOrUpdateGroup from './components/CreateOrUpdateGroup';
+import GroupTags from './components/GroupTags';
+import type { TagProps } from './components/types';
 import type { GroupListItem } from './types';
 const GroupList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
+  const [tagValues, setTagValues] = useState<{ tags: TagProps[] }>({ tags: [] });
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postThingsGroupInfoIndex;
   // 删除操作
@@ -50,23 +53,11 @@ const GroupList: React.FC = () => {
       title: '分组标签',
       dataIndex: 'tags',
       hideInTable: true,
-      renderFormItem: (_, { type, defaultRender, fieldProps }, form) => {
+      renderFormItem: (_, { type }) => {
         if (type === 'form') {
           return null;
         }
-        const status = form.getFieldValue('state');
-        if (status !== 'open') {
-          return (
-            // value 和 onchange 会通过 form 自动注入。
-            <Input
-              // 组件的配置
-              {...fieldProps}
-              // 自定义配置
-              placeholder="请选择分组标签"
-            />
-          );
-        }
-        return defaultRender(_);
+        return <GroupTags flag="create" key="createGroupTags" setTagValues={setTagValues} />;
       },
     },
     {
@@ -77,7 +68,7 @@ const GroupList: React.FC = () => {
         <>
           <Button
             type="primary"
-            onClick={() => history.push(`/deviceMangers/group/detail/${record.groupID}`)}
+            onClick={() => history.push(`/deviceMangers/group/detail/${JSON.stringify(record)}`)}
           >
             查看
           </Button>
@@ -102,9 +93,12 @@ const GroupList: React.FC = () => {
         toolBarRender={() => [
           <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
         ]}
-        request={(params) =>
-          queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, { ...params })
-        }
+        request={(params) => {
+          return queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, {
+            ...params,
+            ...tagValues,
+          });
+        }}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}

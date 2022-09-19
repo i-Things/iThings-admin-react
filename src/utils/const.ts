@@ -17,7 +17,7 @@ export const PROTABLE_OPTIONS = {
 
 export const FORMITEM_LAYOUT = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 14 },
+  wrapperCol: { span: 20 },
 };
 export const ROLE_VALUE_ENUM = {
   1: 'admin',
@@ -25,3 +25,4 @@ export const ROLE_VALUE_ENUM = {
   3: 'user',
 };
 export const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
+export const LAYOUT_TYPE_VERTICAL = 'vertical';
