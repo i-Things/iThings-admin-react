@@ -20,7 +20,7 @@ const IndexPage: React.FC = () => {
   const onChange = (key: string) => {
     console.log(key);
   };
-
+  console.log('deviceDetail');
   return (
     <PageContainer content={content}>
       <Card>
