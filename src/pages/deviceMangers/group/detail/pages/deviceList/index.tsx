@@ -1,7 +1,6 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
-import type { postDeviceGroupIndex } from '@/services/iThingsapi/group';
-import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
+import { postThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
 import { postSystemUser__openAPI__delete } from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -16,7 +15,7 @@ const GroupList: React.FC = () => {
   const { deleteHandler } = useTableDelete();
   const [selectedRowsState, setSelectedRows] = useState([]);
   const actionRef = useRef<ActionType>();
-  type QueryProp = typeof postDeviceGroupIndex;
+  type QueryProp = typeof postThingsGroupInfoRead;
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; groupName: string }) => {
     const body = {
@@ -164,7 +163,7 @@ const GroupList: React.FC = () => {
             </Space>
           );
         }}
-        request={(params) => queryPage<QueryProp, any>(postThingsDeviceInfoIndex, { ...params })}
+        request={(params) => queryPage<QueryProp, any>(postThingsGroupInfoRead, { ...params })}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}

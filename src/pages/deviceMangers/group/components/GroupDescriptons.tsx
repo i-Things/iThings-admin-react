@@ -1,5 +1,5 @@
 import useGetTableList from '@/hooks/useGetTableList';
-import { postDeviceGroupInfo } from '@/services/iThingsapi/group';
+import { postThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
 import { timestampToDateStr } from '@/utils/date';
 import { Descriptions, Spin } from 'antd';
 import React, { useEffect } from 'react';
@@ -12,7 +12,7 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean; groupID: string }> = ({
   const { queryPage, dataList } = useGetTableList();
   useEffect(() => {
     const param = { groupID };
-    queryPage(postDeviceGroupInfo, param);
+    queryPage(postThingsGroupInfoRead, param);
   }, []);
   return (
     <Descriptions

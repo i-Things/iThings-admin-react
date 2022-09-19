@@ -37,7 +37,7 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-async function postDeviceGroupIndex(req: Request, res: Response) {
+async function postThingsGroupInfoIndex(req: Request, res: Response) {
   await waitTime(2000);
   return res.json({
     code: 0,
@@ -47,7 +47,7 @@ async function postDeviceGroupIndex(req: Request, res: Response) {
     },
   });
 }
-async function postDeviceGroupInfo(req: Request, res: Response) {
+async function postThingsGroupInfoRead(req: Request, res: Response) {
   await waitTime(2000);
   return res.json({
     code: 0,
@@ -58,6 +58,6 @@ async function postDeviceGroupInfo(req: Request, res: Response) {
   });
 }
 export default {
-  'POST /api/v1/device/group/index': postDeviceGroupIndex,
-  'POST /api/v1/device/group/info': postDeviceGroupInfo,
+  'POST /api/v1/things/group/info/index': postThingsGroupInfoIndex,
+  'POST /api/v1/things/group/info/read': postThingsGroupInfoRead,
 };

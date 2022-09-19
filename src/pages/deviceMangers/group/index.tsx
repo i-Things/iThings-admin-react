@@ -1,13 +1,13 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
-import { postDeviceGroupIndex } from '@/services/iThingsapi/group';
+import { postThingsGroupInfoIndex } from '@/services/iThingsapi/shebeifenzu';
 import { postSystemUser__openAPI__delete } from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider } from 'antd';
+import { Button, Divider, Input } from 'antd';
 import React, { useRef } from 'react';
 import { history } from 'umi';
 import CreateOrUpdateGroup from './components/CreateOrUpdateGroup';
@@ -16,7 +16,7 @@ const GroupList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const actionRef = useRef<ActionType>();
-  type QueryProp = typeof postDeviceGroupIndex;
+  type QueryProp = typeof postThingsGroupInfoIndex;
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; groupName: string }) => {
     const body = {
@@ -47,6 +47,29 @@ const GroupList: React.FC = () => {
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
+      title: '分组标签',
+      dataIndex: 'tags',
+      hideInTable: true,
+      renderFormItem: (_, { type, defaultRender, fieldProps }, form) => {
+        if (type === 'form') {
+          return null;
+        }
+        const status = form.getFieldValue('state');
+        if (status !== 'open') {
+          return (
+            // value 和 onchange 会通过 form 自动注入。
+            <Input
+              // 组件的配置
+              {...fieldProps}
+              // 自定义配置
+              placeholder="请选择分组标签"
+            />
+          );
+        }
+        return defaultRender(_);
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -54,7 +77,7 @@ const GroupList: React.FC = () => {
         <>
           <Button
             type="primary"
-            onClick={() => history.push(`/deviceMangers/groups/details/${record.groupID}`)}
+            onClick={() => history.push(`/deviceMangers/group/detail/${record.groupID}`)}
           >
             查看
           </Button>
@@ -80,7 +103,7 @@ const GroupList: React.FC = () => {
           <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
         ]}
         request={(params) =>
-          queryPage<QueryProp, GroupListItem>(postDeviceGroupIndex, { ...params })
+          queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, { ...params })
         }
         columns={columns}
         pagination={{ pageSize: 10 }}

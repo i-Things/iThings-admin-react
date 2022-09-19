@@ -29,36 +29,36 @@ export default [
         routes: [
           {
             name: '产品',
-            path: '/deviceMangers/products/index',
-            component: './deviceMangers/products/index',
+            path: '/deviceMangers/product/index',
+            component: './deviceMangers/product/index',
           },
           {
             name: '产品详情',
             hideInMenu: true,
-            path: '/deviceMangers/products/details/:id',
-            component: './deviceMangers/products/details/index',
+            path: '/deviceMangers/product/detail/:id',
+            component: './deviceMangers/product/detail/index',
           },
           {
             name: '设备',
-            path: '/deviceMangers/devices/index',
-            component: './deviceMangers/devices/index',
+            path: '/deviceMangers/device/index',
+            component: './deviceMangers/device/index',
           },
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceMangers/devices/details/:id',
-            component: './deviceMangers/devices/details/index',
+            path: '/deviceMangers/device/detail/:id',
+            component: './deviceMangers/device/detail/index',
           },
           {
             name: '分组',
-            path: '/deviceMangers/groups/index',
-            component: './deviceMangers/groups/index',
+            path: '/deviceMangers/group/index',
+            component: './deviceMangers/group/index',
           },
           {
             name: '分组详情',
             hideInMenu: true,
-            path: '/deviceMangers/groups/details/:id',
-            component: './deviceMangers/groups/details/index',
+            path: '/deviceMangers/group/detail/:id',
+            component: './deviceMangers/group/detail/index',
           },
         ],
       },
@@ -76,7 +76,7 @@ export default [
       },
       {
         path: '/',
-        redirect: '/deviceMangers/products/index',
+        redirect: '/deviceMangers/product/index',
       },
       {
         component: '404',
