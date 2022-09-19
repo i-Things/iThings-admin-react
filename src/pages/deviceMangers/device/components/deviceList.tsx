@@ -24,6 +24,10 @@ type queryParam = {
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: { key?: string; value?: string }[];
 };
+const STATUS = new Map([
+  [1, '离线'],
+  [2, '在线'],
+]);
 interface Props {
   productInfo?: PRODUCT_INFO;
 }
@@ -197,16 +201,8 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       dataIndex: 'isOnline',
       search: false,
       valueType: 'select',
-      valueEnum: {
-        1: {
-          text: '离线',
-          status: '1',
-        },
-        2: {
-          text: '在线',
-          status: '2',
-        },
-      },
+      render: (_, record) =>
+        record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
     },
     {
       title: '激活时间',
