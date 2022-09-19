@@ -46,7 +46,7 @@ export default [
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceMangers/device/detail/:id',
+            path: '/deviceMangers/device/detail/:id/:name',
             component: './deviceMangers/device/detail/index',
           },
         ],

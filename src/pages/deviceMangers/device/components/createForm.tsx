@@ -1,34 +1,24 @@
 import { postThingsDeviceInfoCreate } from '@/services/iThingsapi/shebeiguanli';
 import { ResponseCode } from '@/utils/base';
-import { DEVICE_LOG_LEVEL_FORM, PRODUCT_INFO } from '@/utils/const';
+import { DEVICE_INFO, DEVICE_LOG_LEVEL_FORM, PRODUCT_INFO } from '@/utils/const';
 import { ProFormInstance } from '@ant-design/pro-components';
-import { ModalForm, ProFormRadio, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Props {
-  productInfos?: PRODUCT_INFO[];
+  productValues?: PRODUCT_INFO[];
   onCommit: () => void;
 }
 
-type deviceInfo = {
-  productName: string;
-  /** 不可修改 */
-  productID: string;
-  /** 不可修改 */
-  deviceName?: string;
-  /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-  logLevel: number;
-  tags?: { key?: string; value?: string }[];
-};
-export const CreateForm: React.FC<Props> = ({ onCommit, productInfos }) => {
+export const CreateForm: React.FC<Props> = ({ onCommit, productValues }) => {
   const [createVisible, setCreateVisible] = useState(false);
+  const [productForm, setProductForm] = useState<{ label: string; value: string }[]>();
 
-  const formCommit = async (values: deviceInfo) => {
+  const formCommit = async (values: DEVICE_INFO) => {
     const body = values;
     return postThingsDeviceInfoCreate(body)
       .then((res) => {
-        console.log('res', res);
         setCreateVisible(false);
         if (res.code === ResponseCode.SUCCESS) {
           message.success('提交成功');
@@ -37,36 +27,51 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productInfos }) => {
         return true;
       })
       .catch((error) => {
-        console.log(error, 'error');
+        message.error('创建失败:' + error);
       });
   };
 
-  const formRef = useRef<ProFormInstance>();
-  const formItemLayout = {
-    labelCol: { span: 7 },
-    wrapperCol: { span: 32 },
-    formRef: formRef,
+  const formRef = useRef<ProFormInstance<DEVICE_INFO>>();
+
+  const initForm = () => {
+    if (productValues === undefined || productValues.length == 0) {
+      return;
+    }
+    const ret: { label: string; value: string }[] = [];
+    productValues?.map((item) => {
+      if (item.productID != undefined) {
+        ret.push({ label: item?.productName ?? '-', value: item?.productID ?? '-' });
+      }
+    });
+    setProductForm(ret);
+    formRef.current?.setFieldsValue({
+      productID: productValues[0].productID,
+      logLevel: 1,
+    });
   };
   const openCreateModal = async () => {
-    if (productInfos === undefined || productInfos.length == 0) {
+    if (productValues === undefined || productValues.length == 0) {
       message.error('请先创建产品');
       return;
     }
-    console.log(productInfos);
-    formRef.current?.setFieldsValue({
-      productName: productInfos[0].productName,
-      productID: productInfos[0].productID,
-      logLevel: 1,
-    });
+    initForm();
     setCreateVisible(true);
   };
+  useEffect(() => {
+    initForm();
+  }, [productValues, createVisible]);
+  const formItemLayout = {
+    labelCol: { span: 7 },
+    wrapperCol: { span: 32 },
+    visible: createVisible,
+    formRef: formRef,
+    width: 480,
+  };
   return (
-    <ModalForm<deviceInfo>
+    <ModalForm<DEVICE_INFO>
       {...formItemLayout}
       title="创建设备"
       layout="horizontal"
-      visible={createVisible}
-      width={480}
       modalProps={{
         onCancel: () => setCreateVisible(false),
       }}
@@ -78,17 +83,18 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productInfos }) => {
       submitTimeout={2000}
       onFinish={formCommit}
     >
-      <ProFormText
-        name="productName"
+      <ProFormSelect
+        name="productID"
         width="md"
         label="产品名称"
-        placeholder="请选择产品"
+        disabled={productValues?.length == 1}
         rules={[
           {
             required: true,
             message: '必填项！',
           },
         ]}
+        request={async () => (productForm == undefined ? [] : productForm)}
       />
       <ProFormText
         width="md"
@@ -102,7 +108,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productInfos }) => {
           },
         ]}
       />
-      <ProFormRadio.Group
+      <ProFormSelect
         width="md"
         name="logLevel"
         label="日志级别"

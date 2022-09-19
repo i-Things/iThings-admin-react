@@ -1,4 +1,4 @@
-import DeviceList from '@/pages/device/info';
+import DeviceList from '@/pages/deviceMangers/device/components/deviceList';
 import { PageContainer } from '@ant-design/pro-layout';
 import React from 'react';
 

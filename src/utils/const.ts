@@ -79,13 +79,16 @@ export const DATA_PROTO_FORM = [
 ];
 
 export type DEVICE_INFO = {
-  /** 不可修改 */
   productID: string;
-  /** 不可修改 */
-  deviceName?: string;
-  /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
+  deviceName: string;
+  createdTime?: string;
+  secret?: string;
+  firstLogin?: string;
+  lastLogin?: string;
+  version?: string;
   logLevel?: number;
   tags?: { key?: string; value?: string }[];
+  isOnline?: number;
 };
 
 export type PRODUCT_INFO = {
