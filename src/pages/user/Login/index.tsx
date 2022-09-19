@@ -133,12 +133,12 @@ const Login: React.FC = () => {
                     return <img className={styles.captcha} src={captchaURL} alt="" />;
                   }}
                   name="code"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: '请输入验证码！',
-                  //   },
-                  // ]}
+                  rules={[
+                    {
+                      required: true,
+                      message: '请输入验证码！',
+                    },
+                  ]}
                   onGetCaptcha={async () => {
                     await fetchCaptcha();
                     message.success('刷新验证码成功！');

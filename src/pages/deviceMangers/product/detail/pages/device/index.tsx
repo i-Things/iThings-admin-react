@@ -1,13 +1,7 @@
-import DeviceList from '@/pages/deviceMangers/device/components/deviceList';
-import { PRODUCT_INFO } from '@/utils/const';
+import { Card } from 'antd';
 import React from 'react';
-
-interface Props {
-  productInfo: PRODUCT_INFO;
-}
-
-const DevicePage: React.FC<Props> = ({ productInfo }) => {
-  return <DeviceList productInfo={productInfo} />;
+const DevicePage: React.FC = () => {
+  return <Card>设备列表</Card>;
 };
 
 export default DevicePage;
