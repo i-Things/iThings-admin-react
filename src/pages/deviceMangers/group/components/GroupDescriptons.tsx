@@ -1,6 +1,7 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import { postThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
 import { timestampToDateStr } from '@/utils/date';
+import type { ParamsType } from '@ant-design/pro-components';
 import { Descriptions, Spin, Tag } from 'antd';
 import React, { useEffect } from 'react';
 import { useParams } from 'umi';
@@ -10,14 +11,11 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
   const params = useParams() as { id: string };
   const groupID = params.id ?? '';
   const { queryPage, dataList } = useGetTableList();
+  type QueryProp = typeof postThingsGroupInfoRead;
   useEffect(() => {
     const param = { groupID };
-    queryPage(postThingsGroupInfoRead, param);
+    queryPage<QueryProp, ParamsType>(postThingsGroupInfoRead, param);
   }, []);
-  console.log(dataList?.tags);
-  for (const key in { key: 'qwe', value: 'asd' }) {
-    console.log(key);
-  }
 
   return (
     <>
@@ -54,11 +52,11 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
         <Descriptions
           title="标签信息"
           style={{ marginTop: '20px' }}
-          extra={<GroupTags flag="update" key="updateGroupTags" record={dataList?.tags} />}
+          extra={<GroupTags flag="update" key="updateGroupTags" record={dataList} />}
         >
           <Descriptions.Item label="分组标签">
-            {dataList?.tags.map((item) => (
-              <Tag key={item}>{`${item.key}:${item.value}`}</Tag>
+            {dataList?.tags.map((item: { key: string; value: string }) => (
+              <Tag key={item.key}>{`${item.key}:${item.value}`}</Tag>
             ))}
           </Descriptions.Item>
         </Descriptions>

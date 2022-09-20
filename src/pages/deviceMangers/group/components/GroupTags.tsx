@@ -1,14 +1,15 @@
+import useTableUpdate from '@/hooks/useTableUpdate';
+import { postThingsGroupInfoUpdate } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_VERTICAL } from '@/utils/const';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import ProForm, { ModalForm, ProFormGroup, ProFormList, ProFormText } from '@ant-design/pro-form';
-import type { TagProps } from 'antd';
 import { Button } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../styles.less';
-import type { GroupListItem } from '../types';
-// const { Option } = Select;
+import type { GroupDescriptonProps, TagProps } from './types';
+
 const GroupTags: React.FC<{
   flag: string;
   setTagValues?: React.Dispatch<
@@ -16,86 +17,88 @@ const GroupTags: React.FC<{
       tags: TagProps[];
     }>
   >;
-  record?: GroupListItem;
-}> = ({ flag, setTagValues }) => {
-  // const { createHandler } = useTableCreate();
-  // const { updateHandler } = useTableUpdate();
-  // const [editFlag, setEditFlag] = useState(false);
+  record?: GroupDescriptonProps;
+}> = ({ flag, setTagValues, record }) => {
+  const { updateHandler } = useTableUpdate();
+  const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
   const editFormRef = useRef<ProFormInstance>();
   const tagFormRef = useRef<ProFormInstance>();
 
-  // type CreateProp = typeof postSystemUserCreate;
-  // type UpdateProp = typeof postSystemUserUpdate;
+  type UpdateProp = typeof postThingsGroupInfoUpdate;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
 
-  // const initialValues = {
-  //   ...record,
-  //   groupType: '默认',
-  // };
-
-  const formSubmit = (values: { tags: TagProps[] }) => {
-    // const tagArr: string[] = [];
-    const tagArr = values?.tags.map((item) => {
-      // tagArr.push(`${item.key}:${item.value}`);
-      return `${item.key}:${item.value}`;
-    });
-
+  const formSubmit = async (values: { tags: TagProps[] }) => {
+    const tagArr = values?.tags.map((item) => `${item.key}:${item.value}`);
     const tagStr = tagArr.join(';');
     onClose();
+    const body = { ...(record as GroupDescriptonProps), tags: values?.tags };
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
-    setTagValues(values);
+    if (flag === FlagStatus.CREATE)
+      (
+        setTagValues as React.Dispatch<
+          React.SetStateAction<{
+            tags: TagProps[];
+          }>
+        >
+      )(values);
+    else
+      await updateHandler<UpdateProp, GroupDescriptonProps>(
+        postThingsGroupInfoUpdate,
+        undefined,
+        body,
+      );
   };
-  // useEffect(() => {
-  //   editFormRef.current?.setFieldsValue(initialValues);
-  // }, [editFlag, record]);
+  useEffect(() => {
+    editFormRef.current?.setFieldsValue(record?.tags);
+  }, [editFlag, record]);
 
   return (
-    <ModalForm<GroupListItem>
+    <ModalForm<{ tags: TagProps[] }>
       formRef={editFormRef}
       width={650}
       title={flag === FlagStatus.CREATE ? '标签筛选' : '编辑标签'}
       trigger={
-        <Button
-          type="primary"
-          onClick={() => {
-            // setEditFlag(true);
-            onOpen();
-          }}
-        >
-          {flag === 'update' ? (
-            '编辑'
-          ) : (
-            <ProForm
-              className="tagInput"
-              formRef={tagFormRef}
-              submitter={{
-                // 配置按钮的属性
-                resetButtonProps: {
-                  style: {
-                    // 隐藏重置按钮
-                    display: 'none',
-                  },
+        flag === 'update' ? (
+          <Button
+            type="primary"
+            onClick={() => {
+              setEditFlag(true);
+              onOpen();
+            }}
+          >
+            编辑
+          </Button>
+        ) : (
+          <ProForm
+            formRef={tagFormRef}
+            onClick={onOpen}
+            submitter={{
+              // 配置按钮的属性
+              resetButtonProps: {
+                style: {
+                  // 隐藏重置按钮
+                  display: 'none',
                 },
-                submitButtonProps: {},
-                // 完全自定义整个区域
-                render: () => [],
+              },
+              submitButtonProps: {},
+              // 完全自定义整个区域
+              render: () => [],
+            }}
+          >
+            <ProFormText
+              className="tags"
+              name="tags"
+              placeholder="请选择分组标签"
+              fieldProps={{
+                suffix: <DownOutlined />,
+                readOnly: true,
               }}
-            >
-              <ProFormText
-                className="tags"
-                name="tags"
-                placeholder="请选择分组标签"
-                fieldProps={{
-                  suffix: <DownOutlined />,
-                  readOnly: true,
-                }}
-              />
-            </ProForm>
-          )}
-        </Button>
+            />
+          </ProForm>
+        )
       }
       visible={visible}
       autoFocusFirstInput
@@ -110,12 +113,7 @@ const GroupTags: React.FC<{
       <ProFormList
         name="tags"
         label="分组标签"
-        initialValue={[
-          {
-            key: '',
-            value: '',
-          },
-        ]}
+        initialValue={record?.tags}
         copyIconProps={false}
         creatorButtonProps={{
           type: 'link',
