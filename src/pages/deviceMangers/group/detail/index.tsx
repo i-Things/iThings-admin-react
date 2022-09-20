@@ -2,6 +2,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Tabs } from 'antd';
 import React from 'react';
 import GroupDescriptons from '../components/GroupDescriptons';
+import GroupList from '../components/GroupList';
 import DeviceListPage from './pages/deviceList';
 const { TabPane } = Tabs;
 
@@ -20,6 +21,9 @@ const IndexPage: React.FC = () => {
           </TabPane>
           <TabPane tab="设备列表" key="2">
             <DeviceListPage />
+          </TabPane>
+          <TabPane tab="子分组列表" key="3">
+            <GroupList />
           </TabPane>
         </Tabs>
       </Card>
