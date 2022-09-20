@@ -35,18 +35,21 @@ const groupList = [
     tags: [{ key: 'q', value: 'w' }],
   },
 ];
-const groupInfoList = [
-  {
-    groupName: 'test001',
-    createTime: '1663057691039',
-    groupID: 'ohBwuajQ7ggGZAgCRuLP010200',
-    groupLevel: '分组/test001',
-    totalDevice: 10,
-    activateDevice: 5,
-    currentOnline: 5,
-    remark: '123',
-  },
-];
+const groupInfoList = {
+  groupName: 'test001',
+  createTime: '1663057691039',
+  groupID: 'ohBwuajQ7ggGZAgCRuLP010200',
+  groupLevel: '分组/test001',
+  totalDevice: 10,
+  activateDevice: 5,
+  currentOnline: 5,
+  description: '123',
+  tags: [
+    { key: 'qwe', value: 'asd' },
+    { key: 'qwe', value: 'asd' },
+    { key: 'qwe', value: 'asd' },
+  ],
+};
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -70,9 +73,7 @@ async function postThingsGroupInfoRead(req: Request, res: Response) {
   return res.json({
     code: 0,
     msg: 'string',
-    data: {
-      list: groupInfoList,
-    },
+    data: groupInfoList,
   });
 }
 export default {

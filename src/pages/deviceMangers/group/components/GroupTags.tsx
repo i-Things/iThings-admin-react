@@ -1,6 +1,6 @@
 import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_VERTICAL } from '@/utils/const';
-import { DownOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import ProForm, { ModalForm, ProFormGroup, ProFormList, ProFormText } from '@ant-design/pro-form';
 import type { TagProps } from 'antd';
@@ -11,7 +11,7 @@ import type { GroupListItem } from '../types';
 // const { Option } = Select;
 const GroupTags: React.FC<{
   flag: string;
-  setTagValues: React.Dispatch<
+  setTagValues?: React.Dispatch<
     React.SetStateAction<{
       tags: TagProps[];
     }>
@@ -37,10 +37,12 @@ const GroupTags: React.FC<{
   // };
 
   const formSubmit = (values: { tags: TagProps[] }) => {
-    const tagArr: string[] = [];
-    values?.tags.map((item) => {
-      tagArr.push(`${item.key}:${item.value}`);
+    // const tagArr: string[] = [];
+    const tagArr = values?.tags.map((item) => {
+      // tagArr.push(`${item.key}:${item.value}`);
+      return `${item.key}:${item.value}`;
     });
+
     const tagStr = tagArr.join(';');
     onClose();
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
@@ -57,16 +59,14 @@ const GroupTags: React.FC<{
       title={flag === FlagStatus.CREATE ? '标签筛选' : '编辑标签'}
       trigger={
         <Button
-          type="link"
+          type="primary"
           onClick={() => {
             // setEditFlag(true);
             onOpen();
           }}
         >
           {flag === 'update' ? (
-            <>
-              <EditOutlined /> 编辑
-            </>
+            '编辑'
           ) : (
             <ProForm
               className="tagInput"

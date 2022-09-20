@@ -68,7 +68,7 @@ const GroupList: React.FC = () => {
         <>
           <Button
             type="primary"
-            onClick={() => history.push(`/deviceMangers/group/detail/${JSON.stringify(record)}`)}
+            onClick={() => history.push(`/deviceMangers/group/detail/${record?.groupID}`)}
           >
             查看
           </Button>
