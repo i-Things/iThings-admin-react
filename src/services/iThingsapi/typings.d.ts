@@ -295,7 +295,7 @@ declare namespace API {
     /** 节点键值 */
     key: string;
     value?: string;
-    children?: E6A091E78AB6E88A82E782B9[];
+    children?: string[];
   };
 
   type SignupItem = {

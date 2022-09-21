@@ -4,6 +4,9 @@ export function timestampToDateStr(
   timestamp: number,
   format: string = 'YYYY-MM-DD HH:mm:ss',
 ): string {
+  if (timestamp == 0) {
+    return '-';
+  }
   const m = timestampToDate(timestamp);
   if (m.isValid()) {
     return m.format(format);

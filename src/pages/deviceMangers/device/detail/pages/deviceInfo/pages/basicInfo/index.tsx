@@ -1,4 +1,4 @@
-import { milliTdToDate } from '@/utils/date';
+import { timestampToDateStr } from '@/utils/date';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProColumns } from '@ant-design/pro-table';
 import type { DeviceInfo } from '../../data';
@@ -36,25 +36,19 @@ const columns: ProColumns<DeviceInfo>[] = [
     title: '设备创建时间',
     key: 'createdTime',
     dataIndex: 'createdTime',
-    render: (_, record) => {
-      return milliTdToDate(record.createdTime || '', 'YYYY-MM-DD HH:mm:ss');
-    },
+    renderText: (text: string) => timestampToDateStr(Number(text)),
   },
   {
     title: '最后上线时间',
     key: 'lastLogin',
     dataIndex: 'lastLogin',
-    render: (_, record) => {
-      return milliTdToDate(record.lastLogin || '', 'YYYY-MM-DD HH:mm:ss');
-    },
+    renderText: (text: string) => timestampToDateStr(Number(text)),
   },
   {
     title: '激活时间',
     key: 'firstLogin',
     dataIndex: 'firstLogin',
-    render: (_, record) => {
-      return milliTdToDate(record.firstLogin || '', 'YYYY-MM-DD HH:mm:ss');
-    },
+    renderText: (text: string) => timestampToDateStr(Number(text)),
   },
   {
     title: '设备状态',
