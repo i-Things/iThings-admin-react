@@ -62,11 +62,6 @@ const groupDeviceList = [
     version: 'v1',
     logLevel: '1',
     isOnline: 2,
-    tags: [
-      { key: 'qwe', value: 'asd' },
-      { key: 'qwe', value: 'asd' },
-      { key: 'qwe', value: 'asd' },
-    ],
   },
   {
     deviceName: 'test002',
@@ -79,11 +74,6 @@ const groupDeviceList = [
     version: 'v1',
     logLevel: '1',
     isOnline: 2,
-    tags: [
-      { key: 'qwe', value: 'asd' },
-      { key: 'qwe', value: 'asd' },
-      { key: 'qwe', value: 'asd' },
-    ],
   },
   {
     deviceName: 'test003',
@@ -96,11 +86,6 @@ const groupDeviceList = [
     version: 'v1',
     logLevel: '1',
     isOnline: 2,
-    tags: [
-      { key: 'qwe', value: 'asd' },
-      { key: 'qwe', value: 'asd' },
-      { key: 'qwe', value: 'asd' },
-    ],
   },
 ];
 

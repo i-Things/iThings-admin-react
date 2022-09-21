@@ -11,6 +11,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Input, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import { history } from 'umi';
+import type { GroupDeviceItem } from '../../../types';
 
 const { Search } = Input;
 
@@ -23,13 +24,13 @@ const GroupList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postThingsGroupDeviceIndex;
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string; groupName: string }) => {
+  const showDeleteConfirm = (record: { groupID: string; deviceName: string }) => {
     const body = {
-      uid: record?.uid ?? '',
+      groupID: record?.groupID ?? '',
     };
     deleteHandler<{ uid: string }>(postSystemUser__openAPI__delete, actionRef, {
       title: '是否从分组中删除当前设备',
-      content: `所选设备: ${record?.groupName ?? '未知设备'},  删除后无法恢复，请确认`,
+      content: `所选设备: ${record?.deviceName ?? '未知设备'},  删除后无法恢复，请确认`,
       body,
     });
   };
@@ -60,25 +61,53 @@ const GroupList: React.FC = () => {
     { label: 'test001', value: 2 },
   ];
 
-  const columns: ProColumns<any>[] = [
+  const columns: ProColumns<GroupDeviceItem>[] = [
     {
-      title: '设备名称/备注名称',
+      title: '设备名称',
       dataIndex: 'deviceName',
     },
     {
-      title: '设备所属产品ID',
-      dataIndex: 'deviceID',
+      title: '设备所属产品',
+      dataIndex: 'productID',
     },
     {
-      title: '节点类型',
-      dataIndex: 'nodeType',
+      title: '设备秘钥',
+      dataIndex: 'secret',
     },
+    {
+      title: '固件版本',
+      dataIndex: 'version',
+    },
+    {
+      title: '设备证书',
+      dataIndex: 'cert',
+    },
+
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'isOnline',
+      valueEnum: {
+        2: {
+          text: '在线',
+          status: 'Success',
+        },
+        1: { text: '离线', status: 'Error' },
+      },
     },
     {
-      title: '最后上线时间',
+      title: '创建时间',
+      dataIndex: 'createdTime',
+      valueType: 'dateTime',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '激活时间',
+      dataIndex: 'firstLogin',
+      valueType: 'dateTime',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '组合上线时间',
       dataIndex: 'lastLogin',
       valueType: 'dateTime',
       renderText: (text: string) => timestampToDateStr(Number(text)),
@@ -87,17 +116,18 @@ const GroupList: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      // TODO: 删除传递groupID
       render: (_, record) => (
         <>
           <Button
             type="primary"
-            onClick={() => history.push(`/deviceMangers/devices/details/${record.deviceID}`)}
+            onClick={() => history.push(`/deviceMangers/devices/details/${record.productID}`)}
           >
             查看
           </Button>
           {/* <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} /> */}
           <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="primary" danger onClick={() => showDeleteConfirm(record?.productID)}>
             从分组中删除
           </Button>
         </>
