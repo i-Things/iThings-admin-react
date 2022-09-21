@@ -1,21 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
-import { postThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
+import { postThingsGroupDeviceIndex } from '@/services/iThingsapi/shebeifenzu';
 import { postSystemUser__openAPI__delete } from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { LightFilter, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { LightFilter, ProFormSelect } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, message, Space } from 'antd';
+import { Button, Divider, Input, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import { history } from 'umi';
+
+const { Search } = Input;
+
 const GroupList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [selectedRowsState, setSelectedRows] = useState([]);
+  const [searchParams, setSearchParams] = useState({ productID: '', deviceName: '' });
+
   const actionRef = useRef<ActionType>();
-  type QueryProp = typeof postThingsGroupInfoRead;
+  type QueryProp = typeof postThingsGroupDeviceIndex;
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; groupName: string }) => {
     const body = {
@@ -115,26 +121,37 @@ const GroupList: React.FC = () => {
         }
         actionRef={actionRef}
         rowKey="deviceName"
-        // search={SEARCH_CONFIGURE}
         options={{ ...PROTABLE_OPTIONS, search: true }}
         search={false}
+        // TODO: 获取产品列表接口拿到option
         toolbar={{
           filter: (
-            <LightFilter>
+            <LightFilter
+              bordered
+              onFinish={async (value) =>
+                setSearchParams({ ...searchParams, productID: value.productID })
+              }
+            >
               <ProFormSelect
-                name="productType"
+                name="productID"
                 width="md"
-                label="所属产品"
+                label="设备所属产品"
                 placeholder="请选择产品"
                 request={async () => PRODUCT_TYPE_OPTION}
               />
             </LightFilter>
           ),
-          search: <ProFormText name="deviceName" width="md" placeholder="请输入设备名称" />,
+          search: (
+            <Search
+              name="deviceName"
+              width="md"
+              placeholder="请输入设备名称"
+              onSearch={(value) => setSearchParams({ ...searchParams, deviceName: value })}
+            />
+          ),
         }}
         rowSelection={{}}
-        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
-          console.log(selectedRows);
+        tableAlertRender={({ selectedRowKeys, onCleanSelected }) => {
           return (
             <Space size={24}>
               <span>
@@ -163,32 +180,12 @@ const GroupList: React.FC = () => {
             </Space>
           );
         }}
-        request={(params) => queryPage<QueryProp, any>(postThingsGroupInfoRead, { ...params })}
+        params={searchParams}
+        request={(params) => queryPage<QueryProp, any>(postThingsGroupDeviceIndex, { ...params })}
         columns={columns}
         pagination={{ pageSize: 10 }}
         size={'middle'}
       />
-      {/* {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
-            </div>
-          }
-        >
-          <Button
-            type="primary"
-            danger
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            批量删除
-          </Button>
-        </FooterToolbar>
-      )} */}
     </>
   );
 };

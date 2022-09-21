@@ -50,6 +50,59 @@ const groupInfoList = {
     { key: 'qwe', value: 'asd' },
   ],
 };
+const groupDeviceList = [
+  {
+    deviceName: 'test001',
+    createdTime: '1663057691039',
+    lastLogin: '1663057691039',
+    firstLogin: '1663057691039',
+    productID: 'ohBwuajQ7ggGZAgCRuLP010200',
+    secret: 'ohBwuajQ7ggGZAgCRuLP010200',
+    cert: 'ohBwuajQ7ggGZAgCRuLP010200',
+    version: 'v1',
+    logLevel: '1',
+    isOnline: 2,
+    tags: [
+      { key: 'qwe', value: 'asd' },
+      { key: 'qwe', value: 'asd' },
+      { key: 'qwe', value: 'asd' },
+    ],
+  },
+  {
+    deviceName: 'test002',
+    createdTime: '1663057691039',
+    lastLogin: '1663057691039',
+    firstLogin: '1663057691039',
+    productID: 'ohBwuajQ7ggGZAgCRuLP010200',
+    secret: 'ohBwuajQ7ggGZAgCRuLP010200',
+    cert: 'ohBwuajQ7ggGZAgCRuLP010200',
+    version: 'v1',
+    logLevel: '1',
+    isOnline: 2,
+    tags: [
+      { key: 'qwe', value: 'asd' },
+      { key: 'qwe', value: 'asd' },
+      { key: 'qwe', value: 'asd' },
+    ],
+  },
+  {
+    deviceName: 'test003',
+    createdTime: '1663057691039',
+    lastLogin: '1663057691039',
+    firstLogin: '1663057691039',
+    productID: 'ohBwuajQ7ggGZAgCRuLP010200',
+    secret: 'ohBwuajQ7ggGZAgCRuLP010200',
+    cert: 'ohBwuajQ7ggGZAgCRuLP010200',
+    version: 'v1',
+    logLevel: '1',
+    isOnline: 2,
+    tags: [
+      { key: 'qwe', value: 'asd' },
+      { key: 'qwe', value: 'asd' },
+      { key: 'qwe', value: 'asd' },
+    ],
+  },
+];
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -76,7 +129,18 @@ async function postThingsGroupInfoRead(req: Request, res: Response) {
     data: groupInfoList,
   });
 }
+async function postThingsGroupDeviceIndex(req: Request, res: Response) {
+  await waitTime(2000);
+  return res.json({
+    code: 0,
+    msg: 'string',
+    data: {
+      list: groupDeviceList,
+    },
+  });
+}
 export default {
   'POST /api/v1/things/group/info/index': postThingsGroupInfoIndex,
   'POST /api/v1/things/group/info/read': postThingsGroupInfoRead,
+  'POST /api/v1/things/group/device/index': postThingsGroupDeviceIndex,
 };
