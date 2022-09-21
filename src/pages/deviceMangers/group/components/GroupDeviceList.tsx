@@ -13,13 +13,15 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Input, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
-import { history } from 'umi';
+import { history, useParams } from 'umi';
 import type { GroupDeviceItem } from '../types';
 
 const GroupDeviceList: React.FC<{
   flag: string;
   onAdd?: () => void;
 }> = ({ flag, onAdd }) => {
+  const param = useParams() as { id: string };
+  const groupID = param.id ?? '';
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [selectedRowsState, setSelectedRows] = useState([]);
@@ -28,9 +30,9 @@ const GroupDeviceList: React.FC<{
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postThingsGroupDeviceIndex;
   // 删除操作
-  const showDeleteConfirm = (record: { groupID: string; deviceName: string }) => {
+  const showDeleteConfirm = (record: { deviceName: string }) => {
     const body = {
-      groupID: record?.groupID ?? '',
+      groupID: groupID ?? '',
     };
     deleteHandler<{ groupID: string }>(postThingsGroupInfo__openAPI__delete, actionRef, {
       title: '是否从分组中删除当前设备',
@@ -64,11 +66,6 @@ const GroupDeviceList: React.FC<{
     { label: '全部产品', value: 1 },
     { label: 'test001', value: 2 },
   ];
-
-  // enum FlagStatus  {
-  //   LIST = 'list',
-  //   CREATE = 'create'
-  // }
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
@@ -130,13 +127,17 @@ const GroupDeviceList: React.FC<{
         <>
           <Button
             type="primary"
-            onClick={() => history.push(`/deviceMangers/devices/details/${record.productID}`)}
+            onClick={() =>
+              history.push(
+                `/deviceMangers/device/index?productID=${record.productID}&deviceName=${record.deviceName}`,
+              )
+            }
           >
             查看
           </Button>
           {/* <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} /> */}
           <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record?.productID)}>
+          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
             从分组中删除
           </Button>
         </>
