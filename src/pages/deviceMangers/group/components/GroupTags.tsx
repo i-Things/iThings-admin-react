@@ -8,17 +8,13 @@ import ProForm, { ModalForm, ProFormGroup, ProFormList, ProFormText } from '@ant
 import { Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import '../styles.less';
-import type { GroupDescriptonProps, TagProps } from './types';
+import type { GroupDescriptonProps, groupSearchParmasProps, TagProps } from './types';
 
 const GroupTags: React.FC<{
   flag: string;
-  setTagValues?: React.Dispatch<
-    React.SetStateAction<{
-      tags: TagProps[];
-    }>
-  >;
+  setSearchParams?: React.Dispatch<React.SetStateAction<groupSearchParmasProps>>;
   record?: GroupDescriptonProps;
-}> = ({ flag, setTagValues, record }) => {
+}> = ({ flag, setSearchParams, record }) => {
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -37,13 +33,9 @@ const GroupTags: React.FC<{
     const body = { ...(record as GroupDescriptonProps), tags: values?.tags };
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
     if (flag === FlagStatus.CREATE)
-      (
-        setTagValues as React.Dispatch<
-          React.SetStateAction<{
-            tags: TagProps[];
-          }>
-        >
-      )(values);
+      (setSearchParams as React.Dispatch<React.SetStateAction<groupSearchParmasProps>>)((pre) => {
+        return { ...pre, ...values };
+      });
     else
       await updateHandler<UpdateProp, GroupDescriptonProps>(
         postThingsGroupInfoUpdate,

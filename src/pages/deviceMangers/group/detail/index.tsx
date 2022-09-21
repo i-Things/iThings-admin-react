@@ -23,7 +23,7 @@ const IndexPage: React.FC = () => {
             <DeviceListPage />
           </TabPane>
           <TabPane tab="子分组列表" key="3">
-            <GroupListPage />
+            <GroupListPage flag="son" />
           </TabPane>
         </Tabs>
       </Card>

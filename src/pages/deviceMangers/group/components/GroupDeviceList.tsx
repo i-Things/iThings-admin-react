@@ -17,7 +17,7 @@ import { history, useParams } from 'umi';
 import type { GroupDeviceItem } from '../types';
 
 const GroupDeviceList: React.FC<{
-  flag: string;
+  flag: 'list' | 'create';
   onAdd?: () => void;
 }> = ({ flag, onAdd }) => {
   const param = useParams() as { id: string };
@@ -150,29 +150,27 @@ const GroupDeviceList: React.FC<{
       <ProTable<any>
         // TODO: ProFormSelect获取产品列表接口拿到option
         headerTitle={
-          <>
-            <LightFilter
-              bordered
-              onFinish={async (value) =>
-                setSearchParams({ ...searchParams, productID: value.productID })
-              }
-            >
-              <ProFormSelect
-                name="productID"
-                width="md"
-                label="设备所属产品"
-                placeholder="请选择产品"
-                request={async () => PRODUCT_TYPE_OPTION}
-              />
-              <Input.Search
-                allowClear
-                name="deviceName"
-                width="md"
-                placeholder="请输入设备名称"
-                onSearch={(value) => setSearchParams({ ...searchParams, deviceName: value })}
-              />
-            </LightFilter>
-          </>
+          <LightFilter
+            bordered
+            onFinish={async (value) =>
+              setSearchParams({ ...searchParams, productID: value.productID })
+            }
+          >
+            <ProFormSelect
+              name="productID"
+              width="md"
+              label="设备所属产品"
+              placeholder="请选择产品"
+              request={async () => PRODUCT_TYPE_OPTION}
+            />
+            <Input.Search
+              allowClear
+              name="deviceName"
+              width="md"
+              placeholder="请输入设备名称"
+              onSearch={(value) => setSearchParams({ ...searchParams, deviceName: value })}
+            />
+          </LightFilter>
         }
         actionRef={actionRef}
         rowKey="deviceName"

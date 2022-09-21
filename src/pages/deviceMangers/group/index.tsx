@@ -5,7 +5,7 @@ import GroupList from './components/GroupList';
 const Group: React.FC = () => {
   return (
     <PageContainer>
-      <GroupList />
+      <GroupList flag="index" />
     </PageContainer>
   );
 };

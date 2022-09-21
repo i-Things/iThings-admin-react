@@ -6,20 +6,30 @@ import {
 } from '@/services/iThingsapi/shebeifenzu';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { LightFilter } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider } from 'antd';
-import React, { useRef, useState } from 'react';
+import { Button, Divider, Input } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
 import type { GroupListItem } from '../types';
 import CreateOrUpdateGroup from './CreateOrUpdateGroup';
 import GroupTags from './GroupTags';
-import type { TagProps } from './types';
+import type { groupSearchParmasProps, TagProps } from './types';
 
-const GroupList: React.FC = () => {
+const GroupList: React.FC<{ flag: 'index' | 'son' }> = ({ flag }) => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [tagValues, setTagValues] = useState<{ tags: TagProps[] }>({ tags: [] });
+  const [searchParams, setSearchParams] = useState<groupSearchParmasProps>({
+    tags: [],
+    groupName: '',
+  });
+
+  useEffect(() => {
+    setTagValues({ tags: searchParams?.tags });
+  }, [searchParams]);
+
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postThingsGroupInfoIndex;
   // 删除操作
@@ -59,7 +69,7 @@ const GroupList: React.FC = () => {
         if (type === 'form') {
           return null;
         }
-        return <GroupTags flag="create" key="createGroupTags" setTagValues={setTagValues} />;
+        return <GroupTags flag="create" key="createGroupTags" setSearchParams={setSearchParams} />;
       },
     },
     {
@@ -86,19 +96,46 @@ const GroupList: React.FC = () => {
 
   return (
     <ProTable<GroupListItem>
-      headerTitle="分组"
+      headerTitle={
+        flag === 'index' ? (
+          '分组'
+        ) : (
+          <LightFilter
+            bordered
+            onFinish={async (value) =>
+              setSearchParams({ ...searchParams, groupName: value.groupName })
+            }
+          >
+            <GroupTags flag="create" key="createGroupTags" setSearchParams={setSearchParams} />
+            <Input.Search
+              allowClear
+              name="groupName"
+              width="md"
+              placeholder="请输入分组名称"
+              onSearch={(value) => setSearchParams({ ...searchParams, groupName: value })}
+            />
+          </LightFilter>
+        )
+      }
+      search={flag === 'index' ? SEARCH_CONFIGURE : false}
       actionRef={actionRef}
       rowKey="groupID"
-      search={SEARCH_CONFIGURE}
+      // search={SEARCH_CONFIGURE}
       options={PROTABLE_OPTIONS}
       toolBarRender={() => [
         <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
       ]}
+      params={flag === 'index' ? undefined : searchParams}
       request={(params) => {
-        return queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, {
-          ...params,
-          ...tagValues,
-        });
+        return queryPage<QueryProp, GroupListItem>(
+          postThingsGroupInfoIndex,
+          flag === 'index'
+            ? {
+                ...params,
+                ...tagValues,
+              }
+            : { ...params },
+        );
       }}
       columns={columns}
       pagination={{ pageSize: 10 }}

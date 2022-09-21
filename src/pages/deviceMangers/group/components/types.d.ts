@@ -2,7 +2,10 @@ export type TagProps = {
   key: string;
   value: string;
 };
-
+export interface groupSearchParmasProps {
+  tags: TagProps[];
+  groupName: string;
+}
 export interface GroupDescriptonProps {
   groupName: string;
   groupID: string;
