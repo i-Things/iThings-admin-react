@@ -6,12 +6,13 @@ import {
   postSystemRoleRoleMenuUpdate,
   postSystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
+import { ResponseCode } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Drawer, Tabs } from 'antd';
+import { Button, Divider, Drawer, message, Tabs } from 'antd';
 import React, { useRef, useState } from 'react';
 import CreateOrUpdateRole from './components/CreateOrUpdateRole';
 import MenuForm from './components/MenuForm';
@@ -28,16 +29,34 @@ const RoleList: React.FC = () => {
   const [currentData, setCurrentData] = useState<RoleListItem>();
   type QueryProp = typeof postSystemRoleIndex;
   type UpdateProp = typeof postSystemRoleRoleMenuUpdate;
+
   // 删除操作
   const showDeleteConfirm = (record: { id: string; name: string }) => {
     const body = {
       id: record?.id,
     };
-    deleteHandler<{ id: string }>(postSystemRole__openAPI__delete, actionRef, {
-      title: '是否删除当前角色',
-      content: `所选角色: ${record?.name ?? '未知角色'},  删除后无法恢复，请确认`,
-      body,
-    });
+    deleteHandler(
+      {
+        title: '是否删除当前角色',
+        content: `所选角色: ${record?.name ?? '未知角色'},  删除后无法恢复，请确认`,
+      },
+      async () => {
+        let res;
+        try {
+          res = await postSystemRole__openAPI__delete(body);
+          if (res.code === ResponseCode.SUCCESS) {
+            actionRef.current?.reload();
+            message.success('删除成功');
+          }
+        } catch (error) {
+          message.error((error as Error)?.message);
+        }
+        return res;
+      },
+      () => {
+        console.log('Cancel');
+      },
+    );
   };
 
   const formSubmit = async (values: FormSubmitValueProp) => {

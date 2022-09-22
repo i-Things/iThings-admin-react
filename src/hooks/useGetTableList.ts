@@ -1,10 +1,10 @@
+import { MenuListItem } from '@/pages/systemMangers/menu/types';
 import { spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
-import type { MenuListItem, MenuOption } from '../pages/systemMangers/menus/types';
 const useGetTableList = () => {
-  const [cascaderOptions, setCascaderOptions] = useState<MenuOption[]>([]);
+  // const [cascaderOptions, setCascaderOptions] = useState<MenuOption[]>([]);
   const [flatOptions, setFlatOptions] = useState<MenuListItem[]>([]);
   const queryPage = async <T extends Function, K>(
     queryApi: T,
@@ -24,24 +24,25 @@ const useGetTableList = () => {
     let res;
     try {
       res = await queryApi(body);
-      if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
-        setFlatOptions(res.data.list);
-        const treeList = res.data.list.map((item: MenuOption) => {
-          return {
-            ...item,
-            key: item?.id + '',
-            label: item?.name,
-            value: item?.id,
-          };
-        });
-        treeList.unshift({
-          id: 0,
-          label: '根节点',
-          parentID: 1,
-          value: 1,
-        });
-        setCascaderOptions(spanTree(treeList, 1, 'parentID'));
-      }
+      setFlatOptions(res.data.list);
+      // if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
+      //   setFlatOptions(res.data.list);
+      //   const treeList = res.data.list.map((item: MenuOption) => {
+      //     return {
+      //       ...item,
+      //       key: item?.id + '',
+      //       label: item?.name,
+      //       value: item?.id,
+      //     };
+      //   });
+      //   treeList.unshift({
+      //     id: 0,
+      //     label: '根节点',
+      //     parentID: 1,
+      //     value: 1,
+      //   });
+      //   // setCascaderOptions(spanTree(treeList, 1, 'parentID'));
+      // }
 
       if (res instanceof Response) {
         return {
@@ -64,8 +65,8 @@ const useGetTableList = () => {
   };
   return {
     queryPage,
-    cascaderOptions,
-    setCascaderOptions,
+    // cascaderOptions,
+    // setCascaderOptions,
     flatOptions,
   };
 };

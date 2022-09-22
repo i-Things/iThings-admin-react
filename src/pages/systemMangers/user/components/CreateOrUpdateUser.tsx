@@ -46,55 +46,6 @@ const CreateOrUpdateUser: React.FC<{
     editFormRef.current?.resetFields();
   };
 
-  // const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-  //   const reader = new FileReader();
-  //   reader.addEventListener('load', () => callback(reader.result as string));
-  //   reader.readAsDataURL(img);
-  // };
-
-  // const beforeUpload = (file: RcFile) => {
-  //   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  //   if (!isJpgOrPng) {
-  //     message.error('You can only upload JPG/PNG file!');
-  //   }
-  //   const isLt2M = file.size / 1024 / 1024 < 2;
-  //   if (!isLt2M) {
-  //     message.error('Image must smaller than 2MB!');
-  //   }
-  //   return isJpgOrPng && isLt2M;
-  // };
-
-  // const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
-  //   if ((info.file.size as number) / 1024 / 1024 >= 2) return null;
-
-  //   if (info.file.status === 'uploading') {
-  //     return setLoading(true);
-  //   }
-  //   if (info.file.status === 'done') {
-  //     // Get this url from response in real world.
-  //     getBase64(info.file.originFileObj as RcFile, (url) => {
-  //       setLoading(false);
-  //       setImageUrl(url);
-  //     });
-  //   }
-  // };
-
-  // const uploadButton = (
-  //   <div>
-  //     {loading ? <LoadingOutlined /> : <PlusOutlined />}
-  //     <div style={{ marginTop: 8 }}>Upload</div>
-  //   </div>
-  // );
-
-  // const prefixSelector = (
-  //   <Form.Item name="prefix" noStyle>
-  //     <Select style={{ width: 70 }} defaultValue="86">
-  //       <Option value="86">+86</Option>
-  //       <Option value="87">+87</Option>
-  //     </Select>
-  //   </Form.Item>
-  // );
-
   useEffect(() => {
     editFormRef.current?.setFieldsValue(record);
   }, [editFlag, record]);
@@ -172,28 +123,6 @@ const CreateOrUpdateUser: React.FC<{
         request={async () => ROLE_OPTION}
       />
       <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
-      {/* <ProFormText
-        name="Email"
-        label="邮箱"
-        width="md"
-        placeholder="请输入邮箱"
-        fieldProps={{ defaultValue: record?.email ?? '' }}
-        rules={[
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          },
-        ]}
-      />
-      <ProFormText
-        name="Phone"
-        label="手机号"
-        width="md"
-        fieldProps={{
-          addonBefore: prefixSelector,
-          defaultValue: record?.phone ?? '',
-        }}
-      /> */}
       <ProFormSelect
         width="md"
         name="sex"
@@ -207,39 +136,6 @@ const CreateOrUpdateUser: React.FC<{
       <ProFormText name="province" width="md" label="省份" placeholder="请输入所在省份" />
       <ProFormText name="city" width="md" label="城市" placeholder="请输入所在城市" />
       <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" />
-      {/* <ProFormUploadButton
-        name="headImgUrl"
-        label="头像"
-        icon=" "
-        max={1}
-        action=""
-        fieldProps={{
-          onChange: handleChange,
-          beforeUpload: beforeUpload,
-          listType: 'picture-card',
-        }}
-        extra="请上传jpg/png格式图片,且大小小于2M"
-      >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-      </ProFormUploadButton> */}
-
-      {/* <Form.Item label="头像" name="headImgUrl">
-        <ImgCrop rotate>
-          <Upload
-            listType="picture-card"
-            showUploadList={false}
-            action=""
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-          >
-            {imageUrl ? (
-              <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-            ) : (
-              uploadButton
-            )}
-          </Upload>
-        </ImgCrop>
-      </Form.Item> */}
     </ModalForm>
   );
 };

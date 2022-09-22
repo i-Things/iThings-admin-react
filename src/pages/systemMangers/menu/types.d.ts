@@ -1,5 +1,8 @@
 import type { Option } from '@/hooks/types';
 export interface MenuListItem {
+  value: number;
+  label: string;
+  key: string;
   id: number;
   name: string;
   icon: string;

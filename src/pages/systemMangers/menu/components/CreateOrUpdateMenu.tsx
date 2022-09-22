@@ -18,7 +18,7 @@ const CreateOrUpdateMenu: React.FC<{
   flag: FlagStatus;
   record?: MenuListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
-  cascaderOptions?: MenuOption[];
+  cascaderOptions?: MenuListItem[];
   flatOptions: MenuListItem[];
 }> = ({ flag, record, actionRef, cascaderOptions, flatOptions }) => {
   const { createHandler } = useTableCreate();
