@@ -97,7 +97,7 @@ const waitTime = (time: number = 100) => {
   });
 };
 async function postThingsGroupInfoIndex(req: Request, res: Response) {
-  await waitTime(2000);
+  await waitTime(100);
   return res.json({
     code: 0,
     msg: 'string',
@@ -107,7 +107,7 @@ async function postThingsGroupInfoIndex(req: Request, res: Response) {
   });
 }
 async function postThingsGroupInfoRead(req: Request, res: Response) {
-  await waitTime(2000);
+  await waitTime(100);
   return res.json({
     code: 0,
     msg: 'string',
@@ -115,7 +115,7 @@ async function postThingsGroupInfoRead(req: Request, res: Response) {
   });
 }
 async function postThingsGroupDeviceIndex(req: Request, res: Response) {
-  await waitTime(2000);
+  await waitTime(100);
   return res.json({
     code: 0,
     msg: 'string',

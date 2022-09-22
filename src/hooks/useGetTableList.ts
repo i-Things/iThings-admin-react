@@ -6,10 +6,6 @@ const useGetTableList = () => {
   const [cascaderOptions, setCascaderOptions] = useState([]);
   const [flatOptions, setFlatOptions] = useState([]);
   const [dataList, setDataList] = useState<ParamsType>();
-
-  // type fuc = (
-  //   body: ParamsType & { page: { page?: number; size?: number } },
-  // ) => Promise<{ data: { list: Option & ParamsType[] }; total: number }>;
   const queryPage = async <T extends Function, K>(
     queryApi: T,
     params: ParamsType & {

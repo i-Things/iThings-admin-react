@@ -12,6 +12,7 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
   const groupID = params.id ?? '';
   const { queryPage, dataList } = useGetTableList();
   type QueryProp = typeof postThingsGroupInfoRead;
+
   useEffect(() => {
     const param = { groupID };
     queryPage<QueryProp, ParamsType>(postThingsGroupInfoRead, param);

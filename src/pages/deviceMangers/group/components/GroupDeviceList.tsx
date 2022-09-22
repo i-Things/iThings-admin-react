@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
+import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
+import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
   postThingsGroupDeviceIndex,
   postThingsGroupInfo__openAPI__delete,
@@ -12,7 +14,7 @@ import { LightFilter, ProFormSelect } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Input, message, Space } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { history, useParams } from 'umi';
 import type { GroupDeviceItem } from '../types';
 
@@ -23,12 +25,14 @@ const GroupDeviceList: React.FC<{
   const param = useParams() as { id: string };
   const groupID = param.id ?? '';
   const { queryPage } = useGetTableList();
+  const { querySelectOptions, selectOptions } = useGetSelectOptions();
   const { deleteHandler } = useTableDelete();
   const [selectedRowsState, setSelectedRows] = useState([]);
   const [searchParams, setSearchParams] = useState({ productID: '', deviceName: '' });
 
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postThingsGroupDeviceIndex;
+  type QueryProductProp = typeof postThingsProductInfoIndex;
   // 删除操作
   const showDeleteConfirm = (record: { deviceName: string }) => {
     const body = {
@@ -61,11 +65,6 @@ const GroupDeviceList: React.FC<{
       return false;
     }
   };
-
-  const PRODUCT_TYPE_OPTION = [
-    { label: '全部产品', value: 1 },
-    { label: 'test001', value: 2 },
-  ];
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
@@ -145,6 +144,14 @@ const GroupDeviceList: React.FC<{
     },
   ];
 
+  useEffect(() => {
+    querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
+      page: { page: 1, size: 99999 },
+      label: 'productName',
+      value: 'productID',
+    });
+  }, []);
+
   return (
     <>
       <ProTable<any>
@@ -161,7 +168,9 @@ const GroupDeviceList: React.FC<{
               width="md"
               label="设备所属产品"
               placeholder="请选择产品"
-              request={async () => PRODUCT_TYPE_OPTION}
+              fieldProps={{
+                options: selectOptions,
+              }}
             />
             <Input.Search
               allowClear
