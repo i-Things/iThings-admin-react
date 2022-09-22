@@ -7,7 +7,7 @@ const useTableCreate = () => {
     createApi: T,
     actionRef: React.MutableRefObject<ActionType | undefined>,
     body: k,
-    CreateOk?: () => void,
+    createOkHandler?: () => void,
   ) => {
     let res;
     try {
@@ -15,7 +15,7 @@ const useTableCreate = () => {
       if (res?.code === ResponseCode.SUCCESS) {
         actionRef.current?.reload();
         message.success('创建成功');
-        if (CreateOk) CreateOk();
+        if (createOkHandler) createOkHandler();
       }
     } catch (error) {
       message.error((error as Error)?.message);

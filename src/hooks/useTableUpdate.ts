@@ -7,7 +7,7 @@ const useTableUpdate = () => {
     updateApi: T,
     actionRef: React.MutableRefObject<ActionType | undefined>,
     body: K,
-    updateOk?: () => void,
+    updateOkHandler?: () => void,
   ) => {
     let res;
     try {
@@ -15,7 +15,7 @@ const useTableUpdate = () => {
       if (res.code === ResponseCode.SUCCESS) {
         actionRef.current?.reload();
         message.success('更新成功');
-        if (updateOk) updateOk();
+        if (updateOkHandler) updateOkHandler();
       }
     } catch (error) {
       message.error((error as Error)?.message);

@@ -7,6 +7,7 @@ import {
 import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -18,9 +19,10 @@ import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
 import type { MenuListItem } from './types';
 
 const MenuList: React.FC = () => {
-  const { queryPage, flatOptions } = useGetTableList();
+  const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [cascaderOptions, setCascaderOptions] = useState<MenuListItem[]>([]);
+  const [flatOptions, setFlatOptions] = useState<MenuListItem[]>([]);
   const actionRef = useRef<ActionType>();
   type QueryProp = typeof postSystemMenuIndex;
 
@@ -151,8 +153,10 @@ const MenuList: React.FC = () => {
     },
   ) => {
     const treeList = await queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params);
-    const tree = cloneDeep(recursion(treeList?.data));
-    tree.unshift({
+    setFlatOptions(treeList?.data);
+    const tree = { ...treeList, data: spanTree(treeList?.data, 1, 'parentID') };
+    const cascadertree = cloneDeep(recursion(treeList?.data));
+    cascadertree.unshift({
       id: 0,
       label: '根节点',
       parentID: 1,
@@ -166,8 +170,8 @@ const MenuList: React.FC = () => {
       hideInMenu: '',
       key: '',
     });
-    setCascaderOptions(tree);
-    return treeList;
+    setCascaderOptions(cascadertree);
+    return tree;
   };
 
   return (

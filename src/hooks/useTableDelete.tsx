@@ -1,3 +1,4 @@
+import { ResponseCode } from '@/utils/base';
 import { ExclamationCircleOutlined } from '@ant-design/icons/lib/icons';
 import { ActionType } from '@ant-design/pro-table';
 import { message, Modal } from 'antd';
@@ -22,13 +23,13 @@ const useTableDelete = () => {
       icon: <ExclamationCircleOutlined />,
       content,
       async onOk() {
-        if (deleteOkHandler) deleteOkHandler();
         let res;
         try {
           res = await deleteApi(body);
-          if (res.code === 200) {
+          if (res.code === ResponseCode.SUCCESS) {
             actionRef.current?.reload();
             message.success('删除成功');
+            if (deleteOkHandler) deleteOkHandler();
           }
         } catch (error) {
           message.error((error as Error)?.message);
