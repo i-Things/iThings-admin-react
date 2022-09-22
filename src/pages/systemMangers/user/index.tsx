@@ -4,13 +4,12 @@ import {
   postSystemUserIndex,
   postSystemUser__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
-import { ResponseCode } from '@/utils/base';
 import { PROTABLE_OPTIONS, ROLE_VALUE_ENUM, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, message } from 'antd';
+import { Button, Divider } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
@@ -25,28 +24,11 @@ const UserList: React.FC = () => {
     const body = {
       uid: record?.uid ?? '',
     };
-    deleteHandler(
-      {
-        title: '是否删除当前用户',
-        content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
-      },
-      async () => {
-        let res;
-        try {
-          res = await postSystemUser__openAPI__delete(body);
-          if (res.code === ResponseCode.SUCCESS) {
-            actionRef.current?.reload();
-            message.success('删除成功');
-          }
-        } catch (error) {
-          message.error((error as Error)?.message);
-        }
-        return res;
-      },
-      () => {
-        console.log('Cancel');
-      },
-    );
+    deleteHandler<{ uid: string }>(postSystemUser__openAPI__delete, actionRef, {
+      title: '是否删除当前用户',
+      content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
+      body,
+    });
   };
 
   const columns: ProColumns<UserListItem>[] = [

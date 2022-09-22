@@ -25,25 +25,6 @@ const useGetTableList = () => {
     try {
       res = await queryApi(body);
       setFlatOptions(res.data.list);
-      // if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
-      //   setFlatOptions(res.data.list);
-      //   const treeList = res.data.list.map((item: MenuOption) => {
-      //     return {
-      //       ...item,
-      //       key: item?.id + '',
-      //       label: item?.name,
-      //       value: item?.id,
-      //     };
-      //   });
-      //   treeList.unshift({
-      //     id: 0,
-      //     label: '根节点',
-      //     parentID: 1,
-      //     value: 1,
-      //   });
-      //   // setCascaderOptions(spanTree(treeList, 1, 'parentID'));
-      // }
-
       if (res instanceof Response) {
         return {
           data: [],
@@ -65,8 +46,6 @@ const useGetTableList = () => {
   };
   return {
     queryPage,
-    // cascaderOptions,
-    // setCascaderOptions,
     flatOptions,
   };
 };

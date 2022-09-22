@@ -4,7 +4,7 @@ import {
   postSystemMenuIndex,
   postSystemMenu__openAPI__delete,
 } from '@/services/iThingsapi/caidanguanli';
-import { FlagStatus, ResponseCode } from '@/utils/base';
+import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import type { ParamsType } from '@ant-design/pro-components';
@@ -29,28 +29,11 @@ const MenuList: React.FC = () => {
     const body = {
       id: record?.id,
     };
-    deleteHandler(
-      {
-        title: '是否删除当前菜单',
-        content: `所选菜单: ${record?.name ?? '未知菜单'},  删除后无法恢复，请确认`,
-      },
-      async () => {
-        let res;
-        try {
-          res = await postSystemMenu__openAPI__delete(body);
-          if (res.code === ResponseCode.SUCCESS) {
-            actionRef.current?.reload();
-            message.success('删除成功');
-          }
-        } catch (error) {
-          message.error((error as Error)?.message);
-        }
-        return res;
-      },
-      () => {
-        console.log('Cancel');
-      },
-    );
+    deleteHandler<{ id: number }>(postSystemMenu__openAPI__delete, actionRef, {
+      title: '是否删除当前菜单',
+      content: `所选菜单: ${record?.name ?? '未知菜单'},  删除后无法恢复，请确认`,
+      body,
+    });
   };
 
   const columns: ProColumns<MenuListItem>[] = [
