@@ -1,4 +1,3 @@
-import { CreateForm } from '@/pages/deviceMangers/product/createForm';
 import {
   postThingsProductInfoIndex,
   postThingsProductInfo__openAPI__delete,
@@ -9,12 +8,14 @@ import { DEVICE_TYPE_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import type { ProColumns } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
+import { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
 import React, { useRef } from 'react';
+import { CreateForm } from './createForm';
+
 const { confirm } = Modal;
 
 type queryParam = {
@@ -26,9 +27,25 @@ type queryParam = {
 
 const columns: ProColumns<PRODUCT_INFO>[] = [
   {
+    dataIndex: 'index',
+    valueType: 'indexBorder',
+    width: 48,
+  },
+  {
     key: 'productName',
     title: '产品名称',
     dataIndex: 'productName',
+    copyable: true,
+    render: (text, record) => [
+      <a
+        key="view"
+        onClick={() => {
+          history.push('/deviceMangers/product/detail/' + record.productID);
+        }}
+      >
+        {text}
+      </a>,
+    ],
   },
   {
     key: 'productID',

@@ -1,6 +1,6 @@
 import { ResponseCode } from '@/utils/base';
 import { ExclamationCircleOutlined } from '@ant-design/icons/lib/icons';
-import { ActionType } from '@ant-design/pro-table';
+import type { ActionType } from '@ant-design/pro-table';
 import { message, Modal } from 'antd';
 const { confirm } = Modal;
 const useTableDelete = () => {

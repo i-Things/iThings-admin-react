@@ -51,9 +51,9 @@ export async function postThingsDeviceInfoIndex(
     page?: { page?: number; size?: number };
     /** 为空时获取所有产品 */
     productID?: string;
-    deviceName: string;
+    deviceName?: string;
     /** 非模糊查询 为tag的名,value为tag对应的值 */
-    tags: { key?: string; value?: string }[];
+    tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
 ) {
@@ -62,8 +62,8 @@ export async function postThingsDeviceInfoIndex(
     msg: string;
     data: {
       list?: {
-        productID?: string;
-        deviceName?: string;
+        productID: string;
+        deviceName: string;
         createdTime?: string;
         secret?: string;
         firstLogin?: string;
@@ -125,6 +125,7 @@ export async function postThingsDeviceInfoUpdate(
   body: {
     /** 不可修改 */
     productID: string;
+    deviceName: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];

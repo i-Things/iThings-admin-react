@@ -49,7 +49,7 @@ const IndexPage: React.FC = () => {
             <ModelPage />
           </TabPane>
           <TabPane tab="设备列表" key="4">
-            <DevicePage />
+            <DevicePage productInfo={productInfo} />
           </TabPane>
         </Tabs>
       </Card>
