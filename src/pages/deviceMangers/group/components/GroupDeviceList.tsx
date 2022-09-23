@@ -16,6 +16,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Input, message, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useParams } from 'umi';
+import '../styles.less';
 import type { GroupDeviceItem } from '../types';
 
 const GroupDeviceList: React.FC<{
