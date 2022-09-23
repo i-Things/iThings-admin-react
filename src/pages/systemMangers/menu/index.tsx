@@ -7,7 +7,7 @@ import {
 import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { spanTree } from '@/utils/utils';
+import { recursionTree, spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -135,16 +135,6 @@ const MenuList: React.FC = () => {
     },
   ];
 
-  const recursion = (pre: MenuListItem[]) => {
-    pre.map((item) => {
-      if (item.children) recursion(item?.children);
-      item.key = item?.id + '';
-      item.label = item?.name;
-      item.value = item?.id;
-    });
-    return pre;
-  };
-
   const queryPageHandler = async (
     params: ParamsType & {
       pageSize?: number | undefined;
@@ -155,7 +145,7 @@ const MenuList: React.FC = () => {
     const treeList = await queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params);
     setFlatOptions(treeList?.data);
     const tree = { ...treeList, data: spanTree(treeList?.data, 1, 'parentID') };
-    const cascadertree = cloneDeep(recursion(treeList?.data));
+    const cascadertree = cloneDeep(recursionTree(treeList?.data));
     cascadertree.unshift({
       id: 0,
       label: '根节点',
@@ -169,6 +159,7 @@ const MenuList: React.FC = () => {
       createdTime: '',
       hideInMenu: '',
       key: '',
+      title: '',
     });
     setCascaderOptions(cascadertree);
     return tree;
