@@ -10,7 +10,7 @@ export async function postThingsDeviceMsgHubLogIndex(
     timeStart?: string;
     timeEnd?: string;
     page?: { page?: number; size?: number };
-    /** connected:上线 disconnected:下线  property:属性 event:事件 action:操作 thing:物模型提交的操作为匹配的日志 */
+    /** connected:上线 disconnected:下线 property:属性 event:事件 action:操作 thing:物模型提交的操作为匹配的日志 */
     actions?: string[];
     topics?: string[];
     content?: string;
@@ -116,7 +116,7 @@ export async function postThingsDeviceMsgSchemaLogIndex(
   });
 }
 
-/** 获取设备sdk日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
+/** 获取设备本地日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
 export async function postThingsDeviceMsgSdkLogIndex(
   body: {
     deviceName: string;

@@ -21,7 +21,7 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
   return (
     <>
       <Descriptions
-        title="分组信息"
+        title={'分组信息'}
         bordered={borderFlag}
         extra={
           borderFlag && <CreateOrUpdateGroup flag="update" key="updateGroup" record={dataList} />
@@ -29,11 +29,8 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
       >
         {dataList ? (
           <>
-            <Descriptions.Item label="分组层级">{dataList?.groupLevel}</Descriptions.Item>
+            <Descriptions.Item label="分组名称">{dataList?.groupName}</Descriptions.Item>
             <Descriptions.Item label="分组ID">{dataList?.groupID}</Descriptions.Item>
-            <Descriptions.Item label="设备总数">{dataList?.totalDevice}</Descriptions.Item>
-            <Descriptions.Item label="激活设备">{dataList?.activateDevice}</Descriptions.Item>
-            <Descriptions.Item label="当前在线">{dataList?.currentOnline}</Descriptions.Item>
             {borderFlag && (
               <>
                 <Descriptions.Item label="创建时间">

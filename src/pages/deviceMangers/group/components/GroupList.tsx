@@ -17,7 +17,7 @@ import CreateOrUpdateGroup from './CreateOrUpdateGroup';
 import GroupTags from './GroupTags';
 import type { groupSearchParmasProps, TagProps } from './types';
 
-const GroupList: React.FC<{ flag: 'index' | 'son' }> = ({ flag }) => {
+const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: number }> = ({ flag, parentID }) => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [tagValues, setTagValues] = useState<{ tags: TagProps[] }>({ tags: [] });
@@ -80,6 +80,7 @@ const GroupList: React.FC<{ flag: 'index' | 'son' }> = ({ flag }) => {
         <>
           <Button
             type="primary"
+            // TODO:层级跳转问题（层级最多为3层）
             onClick={() => history.push(`/deviceMangers/group/detail/${record?.groupID}`)}
           >
             查看
@@ -132,9 +133,10 @@ const GroupList: React.FC<{ flag: 'index' | 'son' }> = ({ flag }) => {
           flag === 'index'
             ? {
                 ...params,
+                parentID,
                 ...tagValues,
               }
-            : { ...params },
+            : { ...params, parentID },
         );
       }}
       columns={columns}

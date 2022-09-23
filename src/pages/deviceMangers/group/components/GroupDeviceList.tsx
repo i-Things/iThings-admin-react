@@ -7,41 +7,52 @@ import {
   postThingsGroupDeviceIndex,
   postThingsGroupInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeifenzu';
-import { postSystemUser__openAPI__delete } from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { selectConfirm } from '@/utils/utils';
 import { LightFilter, ProFormSelect } from '@ant-design/pro-form';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Input, message, Space } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, Divider, Input, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { history, useParams } from 'umi';
 import '../styles.less';
 import type { GroupDeviceItem } from '../types';
 
 const GroupDeviceList: React.FC<{
   flag: 'list' | 'create';
+  selectedRowsState: any;
+  setSelectedRows: any;
+  actionRef: any;
   onAdd?: () => void;
-}> = ({ flag, onAdd }) => {
+}> = ({ flag, onAdd, selectedRowsState, setSelectedRows, actionRef }) => {
   const param = useParams() as { id: string };
   const groupID = param.id ?? '';
   const { queryPage } = useGetTableList();
   const { querySelectOptions, selectOptions } = useGetSelectOptions();
   const { deleteHandler } = useTableDelete();
-  const [selectedRowsState, setSelectedRows] = useState([]);
+  // const [selectedRowsState, setSelectedRows] = useState([]);
   const [searchParams, setSearchParams] = useState({ productID: '', deviceName: '' });
-
-  const actionRef = useRef<ActionType>();
+  // const actionRef = useRef<ActionType>();
   type QueryProp = typeof postThingsGroupDeviceIndex;
   type QueryProductProp = typeof postThingsProductInfoIndex;
   // 删除操作
-  const showDeleteConfirm = (record: { deviceName: string }) => {
+  const showDeleteConfirm = (record: { productID: string }) => {
+    // const selectRecord = Array.isArray(record) ? record : [record];
+    // const list = selectRecord.map((item) => {
+    //   return {
+    //     productID: item?.productID,
+    //     deviceName: item?.deviceName,
+    //   };
+    // });
+    const list = selectConfirm(record);
     const body = {
       groupID: groupID ?? '',
+      list,
     };
     deleteHandler<{ groupID: string }>(postThingsGroupInfo__openAPI__delete, actionRef, {
-      title: '是否从分组中删除当前设备',
-      content: `所选设备: ${record?.deviceName ?? '未知设备'},  删除后无法恢复，请确认`,
+      title: '是否从分组中删除选中设备',
+      content: `所选设备, 删除后无法恢复，请确认`,
       body,
     });
   };
@@ -50,22 +61,22 @@ const GroupDeviceList: React.FC<{
   //  *  批量删除节点
   //  * @param selectedRows
   //  */
-  const handleRemove = async (selectedRows) => {
-    const hide = message.loading('正在删除');
-    if (!selectedRows) return true;
-    try {
-      await postSystemUser__openAPI__delete({
-        ids: selectedRows.map((row) => row.id),
-      });
-      hide();
-      message.success('删除成功，即将刷新');
-      return true;
-    } catch (error) {
-      hide();
-      message.error('删除失败，请重试');
-      return false;
-    }
-  };
+  // const handleRemove = async (selectedRows) => {
+  //   const hide = message.loading('正在删除');
+  //   if (!selectedRows) return true;
+  //   try {
+  //     await postSystemUser__openAPI__delete({
+  //       ids: selectedRows.map((row) => row.id),
+  //     });
+  //     hide();
+  //     message.success('删除成功，即将刷新');
+  //     return true;
+  //   } catch (error) {
+  //     hide();
+  //     message.error('删除失败，请重试');
+  //     return false;
+  //   }
+  // };
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
@@ -122,7 +133,6 @@ const GroupDeviceList: React.FC<{
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      // TODO: 删除传递groupID
       render: (_, record) => (
         <>
           <Button
@@ -156,7 +166,6 @@ const GroupDeviceList: React.FC<{
   return (
     <>
       <ProTable<any>
-        // TODO: ProFormSelect获取产品列表接口拿到option
         headerTitle={
           <LightFilter
             bordered
@@ -195,7 +204,7 @@ const GroupDeviceList: React.FC<{
             <></>
           ),
         ]}
-        rowSelection={{}}
+        rowSelection={{ onChange: (_, selectedRows) => setSelectedRows(selectedRows) }}
         tableAlertRender={
           flag === 'list'
             ? ({ selectedRowKeys, onCleanSelected }) => (
@@ -218,7 +227,7 @@ const GroupDeviceList: React.FC<{
                     type="primary"
                     danger
                     onClick={async () => {
-                      await handleRemove(selectedRowsState);
+                      await showDeleteConfirm(selectedRowsState);
                       setSelectedRows([]);
                       actionRef.current?.reloadAndRest?.();
                     }}
@@ -230,7 +239,9 @@ const GroupDeviceList: React.FC<{
             : false
         }
         params={searchParams}
-        request={(params) => queryPage<QueryProp, any>(postThingsGroupDeviceIndex, { ...params })}
+        request={(params) =>
+          queryPage<QueryProp, any>(postThingsGroupDeviceIndex, { ...params, groupID })
+        }
         columns={flag === 'list' ? columns : columns.slice(0, columns.length - 1)}
         pagination={flag === 'list' ? { pageSize: 10 } : false}
         size={'middle'}

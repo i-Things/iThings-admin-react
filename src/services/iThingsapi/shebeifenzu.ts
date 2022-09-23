@@ -2,15 +2,12 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
-/** 添加分组设备 POST /api/v1/things/group/device/create */
+/** 添加分组设备(支持批量) POST /api/v1/things/group/device/create */
 export async function postThingsGroupDeviceCreate(
   body: {
     /** 分组ID */
     groupID: string;
-    /** 产品ID */
-    productID: string;
-    /** 设备名称 */
-    deviceName: string;
+    list: { productID?: string; deviceName?: string }[];
   },
   options?: { [key: string]: any },
 ) {
@@ -24,15 +21,12 @@ export async function postThingsGroupDeviceCreate(
   });
 }
 
-/** 删除分组设备 POST /api/v1/things/group/device/delete */
+/** 删除分组设备(支持批量) POST /api/v1/things/group/device/delete */
 export async function postThingsGroupDevice__openAPI__delete(
   body: {
     /** 分组ID */
     groupID: string;
-    /** 产品ID */
-    productID: string;
-    /** 设备名称 */
-    deviceName: string;
+    list: { productID?: string; deviceName?: string }[];
   },
   options?: { [key: string]: any },
 ) {
@@ -73,7 +67,6 @@ export async function postThingsGroupDeviceIndex(
         logLevel?: string;
         cert?: string;
         isOnline?: string;
-        tags?: { key?: string; value?: string }[];
       }[];
     };
   }>('/api/v1/things/group/device/index', {
@@ -92,9 +85,9 @@ export async function postThingsGroupInfoCreate(
     /** 分组名称 */
     groupName: string;
     /** 父组ID */
-    parentID?: string;
+    parentID?: number;
     /** 分组描述 */
-    description?: string;
+    desc?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -129,6 +122,9 @@ export async function postThingsGroupInfo__openAPI__delete(
 /** 获取分组列表 POST /api/v1/things/group/info/index */
 export async function postThingsGroupInfoIndex(
   body: {
+    page: { page?: number; size?: number };
+    /** 父组ID, 0-根组 */
+    parentID: string;
     /** 按分组名称筛选 */
     groupName?: string;
     tags?: { key?: string; value?: string }[];
@@ -142,10 +138,12 @@ export async function postThingsGroupInfoIndex(
       list?: {
         groupName?: string;
         groupID?: string;
-        description?: string;
+        desc?: string;
         createdTime?: string;
         tags?: { key?: string; value?: string }[];
       }[];
+      total?: number;
+      num?: number;
     };
   }>('/api/v1/things/group/info/index', {
     method: 'POST',
@@ -172,7 +170,7 @@ export async function postThingsGroupInfoRead(
       groupName?: string;
       groupID?: string;
       createdTime?: string;
-      description?: string;
+      desc?: string;
       tags?: { key?: string; value?: string }[];
     };
   }>('/api/v1/things/group/info/read', {
@@ -190,7 +188,7 @@ export async function postThingsGroupInfoUpdate(
   body: {
     groupID: string;
     groupName: string;
-    description?: string;
+    desc?: string;
     tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },

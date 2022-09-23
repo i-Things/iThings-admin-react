@@ -9,7 +9,7 @@ export async function postSystemMenuCreate(
     name: string;
     /** 父菜单ID，一级菜单为1 */
     parentID?: number;
-    /** 类型   1：目录   2：菜单   3：按钮 */
+    /** 类型 1：目录 2：菜单 3：按钮 */
     type?: number;
     /** 系统的path */
     path?: string;
@@ -97,7 +97,7 @@ export async function postSystemMenuUpdate(
     name?: string;
     /** 父菜单ID，一级菜单为1 */
     parentID?: number;
-    /** 类型   1：目录   2：菜单   3：按钮 */
+    /** 类型 1：目录 2：菜单 3：按钮 */
     type?: number;
     /** 系统的path */
     path?: string;

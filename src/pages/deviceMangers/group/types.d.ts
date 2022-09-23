@@ -1,8 +1,10 @@
 import type { Option } from '@/hooks/types';
+import type { TagProps } from './components/types';
 export interface GroupListItem {
   groupName: string;
   groupID: string;
   createdTime: string;
+  tags: TagProps;
 }
 
 export interface GroupDeviceItem {

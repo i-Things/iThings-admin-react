@@ -14,7 +14,6 @@ import {
 } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
-import { cloneDeep } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import type { GroupListItem, GroupOption } from '../types';
 
@@ -24,15 +23,15 @@ const CreateOrUpdateUser: React.FC<{
   record?: GroupListItem;
   actionRef?: React.MutableRefObject<ActionType | undefined>;
   cascaderOptions?: GroupOption[];
-  flatOptions: GroupListItem[];
-}> = ({ flag, record, actionRef, cascaderOptions }) => {
+  flatOptions?: GroupListItem[];
+}> = ({ flag, record, actionRef }) => {
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
   const editFormRef = useRef<ProFormInstance>();
-  const options = cloneDeep(cascaderOptions);
+  // const options = cloneDeep(cascaderOptions);
   type CreateProp = typeof postSystemUserCreate;
   type UpdateProp = typeof postSystemUserUpdate;
 
@@ -50,10 +49,11 @@ const CreateOrUpdateUser: React.FC<{
   };
 
   const formSubmit = async (values: GroupListItem) => {
-    const body = { ...values, reqType: 'pwd' };
+    const body = { ...values };
     if (flag === 'update')
       await updateHandler<UpdateProp, GroupListItem>(postSystemUserUpdate, actionRef, {
         ...body,
+        tags: record?.tags,
         // uid: record?.uid as string,
       });
     else await createHandler<CreateProp, GroupListItem>(postSystemUserCreate, actionRef, body);
@@ -121,12 +121,12 @@ const CreateOrUpdateUser: React.FC<{
       )}
       <ProFormCascader
         width="md"
-        name="parentGroup"
+        name="parentID"
         label="父组ID"
         fieldProps={{
           options:
             // flag === FlagStatus.UPDATE ? recursion(options as GroupOption[]) : cascaderOptions,
-            flag === FlagStatus.UPDATE ? (options as GroupOption[]) : cascaderOptions,
+            GROUP_TYPE_OPTION,
           expandTrigger: 'hover',
           changeOnSelect: true,
         }}
@@ -143,7 +143,7 @@ const CreateOrUpdateUser: React.FC<{
           },
         ]}
       />
-      <ProFormTextArea name="remark" width="md" label="分组描述" placeholder="分组描述" />
+      <ProFormTextArea name="desc" width="md" label="分组描述" placeholder="分组描述" />
     </ModalForm>
   );
 };

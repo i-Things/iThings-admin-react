@@ -63,3 +63,14 @@ export function spanTree(data: any, pid = 1, key = 'pid') {
 
   return result;
 }
+
+export function selectConfirm(record) {
+  const selectRecord = Array.isArray(record) ? record : [record];
+  const list = selectRecord.map((item) => {
+    return {
+      productID: item?.productID,
+      deviceName: item?.deviceName,
+    };
+  });
+  return list;
+}
