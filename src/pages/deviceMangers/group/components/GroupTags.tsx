@@ -105,7 +105,7 @@ const GroupTags: React.FC<{
       <ProFormList
         name="tags"
         label="分组标签"
-        initialValue={record?.tags}
+        initialValue={flag === 'update' ? record?.tags : [{ key: '', value: '' }]}
         copyIconProps={false}
         creatorButtonProps={{
           type: 'link',
