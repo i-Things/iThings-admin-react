@@ -4,16 +4,20 @@ import { milliTdToDate } from '@/utils/date';
 import { useRequest } from 'ahooks';
 import { Card, Col, message, Row, Table, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'umi';
 import SendMsg from './components/sendMsg';
 import { debugType } from './data';
 
 const DevicePage: React.FC = () => {
+  const params = useParams() as { id: string; name: string };
+  const { id = '', name = '' } = params;
   const { TabPane } = Tabs;
   const [contentData, setContentData] = useState<debugType[]>([]);
   // 获取内容日志
   const param = {
-    productID: '24GFTgusn1C',
-    deviceName: 'test5',
+    timeStart: String(Date.now()),
+    productID: id,
+    deviceName: name,
     page: DefaultPage,
   };
   const { run } = useRequest(postThingsDeviceMsgHubLogIndex, {
@@ -72,7 +76,7 @@ const DevicePage: React.FC = () => {
         <Col span={12}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="下行指令调试" key="1">
-              <SendMsg productID="24GFTgusn1C" deviceName="test5" />
+              <SendMsg productID={id} deviceName={name} />
             </TabPane>
           </Tabs>
         </Col>
