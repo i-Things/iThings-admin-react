@@ -6,6 +6,7 @@ import {
 } from '@/services/iThingsapi/shebeifenzu';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { spanTree } from '@/utils/utils';
 import { LightFilter } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -17,13 +18,34 @@ import CreateOrUpdateGroup from './CreateOrUpdateGroup';
 import GroupTags from './GroupTags';
 import type { groupSearchParmasProps, TagProps } from './types';
 
-const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: number }> = ({ flag, parentID }) => {
-  const { queryPage } = useGetTableList();
+const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag, parentID }) => {
+  const { queryPage, dataList } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [tagValues, setTagValues] = useState<{ tags: TagProps[] }>({ tags: [] });
   const [searchParams, setSearchParams] = useState<groupSearchParmasProps>({
     tags: [],
     groupName: '',
+  });
+
+  const cascaders = dataList?.listAll.map((item) => {
+    return {
+      ...item,
+      key: item?.groupID + '',
+      label: item?.groupName,
+      value: item?.groupID,
+    };
+  });
+  const cascaderOptions = spanTree(cascaders, '1', 'parentID');
+  cascaderOptions?.unshift({
+    key: '1',
+    label: '根节点',
+    value: '1',
+    createdTime: '',
+    groupID: '1',
+    groupName: '',
+    desc: '',
+    parentID: '1',
+    tags: [],
   });
 
   useEffect(() => {
@@ -56,7 +78,7 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: number }> = ({ flag
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createdTime',
       valueType: 'dateTime',
       search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
@@ -81,11 +103,15 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: number }> = ({ flag
           <Button
             type="primary"
             // TODO:层级跳转问题（层级最多为3层）
-            onClick={() => history.push(`/deviceMangers/group/detail/${record?.groupID}`)}
+            onClick={() =>
+              history.push({
+                pathname: `/deviceMangers/group/detail/${record?.groupID}`,
+                state: cascaderOptions,
+              })
+            }
           >
             查看
           </Button>
-          {/* <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} /> */}
           <Divider type="vertical" />
           <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
             删除
@@ -121,14 +147,18 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: number }> = ({ flag
       search={flag === 'index' ? SEARCH_CONFIGURE : false}
       actionRef={actionRef}
       rowKey="groupID"
-      // search={SEARCH_CONFIGURE}
       options={PROTABLE_OPTIONS}
       toolBarRender={() => [
-        <CreateOrUpdateGroup flag="create" actionRef={actionRef} key="createGroup" />,
+        <CreateOrUpdateGroup
+          flag="create"
+          actionRef={actionRef}
+          key="createGroup"
+          cascaderOptions={cascaderOptions}
+        />,
       ]}
       params={flag === 'index' ? undefined : searchParams}
-      request={(params) => {
-        return queryPage<QueryProp, GroupListItem>(
+      request={(params) =>
+        queryPage<QueryProp, GroupListItem>(
           postThingsGroupInfoIndex,
           flag === 'index'
             ? {
@@ -137,8 +167,8 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: number }> = ({ flag
                 ...tagValues,
               }
             : { ...params, parentID },
-        );
-      }}
+        )
+      }
       columns={columns}
       pagination={{ pageSize: 10 }}
       size={'middle'}

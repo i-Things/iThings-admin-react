@@ -1,6 +1,7 @@
 import type { Option } from '@/hooks/types';
 import type { TagProps } from './components/types';
 export interface GroupListItem {
+  parentID: string;
   groupName: string;
   groupID: string;
   createdTime: string;

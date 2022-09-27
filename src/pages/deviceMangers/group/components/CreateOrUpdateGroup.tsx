@@ -1,75 +1,85 @@
+import useGetTableList from '@/hooks/useGetTableList';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanli';
-import { FlagStatus } from '@/utils/base';
+import {
+  postThingsGroupInfoCreate,
+  postThingsGroupInfoIndex,
+  postThingsGroupInfoUpdate,
+} from '@/services/iThingsapi/shebeifenzu';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
-import {
-  ModalForm,
-  ProFormCascader,
-  ProFormSelect,
-  ProFormText,
-  ProFormTextArea,
-} from '@ant-design/pro-form';
+import { ModalForm, ProFormCascader, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import { history } from 'umi';
 import type { GroupListItem, GroupOption } from '../types';
+import type { TagProps } from './types';
 
-// const { Option } = Select;
-const CreateOrUpdateUser: React.FC<{
+const CreateOrUpdateGroup: React.FC<{
   flag: string;
+  actionRef: React.MutableRefObject<ActionType | undefined>;
+  cascaderOptions: GroupOption[];
   record?: GroupListItem;
-  actionRef?: React.MutableRefObject<ActionType | undefined>;
-  cascaderOptions?: GroupOption[];
   flatOptions?: GroupListItem[];
-}> = ({ flag, record, actionRef }) => {
+  setUpdateFlag?: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ flag, record, actionRef, cascaderOptions, setUpdateFlag }) => {
+  const { queryPage } = useGetTableList();
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
-  // const [imageUrl, setImageUrl] = useState<string>();
-  const editFormRef = useRef<ProFormInstance>();
-  // const options = cloneDeep(cascaderOptions);
-  type CreateProp = typeof postSystemUserCreate;
-  type UpdateProp = typeof postSystemUserUpdate;
 
-  const GROUP_TYPE_OPTION = [
-    { label: '默认', value: 1 },
-    { label: '动态', value: 2 },
-  ];
+  const editFormRef = useRef<ProFormInstance>();
+
+  type QueryProp = typeof postThingsGroupInfoIndex;
+  type CreateProp = typeof postThingsGroupInfoCreate;
+  type UpdateProp = typeof postThingsGroupInfoUpdate;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
 
   const initialValues = {
     ...record,
-    groupType: '默认',
+    parentID: record?.parentID === '1' ? '根节点' : record?.parentID,
   };
 
   const formSubmit = async (values: GroupListItem) => {
     const body = { ...values };
-    if (flag === 'update')
-      await updateHandler<UpdateProp, GroupListItem>(postSystemUserUpdate, actionRef, {
+    if (flag === 'update') {
+      await updateHandler<UpdateProp, GroupListItem>(postThingsGroupInfoUpdate, actionRef, {
         ...body,
-        tags: record?.tags,
-        // uid: record?.uid as string,
+        groupID: record?.groupID as string,
+        parentID: '',
+        tags: record?.tags as TagProps,
       });
-    else await createHandler<CreateProp, GroupListItem>(postSystemUserCreate, actionRef, body);
+      (setUpdateFlag as React.Dispatch<React.SetStateAction<boolean>>)(true);
+    } else {
+      const parentID = values.parentID[values.parentID.length - 1];
+      await createHandler<CreateProp, GroupListItem>(postThingsGroupInfoCreate, actionRef, {
+        ...body,
+        parentID,
+      });
+      const queryList = await queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, {
+        page: {
+          page: 1,
+          size: 10,
+        },
+        ...values,
+        parentID,
+      });
+      history.push(`/deviceMangers/group/detail/${queryList?.data[0]?.groupID}`);
+    }
     onClose();
     editFormRef.current?.resetFields();
   };
 
-  // const recursion = (pre: GroupOption[]) => {
-  //   pre.map((item) => {
-  //     if (item.children) recursion(item?.children);
-  //     if (item.id === record?.id) item.disabled = true;
-  //   });
-  //   return pre;
-  // };
   useEffect(() => {
-    editFormRef.current?.setFieldsValue(initialValues);
+    if (flag === 'update') {
+      setEditFlag(false);
+      editFormRef.current?.setFieldsValue(initialValues);
+    }
   }, [editFlag, record]);
   return (
     <ModalForm<GroupListItem>
@@ -103,33 +113,16 @@ const CreateOrUpdateUser: React.FC<{
       layout={LAYOUT_TYPE_HORIZONTAL}
       onFinish={formSubmit}
     >
-      {flag === FlagStatus.CREATE && (
-        <ProFormSelect
-          name="groupType"
-          width="md"
-          label="分组类型"
-          placeholder="请选择分组类型"
-          rules={[
-            {
-              required: true,
-              message: '请选择分组类型',
-            },
-          ]}
-          request={async () => GROUP_TYPE_OPTION}
-          fieldProps={{ disabled: true }}
-        />
-      )}
       <ProFormCascader
         width="md"
         name="parentID"
         label="父组ID"
         fieldProps={{
-          options:
-            // flag === FlagStatus.UPDATE ? recursion(options as GroupOption[]) : cascaderOptions,
-            GROUP_TYPE_OPTION,
+          options: cascaderOptions,
           expandTrigger: 'hover',
           changeOnSelect: true,
         }}
+        disabled={flag === 'update'}
       />
       <ProFormText
         name="groupName"
@@ -148,4 +141,4 @@ const CreateOrUpdateUser: React.FC<{
   );
 };
 
-export default CreateOrUpdateUser;
+export default CreateOrUpdateGroup;

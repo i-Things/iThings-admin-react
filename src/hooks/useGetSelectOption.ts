@@ -2,7 +2,7 @@ import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
 const useGetSelectOptions = () => {
-  const [selectOptions, setSelectOptions] = useState([]);
+  const [selectOptions, setSelectOptions] = useState<{ label: string; value: string }[]>([]);
   const querySelectOptions = async <T extends Function>(
     queryApi: T,
     params: ParamsType & {
@@ -23,7 +23,7 @@ const useGetSelectOptions = () => {
     let res;
     try {
       res = await queryApi(body);
-      if (res.code === 0) {
+      if (res.code === 200) {
         setSelectOptions(
           res?.data?.list?.map((item) => {
             return {

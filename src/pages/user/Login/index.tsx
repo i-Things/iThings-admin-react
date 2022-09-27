@@ -6,6 +6,7 @@ import { Checkbox, Col, message, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import type { loginType } from './data';
+
 import styles from './index.less';
 
 const Login: React.FC = () => {
@@ -38,7 +39,7 @@ const Login: React.FC = () => {
         userID: values.userID,
         pwdType: 1,
         password: values.password,
-        loginType: 'img',
+        loginType: 'pwd',
         code: values.code,
         codeID: codeID,
       };

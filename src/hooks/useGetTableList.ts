@@ -49,7 +49,7 @@ const useGetTableList = () => {
           total: 0,
         };
       }
-      if (res.code === 0) setDataList(res?.data);
+      if (res.code === 200) setDataList(res?.data);
     } catch (error) {
       message.error((error as Error)?.message);
     }

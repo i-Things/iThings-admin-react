@@ -2,13 +2,17 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useParams } from 'umi';
 import GroupDescriptons from '../components/GroupDescriptons';
 import GroupListPage from '../components/GroupList';
 import DeviceListPage from './pages/deviceList';
+
 const { TabPane } = Tabs;
 
-const IndexPage: React.FC<{ parentID: number }> = ({ parentID }) => {
+const IndexPage: React.FC = () => {
   const [activeKey, setActiveKey] = useState('1');
+  const params = useParams() as { id: string };
+  const parentID = params.id ?? '';
   const onChange = (key: string) => setActiveKey(key);
   const location = useLocation();
   useEffect(() => {

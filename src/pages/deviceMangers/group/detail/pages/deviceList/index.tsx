@@ -4,7 +4,7 @@ import { postThingsGroupDeviceCreate } from '@/services/iThingsapi/shebeifenzu';
 import { selectConfirm } from '@/utils/utils';
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'umi';
 import GroupDeviceList from '../../../components/GroupDeviceList';
 import type { GroupDeviceItem } from '../../../types';
@@ -17,11 +17,16 @@ const DeviceList: React.FC = () => {
   const param = useParams() as { id: string };
   const groupID = param.id ?? '';
 
-  const actionRef = useRef<ActionType>();
+  const actionListRef = useRef<ActionType>();
+  const actionCreateRef = useRef<ActionType>();
 
   type CreateProp = typeof postThingsGroupDeviceCreate;
 
   const addDevice = () => setDrawerVisible(true);
+
+  useEffect(() => {
+    actionListRef.current?.reload();
+  }, [drawerVisible]);
 
   return (
     <>
@@ -30,11 +35,12 @@ const DeviceList: React.FC = () => {
         onAdd={addDevice}
         selectedRowsState={selectedRowsState}
         setSelectedRows={setSelectedRows}
-        actionRef={actionRef}
+        actionRef={actionListRef}
+        drawerVisible={drawerVisible}
       />
       <DrawerForm
         title="添加设备到分组"
-        width={800}
+        width={1000}
         visible={drawerVisible}
         onVisibleChange={setDrawerVisible}
         drawerProps={{
@@ -49,19 +55,22 @@ const DeviceList: React.FC = () => {
           };
           await createHandler<CreateProp, GroupDeviceItem>(
             postThingsGroupDeviceCreate,
-            actionRef,
+            actionCreateRef,
             body,
           );
           setSelectedRows([]);
           return true;
         }}
       >
-        <GroupDeviceList
-          flag="create"
-          selectedRowsState={selectedRowsState}
-          setSelectedRows={setSelectedRows}
-          actionRef={actionRef}
-        />
+        {drawerVisible && (
+          <GroupDeviceList
+            flag="create"
+            selectedRowsState={selectedRowsState}
+            setSelectedRows={setSelectedRows}
+            actionRef={actionCreateRef}
+            drawerVisible={drawerVisible}
+          />
+        )}
       </DrawerForm>
     </>
   );

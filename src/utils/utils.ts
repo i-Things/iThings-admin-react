@@ -47,13 +47,13 @@ export const apiParams = () => {
  * @param {*} pid 父级id
  * @param key
  */
-export function spanTree(data: any, pid = 1, key = 'pid') {
+export function spanTree(data: any, pid: string | number, key: 'parentID') {
   const result = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const i in data) {
-    if (data[i][key] === pid) {
+    if (data[i][key] === pid || data[i][key] === String(pid)) {
       const temp = data[i];
-      const children = spanTree(data, data[i].id, key);
+      const children = spanTree(data, data[i].id || data[i].groupID, key);
       if (children.length) {
         temp.children = children;
       }

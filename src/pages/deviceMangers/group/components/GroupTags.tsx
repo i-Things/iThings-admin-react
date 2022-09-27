@@ -14,7 +14,8 @@ const GroupTags: React.FC<{
   flag: string;
   setSearchParams?: React.Dispatch<React.SetStateAction<groupSearchParmasProps>>;
   record?: GroupDescriptonProps;
-}> = ({ flag, setSearchParams, record }) => {
+  setUpdateFlag?: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ flag, setSearchParams, record, setUpdateFlag }) => {
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -32,18 +33,25 @@ const GroupTags: React.FC<{
     onClose();
     const body = { ...(record as GroupDescriptonProps), tags: values?.tags };
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
-    if (flag === FlagStatus.CREATE)
+    if (flag === FlagStatus.CREATE && setSearchParams)
       (setSearchParams as React.Dispatch<React.SetStateAction<groupSearchParmasProps>>)((pre) => {
         return { ...pre, ...values };
       });
-    else
+    else {
       await updateHandler<UpdateProp, GroupDescriptonProps>(
         postThingsGroupInfoUpdate,
         undefined,
         body,
       );
+      (setUpdateFlag as React.Dispatch<React.SetStateAction<boolean>>)(true);
+    }
   };
   useEffect(() => {
+    if (setSearchParams)
+      (setSearchParams as React.Dispatch<React.SetStateAction<groupSearchParmasProps>>)({
+        tags: [],
+        groupName: '',
+      });
     editFormRef.current?.setFieldsValue(record?.tags);
   }, [editFlag, record]);
 

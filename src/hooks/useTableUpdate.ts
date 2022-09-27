@@ -4,7 +4,7 @@ import message from 'antd/lib/message';
 const useTableUpdate = () => {
   const updateHandler = async <T extends Function, K>(
     updateApi: T,
-    actionRef: React.MutableRefObject<ActionType> | undefined,
+    actionRef: React.MutableRefObject<ActionType | undefined>,
     body: K,
   ) => {
     let res;

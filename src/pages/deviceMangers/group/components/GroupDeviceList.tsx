@@ -5,8 +5,9 @@ import useTableDelete from '@/hooks/useTableDelete';
 import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
   postThingsGroupDeviceIndex,
-  postThingsGroupInfo__openAPI__delete,
+  postThingsGroupDevice__openAPI__delete,
 } from '@/services/iThingsapi/shebeifenzu';
+import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { selectConfirm } from '@/utils/utils';
@@ -31,52 +32,27 @@ const GroupDeviceList: React.FC<{
   const { queryPage } = useGetTableList();
   const { querySelectOptions, selectOptions } = useGetSelectOptions();
   const { deleteHandler } = useTableDelete();
-  // const [selectedRowsState, setSelectedRows] = useState([]);
   const [searchParams, setSearchParams] = useState({ productID: '', deviceName: '' });
-  // const actionRef = useRef<ActionType>();
+
   type QueryProp = typeof postThingsGroupDeviceIndex;
   type QueryProductProp = typeof postThingsProductInfoIndex;
   // 删除操作
   const showDeleteConfirm = (record: { productID: string }) => {
-    // const selectRecord = Array.isArray(record) ? record : [record];
-    // const list = selectRecord.map((item) => {
-    //   return {
-    //     productID: item?.productID,
-    //     deviceName: item?.deviceName,
-    //   };
-    // });
-    const list = selectConfirm(record);
+    const list: { productID?: string; deviceName?: string }[] = selectConfirm(record);
     const body = {
       groupID: groupID ?? '',
       list,
     };
-    deleteHandler<{ groupID: string }>(postThingsGroupInfo__openAPI__delete, actionRef, {
-      title: '是否从分组中删除选中设备',
-      content: `所选设备, 删除后无法恢复，请确认`,
-      body,
-    });
+    deleteHandler<{ groupID: string; list: { productID?: string; deviceName?: string }[] }>(
+      postThingsGroupDevice__openAPI__delete,
+      actionRef,
+      {
+        title: '是否从分组中删除选中设备',
+        content: `所选设备, 删除后无法恢复，请确认`,
+        body,
+      },
+    );
   };
-
-  // /**
-  //  *  批量删除节点
-  //  * @param selectedRows
-  //  */
-  // const handleRemove = async (selectedRows) => {
-  //   const hide = message.loading('正在删除');
-  //   if (!selectedRows) return true;
-  //   try {
-  //     await postSystemUser__openAPI__delete({
-  //       ids: selectedRows.map((row) => row.id),
-  //     });
-  //     hide();
-  //     message.success('删除成功，即将刷新');
-  //     return true;
-  //   } catch (error) {
-  //     hide();
-  //     message.error('删除失败，请重试');
-  //     return false;
-  //   }
-  // };
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
@@ -86,6 +62,7 @@ const GroupDeviceList: React.FC<{
     {
       title: '设备所属产品',
       dataIndex: 'productID',
+      renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.label,
     },
     {
       title: '设备秘钥',
@@ -145,7 +122,6 @@ const GroupDeviceList: React.FC<{
           >
             查看
           </Button>
-          {/* <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} /> */}
           <Divider type="vertical" />
           <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
             从分组中删除
@@ -165,7 +141,7 @@ const GroupDeviceList: React.FC<{
 
   return (
     <>
-      <ProTable<any>
+      <ProTable<GroupDeviceItem>
         headerTitle={
           <LightFilter
             bordered
@@ -240,7 +216,10 @@ const GroupDeviceList: React.FC<{
         }
         params={searchParams}
         request={(params) =>
-          queryPage<QueryProp, any>(postThingsGroupDeviceIndex, { ...params, groupID })
+          queryPage<QueryProp, any>(
+            flag === 'list' ? postThingsGroupDeviceIndex : postThingsDeviceInfoIndex,
+            { ...params, groupID },
+          )
         }
         columns={flag === 'list' ? columns : columns.slice(0, columns.length - 1)}
         pagination={flag === 'list' ? { pageSize: 10 } : false}
