@@ -274,7 +274,7 @@ declare namespace API {
     /** 创建时间 */
     createdTime?: string;
     /** 设备秘钥 */
-    secret?: string;
+    secret: string;
     /** 激活时间 */
     firstLogin?: string;
     /** 最后上线时间 */
@@ -282,7 +282,7 @@ declare namespace API {
     /** 固件版本 */
     version?: string;
     /** 日志级别 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel?: number;
+    logLevel: number;
     /** 标签 */
     tags?: { key?: string; value?: string }[];
     /** 在线状态 1离线 2在线 只读 */

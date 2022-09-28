@@ -1,6 +1,9 @@
+import { ResponseCode } from '@/utils/base';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
+import { useState } from 'react';
 const useGetTableList = () => {
+  const [dataList, setDataList] = useState<ParamsType>();
   const queryPage = async <T extends Function, K>(
     queryApi: T,
     params: ParamsType & {
@@ -25,6 +28,7 @@ const useGetTableList = () => {
           total: 0,
         };
       }
+      if (res.code === ResponseCode.SUCCESS) setDataList(res?.data);
     } catch (error) {
       message.error((error as Error)?.message);
     }
@@ -35,6 +39,8 @@ const useGetTableList = () => {
   };
   return {
     queryPage,
+    dataList,
+    setDataList,
   };
 };
 

@@ -116,7 +116,7 @@ export async function postThingsDeviceMsgSchemaLogIndex(
   });
 }
 
-/** 获取设备sdk日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
+/** 获取设备本地日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
 export async function postThingsDeviceMsgSdkLogIndex(
   body: {
     deviceName: string;
