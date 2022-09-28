@@ -1,7 +1,7 @@
 import useTableUpdate from '@/hooks/useTableUpdate';
 import { postThingsGroupInfoUpdate } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus } from '@/utils/base';
-import { FORMITEM_LAYOUT, LAYOUT_TYPE_VERTICAL } from '@/utils/const';
+import { LAYOUT_TYPE_VERTICAL } from '@/utils/const';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import ProForm, { ModalForm, ProFormGroup, ProFormList, ProFormText } from '@ant-design/pro-form';
@@ -64,7 +64,7 @@ const GroupTags: React.FC<{
   return (
     <ModalForm<{ tags: TagProps[] }>
       formRef={editFormRef}
-      width={600}
+      width={550}
       title={flag === FlagStatus.CREATE ? '标签筛选' : '编辑标签'}
       trigger={
         flag === FlagStatus.UPDATE ? (
@@ -112,7 +112,6 @@ const GroupTags: React.FC<{
         onCancel: onClose,
       }}
       submitTimeout={2000}
-      {...FORMITEM_LAYOUT}
       layout={LAYOUT_TYPE_VERTICAL}
       onFinish={formSubmit}
     >
