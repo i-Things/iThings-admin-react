@@ -64,7 +64,7 @@ const GroupTags: React.FC<{
   return (
     <ModalForm<{ tags: TagProps[] }>
       formRef={editFormRef}
-      width={650}
+      width={600}
       title={flag === FlagStatus.CREATE ? '标签筛选' : '编辑标签'}
       trigger={
         flag === FlagStatus.UPDATE ? (

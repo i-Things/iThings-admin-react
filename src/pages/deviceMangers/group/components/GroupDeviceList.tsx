@@ -40,7 +40,7 @@ const GroupDeviceList: React.FC<{
 
   const listFlag = flag === 'list';
   // 删除操作
-  const showDeleteConfirm = (record: GroupDeviceItem[]) => {
+  const showDeleteConfirm = (record: GroupDeviceItem) => {
     const list: { productID?: string; deviceName?: string }[] = selectConfirm(record);
     const body = {
       groupID: groupID ?? '',
@@ -62,29 +62,20 @@ const GroupDeviceList: React.FC<{
 
   const inputSearch = (value: string) => setSearchParams({ ...searchParams, deviceName: value });
 
+  const jumpToDeviceList = (record: GroupDeviceItem) =>
+    history.push(`/deviceMangers/device/index/${record?.productID}/${record.deviceName}`);
+
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
       title: '设备名称',
       dataIndex: 'deviceName',
+      render: (_, record) => <a onClick={() => jumpToDeviceList(record)}>{_}</a>,
     },
     {
       title: '设备所属产品',
       dataIndex: 'productID',
       renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.label,
     },
-    {
-      title: '设备秘钥',
-      dataIndex: 'secret',
-    },
-    {
-      title: '固件版本',
-      dataIndex: 'version',
-    },
-    {
-      title: '设备证书',
-      dataIndex: 'cert',
-    },
-
     {
       title: '在线状态',
       dataIndex: 'isOnline',
@@ -111,7 +102,7 @@ const GroupDeviceList: React.FC<{
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
-      title: '组合上线时间',
+      title: '最后上线时间',
       dataIndex: 'lastLogin',
       valueType: 'dateTime',
       renderText: (text: string) => timestampToDateStr(Number(text)),
@@ -122,12 +113,7 @@ const GroupDeviceList: React.FC<{
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button
-            type="primary"
-            onClick={() =>
-              history.push(`/deviceMangers/device/index/${record?.productID}/${record.deviceName}`)
-            }
-          >
+          <Button type="primary" onClick={() => jumpToDeviceList(record)}>
             查看
           </Button>
           <Divider type="vertical" />
@@ -140,8 +126,8 @@ const GroupDeviceList: React.FC<{
   ];
 
   useEffect(() => {
+    actionRef?.current?.reloadAndRest();
     if (activeKey === '2') {
-      actionRef?.current?.reloadAndRest();
       querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
         page: { page: 1, size: 99999 },
         label: 'productName',
