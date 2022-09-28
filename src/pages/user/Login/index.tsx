@@ -3,6 +3,7 @@ import { setToken, setUID } from '@/utils/utils';
 import { FontColorsOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
 import { Checkbox, Col, message, Row } from 'antd';
+import MD5 from 'crypto-js/md5';
 import React, { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import type { loginType } from './data';
@@ -37,8 +38,8 @@ const Login: React.FC = () => {
     try {
       const body = {
         userID: values.userID,
-        pwdType: 1,
-        password: values.password,
+        pwdType: 2,
+        password: MD5(values.password).toString(),
         loginType: 'pwd',
         code: values.code,
         codeID: codeID,

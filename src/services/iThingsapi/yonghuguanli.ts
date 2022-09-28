@@ -269,6 +269,10 @@ export async function postSystemUserUpdate(
     userName?: string;
     /** 邮箱 */
     email?: string;
+    /** 手机号 */
+    phone?: string;
+    /** 微信号 */
+    wechat?: string;
     /** 用户的昵称 */
     nickName?: string;
     /** 用户所在城市 */

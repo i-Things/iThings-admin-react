@@ -72,6 +72,7 @@ const redirectLoginPage = () => {
 const authInterceptor = (url: string, options: any) => {
   const token = getToken();
   options.headers[GUIDKEY] = getTimestamp();
+
   if (token && options.headers) {
     options.headers[TOKENKEY] = token;
   }

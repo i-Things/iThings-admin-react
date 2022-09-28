@@ -12,6 +12,22 @@ import icon_menu_12 from '@/assets/icons/icon_menu_12.png';
 import icon_menu_14 from '@/assets/icons/icon_menu_14.png';
 import icon_menu_15 from '@/assets/icons/icon_menu_15.png';
 
+export const ICON_OPTION = [
+  { label: 'icon_system', value: 'icon_system' },
+  { label: 'icon_ithings', value: 'icon_ithings' },
+  { label: 'icon_cloud_monitor', value: 'icon_cloud_monitor' },
+  { label: 'icon_dosing', value: 'icon_dosing' },
+  { label: 'icon_device', value: 'icon_device' },
+  { label: 'icon_feedwater', value: 'icon_feedwater' },
+  { label: 'icon_ecosystem', value: 'icon_ecosystem' },
+  { label: 'icon_sewage', value: 'icon_sewage' },
+  { label: 'icon_electric', value: 'icon_electric' },
+  { label: 'icon_heat', value: 'icon_heat' },
+  { label: 'icon_ap', value: 'icon_ap' },
+  { label: 'icon_hvac', value: 'icon_hvac' },
+  { label: 'icon_data_01', value: 'icon_data_01' },
+];
+
 export const IconMap = {
   icon_data_01: icon_data_01,
   icon_hvac: icon_menu_01,

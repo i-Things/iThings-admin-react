@@ -4,11 +4,23 @@ export function timestampToDateStr(
   timestamp: number,
   format: string = 'YYYY-MM-DD HH:mm:ss',
 ): string {
+  if (timestamp == 0) {
+    return '-';
+  }
   const m = timestampToDate(timestamp);
   if (m.isValid()) {
     return m.format(format);
   } else {
     return '-';
+  }
+}
+
+//毫秒时间戳格式化成字符串
+export function milliTdToDate(date: string, fmt: string = 'YYYY-MM-DD HH:mm:ss.SSS'): string {
+  if (date === '0') {
+    return date;
+  } else {
+    return moment(Number(date)).format(fmt) || '-';
   }
 }
 

@@ -270,7 +270,7 @@ declare namespace API {
     /** 产品id 不可修改 */
     productID: string;
     /** 设备名称 不可修改 */
-    deviceName: string;
+    deviceName?: string;
     /** 创建时间 */
     createdTime?: string;
     /** 设备秘钥 */
@@ -295,7 +295,7 @@ declare namespace API {
     /** 节点键值 */
     key: string;
     value?: string;
-    children?: E6A091E78AB6E88A82E782B9[];
+    children?: string[];
   };
 
   type SignupItem = {

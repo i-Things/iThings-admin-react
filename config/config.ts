@@ -1,5 +1,4 @@
 import { join } from 'path';
-import px2viewport from 'postcss-px2viewport';
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
@@ -8,16 +7,10 @@ import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  extraPostCSSPlugins: [px2viewport({ viewportWidth: 1920 })],
   hash: true,
   antd: {},
   dva: {
     hmr: true,
-  },
-  layout: {
-    locale: true,
-    siderWidth: 250,
-    ...defaultSettings,
   },
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
@@ -51,7 +44,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  // mfsu: {},
+  mfsu: {},
   webpack5: {},
   exportStatic: {},
 });
