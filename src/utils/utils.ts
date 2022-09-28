@@ -1,4 +1,5 @@
 import type { GroupDeviceCreateListProps } from '@/pages/deviceMangers/group/types';
+import type { MenuListItem } from '@/pages/systemMangers/menu/types';
 import { GUIDKEY, TOKENKEY } from './const';
 
 // 判断是否为移动端
@@ -74,4 +75,14 @@ export function selectConfirm(record: GroupDeviceCreateListProps[]) {
     };
   });
   return list;
+}
+
+export function recursionTree(pre: MenuListItem[]) {
+  pre.map((item) => {
+    if (item.children) recursionTree(item?.children);
+    item.key = item?.id + '';
+    item.label = item?.name + '';
+    item.title = item?.name + '';
+  });
+  return pre;
 }
