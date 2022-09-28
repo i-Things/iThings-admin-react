@@ -80,10 +80,17 @@ const GroupList: React.FC<{
 
   const inputSearch = (value: string) => setSearchParams({ ...searchParams, groupName: value });
 
+  const jumpToDetails = (record: GroupListItem) =>
+    history.push({
+      pathname: `/deviceMangers/group/detail/${record?.groupID}`,
+      state: cascaderOptions,
+    });
+
   const columns: ProColumns<GroupListItem>[] = [
     {
       title: '分组名称',
       dataIndex: 'groupName',
+      render: (_, record) => <a onClick={() => jumpToDetails(record)}>{_}</a>,
     },
     {
       title: '分组ID',
@@ -120,15 +127,7 @@ const GroupList: React.FC<{
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button
-            type="primary"
-            onClick={() =>
-              history.push({
-                pathname: `/deviceMangers/group/detail/${record?.groupID}`,
-                state: cascaderOptions,
-              })
-            }
-          >
+          <Button type="primary" onClick={() => jumpToDetails(record)}>
             查看
           </Button>
           <Divider type="vertical" />
