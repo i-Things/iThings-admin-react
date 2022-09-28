@@ -152,7 +152,7 @@ const GroupList: React.FC<{
         ) : (
           <LightFilter bordered onFinish={filterFinish}>
             <GroupTags
-              flag="create"
+              flag={FlagStatus.CREATE}
               key="createGroupTags"
               searchParamsHandler={searchParamsHandler}
             />

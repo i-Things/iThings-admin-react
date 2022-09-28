@@ -86,15 +86,17 @@ const GroupDeviceList: React.FC<{
     },
 
     {
-      title: '状态',
+      title: '在线状态',
       dataIndex: 'isOnline',
       valueEnum: {
+        1: { text: '离线', status: 'Error' },
         2: {
           text: '在线',
           status: 'Success',
         },
-        1: { text: '离线', status: 'Error' },
+        3: { text: '未激活', status: 'Warning' },
       },
+      filters: true,
     },
     {
       title: '创建时间',
