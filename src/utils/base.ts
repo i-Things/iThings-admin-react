@@ -3,3 +3,7 @@ export enum FlagStatus {
   CREATE = 'create',
   UPDATE = 'update',
 }
+export enum ResponseCode {
+  SUCCESS = 200,
+  FAIL = 500,
+}

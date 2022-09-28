@@ -1,3 +1,4 @@
+import { ResponseCode } from '@/utils/base';
 import { ExclamationCircleOutlined } from '@ant-design/icons/lib/icons';
 import type { ActionType } from '@ant-design/pro-table';
 import { message, Modal } from 'antd';
@@ -13,6 +14,8 @@ const useTableDelete = () => {
     }>,
     actionRef: React.MutableRefObject<ActionType | undefined>,
     deleteMap: { title: string; content: string; body: T },
+    deleteOkHandler?: () => void,
+    deleteCancelHandler?: () => void,
   ) => {
     const { title, content, body } = deleteMap;
     confirm({
@@ -23,9 +26,10 @@ const useTableDelete = () => {
         let res;
         try {
           res = await deleteApi(body);
-          if (res.code === 200) {
+          if (res.code === ResponseCode.SUCCESS) {
             actionRef.current?.reload();
             message.success('删除成功');
+            if (deleteOkHandler) deleteOkHandler();
           }
         } catch (error) {
           message.error((error as Error)?.message);
@@ -33,7 +37,7 @@ const useTableDelete = () => {
         return res;
       },
       onCancel() {
-        console.log('Cancel');
+        if (deleteCancelHandler) deleteCancelHandler();
       },
     });
   };

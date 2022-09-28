@@ -1,3 +1,4 @@
+import { ResponseCode } from '@/utils/base';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
@@ -23,7 +24,7 @@ const useGetSelectOptions = () => {
     let res;
     try {
       res = await queryApi(body);
-      if (res.code === 200) {
+      if (res.code === ResponseCode.SUCCESS) {
         setSelectOptions(
           res?.data?.list?.map((item) => {
             return {

@@ -21,3 +21,15 @@ export interface GroupDeviceItem {
   isOnline: number;
 }
 export interface GroupOption extends GroupListItem, Option {}
+
+export interface GroupDeviceCreateListProps {
+  productID: string;
+  deviceName: string;
+}
+
+export interface GroupDeviceCreateProps {
+  groupID: string;
+  list: GroupDeviceCreateListProps[];
+}
+
+export type activeKeyProps = '1' | '2' | '3';

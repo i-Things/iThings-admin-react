@@ -18,15 +18,15 @@ import { Button, Divider, Input, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { history, useParams } from 'umi';
 import '../styles.less';
-import type { GroupDeviceItem } from '../types';
+import type { activeKeyProps, GroupDeviceItem } from '../types';
 
 const GroupDeviceList: React.FC<{
   flag: 'list' | 'create';
-  selectedRowsState: any;
-  setSelectedRows: any;
+  selectedRowsHandler: (value: GroupDeviceItem[]) => void;
   actionRef: any;
   onAdd?: () => void;
-}> = ({ flag, onAdd, selectedRowsState, setSelectedRows, actionRef }) => {
+  activeKey: activeKeyProps;
+}> = ({ flag, onAdd, selectedRowsHandler, actionRef, activeKey }) => {
   const param = useParams() as { id: string };
   const groupID = param.id ?? '';
   const { queryPage } = useGetTableList();
@@ -34,10 +34,13 @@ const GroupDeviceList: React.FC<{
   const { deleteHandler } = useTableDelete();
   const [searchParams, setSearchParams] = useState({ productID: '', deviceName: '' });
 
-  type QueryProp = typeof postThingsGroupDeviceIndex;
+  type QueryGroupDeviceProp = typeof postThingsGroupDeviceIndex;
+  type QueryDeviceInfoProp = typeof postThingsDeviceInfoIndex;
   type QueryProductProp = typeof postThingsProductInfoIndex;
+
+  const listFlag = flag === 'list';
   // 删除操作
-  const showDeleteConfirm = (record: { productID: string }) => {
+  const showDeleteConfirm = (record: GroupDeviceItem[]) => {
     const list: { productID?: string; deviceName?: string }[] = selectConfirm(record);
     const body = {
       groupID: groupID ?? '',
@@ -53,6 +56,11 @@ const GroupDeviceList: React.FC<{
       },
     );
   };
+
+  const filterFinish = async (value: Record<string, any>) =>
+    setSearchParams({ ...searchParams, productID: value.productID });
+
+  const inputSearch = (value: string) => setSearchParams({ ...searchParams, deviceName: value });
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
@@ -115,9 +123,7 @@ const GroupDeviceList: React.FC<{
           <Button
             type="primary"
             onClick={() =>
-              history.push(
-                `/deviceMangers/device/index?productID=${record.productID}&deviceName=${record.deviceName}`,
-              )
+              history.push(`/deviceMangers/device/index/${record?.productID}/${record.deviceName}`)
             }
           >
             查看
@@ -132,27 +138,25 @@ const GroupDeviceList: React.FC<{
   ];
 
   useEffect(() => {
-    querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
-      page: { page: 1, size: 99999 },
-      label: 'productName',
-      value: 'productID',
-    });
-  }, []);
+    if (activeKey === '2') {
+      actionRef?.current?.reloadAndRest();
+      querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
+        page: { page: 1, size: 99999 },
+        label: 'productName',
+        value: 'productID',
+      });
+    }
+  }, [activeKey]);
 
   return (
     <>
       <ProTable<GroupDeviceItem>
         headerTitle={
-          <LightFilter
-            bordered
-            onFinish={async (value) =>
-              setSearchParams({ ...searchParams, productID: value.productID })
-            }
-          >
+          <LightFilter bordered onFinish={filterFinish}>
             <ProFormSelect
               name="productID"
               width="md"
-              label="设备所属产品"
+              label="全部产品"
               placeholder="请选择产品"
               fieldProps={{
                 options: selectOptions,
@@ -163,7 +167,7 @@ const GroupDeviceList: React.FC<{
               name="deviceName"
               width="md"
               placeholder="请输入设备名称"
-              onSearch={(value) => setSearchParams({ ...searchParams, deviceName: value })}
+              onSearch={inputSearch}
             />
           </LightFilter>
         }
@@ -172,17 +176,17 @@ const GroupDeviceList: React.FC<{
         options={{ ...PROTABLE_OPTIONS }}
         search={false}
         toolBarRender={() => [
-          flag === 'list' ? (
+          listFlag ? (
             <Button key="primary" type="primary" onClick={onAdd}>
               添加设备到分组
             </Button>
-          ) : (
-            <></>
-          ),
+          ) : undefined,
         ]}
-        rowSelection={{ onChange: (_, selectedRows) => setSelectedRows(selectedRows) }}
+        rowSelection={{
+          onChange: (_, selectedRows) => selectedRowsHandler(selectedRows),
+        }}
         tableAlertRender={
-          flag === 'list'
+          listFlag
             ? ({ selectedRowKeys, onCleanSelected }) => (
                 <Space size={24}>
                   <span>
@@ -196,16 +200,15 @@ const GroupDeviceList: React.FC<{
             : false
         }
         tableAlertOptionRender={
-          flag === 'list'
-            ? () => (
+          listFlag
+            ? ({ selectedRows }) => (
                 <Space size={16}>
                   <Button
                     type="primary"
                     danger
                     onClick={async () => {
-                      await showDeleteConfirm(selectedRowsState);
-                      setSelectedRows([]);
-                      actionRef.current?.reloadAndRest?.();
+                      await showDeleteConfirm(selectedRows);
+                      selectedRowsHandler([]);
                     }}
                   >
                     批量删除
@@ -216,13 +219,18 @@ const GroupDeviceList: React.FC<{
         }
         params={searchParams}
         request={(params) =>
-          queryPage<QueryProp, any>(
-            flag === 'list' ? postThingsGroupDeviceIndex : postThingsDeviceInfoIndex,
-            { ...params, groupID },
-          )
+          listFlag
+            ? queryPage<QueryGroupDeviceProp, GroupDeviceItem>(postThingsGroupDeviceIndex, {
+                ...params,
+                groupID,
+              })
+            : queryPage<QueryDeviceInfoProp, GroupDeviceItem>(postThingsDeviceInfoIndex, {
+                ...params,
+                groupID,
+              })
         }
-        columns={flag === 'list' ? columns : columns.slice(0, columns.length - 1)}
-        pagination={flag === 'list' ? { pageSize: 10 } : false}
+        columns={listFlag ? columns : columns.slice(0, columns.length - 1)}
+        pagination={listFlag ? { pageSize: 10 } : false}
         size={'middle'}
       />
     </>

@@ -1,10 +1,8 @@
-import { spanTree } from '@/utils/utils';
+import { ResponseCode } from '@/utils/base';
 import type { ParamsType } from '@ant-design/pro-components';
 import message from 'antd/lib/message';
 import { useState } from 'react';
 const useGetTableList = () => {
-  const [cascaderOptions, setCascaderOptions] = useState([]);
-  const [flatOptions, setFlatOptions] = useState([]);
   const [dataList, setDataList] = useState<ParamsType>();
   const queryPage = async <T extends Function, K>(
     queryApi: T,
@@ -24,32 +22,13 @@ const useGetTableList = () => {
     let res;
     try {
       res = await queryApi(body);
-      if (queryApi.prototype.constructor.name === 'postSystemMenuIndex') {
-        setFlatOptions(res.data.list);
-        const treeList = res.data.list.map((item) => {
-          return {
-            ...item,
-            key: item?.id + '',
-            label: item?.name,
-            value: item?.id,
-          };
-        });
-        treeList.unshift({
-          id: 0,
-          label: '根节点',
-          parentID: 1,
-          value: 1,
-        });
-        setCascaderOptions(spanTree(treeList, 1, 'parentID'));
-      }
-
       if (res instanceof Response) {
         return {
           data: [],
           total: 0,
         };
       }
-      if (res.code === 200) setDataList(res?.data);
+      if (res.code === ResponseCode.SUCCESS) setDataList(res?.data);
     } catch (error) {
       message.error((error as Error)?.message);
     }
@@ -60,10 +39,8 @@ const useGetTableList = () => {
   };
   return {
     queryPage,
-    cascaderOptions,
-    setCascaderOptions,
-    flatOptions,
     dataList,
+    setDataList,
   };
 };
 

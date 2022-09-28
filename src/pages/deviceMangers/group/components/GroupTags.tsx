@@ -11,11 +11,13 @@ import '../styles.less';
 import type { GroupDescriptonProps, groupSearchParmasProps, TagProps } from './types';
 
 const GroupTags: React.FC<{
-  flag: string;
-  setSearchParams?: React.Dispatch<React.SetStateAction<groupSearchParmasProps>>;
+  flag: FlagStatus;
+  searchParamsHandler?: (
+    cb: groupSearchParmasProps | ((pre: groupSearchParmasProps) => groupSearchParmasProps),
+  ) => void;
   record?: GroupDescriptonProps;
-  setUpdateFlag?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ flag, setSearchParams, record, setUpdateFlag }) => {
+  updateFlagHandler?: () => void;
+}> = ({ flag, searchParamsHandler, record, updateFlagHandler }) => {
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -33,8 +35,8 @@ const GroupTags: React.FC<{
     onClose();
     const body = { ...(record as GroupDescriptonProps), tags: values?.tags };
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
-    if (flag === FlagStatus.CREATE && setSearchParams)
-      (setSearchParams as React.Dispatch<React.SetStateAction<groupSearchParmasProps>>)((pre) => {
+    if (flag === FlagStatus.CREATE && searchParamsHandler)
+      searchParamsHandler((pre) => {
         return { ...pre, ...values };
       });
     else {
@@ -43,17 +45,21 @@ const GroupTags: React.FC<{
         undefined,
         body,
       );
-      (setUpdateFlag as React.Dispatch<React.SetStateAction<boolean>>)(true);
+      updateFlagHandler?.();
     }
   };
   useEffect(() => {
-    if (setSearchParams)
-      (setSearchParams as React.Dispatch<React.SetStateAction<groupSearchParmasProps>>)({
+    if (searchParamsHandler)
+      searchParamsHandler({
         tags: [],
         groupName: '',
-      });
+      } as groupSearchParmasProps);
     editFormRef.current?.setFieldsValue(record?.tags);
   }, [editFlag, record]);
+
+  useEffect(() => {
+    editFormRef.current?.resetFields();
+  }, []);
 
   return (
     <ModalForm<{ tags: TagProps[] }>
@@ -61,7 +67,7 @@ const GroupTags: React.FC<{
       width={650}
       title={flag === FlagStatus.CREATE ? '标签筛选' : '编辑标签'}
       trigger={
-        flag === 'update' ? (
+        flag === FlagStatus.UPDATE ? (
           <Button
             type="primary"
             onClick={() => {
@@ -113,7 +119,7 @@ const GroupTags: React.FC<{
       <ProFormList
         name="tags"
         label="分组标签"
-        initialValue={flag === 'update' ? record?.tags : [{ key: '', value: '' }]}
+        initialValue={flag === FlagStatus.UPDATE ? record?.tags : [{ key: '', value: '' }]}
         copyIconProps={false}
         creatorButtonProps={{
           type: 'link',

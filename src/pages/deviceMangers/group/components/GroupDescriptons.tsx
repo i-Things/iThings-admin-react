@@ -1,25 +1,34 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import { postThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
+import { FlagStatus } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
 import type { ParamsType } from '@ant-design/pro-components';
 import { Descriptions, Spin, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'umi';
-import type { GroupOption } from '../types';
+import type { GroupListItem, GroupOption } from '../types';
 import CreateOrUpdateGroup from './CreateOrUpdateGroup';
 import GroupTags from './GroupTags';
+import type { GroupDescriptonProps } from './types';
 
-const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => {
+const GroupDescriptons: React.FC<{
+  borderFlag: boolean;
+  activeKeyChange: (key: string) => void;
+}> = ({ borderFlag, activeKeyChange }) => {
   const params = useParams() as { id: string };
   const location = useLocation();
   const groupID = params.id ?? '';
-  const { queryPage, dataList } = useGetTableList();
-  const cascaderOptions = location.state;
+  const { queryPage, dataList, setDataList } = useGetTableList();
+  const cascaderOptions = location.state ?? '';
   const [updateFlag, setUpdateFlag] = useState(false);
 
   type QueryProp = typeof postThingsGroupInfoRead;
 
+  const updateFlagHandler = () => setUpdateFlag(true);
+
   useEffect(() => {
+    activeKeyChange('1');
+    setDataList(undefined);
     setUpdateFlag(false);
     const param = { groupID };
     queryPage<QueryProp, ParamsType>(postThingsGroupInfoRead, param);
@@ -33,11 +42,11 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
         extra={
           borderFlag && (
             <CreateOrUpdateGroup
-              flag="update"
+              flag={FlagStatus.UPDATE}
               key="updateGroup"
-              record={dataList}
+              record={dataList as GroupListItem}
               cascaderOptions={cascaderOptions as GroupOption[]}
-              setUpdateFlag={setUpdateFlag}
+              updateFlagHandler={updateFlagHandler}
             />
           )
         }
@@ -69,8 +78,8 @@ const GroupDescriptons: React.FC<{ borderFlag: boolean }> = ({ borderFlag }) => 
             <GroupTags
               flag="update"
               key="updateGroupTags"
-              record={dataList}
-              setUpdateFlag={setUpdateFlag}
+              record={dataList as GroupDescriptonProps}
+              updateFlagHandler={updateFlagHandler}
             />
           }
         >

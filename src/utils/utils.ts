@@ -1,3 +1,4 @@
+import type { GroupDeviceCreateListProps } from '@/pages/deviceMangers/group/types';
 import { GUIDKEY, TOKENKEY } from './const';
 
 // 判断是否为移动端
@@ -64,8 +65,8 @@ export function spanTree(data: any, pid: string | number, key: 'parentID') {
   return result;
 }
 
-export function selectConfirm(record) {
-  const selectRecord = Array.isArray(record) ? record : [record];
+export function selectConfirm(record: GroupDeviceCreateListProps[]) {
+  const selectRecord: GroupDeviceCreateListProps[] = Array.isArray(record) ? record : [record];
   const list = selectRecord.map((item) => {
     return {
       productID: item?.productID,

@@ -4,6 +4,7 @@ import {
   postThingsGroupInfoIndex,
   postThingsGroupInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeifenzu';
+import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { spanTree } from '@/utils/utils';
@@ -12,22 +13,32 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Input } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { history } from 'umi';
-import type { GroupListItem } from '../types';
+import { useHistory } from 'umi';
+import type { activeKeyProps, GroupListItem } from '../types';
 import CreateOrUpdateGroup from './CreateOrUpdateGroup';
 import GroupTags from './GroupTags';
-import type { groupSearchParmasProps, TagProps } from './types';
+import type { groupSearchParmasProps } from './types';
 
-const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag, parentID }) => {
+const GroupList: React.FC<{
+  flag: 'index' | 'son';
+  parentID: string;
+  activeKey?: activeKeyProps;
+}> = ({ flag, parentID, activeKey }) => {
+  const history = useHistory();
   const { queryPage, dataList } = useGetTableList();
   const { deleteHandler } = useTableDelete();
-  const [tagValues, setTagValues] = useState<{ tags: TagProps[] }>({ tags: [] });
   const [searchParams, setSearchParams] = useState<groupSearchParmasProps>({
     tags: [],
     groupName: '',
   });
 
-  const cascaders = dataList?.listAll.map((item) => {
+  const actionRef = useRef<ActionType | undefined>();
+
+  type QueryProp = typeof postThingsGroupInfoIndex;
+
+  const indexFlag = flag === 'index';
+
+  const cascaders = dataList?.listAll.map((item: GroupListItem) => {
     return {
       ...item,
       key: item?.groupID + '',
@@ -48,16 +59,10 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag
     tags: [],
   });
 
-  useEffect(() => {
-    setTagValues({ tags: searchParams?.tags });
-  }, [searchParams]);
-
-  const actionRef = useRef<ActionType>();
-  type QueryProp = typeof postThingsGroupInfoIndex;
   // 删除操作
   const showDeleteConfirm = (record: { groupID: string; groupName: string }) => {
     const body = {
-      groupID: record?.groupID ?? '',
+      groupID: record?.groupID,
     };
     deleteHandler<{ groupID: string }>(postThingsGroupInfo__openAPI__delete, actionRef, {
       title: '是否删除当前分组',
@@ -65,6 +70,15 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag
       body,
     });
   };
+
+  const filterFinish = async (value: Record<string, any>) =>
+    setSearchParams({ ...searchParams, groupName: value.groupName });
+
+  const searchParamsHandler = (
+    cb: groupSearchParmasProps | ((pre: groupSearchParmasProps) => groupSearchParmasProps),
+  ) => setSearchParams(cb);
+
+  const inputSearch = (value: string) => setSearchParams({ ...searchParams, groupName: value });
 
   const columns: ProColumns<GroupListItem>[] = [
     {
@@ -91,7 +105,13 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag
         if (type === 'form') {
           return null;
         }
-        return <GroupTags flag="create" key="createGroupTags" setSearchParams={setSearchParams} />;
+        return (
+          <GroupTags
+            flag={FlagStatus.CREATE}
+            key="createGroupTags"
+            searchParamsHandler={searchParamsHandler}
+          />
+        );
       },
     },
     {
@@ -102,7 +122,6 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag
         <>
           <Button
             type="primary"
-            // TODO:层级跳转问题（层级最多为3层）
             onClick={() =>
               history.push({
                 pathname: `/deviceMangers/group/detail/${record?.groupID}`,
@@ -121,50 +140,53 @@ const GroupList: React.FC<{ flag: 'index' | 'son'; parentID: string }> = ({ flag
     },
   ];
 
+  useEffect(() => {
+    if (activeKey === '3') actionRef?.current?.reloadAndRest?.();
+  }, [activeKey]);
+
   return (
     <ProTable<GroupListItem>
       headerTitle={
-        flag === 'index' ? (
+        indexFlag ? (
           '分组'
         ) : (
-          <LightFilter
-            bordered
-            onFinish={async (value) =>
-              setSearchParams({ ...searchParams, groupName: value.groupName })
-            }
-          >
-            <GroupTags flag="create" key="createGroupTags" setSearchParams={setSearchParams} />
+          <LightFilter bordered onFinish={filterFinish}>
+            <GroupTags
+              flag="create"
+              key="createGroupTags"
+              searchParamsHandler={searchParamsHandler}
+            />
             <Input.Search
               allowClear
               name="groupName"
               width="md"
               placeholder="请输入分组名称"
-              onSearch={(value) => setSearchParams({ ...searchParams, groupName: value })}
+              onSearch={inputSearch}
             />
           </LightFilter>
         )
       }
-      search={flag === 'index' ? SEARCH_CONFIGURE : false}
+      search={indexFlag ? SEARCH_CONFIGURE : false}
       actionRef={actionRef}
       rowKey="groupID"
       options={PROTABLE_OPTIONS}
       toolBarRender={() => [
         <CreateOrUpdateGroup
-          flag="create"
+          flag={FlagStatus.CREATE}
           actionRef={actionRef}
           key="createGroup"
           cascaderOptions={cascaderOptions}
         />,
       ]}
-      params={flag === 'index' ? undefined : searchParams}
+      params={indexFlag ? undefined : searchParams}
       request={(params) =>
         queryPage<QueryProp, GroupListItem>(
           postThingsGroupInfoIndex,
-          flag === 'index'
+          indexFlag
             ? {
                 ...params,
                 parentID,
-                ...tagValues,
+                tags: searchParams?.tags,
               }
             : { ...params, parentID },
         )

@@ -7,15 +7,14 @@ import type { ActionType } from '@ant-design/pro-table';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'umi';
 import GroupDeviceList from '../../../components/GroupDeviceList';
-import type { GroupDeviceItem } from '../../../types';
+import type { activeKeyProps, GroupDeviceCreateProps, GroupDeviceItem } from '../../../types';
 
-const DeviceList: React.FC = () => {
+const DeviceList: React.FC<{ activeKey: activeKeyProps }> = ({ activeKey }) => {
   const { createHandler } = useTableCreate();
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [selectedRowsState, setSelectedRows] = useState([]);
-
   const param = useParams() as { id: string };
   const groupID = param.id ?? '';
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedRowsState, setSelectedRows] = useState<GroupDeviceItem[]>([]);
 
   const actionListRef = useRef<ActionType>();
   const actionCreateRef = useRef<ActionType>();
@@ -24,19 +23,35 @@ const DeviceList: React.FC = () => {
 
   const addDevice = () => setDrawerVisible(true);
 
+  const selectedRowsHandler = (value: GroupDeviceItem[]) => setSelectedRows(value);
+
+  const formSubmit = async () => {
+    const list = selectConfirm(selectedRowsState);
+    const body = {
+      groupID,
+      list,
+    };
+    await createHandler<CreateProp, GroupDeviceCreateProps>(
+      postThingsGroupDeviceCreate,
+      actionCreateRef,
+      body,
+    );
+    selectedRowsHandler([]);
+    return true;
+  };
+
   useEffect(() => {
-    actionListRef.current?.reload();
-  }, [drawerVisible]);
+    if (activeKey === '2') actionListRef.current?.reload();
+  }, [drawerVisible, activeKey]);
 
   return (
     <>
       <GroupDeviceList
         flag="list"
         onAdd={addDevice}
-        selectedRowsState={selectedRowsState}
-        setSelectedRows={setSelectedRows}
         actionRef={actionListRef}
-        drawerVisible={drawerVisible}
+        selectedRowsHandler={selectedRowsHandler}
+        activeKey={activeKey}
       />
       <DrawerForm
         title="添加设备到分组"
@@ -47,28 +62,14 @@ const DeviceList: React.FC = () => {
           destroyOnClose: true,
         }}
         submitTimeout={2000}
-        onFinish={async () => {
-          const list = selectConfirm(selectedRowsState);
-          const body = {
-            groupID,
-            list,
-          };
-          await createHandler<CreateProp, GroupDeviceItem>(
-            postThingsGroupDeviceCreate,
-            actionCreateRef,
-            body,
-          );
-          setSelectedRows([]);
-          return true;
-        }}
+        onFinish={formSubmit}
       >
         {drawerVisible && (
           <GroupDeviceList
             flag="create"
-            selectedRowsState={selectedRowsState}
-            setSelectedRows={setSelectedRows}
             actionRef={actionCreateRef}
-            drawerVisible={drawerVisible}
+            selectedRowsHandler={selectedRowsHandler}
+            activeKey={activeKey}
           />
         )}
       </DrawerForm>

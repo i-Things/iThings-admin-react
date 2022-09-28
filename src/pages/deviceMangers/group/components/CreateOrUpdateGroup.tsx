@@ -6,6 +6,7 @@ import {
   postThingsGroupInfoIndex,
   postThingsGroupInfoUpdate,
 } from '@/services/iThingsapi/shebeifenzu';
+import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -18,13 +19,13 @@ import type { GroupListItem, GroupOption } from '../types';
 import type { TagProps } from './types';
 
 const CreateOrUpdateGroup: React.FC<{
-  flag: string;
-  actionRef: React.MutableRefObject<ActionType | undefined>;
+  flag: FlagStatus;
+  actionRef?: React.MutableRefObject<ActionType | undefined>;
   cascaderOptions: GroupOption[];
   record?: GroupListItem;
   flatOptions?: GroupListItem[];
-  setUpdateFlag?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ flag, record, actionRef, cascaderOptions, setUpdateFlag }) => {
+  updateFlagHandler?: () => void;
+}> = ({ flag, record, actionRef, cascaderOptions, updateFlagHandler }) => {
   const { queryPage } = useGetTableList();
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
@@ -47,20 +48,28 @@ const CreateOrUpdateGroup: React.FC<{
 
   const formSubmit = async (values: GroupListItem) => {
     const body = { ...values };
-    if (flag === 'update') {
-      await updateHandler<UpdateProp, GroupListItem>(postThingsGroupInfoUpdate, actionRef, {
-        ...body,
-        groupID: record?.groupID as string,
-        parentID: '',
-        tags: record?.tags as TagProps,
-      });
-      (setUpdateFlag as React.Dispatch<React.SetStateAction<boolean>>)(true);
+    if (flag === FlagStatus.UPDATE) {
+      await updateHandler<UpdateProp, GroupListItem>(
+        postThingsGroupInfoUpdate,
+        actionRef as React.MutableRefObject<ActionType | undefined>,
+        {
+          ...body,
+          groupID: record?.groupID as string,
+          parentID: '',
+          tags: record?.tags as TagProps,
+        },
+      );
+      if (updateFlagHandler) updateFlagHandler();
     } else {
       const parentID = values.parentID[values.parentID.length - 1];
-      await createHandler<CreateProp, GroupListItem>(postThingsGroupInfoCreate, actionRef, {
-        ...body,
-        parentID,
-      });
+      await createHandler<CreateProp, GroupListItem>(
+        postThingsGroupInfoCreate,
+        actionRef as React.MutableRefObject<ActionType | undefined>,
+        {
+          ...body,
+          parentID,
+        },
+      );
       const queryList = await queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, {
         page: {
           page: 1,
@@ -76,7 +85,7 @@ const CreateOrUpdateGroup: React.FC<{
   };
 
   useEffect(() => {
-    if (flag === 'update') {
+    if (flag === FlagStatus.UPDATE) {
       setEditFlag(false);
       editFormRef.current?.setFieldsValue(initialValues);
     }
@@ -85,7 +94,7 @@ const CreateOrUpdateGroup: React.FC<{
     <ModalForm<GroupListItem>
       formRef={editFormRef}
       width={550}
-      title={flag === 'update' ? '编辑分组信息' : '新建分组'}
+      title={flag === FlagStatus.UPDATE ? '编辑分组信息' : '新建分组'}
       trigger={
         <Button
           type="primary"
@@ -94,7 +103,7 @@ const CreateOrUpdateGroup: React.FC<{
             onOpen();
           }}
         >
-          {flag === 'update' ? (
+          {flag === FlagStatus.UPDATE ? (
             '编辑'
           ) : (
             <>
@@ -122,7 +131,7 @@ const CreateOrUpdateGroup: React.FC<{
           expandTrigger: 'hover',
           changeOnSelect: true,
         }}
-        disabled={flag === 'update'}
+        disabled={flag === FlagStatus.UPDATE}
       />
       <ProFormText
         name="groupName"
