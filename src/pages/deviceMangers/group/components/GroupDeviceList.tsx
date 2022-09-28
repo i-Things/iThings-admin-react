@@ -40,7 +40,7 @@ const GroupDeviceList: React.FC<{
 
   const listFlag = flag === 'list';
   // 删除操作
-  const showDeleteConfirm = (record: GroupDeviceItem) => {
+  const showDeleteConfirm = (record: GroupDeviceItem[]) => {
     const list: { productID?: string; deviceName?: string }[] = selectConfirm(record);
     const body = {
       groupID: groupID ?? '',
@@ -126,8 +126,8 @@ const GroupDeviceList: React.FC<{
   ];
 
   useEffect(() => {
-    actionRef?.current?.reloadAndRest();
     if (activeKey === '2') {
+      actionRef?.current?.reloadAndRest();
       querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
         page: { page: 1, size: 99999 },
         label: 'productName',
