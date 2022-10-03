@@ -18,6 +18,9 @@ const BasicLayout: React.FC = (props) => {
 
   return (
     <ProLayout
+      location={{
+        pathname: '../pages/Welcome.tsx',
+      }}
       siderWidth={250}
       rightContentRender={() => <RightContent />}
       disableContentMargin={false}
