@@ -103,8 +103,8 @@ export const DATA_PROTO_FORM = [
 ];
 
 export type DEVICE_INFO = {
-  productID: string;
-  deviceName: string;
+  productID?: string;
+  deviceName?: string;
   createdTime?: string;
   secret?: string;
   firstLogin?: string;
@@ -124,7 +124,7 @@ export type PRODUCT_INFO = {
   authMode?: number;
   autoRegister?: number;
   categoryID?: number;
-  description?: string;
+  desc?: string;
   createdTime?: string;
   devStatus?: number;
 };
