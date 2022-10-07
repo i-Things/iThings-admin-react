@@ -6,6 +6,30 @@ export const SETTOKENKEY = 'iThings-set-token';
 
 export const iThingsSetToken = 'iThings-set-token';
 
+export const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
+
+export const FORMITEM_LAYOUT = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 14 },
+};
+export const ROLE_VALUE_ENUM = {
+  1: 'admin',
+  2: '供应商',
+  3: 'user',
+};
+
+export const STATUS_VALUE_ENUM = {
+  1: { text: '启用', status: 'Success' },
+  2: { text: '禁用', status: 'Error' },
+};
+export const SEARCH_CONFIGURE: { labelWidth: 'auto' } = {
+  labelWidth: 'auto',
+};
+export const PROTABLE_OPTIONS = {
+  setting: {
+    listsHeight: 400,
+  },
+};
 export const DEVICE_TYPE_FORM = [
   { label: '设备', value: 1 },
   { label: '网关', value: 2 },
@@ -79,8 +103,8 @@ export const DATA_PROTO_FORM = [
 ];
 
 export type DEVICE_INFO = {
-  productID: string;
-  deviceName: string;
+  productID?: string;
+  deviceName?: string;
   createdTime?: string;
   secret?: string;
   firstLogin?: string;
@@ -100,21 +124,21 @@ export type PRODUCT_INFO = {
   authMode?: number;
   autoRegister?: number;
   categoryID?: number;
-  description?: string;
+  desc?: string;
   createdTime?: string;
   devStatus?: number;
 };
 
 export const EVENT_TYPE_DATA = [
-  { id: 0, name: '全部事件类型' },
-  { id: 1, name: '告警' },
-  { id: 2, name: '故障' },
-  { id: 3, name: '信息' },
+  { value: 'all', label: '全部事件类型' },
+  { value: 'alert', label: '告警' },
+  { value: 'fault', label: '故障' },
+  { value: 'info', label: '信息' },
 ];
 export const TIME_TYPE_DATA = [
-  { id: 0, name: '30分钟' },
-  { id: 1, name: '1小时' },
-  { id: 2, name: '今天' },
-  { id: 3, name: '昨天' },
-  { id: 4, name: '近7天' },
+  { value: 0, label: '30分钟' },
+  { value: 1, label: '1小时' },
+  { value: 2, label: '今天' },
+  { value: 3, label: '昨天' },
+  { value: 4, label: '近7天' },
 ];

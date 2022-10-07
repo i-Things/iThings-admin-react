@@ -1,5 +1,5 @@
 import RightContent from '@/components/RightContent';
-import { IconMap } from '@/utils/iconMap';
+import type { MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -7,12 +7,14 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import React from 'react';
 // @ts-ignore
-import { Link } from 'umi';
+import { Link, useModel } from 'umi';
 import defaultSettings from '../../config/defaultSettings';
 moment.locale('zh-cn');
 
 const BasicLayout: React.FC = (props) => {
   const { children } = props;
+  const { initialState } = useModel('@@initialState');
+  const menuTree = initialState?.currentUser?.menuInfo;
 
   return (
     <ProLayout
@@ -47,25 +49,7 @@ const BasicLayout: React.FC = (props) => {
           </>
         );
       }}
-      menuDataRender={(menuData: any) => {
-        return menuData.map((item: any) => {
-          return {
-            ...item,
-            icon: (
-              <img
-                src={IconMap[item.icon as string]}
-                alt=""
-                style={{
-                  width: 14,
-                  height: 14,
-                  marginRight: 5,
-                  marginBottom: 5,
-                }}
-              />
-            ),
-          };
-        });
-      }}
+      menuDataRender={() => menuTree as MenuDataItem[]}
       collapsedButtonRender={false}
       {...props}
       {...defaultSettings}

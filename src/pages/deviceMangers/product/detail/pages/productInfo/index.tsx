@@ -38,7 +38,7 @@ const ProductInfoPage: React.FC<Props> = ({ productInfo, onChange }) => {
       <Descriptions.Item label="创建时间">
         {timestampToDateStr(Number(productInfo.createdTime))}
       </Descriptions.Item>
-      <Descriptions.Item label="描述">{productInfo.description}</Descriptions.Item>
+      <Descriptions.Item label="描述">{productInfo.desc}</Descriptions.Item>
     </Descriptions>
   );
 };

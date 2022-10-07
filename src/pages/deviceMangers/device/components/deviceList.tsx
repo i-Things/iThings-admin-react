@@ -49,15 +49,15 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
     confirm({
       title:
         '你确定要删除该设备吗？产品:' +
-        getProductName(record.productID) +
+        getProductName(record?.productID ?? '') +
         ',设备名:' +
         record.deviceName,
       icon: <ExclamationCircleOutlined />,
       content: `该设备删除后无法恢复`,
       onOk() {
         const body = {
-          productID: record.productID,
-          deviceName: record.deviceName,
+          productID: record?.productID ?? '',
+          deviceName: record?.deviceName ?? '',
         };
         postThingsDeviceInfo__openAPI__delete(body).then((res) => {
           if (res.code === ResponseCode.SUCCESS) {
@@ -151,23 +151,6 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       width: 48,
     },
     {
-      title: '产品名称',
-      dataIndex: 'productID',
-      valueType: 'select',
-      ellipsis: true,
-      hideInTable: productInfo != undefined,
-      hideInSearch: productInfo != undefined,
-      valueEnum: productsValue,
-    },
-    {
-      title: '产品ID',
-      dataIndex: 'productID',
-      ellipsis: true,
-      copyable: true,
-      hideInTable: productInfo != undefined,
-      hideInSearch: productInfo != undefined,
-    },
-    {
       title: '设备名称',
       dataIndex: 'deviceName',
       copyable: true,
@@ -184,6 +167,24 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         </a>,
       ],
     },
+    {
+      title: '所属产品名称',
+      dataIndex: 'productID',
+      valueType: 'select',
+      ellipsis: true,
+      hideInTable: productInfo != undefined,
+      hideInSearch: productInfo != undefined,
+      valueEnum: productsValue,
+    },
+    {
+      title: '所属产品ID',
+      dataIndex: 'productID',
+      ellipsis: true,
+      copyable: true,
+      hideInTable: productInfo != undefined,
+      hideInSearch: productInfo != undefined,
+    },
+
     {
       title: '固件版本',
       dataIndex: 'version',
@@ -278,7 +279,6 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="高级表格"
       toolBarRender={() => [
         <CreateForm productValues={products} onCommit={() => actionRef.current?.reload()} />,
       ]}

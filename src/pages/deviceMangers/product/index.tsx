@@ -3,7 +3,8 @@ import {
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
 import { ResponseCode } from '@/utils/base';
-import { DEVICE_TYPE_VALUE, PRODUCT_INFO } from '@/utils/const';
+import type { PRODUCT_INFO } from '@/utils/const';
+import { DEVICE_TYPE_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';

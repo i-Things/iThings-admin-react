@@ -17,7 +17,7 @@ export async function postThingsProductInfoCreate(
     /** 1:关闭,2:打开,3:打开并自动创建设备 */
     autoRegister?: number;
     categoryID?: number;
-    description?: string;
+    desc?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -69,7 +69,7 @@ export async function postThingsProductInfoIndex(
         authMode?: number;
         autoRegister?: number;
         categoryID?: number;
-        description?: string;
+        desc?: string;
         createdTime?: string;
         devStatus?: number;
       }[];
@@ -105,7 +105,7 @@ export async function postThingsProductInfoRead(
       authMode?: number;
       autoRegister?: number;
       categoryID?: number;
-      description?: string;
+      desc?: string;
       createdTime?: string;
       devStatus?: number;
     };
@@ -137,7 +137,7 @@ export async function postThingsProductInfoUpdate(
     /** 1:关闭,2:打开,3:打开并自动创建设备 */
     autoRegister?: number;
     categoryID?: number;
-    description?: string;
+    desc?: string;
   },
   options?: { [key: string]: any },
 ) {

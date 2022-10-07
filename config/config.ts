@@ -12,11 +12,6 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-  layout: {
-    locale: true,
-    siderWidth: 250,
-    ...defaultSettings,
-  },
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
   },

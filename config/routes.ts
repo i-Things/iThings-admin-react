@@ -52,14 +52,28 @@ export default [
         ],
       },
       {
-        path: '/systermManager',
+        path: '/systemMangers',
         name: '系统管理',
         icon: 'icon_system',
+        access: 'canAdmin',
         routes: [
           {
             name: '用户管理',
-            path: '/systermManager/user',
-            component: './systerm',
+            path: '/systemMangers/user/index',
+            component: './systemMangers/user/index',
+          },
+          {
+            name: '角色管理',
+            path: '/systemMangers/role/index',
+            component: './systemMangers/role/index',
+          },
+          {
+            name: '菜单管理',
+            path: '/systemMangers/menu/index',
+            component: './systemMangers/menu/index',
+          },
+          {
+            component: '404',
           },
         ],
       },
@@ -71,5 +85,9 @@ export default [
         component: '404',
       },
     ],
+  },
+  {
+    layout: false,
+    component: '404',
   },
 ];
