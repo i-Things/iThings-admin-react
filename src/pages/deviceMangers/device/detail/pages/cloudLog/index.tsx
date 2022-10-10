@@ -1,7 +1,6 @@
 import TimeFilter from '@/components/TimeFilter';
 import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, initialTime } from '@/utils/base';
-import { DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { SyncOutlined } from '@ant-design/icons';
 import Switch from '@ant-design/pro-form/lib/components/Switch';
@@ -15,8 +14,6 @@ import { useParams } from 'umi';
 import type { PageInfo } from '../../../data';
 import styles from './index.less';
 
-const actions = ['connected', 'disconnected', 'property', 'event', 'action'];
-
 const localLogColumns = [
   {
     title: '时间',
@@ -28,7 +25,7 @@ const localLogColumns = [
     title: '类别',
     dataIndex: 'action',
     key: 'action',
-    render: (val: string) => DEVICE_LOG_LEVEL_VALUE[val].text || '-',
+    render: (val: string) => val || '-',
   },
   {
     title: 'RequestID',
@@ -66,7 +63,7 @@ const DevicePage: React.FC = () => {
       size: pageSize,
     };
     const _params = {
-      actions,
+      actions: null!,
       deviceName: name,
       productID: id,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
