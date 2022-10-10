@@ -130,7 +130,7 @@ export async function postThingsDeviceMsgSdkLogIndex(
   options?: { [key: string]: any },
 ) {
   return request<{
-    data: { list: { timestamp?: string; loglevel?: number; content?: string }; total?: number };
+    data: { list: { timestamp?: string; loglevel?: number; content?: string }[]; total?: number };
   }>('/api/v1/things/device/msg/sdk-log/index', {
     method: 'POST',
     headers: {

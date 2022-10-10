@@ -9,9 +9,8 @@ import CloudLogPage from './pages/cloudLog/index';
 import DeviceCloudLogPage from './pages/deviceCloudLog/index';
 import DeviceLocalLogPage from './pages/deviceLocalLog/index';
 
-import DeviceShadowPage from './pages/deviceShadow/index';
 import GroupPage from './pages/group/index';
-import { default as OnlineDebugPage, default as SubDevicePage } from './pages/onlineDebug/index';
+import { default as OnlineDebugPage } from './pages/onlineDebug/index';
 const { TabPane } = Tabs;
 const IndexPage: React.FC = () => {
   const params = useParams() as { id: string };
@@ -38,15 +37,15 @@ const IndexPage: React.FC = () => {
           <TabPane tab="设备本地日志" key="4">
             <DeviceLocalLogPage />
           </TabPane>
-          <TabPane tab="设备影子" key="5">
+          {/* <TabPane tab="设备影子" key="5">
             <DeviceShadowPage />
-          </TabPane>
+          </TabPane> */}
           <TabPane tab="在线调试" key="6">
             <OnlineDebugPage />
           </TabPane>
-          <TabPane tab="子设备管理" key="7">
+          {/* <TabPane tab="子设备管理" key="7">
             <SubDevicePage />
-          </TabPane>
+          </TabPane> */}
           <TabPane tab="分组" key="8">
             <GroupPage />
           </TabPane>
