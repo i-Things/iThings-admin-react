@@ -1,10 +1,27 @@
-import { EVENT_TYPE_DATA, TIME_TYPE_DATA } from '@/utils/const';
+import TimeFilter from '@/components/TimeFilter';
+import {
+  postThingsDeviceMsgEventLogIndex,
+  postThingsDeviceMsgHubLogIndex,
+  postThingsDeviceMsgPropertyLatestIndex,
+} from '@/services/iThingsapi/shebeixiaoxi';
+import { DefaultPage, initialTime } from '@/utils/base';
+import { EVENT_TYPE_DATA } from '@/utils/const';
+import { SyncOutlined } from '@ant-design/icons';
+import Switch from '@ant-design/pro-form/lib/components/Switch';
+import { useAntdTable, useRequest } from 'ahooks';
 import type { RadioChangeEvent } from 'antd';
-import { DatePicker, Form, Input, Radio, Select, Space, Switch, Table } from 'antd';
-import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
-import moment from 'moment';
+import { Form, Input, Radio, Select, Space, Table } from 'antd';
+import type { RangePickerProps } from 'antd/lib/date-picker';
+import { debounce } from 'lodash';
 import 'moment/locale/zh-cn';
-import React, { useState } from 'react';
+import type { ChangeEventHandler } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'umi';
+import type { AttrData, PageInfo } from './data';
+import { LogType, ModelType } from './enum';
+import { contentColumns, eventColumns, getAttrColumns, onofflineColumns } from './getColumns';
+import styles from './index.less';
+import ModelDetail from './modelDialog';
 
 const { Search } = Input;
 const { Option, OptGroup } = Select;
@@ -15,210 +32,225 @@ const layout = {
 };
 
 const DevicePage: React.FC = () => {
-  const [logType, setLogType] = useState<string>('model');
-  const [modelTypeLog, setModelTypeLog] = useState<string>('attr');
-  const [isRefresh, setRefresh] = useState<boolean>(false);
-  const [eventType, setEventType] = useState<string>('0');
-  const [timeType, setTimeType] = useState<number>(0);
-  const [timeRange, setTimeRange] = useState<RangePickerProps['value']>([
-    moment(moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm')),
-    moment(),
-  ]);
-  const [attrKeys, setAttrKeys] = useState<string>('');
-  const [behaviorKeys, setBehaviorKeys] = useState<string>('');
+  const params = useParams() as { id: string; name: string };
+  const { id = '', name = '' } = params;
 
-  // 设置时间范围
-  const resetTimeRange = (value: number) => {
-    let startTime: string = '';
-    let endTime: string = moment().format('YYYY-MM-DD HH:mm');
-    switch (value) {
-      case 0:
-        startTime = moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm');
-        break;
-      case 1:
-        startTime = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm');
-        break;
-      case 2:
-        startTime = moment().format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().format('YYYY-MM-DD') + ' 23: 59';
-        break;
-      case 3:
-        startTime = moment().add(-1, 'd').format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().add(-1, 'd').format('YYYY-MM-DD') + ' 23: 59';
-        break;
-      case 4:
-        startTime = moment().add(-6, 'd').format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().format('YYYY-MM-DD') + ' 23: 59';
-        break;
+  const [modelTYpe, setModelType] = useState('property');
+  const [logType, setLogType] = useState('model');
+  const [contentParams, setContentParams] = useState({ actions: '', topics: '' });
+  const [dataID, setDataID] = useState('');
+  const [historyDataID, setHistoryDataID] = useState('');
+  const [isRefresh, setRefresh] = useState(false);
+  const [eventType, setEventType] = useState<string>(null!);
+  const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
+
+  const [visible, setVisible] = useState(false);
+
+  // 物模型日志-属性表格数据
+  const [modelData, setModelData] = useState<Partial<AttrData>[]>([]);
+
+  // 获取物模型日志 - 属性
+  const {
+    data: attrData,
+    loading: attrLoading,
+    refresh: attrRun,
+  } = useRequest(
+    async () => {
+      const res = await postThingsDeviceMsgPropertyLatestIndex({
+        productID: id,
+        deviceName: name,
+        dataIDs: [],
+      });
+      return res.data;
+    },
+    {
+      ready: logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY,
+      refreshDeps: [isRefresh, logType, modelTYpe],
+      pollingInterval:
+        isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 3000 : 0,
+    },
+  );
+
+  /** 获取物模型-事件 */
+  const eventTable = async ({ current, pageSize }: PageInfo) => {
+    // 初始化参数
+    const page = {
+      page: current,
+      size: pageSize,
+    };
+    const _params = {
+      deviceNames: [name],
+      types: eventType === 'all' ? null! : [eventType],
+      productID: id,
+      dataID: '',
+      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
+      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      page,
+    };
+
+    const res = await postThingsDeviceMsgEventLogIndex(_params);
+    const result = res?.data;
+    return {
+      list: result?.list || [],
+      total: result.total || 0,
+    };
+  };
+
+  // 获取物模型日志 - 事件
+  const { tableProps: eventTableProps, refresh: eventRun } = useAntdTable(eventTable, {
+    ready: logType === LogType.MODEL && modelTYpe === ModelType.EVENT,
+    defaultPageSize: DefaultPage.size,
+    refreshDeps: [timeRange, eventType, isRefresh],
+    pollingInterval:
+      isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.EVENT ? 3000 : 0,
+  });
+
+  /** 获取内容日志 */
+  const contentTable = async ({ current, pageSize }: PageInfo) => {
+    // 初始化参数
+    const page = {
+      page: current,
+      size: pageSize,
+    };
+    const _params = {
+      actions: contentParams.actions ? [contentParams.actions] : ['property', 'event', 'action'],
+      topics: [contentParams.topics],
+      deviceName: name,
+      productID: id,
+      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
+      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      page,
+    };
+
+    const res = await postThingsDeviceMsgHubLogIndex(_params);
+    const result = res?.data;
+    return {
+      list: result?.list || [],
+      total: result.total || 0,
+    };
+  };
+
+  // 获取内容日志
+  const { tableProps: contentTableProps, refresh: contentRun } = useAntdTable(contentTable, {
+    ready: logType === LogType.CONTENT,
+    defaultPageSize: DefaultPage.size,
+    refreshDeps: [timeRange, contentParams, isRefresh],
+    pollingInterval: isRefresh && logType === LogType.CONTENT ? 3000 : 0,
+  });
+
+  /** 获取上下线日志 */
+  const onOffTable = async ({ current, pageSize }: PageInfo) => {
+    // 初始化参数
+    const page = {
+      page: current,
+      size: pageSize,
+    };
+    const _params = {
+      actions: ['connected', 'disconnected'],
+      deviceName: name,
+      productID: id,
+      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
+      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      page,
+    };
+
+    const res = await postThingsDeviceMsgHubLogIndex(_params);
+    const result = res?.data;
+    return {
+      list: result?.list || [],
+      total: result.total || 0,
+    };
+  };
+
+  // 获取上下线日志
+  const { tableProps: onOffTableProps, refresh: onOffRun } = useAntdTable(onOffTable, {
+    ready: logType === LogType.ONOFFLINE,
+    defaultPageSize: DefaultPage.size,
+    refreshDeps: [timeRange, isRefresh],
+    pollingInterval: isRefresh && logType === LogType.ONOFFLINE ? 3000 : 0,
+  });
+
+  /** 查看历史数据 */
+  const handleHistory = (record: Partial<AttrData>) => {
+    setVisible(true);
+    setHistoryDataID(record.dataID ?? '');
+  };
+
+  const attrColumns = getAttrColumns(handleHistory);
+
+  // 根据属性标识符筛选
+  useEffect(() => {
+    if (attrData) {
+      setModelData(
+        () =>
+          (dataID
+            ? attrData?.list?.filter((item) => item.dataID?.includes(dataID))
+            : attrData.list) || [],
+      );
     }
-    setTimeRange([moment(startTime), moment(endTime)]);
-  };
+  }, [dataID, attrData]);
 
+  /** 改变日志类型 */
   const logTypeChange = (e: RadioChangeEvent) => {
-    const value = e.target.value;
-    setLogType(value);
-    setTimeType(0);
-    resetTimeRange(0);
+    setLogType(e.target.value);
+    /** 重置各个筛选条件 */
+    setModelType('property');
+    setTimeRange(initialTime);
+    setEventType(null!);
+    setContentParams({
+      actions: '',
+      topics: '',
+    });
   };
+
+  /** 修改物模型日志的类型 */
   const modelTypeLogChange = (e: RadioChangeEvent) => {
-    setModelTypeLog(e.target.value);
-    setTimeType(0);
-    resetTimeRange(0);
-    setAttrKeys('');
-    setBehaviorKeys('');
-    setEventType('0');
+    setModelType(e.target.value);
+    setEventType('all');
   };
+
+  /** 是否自动刷新 */
   const refreshChange = (checked: boolean) => {
-    console.log(checked, isRefresh);
     setRefresh(checked);
-    console.log(checked, isRefresh);
   };
+
+  /** 物模型属性-筛选标识符 */
   const attrSearch = (value: string) => {
-    setAttrKeys(value);
-    console.log(attrKeys);
-  };
-  const behaivorSearch = (value: string) => {
-    setBehaviorKeys(value);
-    console.log(behaviorKeys);
+    setDataID(value);
   };
 
-  const dataSource: any[] = [];
-  const attrColumns = [
-    {
-      title: '标识符',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '功能名称',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: '历史数据',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '数据类型',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '最新值',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
-    },
-  ];
-  const eventColumns = [
-    {
-      title: '时间',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '日志类型',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: '事件信息',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ];
-  const behaivorColumns = [
-    {
-      title: '行为名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '行为标识符',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: '调用时间',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '输入参数',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '输出参数',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ];
-  const contentColumns = [
-    {
-      title: '时间',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '通讯类型',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Topic',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '通信内容',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ];
-  const onofflineColumns = [
-    {
-      title: '时间',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '动作',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: '详细信息',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ];
-
+  /** 修改物模型-事件-事件类型 */
   const handleEventChange = (value: string) => {
     setEventType(value);
   };
 
-  const timeTypeLogChange = (e: RadioChangeEvent) => {
-    const value: number = e.target.value;
-    setTimeType(value);
-    resetTimeRange(value);
-  };
-
-  const timeRangeChange = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    setTimeType(-1);
-    console.log(value, dateString);
-  };
-
+  /** 修改内容日志的日志类型 */
   const handleLogTypeChange = (value: string) => {
-    console.log(`selected ${value}`);
+    setContentParams((val) => ({
+      ...val,
+      actions: value,
+    }));
+  };
+
+  /** 修改内容日志topics */
+  const handleChangeTopics: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setContentParams((val) => ({
+      ...val,
+      topics: e.target.value,
+    }));
+  };
+
+  /** 关闭查看历史抽屉 */
+  const handleClose = () => {
+    setVisible(false);
+  };
+
+  /** 手动刷新 */
+  const refresh = () => {
+    if (logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY) attrRun();
+    if (logType === LogType.MODEL && modelTYpe === ModelType.EVENT) eventRun();
+    if (logType === LogType.CONTENT) contentRun();
+    if (logType === LogType.ONOFFLINE) onOffRun();
   };
 
   return (
@@ -229,128 +261,92 @@ const DevicePage: React.FC = () => {
           <Radio.Button value="content">内容日志</Radio.Button>
           <Radio.Button value="onoffline">上下线日志</Radio.Button>
         </Radio.Group>
-        <div style={{ marginLeft: 50 }}>
-          <Switch onChange={refreshChange} />
+        <div className={styles.refresh}>
+          <SyncOutlined className={styles['refresh-icon']} onClick={refresh} />
+          <Switch fieldProps={{ onChange: refreshChange }} />
           <span style={{ paddingLeft: 10 }}>自动刷新</span>
         </div>
       </Space>
-      {logType == 'model' ? (
+      {logType === LogType.MODEL ? (
         <div>
-          <Radio.Group value={modelTypeLog} onChange={modelTypeLogChange} style={{ marginTop: 30 }}>
-            <Radio.Button value="attr">属性</Radio.Button>
+          <Radio.Group value={modelTYpe} onChange={modelTypeLogChange} style={{ marginTop: 30 }}>
+            <Radio.Button value="property">属性</Radio.Button>
             <Radio.Button value="event">事件</Radio.Button>
-            <Radio.Button value="behavior">行为</Radio.Button>
           </Radio.Group>
-        </div>
-      ) : (
-        ''
-      )}
-      {logType == 'model' && modelTypeLog == 'attr' ? (
-        <div>
-          <Search
-            placeholder="属性名称/属性标识符"
-            onSearch={attrSearch}
-            style={{ width: 200, marginBottom: 20, marginTop: 20 }}
-            allowClear
-          />
-          <Table pagination={false} size="middle" dataSource={dataSource} columns={attrColumns} />
         </div>
       ) : (
         ''
       )}
       <div>
-        {logType == 'content' ? (
+        {logType === LogType.CONTENT && (
           <Form {...layout} layout="inline" style={{ marginTop: 20 }}>
-            <Form.Item name="note" label="日志类型">
-              <Select defaultValue="lucy" style={{ width: 200 }} onChange={handleLogTypeChange}>
-                <OptGroup label="Manager">
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                </OptGroup>
-                <OptGroup label="Engineer">
-                  <Option value="Yiminghe">yiminghe</Option>
+            <Form.Item name="actions" label="日志类型">
+              <Select style={{ width: 200 }} onChange={handleLogTypeChange} placeholder="请选择">
+                <OptGroup label="物模型topic">
+                  <Option value="property">属性</Option>
+                  <Option value="event">事件</Option>
+                  <Option value="action">行为</Option>
                 </OptGroup>
               </Select>
             </Form.Item>
-            <Form.Item name="gender" label="topic">
-              <Select placeholder="Select a option and change input text above">
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
+            <Form.Item name="topics" label="topic">
+              <Input
+                style={{ width: 300 }}
+                placeholder="请输入topic"
+                onChange={debounce(handleChangeTopics, 300)}
+                allowClear
+              />
             </Form.Item>
           </Form>
-        ) : (
-          ''
         )}
       </div>
-      {(logType == 'model' && modelTypeLog != 'attr') || logType != 'model' ? (
-        <div style={{ marginBottom: 20, marginTop: 20 }}>
-          {modelTypeLog == 'event' ? (
+      <div className={styles.filter}>
+        {logType === LogType.MODEL && modelTYpe === ModelType.EVENT && (
+          <div style={{ marginBottom: 20, marginTop: 20 }}>
             <Select
               value={eventType}
               style={{ width: 150, marginRight: 20 }}
               onChange={handleEventChange}
-            >
-              {EVENT_TYPE_DATA.map((type) => (
-                <Option key={type.id}>{type.name}</Option>
-              ))}
-            </Select>
-          ) : (
-            ''
-          )}
-          <Radio.Group value={timeType} onChange={timeTypeLogChange} style={{ marginRight: 20 }}>
-            {TIME_TYPE_DATA.map((type) => (
-              <Radio.Button value={type.id} key={type.id}>
-                {type.name}
-              </Radio.Button>
-            ))}
-          </Radio.Group>
-          <DatePicker.RangePicker
-            value={timeRange}
-            allowClear={false}
-            showTime
-            onChange={timeRangeChange}
-            format="YYYY-MM-DD HH:mm"
-          />
-          {logType == 'model' && modelTypeLog == 'behavior' ? (
-            <Search
-              placeholder="行为标识符"
-              onSearch={behaivorSearch}
-              style={{ width: 200, float: 'right' }}
-              allowClear
+              options={EVENT_TYPE_DATA}
             />
-          ) : (
-            ''
-          )}
+          </div>
+        )}
+        {(modelTYpe === ModelType.EVENT || logType !== LogType.MODEL) && (
+          <div style={{ marginBottom: 20, marginTop: 20 }}>
+            <TimeFilter onChange={(val) => setTimeRange(val)} />
+          </div>
+        )}
+      </div>
+      {logType === LogType.MODEL && modelTYpe === 'property' && (
+        <div>
+          <Search
+            placeholder="属性标识符"
+            onSearch={attrSearch}
+            style={{ width: 200, marginBottom: 20, marginTop: 20 }}
+            allowClear
+          />
+          <Table
+            rowKey="dataID"
+            pagination={false}
+            size="middle"
+            dataSource={modelData}
+            columns={attrColumns}
+            loading={attrLoading}
+          />
         </div>
-      ) : (
-        ''
       )}
-      {logType == 'model' && modelTypeLog == 'event' ? (
-        <Table pagination={false} size="middle" dataSource={dataSource} columns={eventColumns} />
-      ) : (
-        ''
+
+      {logType === LogType.MODEL && modelTYpe === 'event' && (
+        <Table size="middle" rowKey="dataID" columns={eventColumns} {...eventTableProps} />
       )}
-      {logType == 'model' && modelTypeLog == 'behavior' ? (
-        <Table pagination={false} size="middle" dataSource={dataSource} columns={behaivorColumns} />
-      ) : (
-        ''
+      {logType === LogType.CONTENT && (
+        <Table size="middle" rowKey="requestID" columns={contentColumns} {...contentTableProps} />
       )}
-      {logType == 'content' ? (
-        <Table pagination={false} size="middle" dataSource={dataSource} columns={contentColumns} />
-      ) : (
-        ''
+      {logType === LogType.ONOFFLINE && (
+        <Table size="middle" rowKey="requestID" columns={onofflineColumns} {...onOffTableProps} />
       )}
-      {logType == 'onoffline' ? (
-        <Table
-          pagination={false}
-          size="middle"
-          dataSource={dataSource}
-          columns={onofflineColumns}
-        />
-      ) : (
-        ''
+      {visible && (
+        <ModelDetail visible={visible} dataID={historyDataID} handleClose={handleClose} />
       )}
     </Space>
   );

@@ -4,21 +4,27 @@
 // API 唯一标识：
 import * as caidanguanli from './caidanguanli';
 import * as chanpinguanli from './chanpinguanli';
+import * as firmware from './firmware';
 import * as jiaoseguanli from './jiaoseguanli';
+import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
 import * as shebeijianquan from './shebeijianquan';
 import * as shebeijiaohu from './shebeijiaohu';
 import * as shebeixiaoxi from './shebeixiaoxi';
+import * as task from './task';
 import * as wumoxing from './wumoxing';
 import * as yonghuguanli from './yonghuguanli';
 export default {
-  shebeijiaohu,
-  wumoxing,
-  yonghuguanli,
   chanpinguanli,
-  jiaoseguanli,
+  wumoxing,
   shebeiguanli,
-  caidanguanli,
   shebeijianquan,
   shebeixiaoxi,
+  shebeijiaohu,
+  caidanguanli,
+  jiaoseguanli,
+  yonghuguanli,
+  shebeifenzu,
+  firmware,
+  task,
 };
