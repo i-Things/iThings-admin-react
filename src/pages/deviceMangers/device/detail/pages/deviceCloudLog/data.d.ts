@@ -3,8 +3,3 @@ export interface AttrData {
   dataID: string;
   value: string;
 }
-
-export interface PageInfo {
-  current: number;
-  pageSize: number;
-}
