@@ -2,10 +2,10 @@ import TimeFilter from '@/components/TimeFilter';
 import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, initialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
-import { SyncOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import Switch from '@ant-design/pro-form/lib/components/Switch';
 import { useAntdTable } from 'ahooks';
-import { Card, Col, Input, Row, Table } from 'antd';
+import { Card, Col, Input, Row, Table, Tooltip } from 'antd';
 import type { RangePickerProps } from 'antd/lib/date-picker';
 import { debounce } from 'lodash';
 import type { ChangeEventHandler } from 'react';
@@ -20,6 +20,7 @@ const localLogColumns = [
     dataIndex: 'timestamp',
     key: 'timestamp',
     render: (val: string) => timestampToDateStr(Number(val)),
+    width: 200,
   },
   {
     title: '类别',
@@ -32,15 +33,24 @@ const localLogColumns = [
     dataIndex: 'requestID',
     key: 'requestID',
     render: (val: string) => val || '-',
+    width: 200,
   },
   {
     title: '内容',
     dataIndex: 'content',
     key: 'content',
     render: (val: string) => val || '-',
+    width: 300,
   },
   {
-    title: '结果',
+    title: () => (
+      <>
+        <span>结果</span>
+        <Tooltip title="0表示成功,非零为错误码">
+          <QuestionCircleOutlined className={styles.icon} />
+        </Tooltip>
+      </>
+    ),
     dataIndex: 'resultType',
     key: 'resultType',
     render: (val: string) => val || '-',
