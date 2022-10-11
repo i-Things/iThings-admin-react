@@ -45,7 +45,7 @@ export const getAttrColumns = (handleHistory: (record: Partial<AttrData>) => voi
       title: '更新时间',
       dataIndex: 'timestamp',
       key: 'timestamp',
-      render: (val: string) => timestampToDateStr(Number(val)),
+      render: (val: string) => timestampToDateStr(Number(val), 'YYYY-MM-DD HH:mm:ss.SSS'),
     },
   ] as ColumnsType<Partial<AttrData>>;
 };
@@ -53,8 +53,9 @@ export const getAttrColumns = (handleHistory: (record: Partial<AttrData>) => voi
 export const eventColumns = [
   {
     title: '时间',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'timestamp',
+    key: 'timestamp',
+    render: (val: string) => timestampToDateStr(Number(val), 'YYYY-MM-DD HH:mm:ss.SSS'),
   },
   {
     title: '日志类型',
@@ -74,7 +75,7 @@ export const contentColumns = [
     title: '时间',
     dataIndex: 'timestamp',
     key: 'timestamp',
-    render: (val: string) => timestampToDateStr(Number(val)),
+    render: (val: string) => timestampToDateStr(Number(val), 'YYYY-MM-DD HH:mm:ss.SSS'),
   },
   {
     title: '操作类型',
@@ -108,7 +109,7 @@ export const onofflineColumns = [
     title: '时间',
     dataIndex: 'timestamp',
     key: 'timestamp',
-    render: (val: string) => timestampToDateStr(Number(val)),
+    render: (val: string) => timestampToDateStr(Number(val), 'YYYY-MM-DD HH:mm:ss.SSS'),
   },
   {
     title: '动作',

@@ -70,7 +70,7 @@ const DevicePage: React.FC = () => {
     <Card>
       <TimeFilter onChange={(val) => setTimeRange(val)} />
       <div style={{ marginTop: 20 }}>
-        <Table size="middle" rowKey="requestID" columns={localLogColumns} {...tableProps} />
+        <Table size="middle" rowKey="timestamp" columns={localLogColumns} {...tableProps} />
       </div>
     </Card>
   );
