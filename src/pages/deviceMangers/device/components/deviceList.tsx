@@ -25,8 +25,8 @@ type queryParam = {
   tags?: { key?: string; value?: string }[];
 };
 const STATUS = new Map([
-  [1, '离线'],
-  [2, '在线'],
+  [1, '在线'],
+  [2, '离线'],
 ]);
 interface Props {
   productInfo?: PRODUCT_INFO;
