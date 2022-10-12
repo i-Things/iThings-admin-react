@@ -115,7 +115,7 @@ const DevicePage: React.FC = () => {
     };
     const _params = {
       actions: contentParams.actions ? [contentParams.actions] : ['property', 'event', 'action'],
-      topics: [contentParams.topics],
+      topics: contentParams.topics ? [contentParams.topics] : null!,
       deviceName: name,
       productID: id,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
@@ -341,10 +341,10 @@ const DevicePage: React.FC = () => {
         <Table size="middle" rowKey="dataID" columns={eventColumns} {...eventTableProps} />
       )}
       {logType === LogType.CONTENT && (
-        <Table size="middle" rowKey="requestID" columns={contentColumns} {...contentTableProps} />
+        <Table size="middle" rowKey="tranceID" columns={contentColumns} {...contentTableProps} />
       )}
       {logType === LogType.ONOFFLINE && (
-        <Table size="middle" rowKey="requestID" columns={onofflineColumns} {...onOffTableProps} />
+        <Table size="middle" rowKey="tranceID" columns={onofflineColumns} {...onOffTableProps} />
       )}
       {visible && (
         <ModelDetail visible={visible} dataID={historyDataID} handleClose={handleClose} />

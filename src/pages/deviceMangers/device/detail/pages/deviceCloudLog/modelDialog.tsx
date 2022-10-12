@@ -8,7 +8,7 @@ import { Drawer, Space, Table } from 'antd';
 import type { RangePickerProps } from 'antd/lib/date-picker';
 import React, { useState } from 'react';
 import { useParams } from 'umi';
-import type { PageInfo } from './data';
+import type { PageInfo } from '../../../data';
 import styles from './index.less';
 
 interface ModelProps {
@@ -88,7 +88,7 @@ const ModelDetail: React.FC<ModelProps> = (props) => {
       >
         <TimeFilter onChange={(val) => setTimeRange(val)} />
         <div style={{ marginTop: 20 }}>
-          <Table size="middle" rowKey="requestID" columns={historyColumns} {...historyTableProps} />
+          <Table size="middle" rowKey="timestamp" columns={historyColumns} {...historyTableProps} />
         </div>
       </Drawer>
     </>

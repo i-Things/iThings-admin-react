@@ -19,7 +19,7 @@ const localLogColumns = [
     title: '时间',
     dataIndex: 'timestamp',
     key: 'timestamp',
-    render: (val: string) => timestampToDateStr(Number(val)),
+    render: (val: string) => timestampToDateStr(Number(val), 'YYYY-MM-DD HH:mm:ss.SSS'),
     width: 200,
   },
   {
@@ -151,7 +151,7 @@ const DevicePage: React.FC = () => {
         </Col>
       </Row>
       <div style={{ marginTop: 20 }}>
-        <Table size="middle" rowKey="requestID" columns={localLogColumns} {...tableProps} />
+        <Table size="middle" rowKey="tranceID" columns={localLogColumns} {...tableProps} />
       </div>
     </Card>
   );
