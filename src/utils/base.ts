@@ -15,7 +15,9 @@ export const DefaultPage = { page: 1, size: 20 };
 
 export const ColumnConfig = { xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 };
 
-export const initialTime: RangePickerProps['value'] = [
-  moment(moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')),
-  moment(),
-];
+export const getInitialTime = () => {
+  return [
+    moment(moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')),
+    moment(),
+  ] as RangePickerProps['value'];
+};

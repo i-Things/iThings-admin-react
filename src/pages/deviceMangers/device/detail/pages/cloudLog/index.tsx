@@ -1,6 +1,6 @@
 import TimeFilter from '@/components/TimeFilter';
 import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
-import { DefaultPage, initialTime } from '@/utils/base';
+import { DefaultPage, getInitialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
 import { QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import Switch from '@ant-design/pro-form/lib/components/Switch';
@@ -60,6 +60,8 @@ const localLogColumns = [
 const DevicePage: React.FC = () => {
   const params = useParams() as { id: string; name: string };
   const { id = '', name = '' } = params;
+
+  const initialTime = getInitialTime();
 
   const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
   const [isRefresh, setRefresh] = useState(false);

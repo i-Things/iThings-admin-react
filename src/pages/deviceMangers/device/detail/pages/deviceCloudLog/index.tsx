@@ -4,7 +4,7 @@ import {
   postThingsDeviceMsgHubLogIndex,
   postThingsDeviceMsgPropertyLatestIndex,
 } from '@/services/iThingsapi/shebeixiaoxi';
-import { DefaultPage, initialTime } from '@/utils/base';
+import { DefaultPage, getInitialTime } from '@/utils/base';
 import { EVENT_TYPE_DATA } from '@/utils/const';
 import { SyncOutlined } from '@ant-design/icons';
 import Switch from '@ant-design/pro-form/lib/components/Switch';
@@ -35,6 +35,8 @@ const layout = {
 const DevicePage: React.FC = () => {
   const params = useParams() as { id: string; name: string };
   const { id = '', name = '' } = params;
+
+  const initialTime = getInitialTime();
 
   const [modelTYpe, setModelType] = useState('property');
   const [logType, setLogType] = useState('model');
