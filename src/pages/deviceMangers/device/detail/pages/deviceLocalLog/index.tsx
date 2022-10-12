@@ -1,6 +1,6 @@
 import TimeFilter from '@/components/TimeFilter';
 import { postThingsDeviceMsgSdkLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
-import { DefaultPage, initialTime } from '@/utils/base';
+import { DefaultPage, getInitialTime } from '@/utils/base';
 import { DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { useAntdTable } from 'ahooks';
@@ -34,6 +34,8 @@ const localLogColumns = [
 const DevicePage: React.FC = () => {
   const params = useParams() as { id: string; name: string };
   const { id = '', name = '' } = params;
+
+  const initialTime = getInitialTime();
 
   const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
 

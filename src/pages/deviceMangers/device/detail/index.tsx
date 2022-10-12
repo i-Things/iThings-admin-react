@@ -24,7 +24,7 @@ const IndexPage: React.FC = () => {
         </Descriptions>
       </Card>
       <Card style={{ marginTop: 10 }}>
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" destroyInactiveTabPane>
           <TabPane tab="设备信息" key="1">
             <DeviceInfoPage />
           </TabPane>

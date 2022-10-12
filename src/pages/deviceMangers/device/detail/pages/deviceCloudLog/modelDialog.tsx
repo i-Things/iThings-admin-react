@@ -1,6 +1,6 @@
 import TimeFilter from '@/components/TimeFilter';
 import { postThingsDeviceMsgPropertyLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
-import { DefaultPage, initialTime } from '@/utils/base';
+import { DefaultPage, getInitialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
 import { CloseOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
@@ -37,6 +37,8 @@ const ModelDetail: React.FC<ModelProps> = (props) => {
 
   const params = useParams() as { id: string; name: string };
   const { id = '', name = '' } = params;
+
+  const initialTime = getInitialTime();
 
   const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
 
