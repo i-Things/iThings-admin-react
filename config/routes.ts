@@ -49,6 +49,17 @@ export default [
             path: '/deviceMangers/device/detail/:id/:name',
             component: './deviceMangers/device/detail/index',
           },
+          {
+            name: '分组',
+            path: '/deviceMangers/group/index',
+            component: './deviceMangers/group/index',
+          },
+          {
+            name: '分组详情',
+            hideInMenu: true,
+            path: '/deviceMangers/group/detail/:id',
+            component: './deviceMangers/group/detail/index',
+          },
         ],
       },
       {

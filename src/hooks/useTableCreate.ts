@@ -5,7 +5,7 @@ import message from 'antd/lib/message';
 const useTableCreate = () => {
   const createHandler = async <T extends Function, k>(
     createApi: T,
-    actionRef: React.MutableRefObject<ActionType | undefined>,
+    actionRef: React.MutableRefObject<ActionType | undefined> | undefined,
     body: k,
     createOkHandler?: () => void,
   ) => {
@@ -13,7 +13,7 @@ const useTableCreate = () => {
     try {
       res = await createApi(body);
       if (res?.code === ResponseCode.SUCCESS) {
-        actionRef.current?.reload();
+        actionRef?.current?.reload();
         message.success('创建成功');
         if (createOkHandler) createOkHandler();
       }

@@ -8,6 +8,8 @@ export const iThingsSetToken = 'iThings-set-token';
 
 export const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
 
+export const LAYOUT_TYPE_VERTICAL = 'vertical';
+
 export const FORMITEM_LAYOUT = {
   labelCol: { span: 4 },
   wrapperCol: { span: 14 },

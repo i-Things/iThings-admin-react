@@ -27,7 +27,7 @@ const useTableDelete = () => {
         try {
           res = await deleteApi(body);
           if (res.code === ResponseCode.SUCCESS) {
-            actionRef.current?.reload();
+            actionRef.current?.reloadAndRest?.();
             message.success('删除成功');
             if (deleteOkHandler) deleteOkHandler();
           }
