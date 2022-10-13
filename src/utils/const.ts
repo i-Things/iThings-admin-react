@@ -105,8 +105,8 @@ export const DATA_PROTO_FORM = [
 ];
 
 export type DEVICE_INFO = {
-  productID: string;
-  deviceName: string;
+  productID?: string;
+  deviceName?: string;
   createdTime?: string;
   secret?: string;
   firstLogin?: string;
@@ -126,21 +126,21 @@ export type PRODUCT_INFO = {
   authMode?: number;
   autoRegister?: number;
   categoryID?: number;
-  description?: string;
+  desc?: string;
   createdTime?: string;
   devStatus?: number;
 };
 
 export const EVENT_TYPE_DATA = [
-  { id: 0, name: '全部事件类型' },
-  { id: 1, name: '告警' },
-  { id: 2, name: '故障' },
-  { id: 3, name: '信息' },
+  { value: 'all', label: '全部事件类型' },
+  { value: 'alert', label: '告警' },
+  { value: 'fault', label: '故障' },
+  { value: 'info', label: '信息' },
 ];
 export const TIME_TYPE_DATA = [
-  { id: 0, name: '30分钟' },
-  { id: 1, name: '1小时' },
-  { id: 2, name: '今天' },
-  { id: 3, name: '昨天' },
-  { id: 4, name: '近7天' },
+  { value: 0, label: '30分钟' },
+  { value: 1, label: '1小时' },
+  { value: 2, label: '今天' },
+  { value: 3, label: '昨天' },
+  { value: 4, label: '近7天' },
 ];
