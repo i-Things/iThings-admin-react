@@ -84,8 +84,8 @@ export async function postThingsGroupInfoCreate(
   body: {
     /** 分组名称 */
     groupName: string;
-    /** 父组ID */
-    parentID?: number;
+    /** 父组ID 1-根组 ，非根组，则传所选父分组的groupID 作为本组的parentID */
+    parentID?: string;
     /** 分组描述 */
     desc?: string;
   },
@@ -123,8 +123,8 @@ export async function postThingsGroupInfo__openAPI__delete(
 export async function postThingsGroupInfoIndex(
   body: {
     page: { page?: number; size?: number };
-    /** 父组ID, 0-根组 */
-    parentID: string;
+    /** 父组ID, 1-根组 */
+    parentID: number;
     /** 按分组名称筛选 */
     groupName?: string;
     tags?: { key?: string; value?: string }[];
@@ -132,12 +132,11 @@ export async function postThingsGroupInfoIndex(
   options?: { [key: string]: any },
 ) {
   return request<{
-    code: number;
-    msg: string;
     data: {
       list?: {
         groupName?: string;
-        groupID?: string;
+        parentID?: number;
+        groupID?: number;
         desc?: string;
         createdTime?: string;
         tags?: { key?: string; value?: string }[];
@@ -169,6 +168,7 @@ export async function postThingsGroupInfoRead(
     data: {
       groupName?: string;
       groupID?: string;
+      parentID?: string;
       createdTime?: string;
       desc?: string;
       tags?: { key?: string; value?: string }[];
