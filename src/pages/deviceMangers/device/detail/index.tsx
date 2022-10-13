@@ -1,5 +1,5 @@
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Descriptions, Tabs } from 'antd';
+import { Card, Tabs } from 'antd';
 import React from 'react';
 import { useParams } from 'umi';
 
@@ -9,20 +9,45 @@ import CloudLogPage from './pages/cloudLog/index';
 import DeviceCloudLogPage from './pages/deviceCloudLog/index';
 import DeviceLocalLogPage from './pages/deviceLocalLog/index';
 
+import ProDescriptions from '@ant-design/pro-descriptions';
+import styles from './index.less';
 import GroupPage from './pages/group/index';
 import { default as OnlineDebugPage } from './pages/onlineDebug/index';
+
 const { TabPane } = Tabs;
-const IndexPage: React.FC = () => {
-  const params = useParams() as { id: string };
-  const PID = params.id ?? '';
-  const content = '设备ID: ' + PID;
+
+const columns = [
+  {
+    title: '设备名称',
+    key: 'name',
+    dataIndex: 'name',
+    copyable: true,
+  },
+  {
+    title: '产品ID',
+    key: 'id',
+    dataIndex: 'id',
+    copyable: true,
+  },
+];
+
+const Content = () => {
+  const params = useParams() as { id: string; name: string };
+
   return (
-    <PageContainer content={content}>
-      <Card>
-        <Descriptions title="设备信息">
-          <Descriptions.Item label="ProductKey">1982992</Descriptions.Item>
-        </Descriptions>
-      </Card>
+    <ProDescriptions
+      className={styles.descriptions}
+      title=""
+      dataSource={{ name: params.name, id: params.id }}
+      colon={false}
+      columns={columns}
+    />
+  );
+};
+
+const IndexPage: React.FC = () => {
+  return (
+    <PageContainer title=" " content={<Content />}>
       <Card style={{ marginTop: 10 }}>
         <Tabs defaultActiveKey="1" destroyInactiveTabPane>
           <TabPane tab="设备信息" key="1">
