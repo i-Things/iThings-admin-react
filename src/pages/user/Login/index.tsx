@@ -7,6 +7,7 @@ import MD5 from 'crypto-js/md5';
 import React, { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import type { loginType } from './data';
+
 import styles from './index.less';
 
 const Login: React.FC = () => {
