@@ -3,42 +3,42 @@ import { DefaultPage } from '@/utils/base';
 import { milliTdToDate } from '@/utils/date';
 import { useRequest } from 'ahooks';
 import { Card, Col, message, Row, Table, Tabs } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'umi';
+import React, { useState } from 'react';
+import type { DeviceInfo } from '../../../data';
 import SendMsg from './components/sendMsg';
-import { debugType } from './data';
+import type { debugType } from './data';
 
-const DevicePage: React.FC = () => {
-  const params = useParams() as { id: string; name: string };
-  const { id = '', name = '' } = params;
-  const { TabPane } = Tabs;
+const { TabPane } = Tabs;
+
+/** 在线调试 */
+const OnLineDebug: React.FC<DeviceInfo> = (props) => {
+  const { productID, deviceName } = props;
   const [contentData, setContentData] = useState<debugType[]>([]);
-  // 获取内容日志
-  const param = {
-    timeStart: String(Date.now()),
-    productID: id,
-    deviceName: name,
-    page: DefaultPage,
-  };
-  const { run } = useRequest(postThingsDeviceMsgHubLogIndex, {
-    defaultParams: [param],
-    onSuccess: (result) => {
-      setContentData(result?.data?.list ?? []);
-    },
-    onError: (error) => {
-      message.error('获取产品信息错误:' + error.message);
-    },
-  });
 
-  // useEffect方法的第一个参数是一个函数，函数可以return一个方法，这个方法就是在组件销毁的时候会被调用
-  useEffect(() => {
-    const timer = setInterval(() => {
-      run(param);
-    }, 5000);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  // 获取内容日志
+  useRequest(
+    async () => {
+      const res = await postThingsDeviceMsgHubLogIndex({
+        timeStart: String(Date.now()),
+        productID,
+        deviceName,
+        page: DefaultPage,
+      });
+      return res.data;
+    },
+    {
+      refreshDeps: [productID, deviceName],
+      pollingInterval: 5000,
+      ready: !!(productID && deviceName),
+      onSuccess: (result) => {
+        setContentData(result?.list ?? []);
+      },
+      onError: (error) => {
+        message.error('获取产品信息错误:' + error.message);
+      },
+    },
+  );
+
   const contentColumns = [
     {
       title: '时间',
@@ -76,7 +76,7 @@ const DevicePage: React.FC = () => {
         <Col span={12}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="下行指令调试" key="1">
-              <SendMsg productID={id} deviceName={name} />
+              <SendMsg />
             </TabPane>
           </Tabs>
         </Col>
@@ -94,4 +94,4 @@ const DevicePage: React.FC = () => {
   );
 };
 
-export default DevicePage;
+export default OnLineDebug;

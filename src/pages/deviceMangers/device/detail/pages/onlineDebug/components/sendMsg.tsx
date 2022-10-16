@@ -2,14 +2,13 @@ import { postThingsDeviceInteractSendMsg } from '@/services/iThingsapi/shebeijia
 import { ResponseCode } from '@/utils/base';
 import { Button, Form, Input, message } from 'antd';
 import React from 'react';
-import { DeviceInfo } from '../data';
 
 type sendMsgReq = {
   topic: string;
   payload: string;
 };
 
-const SendMsg: React.FC<DeviceInfo> = () => {
+const SendMsg: React.FC = () => {
   const onFinish = (values: sendMsgReq) => {
     const body = {
       ...values,

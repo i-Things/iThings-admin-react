@@ -89,6 +89,21 @@ export default [
         ],
       },
       {
+        path: '/operationsMonitorings',
+        name: '运维监控',
+        icon: 'icon_system',
+        routes: [
+          {
+            name: '在线调试',
+            path: '/operationsMonitorings/onlineDebugs/index',
+            component: './operationsMonitorings/onLineDebug/index',
+          },
+          {
+            component: '404',
+          },
+        ],
+      },
+      {
         path: '/',
         redirect: '/deviceMangers/product/index',
       },
