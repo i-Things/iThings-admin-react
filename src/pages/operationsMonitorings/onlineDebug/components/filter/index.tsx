@@ -1,10 +1,10 @@
+import type { ProductParams } from '@/pages/operationsMonitorings/data';
 import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { useRequest } from 'ahooks';
 import { Card, Form, message, Select } from 'antd';
 import type { DefaultOptionType } from 'antd/lib/select';
 import { useState } from 'react';
-import type { ProductParams } from '../../data';
 import styles from './index.less';
 
 interface FilterProps {

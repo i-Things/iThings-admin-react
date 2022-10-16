@@ -1,8 +1,8 @@
 import OnlineDebugPage from '@/pages/deviceMangers/device/detail/pages/onlineDebug';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
+import type { ProductParams } from '../data';
 import Filter from './components/filter';
-import type { ProductParams } from './data';
 
 const OnlineDebug = () => {
   const [params, setParams] = useState<ProductParams>(null!);
