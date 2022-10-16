@@ -58,13 +58,13 @@ const IndexPage: React.FC = () => {
             <DeviceInfoPage />
           </TabPane>
           <TabPane tab="云端诊断日志" key="2">
-            <CloudLogPage />
+            <CloudLogPage productID={id} deviceName={name} />
           </TabPane>
           <TabPane tab="设备云端日志" key="3">
-            <DeviceCloudLogPage />
+            <DeviceCloudLogPage productID={id} deviceName={name} />
           </TabPane>
           <TabPane tab="设备本地日志" key="4">
-            <DeviceLocalLogPage />
+            <DeviceLocalLogPage productID={id} deviceName={name} />
           </TabPane>
           {/* <TabPane tab="设备影子" key="5">
             <DeviceShadowPage />

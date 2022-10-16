@@ -16,8 +16,7 @@ import { debounce } from 'lodash';
 import 'moment/locale/zh-cn';
 import type { ChangeEventHandler } from 'react';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'umi';
-import type { PageInfo } from '../../../data';
+import type { DeviceInfo, PageInfo } from '../../../data';
 import type { AttrData } from './data';
 import { LogType, ModelType } from './enum';
 import { contentColumns, eventColumns, getAttrColumns, onofflineColumns } from './getColumns';
@@ -32,9 +31,8 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const DevicePage: React.FC = () => {
-  const params = useParams() as { id: string; name: string };
-  const { id = '', name = '' } = params;
+const DevicePage: React.FC<DeviceInfo> = (props) => {
+  const { productID, deviceName } = props;
 
   const initialTime = getInitialTime();
 
@@ -60,17 +58,20 @@ const DevicePage: React.FC = () => {
   } = useRequest(
     async () => {
       const res = await postThingsDeviceMsgPropertyLatestIndex({
-        productID: id,
-        deviceName: name,
+        productID,
+        deviceName,
         dataIDs: [],
       });
       return res.data;
     },
     {
-      ready: logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY,
+      ready:
+        logType === LogType.MODEL &&
+        modelTYpe === ModelType.PROPERTY &&
+        !!(productID && deviceName),
       refreshDeps: [isRefresh, logType, modelTYpe],
       pollingInterval:
-        isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 3000 : 0,
+        isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 5000 : 0,
     },
   );
 
@@ -82,9 +83,9 @@ const DevicePage: React.FC = () => {
       size: pageSize,
     };
     const _params = {
-      deviceNames: [name],
+      deviceNames: [deviceName],
       types: eventType === 'all' ? null! : [eventType],
-      productID: id,
+      productID,
       dataID: '',
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
@@ -101,11 +102,12 @@ const DevicePage: React.FC = () => {
 
   // 获取物模型日志 - 事件
   const { tableProps: eventTableProps, refresh: eventRun } = useAntdTable(eventTable, {
-    ready: logType === LogType.MODEL && modelTYpe === ModelType.EVENT,
+    ready:
+      logType === LogType.MODEL && modelTYpe === ModelType.EVENT && !!(productID && deviceName),
     defaultPageSize: DefaultPage.size,
     refreshDeps: [timeRange, eventType, isRefresh],
     pollingInterval:
-      isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.EVENT ? 3000 : 0,
+      isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.EVENT ? 5000 : 0,
   });
 
   /** 获取内容日志 */
@@ -118,8 +120,8 @@ const DevicePage: React.FC = () => {
     const _params = {
       actions: contentParams.actions ? [contentParams.actions] : ['property', 'event', 'action'],
       topics: contentParams.topics ? [contentParams.topics] : null!,
-      deviceName: name,
-      productID: id,
+      deviceName,
+      productID,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
       page,
@@ -135,10 +137,10 @@ const DevicePage: React.FC = () => {
 
   // 获取内容日志
   const { tableProps: contentTableProps, refresh: contentRun } = useAntdTable(contentTable, {
-    ready: logType === LogType.CONTENT,
+    ready: logType === LogType.CONTENT && !!(productID && deviceName),
     defaultPageSize: DefaultPage.size,
     refreshDeps: [timeRange, contentParams, isRefresh],
-    pollingInterval: isRefresh && logType === LogType.CONTENT ? 3000 : 0,
+    pollingInterval: isRefresh && logType === LogType.CONTENT ? 5000 : 0,
   });
 
   /** 获取上下线日志 */
@@ -150,8 +152,8 @@ const DevicePage: React.FC = () => {
     };
     const _params = {
       actions: ['connected', 'disconnected'],
-      deviceName: name,
-      productID: id,
+      deviceName,
+      productID,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
       page,
@@ -167,10 +169,10 @@ const DevicePage: React.FC = () => {
 
   // 获取上下线日志
   const { tableProps: onOffTableProps, refresh: onOffRun } = useAntdTable(onOffTable, {
-    ready: logType === LogType.ONOFFLINE,
+    ready: logType === LogType.ONOFFLINE && !!(productID && deviceName),
     defaultPageSize: DefaultPage.size,
     refreshDeps: [timeRange, isRefresh],
-    pollingInterval: isRefresh && logType === LogType.ONOFFLINE ? 3000 : 0,
+    pollingInterval: isRefresh && logType === LogType.ONOFFLINE ? 5000 : 0,
   });
 
   /** 查看历史数据 */

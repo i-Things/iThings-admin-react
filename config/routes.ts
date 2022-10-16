@@ -106,6 +106,11 @@ export default [
             component: './operationsMonitorings/onLineDebug/index',
           },
           {
+            name: '日志服务',
+            path: '/operationsMonitorings/logService/index',
+            component: './operationsMonitorings/logService/index',
+          },
+          {
             component: '404',
           },
         ],
