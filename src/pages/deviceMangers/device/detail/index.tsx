@@ -12,7 +12,6 @@ import DeviceLocalLogPage from './pages/deviceLocalLog/index';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { DeviceInfo } from '../data';
 import styles from './index.less';
-import GroupPage from './pages/group/index';
 import OnlineDebugPage from './pages/onlineDebug';
 
 const { TabPane } = Tabs;
@@ -75,9 +74,9 @@ const IndexPage: React.FC = () => {
           {/* <TabPane tab="子设备管理" key="7">
             <SubDevicePage />
           </TabPane> */}
-          <TabPane tab="分组" key="8">
+          {/* <TabPane tab="分组" key="8">
             <GroupPage />
-          </TabPane>
+          </TabPane> */}
         </Tabs>
       </Card>
     </PageContainer>
