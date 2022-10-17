@@ -103,7 +103,7 @@ export default [
           {
             name: '在线调试',
             path: '/operationsMonitorings/onlineDebugs/index',
-            component: './operationsMonitorings/onLineDebug/index',
+            component: './operationsMonitorings/onlineDebug/index',
           },
           {
             name: '日志服务',
