@@ -1,5 +1,7 @@
+import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
+import { postSystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
 import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
@@ -16,6 +18,8 @@ const CreateOrUpdateUser: React.FC<{
   record?: UserListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
 }> = ({ flag, record, actionRef }) => {
+  const { querySelectOptions, selectOptions } = useGetSelectOptions();
+
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
@@ -24,12 +28,9 @@ const CreateOrUpdateUser: React.FC<{
   const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postSystemUserCreate;
   type UpdateProp = typeof postSystemUserUpdate;
+  type QueryRoleProp = typeof postSystemRoleIndex;
 
-  const ROLE_OPTION = [
-    { label: 'admin', value: 1 },
-    { label: '供应商', value: 2 },
-    { label: 'user', value: 3 },
-  ];
+  const ROLE_OPTION = selectOptions;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -49,6 +50,14 @@ const CreateOrUpdateUser: React.FC<{
   useEffect(() => {
     editFormRef.current?.setFieldsValue(record);
   }, [editFlag, record]);
+
+  useEffect(() => {
+    querySelectOptions<QueryRoleProp>(postSystemRoleIndex, {
+      page: { page: 1, size: 99999 },
+      label: 'name',
+      value: 'id',
+    });
+  }, []);
   return (
     <ModalForm<UserListItem>
       width={550}

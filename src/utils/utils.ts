@@ -1,5 +1,5 @@
 import type { GroupDeviceCreateListProps } from '@/pages/deviceMangers/group/types';
-import { MenuListItem } from '@/pages/systemMangers/menu/types';
+import type { MenuListItem } from '@/pages/systemMangers/menu/types';
 import { GUIDKEY, TOKENKEY } from './const';
 
 // 判断是否为移动端
@@ -85,4 +85,49 @@ export function recursionTree(pre: MenuListItem[]) {
     item.title = item?.name + '';
   });
   return pre;
+}
+
+/**
+ * @function 数组转对象
+ * @param {Array} original 原始数组
+ * @param {String} key 键
+ * @param {*} val 值
+ * @return {Object} 返回对象
+ * @example
+ *
+const arr = [{ label: 'title_one', val: '参数值1' }, { label: 'title_two', val: '参数值2' }];
+console.log(arrTransferObj(arr, 'label', 'val'))
+ */
+export function arrTransferObj(
+  original: Record<string, string>[],
+  key: string,
+  val: any,
+): Record<string, string> {
+  // 数组的reduce方法，使数组的obj初始值为{}，将数组中每一个对象所需的值，分别作为对象中的键与值
+  return original.reduce((obj, item) => ((obj[item[key]] = item[val]), obj), {});
+}
+/**
+ * @function 对象转数组
+ * @param {Object} original 原始对象
+ * @param {String} key 键
+ * @param {*} val 值
+ * @return {Array} 返回对象
+ * @example
+ *
+const obj = { title_one: '参数值1', title_two: '参数值2' };
+console.log(objTransferArr(obj, 'label', 'val'))
+ */
+export function objTransferArr(
+  original: Record<string, string>,
+  key: string,
+  val: any,
+): Record<string, string>[] {
+  const result = [];
+  for (const item in original) {
+    result.push({
+      [key]: item,
+      [val]: original[item],
+    });
+  }
+  return result;
 }

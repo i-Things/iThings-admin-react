@@ -1,23 +1,30 @@
+import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
+import { postSystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
 import {
   postSystemUserIndex,
   postSystemUser__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
-import { PROTABLE_OPTIONS, ROLE_VALUE_ENUM, SEARCH_CONFIGURE } from '@/utils/const';
+import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { arrTransferObj } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider } from 'antd';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
+  const { querySelectOptions, selectOptions } = useGetSelectOptions();
   const actionRef = useRef<ActionType>();
+  const ROLE_VALUE_ENUM = arrTransferObj(selectOptions, 'value', 'label');
+
   type QueryProp = typeof postSystemUserIndex;
+  type QueryRoleProp = typeof postSystemRoleIndex;
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; userName: string }) => {
@@ -94,6 +101,14 @@ const UserList: React.FC = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    querySelectOptions<QueryRoleProp>(postSystemRoleIndex, {
+      page: { page: 1, size: 99999 },
+      label: 'name',
+      value: 'id',
+    });
+  }, []);
 
   return (
     <PageContainer>
