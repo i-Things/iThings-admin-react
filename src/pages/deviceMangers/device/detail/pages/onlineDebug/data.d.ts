@@ -7,8 +7,3 @@ export type debugType = {
   content?: string;
   resultType?: string;
 };
-
-export interface DeviceInfo {
-  productID: string;
-  deviceName: string;
-}

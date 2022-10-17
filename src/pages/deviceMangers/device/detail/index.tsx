@@ -10,9 +10,10 @@ import DeviceCloudLogPage from './pages/deviceCloudLog/index';
 import DeviceLocalLogPage from './pages/deviceLocalLog/index';
 
 import ProDescriptions from '@ant-design/pro-descriptions';
+import type { DeviceInfo } from '../data';
 import styles from './index.less';
 import GroupPage from './pages/group/index';
-import { default as OnlineDebugPage } from './pages/onlineDebug/index';
+import OnlineDebugPage from './pages/onlineDebug';
 
 const { TabPane } = Tabs;
 
@@ -31,14 +32,14 @@ const columns = [
   },
 ];
 
-const Content = () => {
-  const params = useParams() as { id: string; name: string };
+const Content: React.FC<DeviceInfo> = (props) => {
+  const { productID, deviceName } = props;
 
   return (
     <ProDescriptions
       className={styles.descriptions}
       title=""
-      dataSource={{ name: params.name, id: params.id }}
+      dataSource={{ name: deviceName, id: productID }}
       colon={false}
       columns={columns}
     />
@@ -46,27 +47,30 @@ const Content = () => {
 };
 
 const IndexPage: React.FC = () => {
+  const params = useParams() as { id: string; name: string };
+  const { id = '', name = '' } = params;
+
   return (
-    <PageContainer title=" " content={<Content />}>
+    <PageContainer title=" " content={<Content productID={id} deviceName={name} />}>
       <Card style={{ marginTop: 10 }}>
         <Tabs defaultActiveKey="1" destroyInactiveTabPane>
           <TabPane tab="设备信息" key="1">
             <DeviceInfoPage />
           </TabPane>
           <TabPane tab="云端诊断日志" key="2">
-            <CloudLogPage />
+            <CloudLogPage productID={id} deviceName={name} />
           </TabPane>
           <TabPane tab="设备云端日志" key="3">
-            <DeviceCloudLogPage />
+            <DeviceCloudLogPage productID={id} deviceName={name} />
           </TabPane>
           <TabPane tab="设备本地日志" key="4">
-            <DeviceLocalLogPage />
+            <DeviceLocalLogPage productID={id} deviceName={name} />
           </TabPane>
           {/* <TabPane tab="设备影子" key="5">
             <DeviceShadowPage />
           </TabPane> */}
           <TabPane tab="在线调试" key="6">
-            <OnlineDebugPage />
+            <OnlineDebugPage productID={id} deviceName={name} />
           </TabPane>
           {/* <TabPane tab="子设备管理" key="7">
             <SubDevicePage />
