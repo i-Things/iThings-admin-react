@@ -1,5 +1,4 @@
 import { Settings as LayoutSettings } from '@ant-design/pro-layout';
-
 const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
@@ -12,9 +11,8 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'iThings',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  title: 'iThings',
   headerHeight: 48,
   iconfontUrl: '',
   splitMenus: false,

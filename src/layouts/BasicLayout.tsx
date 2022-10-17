@@ -1,4 +1,5 @@
 import RightContent from '@/components/RightContent';
+import { OFFICICAL_WEBSITE } from '@/utils/const';
 import type { MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
@@ -9,6 +10,8 @@ import React from 'react';
 // @ts-ignore
 import { Link, useModel } from 'umi';
 import defaultSettings from '../../config/defaultSettings';
+import logo from '../assets/img/Group.png';
+
 moment.locale('zh-cn');
 
 const BasicLayout: React.FC = (props) => {
@@ -56,6 +59,10 @@ const BasicLayout: React.FC = (props) => {
       collapsedButtonRender={false}
       {...props}
       {...defaultSettings}
+      logo={<img src={logo} alt="" />}
+      onMenuHeaderClick={() => {
+        window.open(OFFICICAL_WEBSITE);
+      }}
     >
       <div>
         <ConfigProvider locale={zhCN}>{children}</ConfigProvider>

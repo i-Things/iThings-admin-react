@@ -1,4 +1,5 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import logo from '@/assets/img/github.png';
+import { GITHUB_WEBSITE } from '@/utils/const';
 import { Space } from 'antd';
 import React from 'react';
 import { useModel } from 'umi';
@@ -22,13 +23,18 @@ const GlobalHeaderRight: React.FC = () => {
 
   return (
     <Space className={className}>
-      <span
-        className={styles.action}
-        onClick={() => {
-          window.open('https://pro.ant.design/docs/getting-started');
-        }}
-      >
-        <QuestionCircleOutlined />
+      <span className={styles.action}>
+        <a href={GITHUB_WEBSITE} target="_blank" rel="noreferrer">
+          <img
+            src={logo}
+            alt=""
+            style={{
+              width: 25,
+              height: 25,
+              marginBottom: 3,
+            }}
+          />
+        </a>
       </span>
       <Avatar menu />
     </Space>

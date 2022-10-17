@@ -8,6 +8,9 @@ export const iThingsSetToken = 'iThings-set-token';
 
 export const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
 
+export const OFFICICAL_WEBSITE = 'https://ithings.pages.dev/';
+export const GITHUB_WEBSITE = 'https://github.com/i4de/iThings';
+
 export const FORMITEM_LAYOUT = {
   labelCol: { span: 4 },
   wrapperCol: { span: 14 },
