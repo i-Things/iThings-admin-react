@@ -1,3 +1,5 @@
+import type { GroupDeviceCreateListProps } from '@/pages/deviceMangers/group/types';
+import { MenuListItem } from '@/pages/systemMangers/menu/types';
 import { GUIDKEY, TOKENKEY } from './const';
 
 // 判断是否为移动端
@@ -47,13 +49,13 @@ export const apiParams = () => {
  * @param {*} pid 父级id
  * @param key
  */
-export function spanTree(data: any, pid = 1, key = 'pid') {
+export function spanTree(data: any, pid: string | number, key: 'parentID') {
   const result = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const i in data) {
-    if (data[i][key] === pid) {
+    if (data[i][key] === pid || data[i][key] === String(pid)) {
       const temp = data[i];
-      const children = spanTree(data, data[i].id, key);
+      const children = spanTree(data, data[i].id || data[i].groupID, key);
       if (children.length) {
         temp.children = children;
       }
@@ -62,4 +64,25 @@ export function spanTree(data: any, pid = 1, key = 'pid') {
   }
 
   return result;
+}
+
+export function selectConfirm(record: GroupDeviceCreateListProps[]) {
+  const selectRecord: GroupDeviceCreateListProps[] = Array.isArray(record) ? record : [record];
+  const list = selectRecord.map((item) => {
+    return {
+      productID: item?.productID,
+      deviceName: item?.deviceName,
+    };
+  });
+  return list;
+}
+
+export function recursionTree(pre: MenuListItem[]) {
+  pre.map((item) => {
+    if (item.children) recursionTree(item?.children);
+    item.key = item?.id + '';
+    item.label = item?.name + '';
+    item.title = item?.name + '';
+  });
+  return pre;
 }

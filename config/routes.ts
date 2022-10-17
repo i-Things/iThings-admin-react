@@ -56,6 +56,17 @@ export default [
             path: '/deviceMangers/device/detail/:id/:name',
             component: './deviceMangers/device/detail/index',
           },
+          {
+            name: '分组',
+            path: '/deviceMangers/group/index',
+            component: './deviceMangers/group/index',
+          },
+          {
+            name: '分组详情',
+            hideInMenu: true,
+            path: '/deviceMangers/group/detail/:id',
+            component: './deviceMangers/group/detail/index',
+          },
         ],
       },
       {
@@ -78,6 +89,26 @@ export default [
             name: '菜单管理',
             path: '/systemMangers/menu/index',
             component: './systemMangers/menu/index',
+          },
+          {
+            component: '404',
+          },
+        ],
+      },
+      {
+        path: '/operationsMonitorings',
+        name: '运维监控',
+        icon: 'icon_system',
+        routes: [
+          {
+            name: '在线调试',
+            path: '/operationsMonitorings/onlineDebugs/index',
+            component: './operationsMonitorings/onLineDebug/index',
+          },
+          {
+            name: '日志服务',
+            path: '/operationsMonitorings/logService/index',
+            component: './operationsMonitorings/logService/index',
           },
           {
             component: '404',

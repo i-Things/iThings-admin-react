@@ -5,7 +5,6 @@ import { ProFormInstance } from '@ant-design/pro-components';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-
 interface Props {
   productValues?: PRODUCT_INFO[];
   onCommit: () => void;
@@ -18,7 +17,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productValues }) => {
   const formCommit = async (values: DEVICE_INFO) => {
     const body = values;
     return postThingsDeviceInfoCreate(body)
-      .then((res) => {
+      .then((res: API.SuccRet) => {
         setCreateVisible(false);
         if (res.code === ResponseCode.SUCCESS) {
           message.success('提交成功');

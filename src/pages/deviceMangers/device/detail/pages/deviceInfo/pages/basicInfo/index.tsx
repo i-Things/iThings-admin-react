@@ -9,8 +9,8 @@ interface InfoProps {
 }
 
 const STATUS = new Map([
-  [1, '离线'],
-  [2, '在线'],
+  [1, '在线'],
+  [2, '离线'],
 ]);
 
 const columns: ProColumns<DeviceInfo>[] = [
