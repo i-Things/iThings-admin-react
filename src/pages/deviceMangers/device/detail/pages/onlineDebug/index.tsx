@@ -10,6 +10,8 @@ import type { debugType } from './data';
 
 const { TabPane } = Tabs;
 
+const timeStart = String(Date.now());
+
 /** 在线调试 */
 const OnLineDebug: React.FC<DeviceInfo> = (props) => {
   const { productID, deviceName } = props;
@@ -19,7 +21,7 @@ const OnLineDebug: React.FC<DeviceInfo> = (props) => {
   useRequest(
     async () => {
       const res = await postThingsDeviceMsgHubLogIndex({
-        timeStart: String(Date.now()),
+        timeStart,
         productID,
         deviceName,
         page: DefaultPage,
