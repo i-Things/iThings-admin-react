@@ -10,7 +10,7 @@ import React from 'react';
 // @ts-ignore
 import { Link, useModel } from 'umi';
 import defaultSettings from '../../config/defaultSettings';
-import logo from '../assets/img/Group.png';
+import logo from '../../public/icons/logo/Group.png';
 
 moment.locale('zh-cn');
 

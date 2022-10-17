@@ -1,8 +1,8 @@
-import logo from '@/assets/img/github.png';
 import { GITHUB_WEBSITE } from '@/utils/const';
 import { Space } from 'antd';
 import React from 'react';
 import { useModel } from 'umi';
+import logo from '../../../public/icons/github.png';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 export type SiderTheme = 'light' | 'dark';
