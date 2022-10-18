@@ -7,6 +7,7 @@ import {
 import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { ICON_OPTION } from '@/utils/iconMap';
 import { recursionTree, spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -54,7 +55,8 @@ const MenuList: React.FC = () => {
       title: '图标',
       dataIndex: 'icon',
       hideInSearch: true,
-      width: 120,
+      width: 170,
+      render: (dom) => <span>{ICON_OPTION.filter((i) => i.value === dom)?.[0]?.label}</span>,
     },
     {
       title: '路由path',
@@ -89,7 +91,7 @@ const MenuList: React.FC = () => {
       dataIndex: 'component',
       hideInSearch: true,
       ellipsis: true,
-      width: 240,
+      width: 200,
     },
 
     {
