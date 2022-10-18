@@ -3,15 +3,14 @@ import {
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
 import { ResponseCode } from '@/utils/base';
-import type { PRODUCT_INFO } from '@/utils/const';
-import { DEVICE_TYPE_VALUE } from '@/utils/const';
+import { DEVICE_TYPE_VALUE, PRODUCT_INFO, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
-import { ProColumns } from '@ant-design/pro-table/lib/typing';
+import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
 import React, { useRef } from 'react';
 import { CreateForm } from './createForm';
@@ -143,11 +142,7 @@ const IndexPage: React.FC = () => {
         rowKey="productID"
         actionRef={actionRef}
         request={queryPage}
-        search={{
-          defaultCollapsed: false,
-          span: 12,
-          labelWidth: 'auto',
-        }}
+        search={SEARCH_CONFIGURE}
         tableAlertRender={false}
         columns={columns}
         bordered
