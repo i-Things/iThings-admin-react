@@ -1,5 +1,9 @@
-import type { GroupDeviceCreateListProps } from '@/pages/deviceMangers/group/types';
-import { MenuListItem } from '@/pages/systemMangers/menu/types';
+import type {
+  GroupDeviceCreateListProps,
+  GroupDeviceItem,
+} from '@/pages/deviceMangers/group/types';
+import type { MenuListItem } from '@/pages/systemMangers/menu/types';
+import type { DEVICE_INFO } from './const';
 import { GUIDKEY, TOKENKEY } from './const';
 
 // 判断是否为移动端
@@ -85,4 +89,22 @@ export function recursionTree(pre: MenuListItem[]) {
     item.title = item?.name + '';
   });
   return pre;
+}
+
+// 设备在线状态处理
+export function isOnlineEnum(row: DEVICE_INFO | GroupDeviceItem) {
+  return row?.firstLogin === '0'
+    ? {
+        2: {
+          text: '未激活',
+          status: 'Warning',
+        },
+      }
+    : {
+        1: { text: '在线', status: 'Success' },
+        2: {
+          text: '离线',
+          status: 'Error',
+        },
+      };
 }

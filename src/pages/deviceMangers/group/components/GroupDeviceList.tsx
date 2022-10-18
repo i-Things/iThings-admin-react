@@ -10,7 +10,7 @@ import {
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { selectConfirm } from '@/utils/utils';
+import { isOnlineEnum, selectConfirm } from '@/utils/utils';
 import { LightFilter, ProFormSelect } from '@ant-design/pro-form';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -79,15 +79,9 @@ const GroupDeviceList: React.FC<{
     {
       title: '在线状态',
       dataIndex: 'isOnline',
-      valueEnum: {
-        1: { text: '离线', status: 'Error' },
-        2: {
-          text: '在线',
-          status: 'Success',
-        },
-        3: { text: '未激活', status: 'Warning' },
-      },
-      filters: true,
+      valueEnum: isOnlineEnum,
+      valueType: 'select',
+      // filters: true,
     },
     {
       title: '创建时间',
