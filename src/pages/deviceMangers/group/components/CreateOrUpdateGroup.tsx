@@ -25,7 +25,8 @@ const CreateOrUpdateGroup: React.FC<{
   record?: GroupListItem;
   flatOptions?: GroupListItem[];
   updateFlagHandler?: () => void;
-}> = ({ flag, record, actionRef, cascaderOptions, updateFlagHandler }) => {
+  tagValues?: TagProps;
+}> = ({ flag, record, actionRef, cascaderOptions, updateFlagHandler, tagValues }) => {
   const { queryPage } = useGetTableList();
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
@@ -56,7 +57,8 @@ const CreateOrUpdateGroup: React.FC<{
           ...body,
           groupID: record?.groupID as string,
           parentID: '',
-          tags: record?.tags as TagProps,
+          // tags: (record?.tags as TagProps) || [],
+          tags: (tagValues as TagProps) || [],
         },
       );
       if (updateFlagHandler) updateFlagHandler();
@@ -90,6 +92,7 @@ const CreateOrUpdateGroup: React.FC<{
       editFormRef.current?.setFieldsValue(initialValues);
     }
   }, [editFlag, record]);
+
   return (
     <ModalForm<GroupListItem>
       formRef={editFormRef}

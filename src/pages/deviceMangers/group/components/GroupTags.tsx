@@ -17,7 +17,8 @@ const GroupTags: React.FC<{
   ) => void;
   record?: GroupDescriptonProps;
   updateFlagHandler?: () => void;
-}> = ({ flag, searchParamsHandler, record, updateFlagHandler }) => {
+  tagValuesHandler?: (v) => void;
+}> = ({ flag, searchParamsHandler, record, updateFlagHandler, tagValuesHandler }) => {
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -33,7 +34,8 @@ const GroupTags: React.FC<{
     const tagArr = values?.tags.map((item) => `${item.key}:${item.value}`);
     const tagStr = tagArr.join(';');
     onClose();
-    const body = { ...(record as GroupDescriptonProps), tags: values?.tags };
+    tagValuesHandler?.(values?.tags || []);
+    const body = { ...(record as GroupDescriptonProps), tags: values?.tags || [] };
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
     if (flag === FlagStatus.CREATE && searchParamsHandler)
       searchParamsHandler((pre) => {

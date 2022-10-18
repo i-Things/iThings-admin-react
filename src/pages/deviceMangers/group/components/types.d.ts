@@ -10,7 +10,7 @@ export interface GroupDescriptonProps {
   groupName: string;
   groupID: string;
   createdTime?: string;
-  description?: string;
+  desc?: string;
   tags?: TagProps[];
   activateDevice?: number;
   currentOnline?: number;
