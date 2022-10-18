@@ -7,8 +7,7 @@ import { useAntdTable } from 'ahooks';
 import { Card, Table } from 'antd';
 import type { RangePickerProps } from 'antd/lib/date-picker';
 import React, { useState } from 'react';
-import { useParams } from 'umi';
-import type { PageInfo } from '../../../data';
+import type { DeviceInfo, PageInfo } from '../../../data';
 
 const localLogColumns = [
   {
@@ -31,9 +30,8 @@ const localLogColumns = [
   },
 ];
 
-const DevicePage: React.FC = () => {
-  const params = useParams() as { id: string; name: string };
-  const { id = '', name = '' } = params;
+const DevicePage: React.FC<DeviceInfo> = (props) => {
+  const { productID, deviceName } = props;
 
   const initialTime = getInitialTime();
 
@@ -47,8 +45,8 @@ const DevicePage: React.FC = () => {
       size: pageSize,
     };
     const _params = {
-      productID: id,
-      deviceName: name,
+      productID,
+      deviceName,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
       page,
@@ -66,6 +64,7 @@ const DevicePage: React.FC = () => {
   const { tableProps } = useAntdTable(localLogTable, {
     defaultPageSize: DefaultPage.size,
     refreshDeps: [timeRange],
+    ready: !!(productID && deviceName),
   });
 
   return (

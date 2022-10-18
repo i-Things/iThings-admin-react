@@ -10,8 +10,7 @@ import type { RangePickerProps } from 'antd/lib/date-picker';
 import { debounce } from 'lodash';
 import type { ChangeEventHandler } from 'react';
 import React, { useState } from 'react';
-import { useParams } from 'umi';
-import type { PageInfo } from '../../../data';
+import type { DeviceInfo, PageInfo } from '../../../data';
 import styles from './index.less';
 
 const localLogColumns = [
@@ -57,9 +56,8 @@ const localLogColumns = [
   },
 ];
 
-const DevicePage: React.FC = () => {
-  const params = useParams() as { id: string; name: string };
-  const { id = '', name = '' } = params;
+const DevicePage: React.FC<DeviceInfo> = (props) => {
+  const { productID, deviceName } = props;
 
   const initialTime = getInitialTime();
 
@@ -76,8 +74,8 @@ const DevicePage: React.FC = () => {
     };
     const _params = {
       actions: null!,
-      deviceName: name,
-      productID: id,
+      deviceName,
+      productID,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
       ...filterParams,
@@ -95,7 +93,8 @@ const DevicePage: React.FC = () => {
   // 获取云端诊断日志
   const { tableProps, refresh } = useAntdTable(cloudLogTable, {
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, isRefresh, filterParams],
+    ready: !!(productID && deviceName),
+    refreshDeps: [timeRange, isRefresh, filterParams, productID, deviceName],
     pollingInterval: isRefresh ? 5000 : 0,
   });
 

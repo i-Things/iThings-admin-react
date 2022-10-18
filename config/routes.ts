@@ -23,6 +23,13 @@ export default [
     layout: false,
     routes: [
       {
+        path: 'https://ithings.pages.dev/',
+        name: '官网',
+        icon: 'icon_data_01',
+        access: 'canAdmin',
+        component: './deviceMangers/product/index',
+      },
+      {
         path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',
@@ -82,6 +89,26 @@ export default [
             name: '菜单管理',
             path: '/systemMangers/menu/index',
             component: './systemMangers/menu/index',
+          },
+          {
+            component: '404',
+          },
+        ],
+      },
+      {
+        path: '/operationsMonitorings',
+        name: '运维监控',
+        icon: 'icon_system',
+        routes: [
+          {
+            name: '在线调试',
+            path: '/operationsMonitorings/onlineDebugs/index',
+            component: './operationsMonitorings/onlineDebug/index',
+          },
+          {
+            name: '日志服务',
+            path: '/operationsMonitorings/logService/index',
+            component: './operationsMonitorings/logService/index',
           },
           {
             component: '404',
