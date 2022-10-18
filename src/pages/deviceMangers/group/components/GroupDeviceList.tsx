@@ -10,7 +10,7 @@ import {
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { selectConfirm } from '@/utils/utils';
+import { isOnlineEnum, selectConfirm } from '@/utils/utils';
 import { LightFilter, ProFormSelect } from '@ant-design/pro-form';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -70,24 +70,32 @@ const GroupDeviceList: React.FC<{
       title: '设备名称',
       dataIndex: 'deviceName',
       render: (_, record) => <a onClick={() => jumpToDeviceList(record)}>{_}</a>,
+      copyable: true,
+      width: 150,
+    },
+
+    {
+      title: '所属产品名称',
+      dataIndex: 'productID',
+      valueType: 'select',
+      ellipsis: true,
+      renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.label,
+      width: 150,
     },
     {
-      title: '设备所属产品',
+      title: '所属产品ID',
       dataIndex: 'productID',
-      renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.label,
+      ellipsis: true,
+      copyable: true,
+      renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.value,
     },
     {
       title: '在线状态',
       dataIndex: 'isOnline',
-      valueEnum: {
-        1: { text: '离线', status: 'Error' },
-        2: {
-          text: '在线',
-          status: 'Success',
-        },
-        3: { text: '未激活', status: 'Warning' },
-      },
-      filters: true,
+      valueEnum: isOnlineEnum,
+      valueType: 'select',
+      width: 100,
+      // filters: true,
     },
     {
       title: '创建时间',

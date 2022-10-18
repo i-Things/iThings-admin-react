@@ -91,11 +91,13 @@ const GroupList: React.FC<{
       title: '分组名称',
       dataIndex: 'groupName',
       render: (_, record) => <a onClick={() => jumpToDetails(record)}>{_}</a>,
+      copyable: true,
     },
     {
       title: '分组ID',
       dataIndex: 'groupID',
       search: false,
+      copyable: true,
     },
     {
       title: '创建时间',

@@ -5,12 +5,14 @@ import {
   postThingsDeviceInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeiguanli';
 import { ResponseCode } from '@/utils/base';
-import { DEVICE_INFO, DEVICE_LOG_LEVEL_VALUE, PRODUCT_INFO } from '@/utils/const';
+import type { DEVICE_INFO, PRODUCT_INFO } from '@/utils/const';
+import { DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { isOnlineEnum } from '@/utils/utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { ProColumns } from '@ant-design/pro-table/lib/typing';
+import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
@@ -24,10 +26,6 @@ type queryParam = {
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: { key?: string; value?: string }[];
 };
-const STATUS = new Map([
-  [1, '在线'],
-  [2, '离线'],
-]);
 interface Props {
   productInfo?: PRODUCT_INFO;
 }
@@ -202,8 +200,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       dataIndex: 'isOnline',
       search: false,
       valueType: 'select',
-      render: (_, record) =>
-        record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
+      valueEnum: isOnlineEnum,
     },
     {
       title: '激活时间',
