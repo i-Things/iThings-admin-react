@@ -43,29 +43,37 @@ const MenuList: React.FC = () => {
       title: '编号',
       dataIndex: 'id',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '菜单名称',
       dataIndex: 'name',
+      width: 100,
     },
     {
       title: '图标',
       dataIndex: 'icon',
       hideInSearch: true,
+      width: 120,
     },
     {
       title: '路由path',
       dataIndex: 'path',
+      ellipsis: true,
+      width: 180,
     },
     {
       title: '路由重定向',
       dataIndex: 'redirect',
       hideInSearch: true,
+      ellipsis: true,
+      width: 180,
     },
     {
       title: '父节点',
       dataIndex: 'parentID',
       hideInSearch: true,
+      width: 60,
     },
     {
       title: '排序',
@@ -73,12 +81,15 @@ const MenuList: React.FC = () => {
       hideInSearch: true,
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.order - b.order,
+      width: 60,
     },
 
     {
       title: '文件路径',
       dataIndex: 'component',
       hideInSearch: true,
+      ellipsis: true,
+      width: 240,
     },
 
     {
@@ -87,15 +98,17 @@ const MenuList: React.FC = () => {
       valueType: 'dateTime',
       search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
+      width: 150,
     },
     {
-      title: '是否隐藏',
+      title: '隐藏',
       dataIndex: 'hideInMenu',
       search: false,
       valueEnum: {
         1: { text: '是' },
         2: { text: '否' },
       },
+      width: 50,
     },
     {
       title: '操作',
