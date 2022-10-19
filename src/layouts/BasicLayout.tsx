@@ -56,7 +56,6 @@ const BasicLayout: React.FC = (props) => {
         );
       }}
       menuDataRender={() => menuTree as MenuDataItem[]}
-      collapsedButtonRender={false}
       {...props}
       {...defaultSettings}
       logo={<img src={logo} alt="" />}

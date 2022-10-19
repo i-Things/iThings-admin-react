@@ -25,6 +25,7 @@ export default [
       {
         path: 'https://ithings.pages.dev/',
         name: '官网',
+        target: '_blank',
         icon: 'icon_data_01',
         access: 'canAdmin',
         component: './deviceMangers/product/index',
