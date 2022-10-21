@@ -22,12 +22,18 @@ const IndexPage: React.FC = () => {
   return (
     <PageContainer onBack={() => history.back()}>
       <Card>
-        <GroupDescriptons borderFlag={false} activeKeyChange={activeKeyChange} />
+        <GroupDescriptons borderFlag={false} activeKeyChange={activeKeyChange} flag="groupInfo" />
       </Card>
       <Card style={{ marginTop: 10 }}>
         <Tabs activeKey={activeKey} onChange={onChange}>
           <TabPane tab="分组信息" key="1">
-            <GroupDescriptons borderFlag={true} activeKeyChange={activeKeyChange} />
+            <GroupDescriptons
+              borderFlag={true}
+              activeKeyChange={activeKeyChange}
+              flag="groupInfo"
+            />
+            <div style={{ marginBottom: '20px' }} />
+            <GroupDescriptons borderFlag={false} activeKeyChange={activeKeyChange} flag="tagInfo" />
           </TabPane>
           <TabPane tab="设备列表" key="2">
             <DeviceListPage activeKey={activeKey} />

@@ -9,8 +9,9 @@ export interface groupSearchParmasProps {
 export interface GroupDescriptonProps {
   groupName: string;
   groupID: string;
+  parentID: string;
   createdTime?: string;
-  description?: string;
+  desc?: string;
   tags?: TagProps[];
   activateDevice?: number;
   currentOnline?: number;

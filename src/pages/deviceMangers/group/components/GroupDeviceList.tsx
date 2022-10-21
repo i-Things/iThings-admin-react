@@ -100,19 +100,17 @@ const GroupDeviceList: React.FC<{
     {
       title: '创建时间',
       dataIndex: 'createdTime',
-      valueType: 'dateTime',
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '激活时间',
       dataIndex: 'firstLogin',
-      valueType: 'dateTime',
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '最后上线时间',
       dataIndex: 'lastLogin',
-      valueType: 'dateTime',
+
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {

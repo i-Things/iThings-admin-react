@@ -6,6 +6,7 @@ import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import ProForm, { ModalForm, ProFormGroup, ProFormList, ProFormText } from '@ant-design/pro-form';
 import { Button } from 'antd';
+import PubSub from 'pubsub-js';
 import { useEffect, useRef, useState } from 'react';
 import '../styles.less';
 import type { GroupDescriptonProps, groupSearchParmasProps, TagProps } from './types';
@@ -20,6 +21,8 @@ const GroupTags: React.FC<{
 }> = ({ flag, searchParamsHandler, record, updateFlagHandler }) => {
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
+  const [changeFlag, setChangeFlag] = useState(false);
+  const [groupInfoList, setGroupInfoList] = useState({ groupName: '' });
   const [visible, setVisible] = useState(false);
   const editFormRef = useRef<ProFormInstance>();
   const tagFormRef = useRef<ProFormInstance>();
@@ -30,10 +33,20 @@ const GroupTags: React.FC<{
   const onClose = () => setVisible(false);
 
   const formSubmit = async (values: { tags: TagProps[] }) => {
-    const tagArr = values?.tags.map((item) => `${item.key}:${item.value}`);
+    const tagArr = values?.tags?.map((item) => `${item.key}:${item.value}`);
     const tagStr = tagArr.join(';');
     onClose();
-    const body = { ...(record as GroupDescriptonProps), tags: values?.tags };
+    PubSub.publish('tags', values.tags);
+    const body = {
+      ...(changeFlag
+        ? {
+            ...groupInfoList,
+            parentID: record?.parentID as string,
+            groupID: record?.groupID as string,
+          }
+        : (record as GroupDescriptonProps)),
+      tags: values?.tags || [],
+    };
     tagFormRef.current?.setFieldsValue({ tags: tagStr });
     if (flag === FlagStatus.CREATE && searchParamsHandler)
       searchParamsHandler((pre) => {
@@ -58,7 +71,15 @@ const GroupTags: React.FC<{
   }, [editFlag, record]);
 
   useEffect(() => {
+    setChangeFlag(false);
     editFormRef.current?.resetFields();
+    const token = PubSub.subscribe('groupInfo', (_, data: GroupDescriptonProps) => {
+      setChangeFlag(true);
+      setGroupInfoList(data);
+    });
+    return () => {
+      PubSub.unsubscribe(token);
+    };
   }, []);
 
   return (

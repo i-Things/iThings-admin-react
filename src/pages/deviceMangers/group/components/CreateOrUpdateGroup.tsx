@@ -13,6 +13,7 @@ import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
+import PubSub from 'pubsub-js';
 import { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
 import type { GroupListItem, GroupOption } from '../types';
@@ -31,6 +32,7 @@ const CreateOrUpdateGroup: React.FC<{
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [tagValues, setTagValues] = useState<TagProps[]>([]);
 
   const editFormRef = useRef<ProFormInstance>();
 
@@ -47,6 +49,7 @@ const CreateOrUpdateGroup: React.FC<{
   };
 
   const formSubmit = async (values: GroupListItem) => {
+    PubSub.publish('groupInfo', values);
     const body = { ...values };
     if (flag === FlagStatus.UPDATE) {
       await updateHandler<UpdateProp, GroupListItem>(
@@ -56,7 +59,7 @@ const CreateOrUpdateGroup: React.FC<{
           ...body,
           groupID: record?.groupID as string,
           parentID: '',
-          tags: record?.tags as TagProps,
+          tags: tagValues.length ? tagValues : (record?.tags as TagProps[]),
         },
       );
       if (updateFlagHandler) updateFlagHandler();
@@ -90,6 +93,14 @@ const CreateOrUpdateGroup: React.FC<{
       editFormRef.current?.setFieldsValue(initialValues);
     }
   }, [editFlag, record]);
+
+  useEffect(() => {
+    const token = PubSub.subscribe('tags', (_, data: TagProps[]) => setTagValues(data));
+    return () => {
+      PubSub.unsubscribe(token);
+    };
+  }, []);
+
   return (
     <ModalForm<GroupListItem>
       formRef={editFormRef}
