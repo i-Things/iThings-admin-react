@@ -1,5 +1,5 @@
 import RightContent from '@/components/RightContent';
-import { OFFICICAL_WEBSITE } from '@/utils/const';
+import { OFFICIAL_WEBSITE } from '@/utils/const';
 import type { MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
@@ -56,12 +56,11 @@ const BasicLayout: React.FC = (props) => {
         );
       }}
       menuDataRender={() => menuTree as MenuDataItem[]}
-      collapsedButtonRender={false}
       {...props}
       {...defaultSettings}
       logo={<img src={logo} alt="" />}
       onMenuHeaderClick={() => {
-        window.open(OFFICICAL_WEBSITE);
+        window.open(OFFICIAL_WEBSITE);
       }}
     >
       <div>
