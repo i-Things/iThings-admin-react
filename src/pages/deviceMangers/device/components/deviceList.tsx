@@ -282,6 +282,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       actionRef={actionRef}
       cardBordered
       request={queryPage}
+      onReset={() => setTags(undefined)}
       editable={{
         type: 'multiple',
       }}
