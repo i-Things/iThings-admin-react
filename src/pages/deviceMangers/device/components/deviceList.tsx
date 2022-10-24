@@ -181,6 +181,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       copyable: true,
       hideInTable: productInfo != undefined,
       hideInSearch: productInfo != undefined,
+      search: false,
     },
 
     {
