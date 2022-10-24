@@ -1,10 +1,11 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import { postSystemMenuIndex } from '@/services/iThingsapi/caidanguanli';
+import { recursionTree, spanTree } from '@/utils/utils';
 import { Button, Form, Input, Tree } from 'antd';
 import type { DataNode } from 'antd/lib/tree';
 import React, { useEffect, useState } from 'react';
-import type { MenuOption } from '../../menus/types';
-import type { RoleListItem, TreeListItem } from '../types';
+import type { MenuListItem } from '../../menu/types';
+import type { RoleListItem } from '../types';
 const FormItem = Form.Item;
 
 const MenuForm: React.FC<{
@@ -28,22 +29,14 @@ const MenuForm: React.FC<{
     };
     onSubmit(body);
   };
-  const recursion = (pre: MenuOption[]) => {
-    pre.map((item) => {
-      if (item.children) recursion(item?.children);
-      item.key = item?.id + '';
-      item.label = item?.name + '';
-      item.title = item?.name + '';
-    });
-    return pre;
-  };
+
   useEffect(() => {
     if (drawerVisible) {
       setSelectedKey([]);
       setCheckedKeys([]);
-      queryPage<QueryProp, TreeListItem>(postSystemMenuIndex, {}).then((res) => {
+      queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, {}).then((res) => {
         if (res.data.length === 0) return;
-        const tree = recursion(res.data);
+        const tree = spanTree(recursionTree(res.data), 1, 'parentID');
         setTreeData(tree);
         if (currentData?.roleMenuID) {
           const map = currentData?.roleMenuID.map((r) => r + '');

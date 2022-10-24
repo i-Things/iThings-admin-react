@@ -4,30 +4,35 @@ import {
   postThingsDeviceInfoIndex,
   postThingsDeviceInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeiguanli';
-import { ResponseCode } from '@/utils/base';
-import { DEVICE_INFO, DEVICE_LOG_LEVEL_VALUE, PRODUCT_INFO } from '@/utils/const';
+import { FlagStatus, ResponseCode } from '@/utils/base';
+import type { DEVICE_INFO, PRODUCT_INFO } from '@/utils/const';
+import { DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
+import { isOnlineEnum } from '@/utils/utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { ProColumns } from '@ant-design/pro-table/lib/typing';
+import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
+import DeviceTagsModal from '../detail/pages/deviceInfo/pages/tagsInfo/deviceTagsModal';
 
 const { confirm } = Modal;
+
+interface Tags {
+  key?: string;
+  value?: string;
+}
+
 type queryParam = {
   pageSize: number;
   current: number;
   productID?: string;
   deviceName?: string;
   /** 非模糊查询 为tag的名,value为tag对应的值 */
-  tags?: { key?: string; value?: string }[];
+  tags?: Tags[];
 };
-const STATUS = new Map([
-  [1, '离线'],
-  [2, '在线'],
-]);
 interface Props {
   productInfo?: PRODUCT_INFO;
 }
@@ -35,6 +40,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const actionRef = useRef<ActionType>();
   const [productsValue, setProductsValue] = useState({});
   const [products, setProducts] = useState<PRODUCT_INFO[]>();
+  const [tags, setTags] = useState<Tags[]>();
   const getProductName = (productID: string) => {
     const info = productsValue[productID];
     if (info != undefined) {
@@ -86,7 +92,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       },
       productID: productID,
       deviceName: params.deviceName,
-      tags: params.tags,
+      tags: tags,
     };
     const res = await postThingsDeviceInfoIndex(body);
 
@@ -141,6 +147,10 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
     queryProjectList();
   }, []);
 
+  const changeTags = (val: Tags[]) => {
+    setTags(val);
+  };
+
   /**
    * 列信息
    * */
@@ -182,9 +192,22 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       ellipsis: true,
       copyable: true,
       hideInTable: productInfo != undefined,
-      hideInSearch: productInfo != undefined,
+      search: false,
     },
-
+    {
+      title: '设备标签',
+      dataIndex: 'tags',
+      hideInTable: true,
+      renderFormItem: () => {
+        return (
+          <DeviceTagsModal
+            flag={FlagStatus.CREATE}
+            key="createDeviceTags"
+            changeTags={changeTags}
+          />
+        );
+      },
+    },
     {
       title: '固件版本',
       dataIndex: 'version',
@@ -202,8 +225,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       dataIndex: 'isOnline',
       search: false,
       valueType: 'select',
-      render: (_, record) =>
-        record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
+      valueEnum: isOnlineEnum,
     },
     {
       title: '激活时间',
@@ -260,6 +282,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       actionRef={actionRef}
       cardBordered
       request={queryPage}
+      onReset={() => setTags(undefined)}
       editable={{
         type: 'multiple',
       }}
@@ -268,6 +291,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         persistenceType: 'localStorage',
       }}
       search={{
+        span: 6,
         labelWidth: 'auto',
       }}
       options={{
@@ -280,7 +304,11 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       }}
       dateFormatter="string"
       toolBarRender={() => [
-        <CreateForm productValues={products} onCommit={() => actionRef.current?.reload()} />,
+        <CreateForm
+          key="createDevice"
+          productValues={products}
+          onCommit={() => actionRef.current?.reload()}
+        />,
       ]}
     />
   );

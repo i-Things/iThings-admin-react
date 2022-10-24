@@ -1,8 +1,9 @@
+import { FlagStatus } from '@/utils/base';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProColumns } from '@ant-design/pro-table';
 import type { DeviceInfo } from '../../data';
 import styles from '../../index.less';
-import EditForm from './editForm';
+import DeviceTagsModal from './deviceTagsModal';
 
 interface InfoProps {
   deviceInfo: DeviceInfo;
@@ -25,7 +26,14 @@ const useColumns = (deviceInfo: DeviceInfo, refresh: () => void) => {
     {
       title: '操作',
       valueType: 'option',
-      render: () => [<EditForm refresh={refresh} key="link" deviceInfo={deviceInfo} />],
+      render: () => [
+        <DeviceTagsModal
+          flag={FlagStatus.UPDATE}
+          refresh={refresh}
+          key="link"
+          deviceInfo={deviceInfo}
+        />,
+      ],
     },
   ] as ProColumns<DeviceInfo>[];
 };

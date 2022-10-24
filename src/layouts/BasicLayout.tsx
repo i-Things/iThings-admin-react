@@ -1,4 +1,5 @@
 import RightContent from '@/components/RightContent';
+import { OFFICIAL_WEBSITE } from '@/utils/const';
 import type { MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
@@ -9,6 +10,8 @@ import React from 'react';
 // @ts-ignore
 import { Link, useModel } from 'umi';
 import defaultSettings from '../../config/defaultSettings';
+import logo from '../../public/icons/logo/Group.png';
+
 moment.locale('zh-cn');
 
 const BasicLayout: React.FC = (props) => {
@@ -18,6 +21,9 @@ const BasicLayout: React.FC = (props) => {
 
   return (
     <ProLayout
+      location={{
+        pathname: '../pages/Welcome.tsx',
+      }}
       siderWidth={250}
       rightContentRender={() => <RightContent />}
       disableContentMargin={false}
@@ -50,9 +56,12 @@ const BasicLayout: React.FC = (props) => {
         );
       }}
       menuDataRender={() => menuTree as MenuDataItem[]}
-      collapsedButtonRender={false}
       {...props}
       {...defaultSettings}
+      logo={<img src={logo} alt="" />}
+      onMenuHeaderClick={() => {
+        window.open(OFFICIAL_WEBSITE);
+      }}
     >
       <div>
         <ConfigProvider locale={zhCN}>{children}</ConfigProvider>

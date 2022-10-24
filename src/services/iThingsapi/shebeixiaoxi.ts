@@ -129,14 +129,15 @@ export async function postThingsDeviceMsgSdkLogIndex(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    data: { list: { timestamp?: string; loglevel?: number; content?: string }; total?: number };
-  }>('/api/v1/things/device/msg/sdk-log/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ data: { list?: API.deviceMsgSdkIndex[]; total?: number } }>(
+    '/api/v1/things/device/msg/sdk-log/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }

@@ -1,21 +1,4 @@
 declare namespace API {
-  type CloudeLogDebug = {
-    /** 发生时间戳 */
-    timestamp: string;
-    /** 操作类型 显示相应的操作名称、API名称、服务的method */
-    action: string;
-    /** 请求ID */
-    requestID: string;
-    /** 服务器端事务id */
-    tranceID: string;
-    /** 主题 */
-    topic: string;
-    /** 具体内容 */
-    content: string;
-    /** 请求结果状态 */
-    resultType: string;
-  };
-
   type DeviceInfo = {
     /** 产品id 不可修改 */
     productID: string;
@@ -39,8 +22,161 @@ declare namespace API {
     isOnline?: number;
   };
 
+  type deviceMsgSdkIndex = {
+    /** 发生时间戳 毫秒 */
+    timestamp: string;
+    /** 日志级别 1)关闭 2)错误 3)告警 4)信息 5)调试 */
+    loglevel: number;
+    /** 具体内容 */
+    content: string;
+  };
+
+  type FirmwareCreateReq = {
+    /** 升级包名称 */
+    name: string;
+    /** 产品id */
+    productID: string;
+    /** 升级包版本 */
+    version: string;
+    /** 是否差分包,1:整包,2:差分 */
+    isDiff: number;
+    /** 签名方法 MD5/SHA@256 */
+    signMethod: string;
+    description: Record<string, any>;
+    extData: Record<string, any>;
+    /** 升级包附件列表，最多支持上传20个文件，总文件大小不能超过1,000 MB。 */
+    files: FirmwareFile[];
+  };
+
+  type FirmwareDelReq = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+  };
+
+  type FirmwareFile = {
+    /** 附件地址，上传附件后接口应该返回 */
+    url: string;
+    /** 附件原名，上传附件后接口应该返回 */
+    name: string;
+  };
+
+  type FirmwareIndex = {
+    /** 升级包名称 */
+    name: string;
+    /** 升级包版本 */
+    version: string;
+    /** 产品id */
+    productID: string;
+    /** 产品名称 */
+    productName: string;
+    /** 是否差分包,1:整包,2:差分 */
+    isDiff: number;
+    /** 创建时间 只读 */
+    createdTime: number;
+    /** 签名方法 */
+    signMethod: string;
+  };
+
+  type FirmwareIndexReq = {
+    /** 产品id 获取产品id下的所有升级包 */
+    productID: string;
+    /** 获取时间的开始 */
+    timeStart: number;
+    /** 时间的结束 */
+    timeEnd: number;
+    page?: PageInfo;
+  };
+
+  type FirmwareIndexResp = {
+    /** 数据 */
+    list: FirmwareIndex[];
+    /** 总数 */
+    total: number;
+  };
+
+  type FirmwareInfo = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+    /** 升级包名称 */
+    name: string;
+    /** 升级包版本 */
+    version: string;
+    /** 产品id */
+    productID: string;
+    /** 产品名称 */
+    productName: string;
+    /** 是否差分包,1:整包,2:差分 */
+    isDiff: number;
+    /** 创建时间 只读 */
+    createdTime: number;
+    /** 签名方法 */
+    signMethod: string;
+    description: Record<string, any>;
+    extData: Record<string, any>;
+  };
+
+  type FirmwareInfoUpdateReq = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+    /** 升级包名称 */
+    name: string;
+    description: Record<string, any>;
+    extData: Record<string, any>;
+  };
+
+  type FirmwareReadReq = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+  };
+
+  type FirmwareSignedUrlReq = {
+    /** 产品id */
+    productID: string;
+    /** 文件名 */
+    fileName: string;
+  };
+
+  type FirmwareSignedUrlResp = {
+    /** 附件path */
+    dir: string;
+    /** 附件直传地址 */
+    signedUrl: string;
+  };
+
+  type FirmwareTaskIndexReq = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+    taskUid?: string;
+    page?: PageInfo;
+  };
+
+  type FirmwareTaskIndexResp = {
+    /** 总数 */
+    total: number;
+    list: FirmwareTaskInfo[];
+  };
+
+  type FirmwareTaskInfo = {
+    taskUid: string;
+    /** 升级范围1全部设备2定向升级 */
+    type: number;
+    /** 升级策略:1静态升级2动态升级 */
+    upgradeType: number;
+    /** 升级状态:1未升级2升级中3完成 */
+    status: number;
+    /** 创建时间 只读 */
+    createdTime: number;
+  };
+
   type page = {
     page?: { page?: number; size?: number };
+  };
+
+  type PageInfo = {
+    /**  页码 */
+    page?: number;
+    /**  每页大小 */
+    size?: number;
   };
 
   type ProductInfo = {
@@ -87,70 +223,95 @@ declare namespace API {
     affordance: string;
   };
 
-  type SchemaAction = {
-    /** 调用参数 */
-    input: SchemaParam[];
-    /** 返回参数 */
-    output: SchemaParam[];
-  };
-
-  type SchemaDefine = {
-    /** 参数类型 bool int string struct float timestamp array enum */
-    type: string;
-    /** 结构体 struct */
-    specs: SchemaDefine[];
-    /** 枚举及bool类型 bool enum */
-    mapping: string;
-    /** 数值最小值 int  float */
-    min: string;
-    /** 数值最大值 int string float */
-    max: string;
-    /** 初始值 int float */
-    start: string;
-    /** 步长 float */
-    step: string;
-    /** 单位 int float */
-    unit: string;
-    /** 数组 */
-    arrayInfo: SchemaDefine | any;
-  };
-
-  type SchemaEvent = {
-    /** 事件类型 信息:info  告警alert  故障:fault */
-    type: string;
-    /** 事件参数 */
-    params: SchemaParam[];
-  };
-
-  type SchemaParam = {
-    /** 参数标识符 */
-    identifier: string;
-    /** 参数名称 */
-    name: string;
-    /** 参数定义 */
-    define: SchemaDefine;
-  };
-
-  type SchemaProperty = {
-    /** 读写类型 r(只读) rw(可读可写) */
-    mode: string;
-    /** 参数定义 */
-    define: SchemaDefine;
-  };
-
-  type SchemaSpec = {
-    /** 参数标识符 */
-    identifier: string;
-    /** 参数名称 */
-    name: string;
-    /** 参数定义 */
-    dataType: SchemaDefine;
-  };
-
   type SuccRet = {
     /** 返回code */
     code: number;
     /** 返回消息 */
     msg: string;
+  };
+
+  type TaskAnalysisReq = {
+    taskUid: string;
+  };
+
+  type TaskAnalysisResp = {
+    /** 统计结果,json格式 */
+    result: string;
+  };
+
+  type TaskCancleReq = {
+    taskUid: string;
+  };
+
+  type TaskCreateReq = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+    /** 升级范围1全部设备2定向升级 */
+    type: number;
+    /** 升级策略:1静态升级2动态升级 */
+    upgradeType: number;
+    /** 待升级设备列表,["device1","device2",...] */
+    deviceList: string;
+    /** 待升级版本,["version1","version2",...] */
+    versionList: string;
+  };
+
+  type TaskDeviceCancleReq = {
+    taskUid: string;
+    /** 设备编号 */
+    deviceName: string;
+  };
+
+  type TaskDeviceIndexReq = {
+    taskUid: string;
+    /** 设备编号 */
+    deviceName?: string;
+    /** 升级状态:101待确认 201/202/203待推送 301已推送 401升级中 501升级成功 601升级失败 701已取消 */
+    status?: string;
+    page?: PageInfo;
+  };
+
+  type TaskDeviceIndexResp = {
+    list: TaskDeviceInfo[];
+    /** 总数 */
+    total: number;
+  };
+
+  type TaskDeviceInfo = {
+    taskUid: string;
+    /** 设备编号 */
+    deviceName: string;
+    /** 当前版本 */
+    version: string;
+    /** 升级状态:101待确认 201/202/203待推送 301已推送 401升级中 501升级成功 601升级失败 701已取消 */
+    status: string;
+    /** 状态更新时间 只读 */
+    updatedTime: number;
+  };
+
+  type TaskReadReq = {
+    taskUid?: string;
+  };
+
+  type TaskReadResp = {
+    taskUid: string;
+    /** 升级范围1全部设备2定向升级 */
+    type: number;
+    /** 升级策略:1静态升级2动态升级 */
+    upgradeType: number;
+    /** 升级包版本 */
+    version: string;
+    /** 待升级版本号 */
+    srcVersion: string;
+    /** 产品id */
+    productID: string;
+    /** 产品名称 */
+    productName: string;
+    /** 升级状态:1未升级2升级中3完成 */
+    status: number;
+    /** 是否自动重试,1:不,2自动重试,最多重试10次 */
+    autoRepeat: number;
+    /** 创建时间 只读 */
+    createdTime: number;
   };
 }

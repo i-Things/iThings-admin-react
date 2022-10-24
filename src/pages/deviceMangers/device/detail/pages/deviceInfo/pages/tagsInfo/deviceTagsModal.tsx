@@ -1,35 +1,47 @@
 import { postThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
-import { InfoCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { FlagStatus } from '@/utils/base';
+import { DownOutlined, InfoCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
-import { ModalForm, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { Button, Col, Form, message, Row, Space, Tooltip } from 'antd';
 import { useCallback, useRef, useState } from 'react';
 import type { DeviceInfo, TagsInfo } from '../../data';
 import styles from '../../index.less';
 
 interface ModalProps {
-  deviceInfo: DeviceInfo;
-  refresh: () => void;
+  deviceInfo?: DeviceInfo;
+  refresh?: () => void;
+  flag: FlagStatus;
+  changeTags?: (val: TagsInfo[]) => void;
 }
 
 interface Tags {
   tags: TagsInfo[];
 }
 
-const modalTitle = (
-  <Row>
-    <Col>编辑标签</Col>
-    <Col>
-      <Tooltip title="每个设备的标签数量不得超过10个">
-        <InfoCircleOutlined className={styles.icon} />
-      </Tooltip>
-    </Col>
-  </Row>
-);
+const ModalTitle: React.FC<{ flag: FlagStatus }> = ({ flag }) => {
+  return (
+    <>
+      {flag === FlagStatus.CREATE ? (
+        '标签筛选'
+      ) : (
+        <Row>
+          <Col>编辑标签</Col>
+          <Col>
+            <Tooltip title="每个设备的标签数量不得超过10个">
+              <InfoCircleOutlined className={styles.icon} />
+            </Tooltip>
+          </Col>
+        </Row>
+      )}
+    </>
+  );
+};
 
-const EditForm: React.FC<ModalProps> = (props) => {
-  const { deviceInfo, refresh } = props;
+const DeviceTagsModal: React.FC<ModalProps> = (props) => {
+  const { deviceInfo, refresh, flag, changeTags } = props;
   const formRef = useRef<ProFormInstance>();
+  const tagFormRef = useRef<ProFormInstance>();
 
   const [visible, setVisible] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -40,26 +52,36 @@ const EditForm: React.FC<ModalProps> = (props) => {
 
   /** 校验标签key是否重复 */
   const checkRepeat = useCallback((_, value: string) => {
-    const tags = formRef.current?.getFieldValue('tags');
-    const result = tags.filter((item: TagsInfo) => item.key === value).length > 1;
-    if (result) {
-      return Promise.reject('标签key不能重复');
+    if (value) {
+      const tagsVal = formRef.current?.getFieldValue('tags');
+      const result = tagsVal?.filter((item: TagsInfo) => item?.key === value).length > 1;
+      if (result) {
+        return Promise.reject('标签key不能重复');
+      }
     }
     return Promise.resolve();
   }, []);
 
   const handleSubmit = async (value: Tags) => {
+    if (flag === FlagStatus.CREATE) {
+      const tagArr = value?.tags?.map((item) => `${item.key}:${item.value}`);
+      const tagStr = tagArr.join(';');
+      tagFormRef.current?.setFieldsValue({ tags: tagStr });
+      changeTags?.(value.tags);
+      setVisible(false);
+      return;
+    }
     const body = {
       ...value,
-      productID: deviceInfo.productID ?? '',
-      deviceName: deviceInfo.deviceName ?? '',
+      productID: deviceInfo?.productID ?? '',
+      deviceName: deviceInfo?.deviceName ?? '',
     };
     return postThingsDeviceInfoUpdate(body)
       .then((res) => {
         setVisible(false);
         if (res.code === 200) {
           message.success('提交成功');
-          refresh();
+          refresh?.();
         }
         return true;
       })
@@ -70,20 +92,48 @@ const EditForm: React.FC<ModalProps> = (props) => {
 
   return (
     <ModalForm<Tags>
-      title={modalTitle}
+      title={<ModalTitle flag={flag} />}
       visible={visible}
       formRef={formRef}
       initialValues={{ tags: deviceInfo?.tags }}
       width={550}
       modalProps={{
         onCancel: () => setVisible(false),
-        destroyOnClose: true,
+        destroyOnClose: flag === FlagStatus.UPDATE,
         wrapClassName: styles.modal,
       }}
       trigger={
-        <Button type="link" onClick={openEditModal}>
-          编辑
-        </Button>
+        flag === FlagStatus.UPDATE ? (
+          <Button type="link" onClick={openEditModal}>
+            编辑
+          </Button>
+        ) : (
+          <ProForm
+            formRef={tagFormRef}
+            onClick={openEditModal}
+            submitter={{
+              // 配置按钮的属性
+              resetButtonProps: {
+                style: {
+                  // 隐藏重置按钮
+                  display: 'none',
+                },
+              },
+              submitButtonProps: {},
+              // 完全自定义整个区域
+              render: () => [],
+            }}
+          >
+            <ProFormText
+              name="tags"
+              placeholder="请选择"
+              fieldProps={{
+                suffix: <DownOutlined />,
+                readOnly: true,
+              }}
+            />
+          </ProForm>
+        )
       }
       submitTimeout={2000}
       onFinish={handleSubmit}
@@ -98,6 +148,7 @@ const EditForm: React.FC<ModalProps> = (props) => {
             },
           },
         ]}
+        initialValue={[{}]}
       >
         {(fields, { add, remove }) => (
           <>
@@ -135,4 +186,4 @@ const EditForm: React.FC<ModalProps> = (props) => {
   );
 };
 
-export default EditForm;
+export default DeviceTagsModal;
