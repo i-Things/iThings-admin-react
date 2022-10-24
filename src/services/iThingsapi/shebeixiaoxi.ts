@@ -2,6 +2,36 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
+/** 获取物模型事件历史记录 POST /api/v1/things/device/msg/event-log/index */
+export async function postThingsDeviceMsgEventLogIndex(
+  body: {
+    /** 不填获取产品下所有设备 */
+    deviceNames: string[];
+    /** 信息:info  告警alert  故障:fault */
+    types?: string[];
+    productID: string;
+    dataID: string;
+    timeStart: string;
+    timeEnd: string;
+    page?: { page?: number; size?: number };
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{
+    data: {
+      list?: { timestamp?: string; type?: string; dataID?: string; params?: string }[];
+      total?: number;
+    };
+  }>('/api/v1/things/device/msg/event-log/index', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 获取云端诊断日志 POST /api/v1/things/device/msg/hub-log/index */
 export async function postThingsDeviceMsgHubLogIndex(
   body: {
@@ -19,8 +49,6 @@ export async function postThingsDeviceMsgHubLogIndex(
   options?: { [key: string]: any },
 ) {
   return request<{
-    code: number;
-    msg: string;
     data: {
       list?: {
         timestamp?: string;
@@ -43,32 +71,19 @@ export async function postThingsDeviceMsgHubLogIndex(
   });
 }
 
-/** 获取最新物模型属性 POST /api/v1/things/device/msg/schema-latest/index */
-export async function postThingsDeviceMsgSchemaLatestIndex(
+/** 获取最新属性 POST /api/v1/things/device/msg/property-latest/index */
+export async function postThingsDeviceMsgPropertyLatestIndex(
   body: {
-    /** property 属性 event事件 action 请求 */
-    method: string;
     deviceName: string;
     productID: string;
     /** 如果不指定则获取所有属性数据 */
-    dataID: string[];
+    dataIDs: string[];
   },
   options?: { [key: string]: any },
 ) {
   return request<{
-    code: number;
-    msg: string;
-    data: {
-      list?: {
-        timestamp?: string;
-        type?: string;
-        dataID?: string;
-        getValue?: string;
-        sendValue?: string;
-      }[];
-      total?: number;
-    };
-  }>('/api/v1/things/device/msg/schema-latest/index', {
+    data: { list?: { timestamp?: string; dataID?: string; value?: string }[]; total?: number };
+  }>('/api/v1/things/device/msg/property-latest/index', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -78,13 +93,11 @@ export async function postThingsDeviceMsgSchemaLatestIndex(
   });
 }
 
-/** 获取单个id物模型历史记录 POST /api/v1/things/device/msg/schema-log/index */
-export async function postThingsDeviceMsgSchemaLogIndex(
+/** 获取单个id属性历史记录 POST /api/v1/things/device/msg/property-log/index */
+export async function postThingsDeviceMsgPropertyLogIndex(
   body: {
-    /** property 属性 event事件 action 请求 */
-    method: string;
     /** 不填获取产品下所有设备 */
-    deviceName: string[];
+    deviceNames: string[];
     productID: string;
     dataID: string;
     timeStart: string;
@@ -94,19 +107,8 @@ export async function postThingsDeviceMsgSchemaLogIndex(
   options?: { [key: string]: any },
 ) {
   return request<{
-    code: number;
-    msg: string;
-    data: {
-      list?: {
-        timestamp?: string;
-        type?: string;
-        dataID?: string;
-        getValue?: string;
-        sendValue?: string;
-      }[];
-      total?: number;
-    };
-  }>('/api/v1/things/device/msg/schema-log/index', {
+    data: { list?: { timestamp?: string; dataID?: string; value?: string }[]; total?: number };
+  }>('/api/v1/things/device/msg/property-log/index', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -116,7 +118,7 @@ export async function postThingsDeviceMsgSchemaLogIndex(
   });
 }
 
-/** 获取设备sdk日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
+/** 获取设备本地日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
 export async function postThingsDeviceMsgSdkLogIndex(
   body: {
     deviceName: string;
@@ -127,16 +129,15 @@ export async function postThingsDeviceMsgSdkLogIndex(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: { list: { timestamp?: string; loglevel?: number; content?: string }; total?: number };
-  }>('/api/v1/things/device/msg/sdk-log/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ data: { list?: API.deviceMsgSdkIndex[]; total?: number } }>(
+    '/api/v1/things/device/msg/sdk-log/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }

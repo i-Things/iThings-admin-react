@@ -17,7 +17,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Props {
   productInfo: PRODUCT_INFO;
@@ -26,9 +26,13 @@ interface Props {
 
 export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
   const [createVisible, setCreateVisible] = useState(false);
+  const formRef = useRef<ProFormInstance<PRODUCT_INFO>>();
   const openCreateModal = async () => {
     setCreateVisible(true);
   };
+  useEffect(() => {
+    formRef.current?.setFieldsValue(productInfo);
+  }, [productInfo, createVisible]);
   const formCommit = async (value: PRODUCT_INFO) => {
     const body = {
       ...value,
@@ -36,7 +40,6 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
     };
     return postThingsProductInfoUpdate(body)
       .then((res) => {
-        console.log('res', res);
         setCreateVisible(false);
         if (res.code === 200) {
           message.success('提交成功');
@@ -52,7 +55,6 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
     labelCol: { span: 7 },
     wrapperCol: { span: 32 },
   };
-  const formRef = useRef<ProFormInstance>();
   return (
     <ModalForm<PRODUCT_INFO>
       {...formItemLayout}
@@ -125,12 +127,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
         label="动态注册"
         request={async () => AUTO_REGISTER_FORM}
       />
-      <ProFormTextArea
-        name="description"
-        width="md"
-        label="产品描述"
-        placeholder="请输入产品描述"
-      />
+      <ProFormTextArea name="desc" width="md" label="产品描述" placeholder="请输入产品描述" />
     </ModalForm>
   );
 };

@@ -7,7 +7,8 @@ import {
 import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
-import { spanTree } from '@/utils/utils';
+import { ICON_OPTION } from '@/utils/iconMap';
+import { recursionTree, spanTree } from '@/utils/utils';
 import type { ParamsType } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -43,29 +44,38 @@ const MenuList: React.FC = () => {
       title: '编号',
       dataIndex: 'id',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '菜单名称',
       dataIndex: 'name',
+      width: 100,
     },
     {
       title: '图标',
       dataIndex: 'icon',
       hideInSearch: true,
+      width: 170,
+      render: (dom) => <span>{ICON_OPTION.filter((i) => i.value === dom)?.[0]?.label}</span>,
     },
     {
       title: '路由path',
       dataIndex: 'path',
+      ellipsis: true,
+      width: 180,
     },
     {
       title: '路由重定向',
       dataIndex: 'redirect',
       hideInSearch: true,
+      ellipsis: true,
+      width: 180,
     },
     {
       title: '父节点',
       dataIndex: 'parentID',
       hideInSearch: true,
+      width: 60,
     },
     {
       title: '排序',
@@ -73,12 +83,15 @@ const MenuList: React.FC = () => {
       hideInSearch: true,
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.order - b.order,
+      width: 60,
     },
 
     {
       title: '文件路径',
       dataIndex: 'component',
       hideInSearch: true,
+      ellipsis: true,
+      width: 200,
     },
 
     {
@@ -87,15 +100,17 @@ const MenuList: React.FC = () => {
       valueType: 'dateTime',
       search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
+      width: 150,
     },
     {
-      title: '是否隐藏',
+      title: '隐藏',
       dataIndex: 'hideInMenu',
       search: false,
       valueEnum: {
         1: { text: '是' },
         2: { text: '否' },
       },
+      width: 50,
     },
     {
       title: '操作',
@@ -135,16 +150,6 @@ const MenuList: React.FC = () => {
     },
   ];
 
-  const recursion = (pre: MenuListItem[]) => {
-    pre.map((item) => {
-      if (item.children) recursion(item?.children);
-      item.key = item?.id + '';
-      item.label = item?.name;
-      item.value = item?.id;
-    });
-    return pre;
-  };
-
   const queryPageHandler = async (
     params: ParamsType & {
       pageSize?: number | undefined;
@@ -155,7 +160,7 @@ const MenuList: React.FC = () => {
     const treeList = await queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params);
     setFlatOptions(treeList?.data);
     const tree = { ...treeList, data: spanTree(treeList?.data, 1, 'parentID') };
-    const cascadertree = cloneDeep(recursion(treeList?.data));
+    const cascadertree = cloneDeep(recursionTree(treeList?.data));
     cascadertree.unshift({
       id: 0,
       label: '根节点',
@@ -169,6 +174,7 @@ const MenuList: React.FC = () => {
       createdTime: '',
       hideInMenu: '',
       key: '',
+      title: '',
     });
     setCascaderOptions(cascadertree);
     return tree;

@@ -22,7 +22,12 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
     <title>iThings</title>
-    <link rel="icon" href="https://oss.tool.lu/cache/202208/25/233757moom8m8yt8miz2kw.jpg.icon.ico" type="image/x-icon" />
+    <!-- <link rel="icon" href="https://oss.tool.lu/cache/202208/25/233757moom8m8yt8miz2kw.jpg.icon.ico" type="image/x-icon" /> -->
+    <link
+      rel="icon"
+      href="<%= context.config.publicPath +'./icons/logo/Group.png'%>"
+      type="image/x-icon"
+    />
   </head>
   <body>
     <noscript>
@@ -213,7 +218,11 @@
           min-height: 420px;
         "
       >
-        <img src="<%= context.config.publicPath +'pro_icon.svg'%>" alt="logo" width="256" />
+        <img
+          src="<%= context.config.publicPath +'./icons/logo/Group.png'%>"
+          alt="logo"
+          width="256"
+        />
         <div class="page-loading-warp">
           <div class="ant-spin ant-spin-lg ant-spin-spinning">
             <span class="ant-spin-dot ant-spin-dot-spin"
@@ -222,7 +231,9 @@
             ></span>
           </div>
         </div>
-        <div style="display: flex; align-items: center; justify-content: center">iThings</div>
+        <div style="display: flex; align-items: center; justify-content: center; font-size: 50px">
+          iThings
+        </div>
       </div>
     </div>
   </body>

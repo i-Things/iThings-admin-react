@@ -48,7 +48,7 @@ export async function getInitialState(): Promise<{
       const uid = getUID();
 
       if (!token || !uid) {
-        history.push(loginPath);
+        return history.push(loginPath);
       }
 
       const body = { uid: uid };

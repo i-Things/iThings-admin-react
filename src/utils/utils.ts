@@ -1,3 +1,9 @@
+import type {
+  GroupDeviceCreateListProps,
+  GroupDeviceItem,
+} from '@/pages/deviceMangers/group/types';
+import type { MenuListItem } from '@/pages/systemMangers/menu/types';
+import type { DEVICE_INFO } from './const';
 import { GUIDKEY, TOKENKEY } from './const';
 
 // 判断是否为移动端
@@ -47,13 +53,13 @@ export const apiParams = () => {
  * @param {*} pid 父级id
  * @param key
  */
-export function spanTree(data: any, pid = 1, key = 'pid') {
+export function spanTree(data: any, pid: string | number, key: 'parentID') {
   const result = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const i in data) {
-    if (data[i][key] === pid) {
+    if (data[i][key] === pid || data[i][key] === String(pid)) {
       const temp = data[i];
-      const children = spanTree(data, data[i].id, key);
+      const children = spanTree(data, data[i].id || data[i].groupID, key);
       if (children.length) {
         temp.children = children;
       }
@@ -61,5 +67,90 @@ export function spanTree(data: any, pid = 1, key = 'pid') {
     }
   }
 
+  return result;
+}
+
+export function selectConfirm(record: GroupDeviceCreateListProps[]) {
+  const selectRecord: GroupDeviceCreateListProps[] = Array.isArray(record) ? record : [record];
+  const list = selectRecord.map((item) => {
+    return {
+      productID: item?.productID,
+      deviceName: item?.deviceName,
+    };
+  });
+  return list;
+}
+
+export function recursionTree(pre: MenuListItem[]) {
+  pre.map((item) => {
+    if (item.children) recursionTree(item?.children);
+    item.key = item?.id + '';
+    item.label = item?.name + '';
+    item.title = item?.name + '';
+  });
+  return pre;
+}
+
+// 设备在线状态处理
+export function isOnlineEnum(row: DEVICE_INFO | GroupDeviceItem) {
+  return row?.firstLogin === '0'
+    ? {
+        2: {
+          text: '未激活',
+          status: 'Warning',
+        },
+      }
+    : {
+        1: { text: '在线', status: 'Success' },
+        2: {
+          text: '离线',
+          status: 'Error',
+        },
+      };
+}
+
+/**
+ * @function 数组转对象
+ * @param {Array} original 原始数组
+ * @param {String} key 键
+ * @param {*} val 值
+ * @return {Object} 返回对象
+ * @example
+ *
+const arr = [{ label: 'title_one', val: '参数值1' }, { label: 'title_two', val: '参数值2' }];
+console.log(arrTransferObj(arr, 'label', 'val'))
+ */
+export function arrTransferObj(
+  original: Record<string, string>[],
+  key: string,
+  val: any,
+): Record<string, string> {
+  // 数组的reduce方法，使数组的obj初始值为{}，将数组中每一个对象所需的值，分别作为对象中的键与值
+  return original.reduce((obj, item) => ((obj[item[key]] = item[val]), obj), {});
+}
+
+/**
+ * @function 对象转数组
+ * @param {Object} original 原始对象
+ * @param {String} key 键
+ * @param {*} val 值
+ * @return {Array} 返回对象
+ * @example
+ *
+const obj = { title_one: '参数值1', title_two: '参数值2' };
+console.log(objTransferArr(obj, 'label', 'val'))
+ */
+export function objTransferArr(
+  original: Record<string, string>,
+  key: string,
+  val: any,
+): Record<string, string>[] {
+  const result = [];
+  for (const item in original) {
+    result.push({
+      [key]: item,
+      [val]: original[item],
+    });
+  }
   return result;
 }

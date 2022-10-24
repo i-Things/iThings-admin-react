@@ -1,6 +1,6 @@
 import { postThingsProductInfoRead } from '@/services/iThingsapi/chanpinguanli';
 import { ColumnConfig } from '@/utils/base';
-import { PRODUCT_INFO } from '@/utils/const';
+import type { PRODUCT_INFO } from '@/utils/const';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'ahooks';
 import { Card, Descriptions, message, Tabs } from 'antd';

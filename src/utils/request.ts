@@ -77,6 +77,7 @@ const authInterceptor = (url: string, options: any) => {
     options.headers[TOKENKEY] = token;
   }
   const IThingsSetTokenValue = localStorage.getItem('iThingsSetToken');
+
   if (IThingsSetTokenValue) {
     options.headers[TOKENKEY] = IThingsSetTokenValue;
   }
@@ -88,8 +89,9 @@ const authInterceptor = (url: string, options: any) => {
 
 //响应拦截器
 const responseInterceptors = (response: any) => {
-  const IThingsSetTokenValue = response.headers[iThingsSetToken];
+  const IThingsSetTokenValue = response.headers.get(iThingsSetToken);
   if (IThingsSetTokenValue) {
+    setToken(IThingsSetTokenValue);
     localStorage.setItem('iThingsSetToken', IThingsSetTokenValue);
   } else {
     localStorage.setItem('iThingsSetToken', '');

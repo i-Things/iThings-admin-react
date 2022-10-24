@@ -1,4 +1,5 @@
 import { timestampToDateStr } from '@/utils/date';
+import { isOnlineEnum } from '@/utils/utils';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProColumns } from '@ant-design/pro-table';
 import type { DeviceInfo } from '../../data';
@@ -7,11 +8,6 @@ import styles from '../../index.less';
 interface InfoProps {
   deviceInfo: DeviceInfo;
 }
-
-const STATUS = new Map([
-  [1, '离线'],
-  [2, '在线'],
-]);
 
 const columns: ProColumns<DeviceInfo>[] = [
   {
@@ -25,6 +21,7 @@ const columns: ProColumns<DeviceInfo>[] = [
     title: '产品ID',
     key: 'productID',
     dataIndex: 'productID',
+    copyable: true,
   },
   {
     title: '设备密钥',
@@ -55,8 +52,9 @@ const columns: ProColumns<DeviceInfo>[] = [
     key: 'isOnline',
     dataIndex: 'isOnline',
     valueType: 'select',
-    render: (_, record) =>
-      record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
+    valueEnum: isOnlineEnum,
+    // render: (_, record) =>
+    //   record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
   },
   {
     title: '固件版本',

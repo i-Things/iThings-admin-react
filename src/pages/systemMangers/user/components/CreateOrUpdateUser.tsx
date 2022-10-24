@@ -1,5 +1,7 @@
+import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
+import { postSystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
 import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
@@ -16,6 +18,8 @@ const CreateOrUpdateUser: React.FC<{
   record?: UserListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
 }> = ({ flag, record, actionRef }) => {
+  const { querySelectOptions, selectOptions } = useGetSelectOptions();
+
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
@@ -24,12 +28,9 @@ const CreateOrUpdateUser: React.FC<{
   const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postSystemUserCreate;
   type UpdateProp = typeof postSystemUserUpdate;
+  type QueryRoleProp = typeof postSystemRoleIndex;
 
-  const ROLE_OPTION = [
-    { label: 'admin', value: 1 },
-    { label: '供应商', value: 2 },
-    { label: 'user', value: 3 },
-  ];
+  const ROLE_OPTION = selectOptions;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -49,6 +50,14 @@ const CreateOrUpdateUser: React.FC<{
   useEffect(() => {
     editFormRef.current?.setFieldsValue(record);
   }, [editFlag, record]);
+
+  useEffect(() => {
+    querySelectOptions<QueryRoleProp>(postSystemRoleIndex, {
+      page: { page: 1, size: 99999 },
+      label: 'name',
+      value: 'id',
+    });
+  }, []);
   return (
     <ModalForm<UserListItem>
       width={550}
@@ -123,7 +132,7 @@ const CreateOrUpdateUser: React.FC<{
         request={async () => ROLE_OPTION}
       />
       <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
-      <ProFormSelect
+      {/* <ProFormSelect
         width="md"
         name="sex"
         label="性别"
@@ -135,7 +144,7 @@ const CreateOrUpdateUser: React.FC<{
       <ProFormText name="country" width="md" label="国家" placeholder="请输入所在国家" />
       <ProFormText name="province" width="md" label="省份" placeholder="请输入所在省份" />
       <ProFormText name="city" width="md" label="城市" placeholder="请输入所在城市" />
-      <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" />
+      <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" /> */}
     </ModalForm>
   );
 };
