@@ -84,6 +84,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
               setLogLevel(value);
             }}
             style={{ width: 200 }}
+            allowClear
           />
         </Col>
       </Row>
