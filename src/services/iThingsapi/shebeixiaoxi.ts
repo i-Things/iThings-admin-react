@@ -123,6 +123,7 @@ export async function postThingsDeviceMsgSdkLogIndex(
   body: {
     deviceName: string;
     productID: string;
+    logLevel?: number;
     timeStart?: string;
     timeEnd?: string;
     page?: { page?: number; size?: number };

@@ -1,10 +1,10 @@
 import TimeFilter from '@/components/TimeFilter';
 import { postThingsDeviceMsgSdkLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, getInitialTime } from '@/utils/base';
-import { DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
+import { DEVICE_LOG_LEVEL_FORM, DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { useAntdTable } from 'ahooks';
-import { Card, Table } from 'antd';
+import { Card, Col, Row, Select, Table } from 'antd';
 import type { RangePickerProps } from 'antd/lib/date-picker';
 import React, { useState } from 'react';
 import type { DeviceInfo, PageInfo } from '../../../data';
@@ -36,6 +36,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const initialTime = getInitialTime();
 
   const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
+  const [logLevel, setLogLevel] = useState<number>();
 
   /** 获取本地日志 */
   const localLogTable = async ({ current, pageSize }: PageInfo) => {
@@ -47,6 +48,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     const _params = {
       productID,
       deviceName,
+      logLevel,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
       page,
@@ -63,13 +65,28 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   // 获取本地日志
   const { tableProps } = useAntdTable(localLogTable, {
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange],
+    refreshDeps: [timeRange, logLevel],
     ready: !!(productID && deviceName),
   });
 
   return (
     <Card>
-      <TimeFilter onChange={(val) => setTimeRange(val)} />
+      <Row gutter={[16, 0]}>
+        <Col>
+          <TimeFilter onChange={(val) => setTimeRange(val)} />
+        </Col>
+        <Col>
+          <span>日志等级：</span>
+          <Select
+            placeholder="请选择日志等级"
+            options={DEVICE_LOG_LEVEL_FORM}
+            onChange={(value) => {
+              setLogLevel(value);
+            }}
+            style={{ width: 200 }}
+          />
+        </Col>
+      </Row>
       <div style={{ marginTop: 20 }}>
         <Table size="middle" rowKey="timestamp" columns={localLogColumns} {...tableProps} />
       </div>
