@@ -2,17 +2,16 @@ import { Field, FormPath, SchemaForm } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
   FormItemGrid,
-  FormLayout,
-  Input as FInput,
+  FormLayout, FormMegaLayout, Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
-  Switch as FSwitch,
+  Switch as FSwitch
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { AutoComplete, Button, Form, Input, InputNumber, Modal, Radio, Space } from 'antd';
 
 import { createAsyncFormActions, FormEffectHooks, FormSpy } from '@formily/antd';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const { onFieldValueChange$ } = FormEffectHooks;
 
@@ -23,6 +22,7 @@ type EditFormType = {
 
 export const EditForm: React.FC<EditFormType> = (props) => {
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
+  const [currentDataType, setCurrentDataType] = useState()
   const ruleModalFormItemLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 },
@@ -33,6 +33,12 @@ export const EditForm: React.FC<EditFormType> = (props) => {
     { label: '事件', value: 2 },
     { label: '行为', value: 3 },
   ];
+
+  const actionTypeBtnList = [
+    { label: '告警', value: 1 },
+    { label: '故障', value: 2 },
+    { label: '信息', value: 3 },
+  ]
 
   const shujuleixingBtnList = [
     { label: '布尔型', value: 'bool' },
@@ -55,7 +61,7 @@ export const EditForm: React.FC<EditFormType> = (props) => {
     console.log('values', values);
   };
 
-  // 定义一个映射数组类型对应哪些 表单项显示
+  // 定义一个映射数组类型对应哪些 表单项显示  -- mode
   const modeFormItemMapping = {
     bool: ['shujudingyi'],
     int: ['shuzhifanwei', 'start', 'step', 'unit'],
@@ -67,11 +73,94 @@ export const EditForm: React.FC<EditFormType> = (props) => {
     array: [],
   };
 
+  // 定义一个映射数组类型对应哪些 表单项显示  -- type
+  const typeFormItemMapping = {
+    1: ['mode', 'duxieleixing', 'shujudingyi'],
+    2: ['actionType'],
+    3: ['actionType'],
+  };
+
+
+  const intTypeFormItem1 = (
+    <Field type="object" name="shujudingyi" title="数据定义" required>
+      <FormMegaLayout grid full>
+        <Field
+          type="object"
+          name="shuzhifanwei"
+          title="数值范围"
+          x-props={{ visible: false }}
+          required
+        >
+          <FormItemGrid gutter={12} cols={[3, 3]} style={{ marginBottom: -25 }}>
+            <Field
+              type="number"
+              name="type1"
+              x-component="NumberPicker"
+              required
+              x-props={{
+                placeholder: '请选择',
+              }}
+            />
+            -
+            <Field
+              type="number"
+              name="type"
+              x-component="NumberPicker"
+              required
+              x-props={{
+                placeholder: '请选择',
+              }}
+            />
+          </FormItemGrid>
+        </Field>
+        {/* 初始值 */}
+        <Field
+          type="number"
+          name="start"
+          title="初始值"
+          required
+          x-props={{
+            placeholder: '请输入功能名称',
+            visible: false,
+          }}
+          x-component="NumberPicker"
+        />
+        {/* 步长 */}
+        <Field
+          type="number"
+          name="step"
+          title="步长"
+          required
+          x-props={{
+            placeholder: '请输入功能名称',
+            visible: false,
+          }}
+          x-component="NumberPicker"
+        />
+        {/* 单位 */}
+        <Field
+          type="string"
+          name="unit"
+          title="单位"
+          required
+          maxLength={12}
+          x-props={{
+            placeholder: '请输入单位',
+            extra: '支持0-12个字符',
+            visible: false,
+          }}
+          x-component="Input"
+        />
+
+      </FormMegaLayout>
+    </Field>
+  );
+
   // 不能直接用现有的 boolTypeFormItem 这些 直接渲染 结构体中的 要用原生的
   // 所以需要全部复刻一遍
   const boolTypeFormItem = (
     <Field type="object" name="shujudingyi" title="数据定义" required>
-      <FormItemGrid gutter={10} cols={[6, 6, 6]} style={{ marginBottom: -25 }}>
+      <FormItemGrid gutter={10} cols={[6, 6]} style={{ marginBottom: -25 }}>
         <Field
           type="string"
           name="type1"
@@ -98,7 +187,6 @@ export const EditForm: React.FC<EditFormType> = (props) => {
 
   const intTypeFormItem = (
     <>
-      {' '}
       <Field
         type="object"
         name="shuzhifanwei"
@@ -212,7 +300,7 @@ export const EditForm: React.FC<EditFormType> = (props) => {
               const mutators = ruleActions.current.createMutators('shujudingyiForMeiju');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
+                  {({ }) => {
                     return (
                       <a
                         style={{
@@ -261,6 +349,17 @@ export const EditForm: React.FC<EditFormType> = (props) => {
     </>
   );
 
+  // 定义一个映射数组类型对应 哪些 组件显示到 数据定义栏目
+  const modeFormComponentMapping = {
+    'bool': boolTypeFormItem,
+    'int': intTypeFormItem,
+    'string': stringTypeFormItem,
+    'float': stringTypeFormItem,
+    'enum': enumTypeFormItem,
+    'timestamp': timeTypeFormItem,
+  }
+
+
   const structTypeFormItem = (
     <>
       <FormLayout
@@ -286,7 +385,7 @@ export const EditForm: React.FC<EditFormType> = (props) => {
               const mutators = ruleActions.current.createMutators('struct');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
+                  {({ }) => {
                     return (
                       <a
                         style={{
@@ -315,25 +414,29 @@ export const EditForm: React.FC<EditFormType> = (props) => {
               title="数据类型"
               enum={shujuleixingBtnList}
             />
-            <Field type="object" name="value11" x-component="customFormItem" title="数据定义" />
+            {/* 动态渲染 */}
+            <Field
+              type="array"
+              name="value11"
+              x-component="customFormItem"
+              title="数据定义"
+            />
+
           </Field>
         </Field>
       </FormLayout>
     </>
   );
 
-  // 定义一个映射数组类型对应 哪些 组件显示到 数据定义栏目
-  // const modeFormComponentMapping = {
-  //   'bool': boolTypeFormItem,
-  //   'int': intTypeFormItem,
-  //   'string': stringTypeFormItem,
-  //   'float': stringTypeFormItem,
-  //   'enum': enumTypeFormItem,
-  //   'timestamp': timeTypeFormItem,
-  //   'struct': structTypeFormItem
-  // }
+
+
+
 
   const formItemVisibleConfig = (formItems: string[], flag: boolean) => {
+    if (formItems.length === 0) {
+      console.error('只有一条')
+      return
+    }
     formItems.map((item: string) => {
       ruleActions.current.setFieldState(item, (sta) => {
         sta.visible = flag;
@@ -506,7 +609,13 @@ export const EditForm: React.FC<EditFormType> = (props) => {
               </Form>
             );
           },
-          customFormItem: () => <div> custorm div</div>,
+          customFormItem: () => <Field
+            type="string"
+            name="value"
+            x-component="Select"
+            title="数据类型"
+            enum={shujuleixingBtnList}
+          />
         }}
         initialValues={{
           type: 1,
@@ -515,10 +624,13 @@ export const EditForm: React.FC<EditFormType> = (props) => {
         }}
         onSubmit={onModalFinish}
         effects={() => {
-          // 监听表单项显示
+          // 监听 mode 表单项显示 数据类型
           onFieldValueChange$('mode').subscribe((state) => {
             const value = state.value;
             console.log('value', value);
+            if (!value) {
+              return
+            }
 
             let allFormItem: string[] = [];
 
@@ -549,10 +661,40 @@ export const EditForm: React.FC<EditFormType> = (props) => {
               });
             }
           });
+          // 监听 type 表单项显示 功能类型
+          onFieldValueChange$('type').subscribe((state) => {
+            const value = state.value
+            console.log('valuetype', value);
 
+            let allFormItem: string[] = [];
+
+            Object.keys(typeFormItemMapping).map((item) => {
+              allFormItem = allFormItem.concat(typeFormItemMapping[item]);
+            });
+
+            // 先把所有的 设置为 false
+            formItemVisibleConfig(allFormItem, false);
+
+            console.log('allFormItem', allFormItem);
+
+            const showFormItem = typeFormItemMapping[value];
+
+            console.log('showFormItem1', showFormItem);
+            if (!showFormItem) {
+              return
+            }
+
+
+            // 再把对应的表单项展示出来
+            formItemVisibleConfig(showFormItem, true);
+          })
+
+          // 监听数据定义中的数据类型不一样，数据定义展示不一样的值
           onFieldValueChange$('struct.*.value').subscribe(async ({ name, value }) => {
-            console.log('name', name);
-            console.log('value', value);
+            console.log('name1', name);
+            console.log('value1', value);
+
+            setCurrentDataType(value)
 
             // 根据不同的值 渲染不同的界面
             await ruleActions.current.setFieldState(
@@ -560,7 +702,13 @@ export const EditForm: React.FC<EditFormType> = (props) => {
                 return `struct.${$1}.value11`;
               }),
               (state) => {
-                state.props['x-component'] = 'stringTypeFormItemOrigin';
+                // 
+                console.log('执行了', modeFormComponentMapping);
+                console.log('执行了', value);
+
+                console.log('modeFormComponentMapping[value]', modeFormComponentMapping[value]);
+
+                state.props['x-component'] = 'enumTypeFormItemOrigin';
               },
             );
           });
@@ -599,6 +747,7 @@ export const EditForm: React.FC<EditFormType> = (props) => {
           x-component="Input"
         />
 
+        {/* 功能类型为属性开始} */}
         <Field
           type="string"
           name="mode"
@@ -630,6 +779,32 @@ export const EditForm: React.FC<EditFormType> = (props) => {
         {enumTypeFormItem}
         {timeTypeFormItem}
         {structTypeFormItem}
+        {/* 功能类型为属性结束 */}
+
+        {/* 功能类型为事件开始 */}
+        {/* 事件类型 */}
+        <Field
+          type="string"
+          title="事件类型11"
+          name="actionType"
+          x-component="Radio"
+          x-props={{
+            placeholder: '请选择事件类型1',
+            optionType: 'button',
+            options: actionTypeBtnList,
+          }}
+        />
+        {/* 事件参数 */}
+        {/* {structTypeFormItem} */}
+
+
+
+        {/* 功能类型为事件结束 */}
+
+
+
+        {/* 功能类型为行为开始 */}
+        {/* 功能类型为行为结束 */}
         <Field
           type="string"
           name="decs"
