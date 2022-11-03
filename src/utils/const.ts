@@ -146,3 +146,18 @@ export const TIME_TYPE_DATA = [
   { value: 3, label: '昨天' },
   { value: 4, label: '近7天' },
 ];
+
+// 编辑器配置项
+export const MONACO_OPTIONS = {
+  selectOnLineNumbers: true,
+  automaticLayout: true, // 自动布局
+  foldingStrategy: 'indentation', // 代码可分小段折叠
+  autoClosingBrackets: 'always', // 是否自动添加结束括号(包括中括号)
+  autoClosingDelete: 'always', // 是否自动删除结束括号(包括中括号)
+  autoClosingQuotes: 'always', // 是否自动添加结束的单引号 双引号
+  autoIndent: true, // 控制编辑器在用户键入、粘贴、移动或缩进行时是否应自动调整缩进
+  folding: true, // 是否启用代码折叠
+  renderLineHighlight: 'all', // 当前行突出显示方式
+  renderIndicators: true, // 为添加/删除的更改呈现+/-指示器.Defaults to true.
+  readOnly: false,
+};
