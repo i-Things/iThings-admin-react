@@ -9,7 +9,7 @@ import { ProFormSelect } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Tag } from 'antd';
+import { Button, message, Modal, Tag } from 'antd';
 import sizeof from 'object-sizeof';
 import { useEffect, useRef, useState } from 'react';
 import '../../systemMangers/menu/styles.less';
@@ -37,6 +37,7 @@ const RemoteConfiguration = () => {
   const onChangeError = debounce((value) => {
     const error = monacoRef?.current.editor.getModelMarkers(value);
     if (error.length) setEditError(true);
+    else setEditError(false);
   }, 600);
 
   const editorChange = (value) => {
@@ -48,8 +49,32 @@ const RemoteConfiguration = () => {
 
   const editHandle = () => setEditFlag(!editFlag);
 
-  const updateHandle = () => {
-    if (!editFlag && editError) return message.error('json格式错误');
+  const confirmHandle = () => {};
+
+  const updateConfirm = () => {
+    if ((!editFlag && editError) || (!editFlag && !monacoData))
+      return message.error('json格式错误');
+    else if (editFlag) {
+      Modal.confirm({
+        title: '是否确认对该产品下的所有设备进行批量远程配置更新？',
+        width: 450,
+        content: (
+          <>
+            <p className="remote-configuration-modal-text">
+              注：该产品下的所有设备将自动更新该配置文件，设备端需订阅远程配置的topic
+            </p>
+            <p className="remote-configuration-modal-text">
+              指定产品： {selectOptions?.find((v) => v.value === productSelect)?.label}
+            </p>
+            <p className="remote-configuration-modal-text">设备范围：所有设备</p>
+          </>
+        ),
+        closable: true,
+        cancelText: '取消',
+        okText: '确认更新',
+        onOk: confirmHandle,
+      });
+    }
   };
 
   const columns: ProColumns<RemoteConfigurationItem>[] = [
@@ -149,11 +174,28 @@ const RemoteConfiguration = () => {
           <Button
             className="remote-configuration-btn-update"
             type="primary"
-            onClick={updateHandle}
+            onClick={updateConfirm}
             disabled={jsonSize / 1024 >= 64}
           >
             {editFlag ? '批量更新' : '保存'}
           </Button>
+          {/* <Modal
+            title="Title"
+            open={open}
+            onOk={confirmHandle}
+            confirmLoading={confirmLoading}
+            onCancel={closeModal}
+            footer={[
+              <Button key="cancel" onClick={closeModal}>
+                取消
+              </Button>,
+              <Button key="submit" type="primary" loading={confirmLoading} onClick={confirmHandle}>
+                确认更新
+              </Button>,
+            ]}
+          >
+            124
+          </Modal> */}
         </div>
       </div>
       <ProTable<RemoteConfigurationItem>
