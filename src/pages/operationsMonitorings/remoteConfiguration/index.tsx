@@ -24,15 +24,21 @@ const RemoteConfiguration = () => {
 
   const [productSelect, setProductSelect] = useState('');
   const [monacoData, setMonacoData] = useState('');
+  const [viewMonacoData, setViewMonacoData] = useState('');
   const [jsonSize, setJsonSize] = useState(0);
   const [editFlag, setEditFlag] = useState(true);
   const [editError, setEditError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const actionRef = useRef<ActionType>();
   const monacoRef = useRef();
   const editorRef = useRef();
 
   type QueryProductProp = typeof postThingsProductInfoIndex;
+
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
 
   const onChangeError = debounce((value) => {
     const error = monacoRef?.current.editor.getModelMarkers(value);
@@ -49,7 +55,14 @@ const RemoteConfiguration = () => {
 
   const editHandle = () => setEditFlag(!editFlag);
 
-  const confirmHandle = () => {};
+  const confirmHandle = () => {
+    // 批量更新逻辑
+  };
+
+  const updateJson = () => {
+    setMonacoData(viewMonacoData);
+    setConfirmLoading(true);
+  };
 
   const updateConfirm = () => {
     if ((!editFlag && editError) || (!editFlag && !monacoData))
@@ -75,6 +88,8 @@ const RemoteConfiguration = () => {
         onOk: confirmHandle,
       });
     }
+    // 保存json及恢复至此版本json逻辑
+    updateJson();
   };
 
   const columns: ProColumns<RemoteConfigurationItem>[] = [
@@ -94,8 +109,14 @@ const RemoteConfiguration = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => (
-        <Button type="primary" onClick={() => {}}>
+      render: (_, record) => (
+        <Button
+          type="primary"
+          onClick={() => {
+            openModal();
+            setViewMonacoData(record?.jsonData);
+          }}
+        >
           查看
         </Button>
       ),
@@ -179,23 +200,6 @@ const RemoteConfiguration = () => {
           >
             {editFlag ? '批量更新' : '保存'}
           </Button>
-          {/* <Modal
-            title="Title"
-            open={open}
-            onOk={confirmHandle}
-            confirmLoading={confirmLoading}
-            onCancel={closeModal}
-            footer={[
-              <Button key="cancel" onClick={closeModal}>
-                取消
-              </Button>,
-              <Button key="submit" type="primary" loading={confirmLoading} onClick={confirmHandle}>
-                确认更新
-              </Button>,
-            ]}
-          >
-            124
-          </Modal> */}
         </div>
       </div>
       <ProTable<RemoteConfigurationItem>
@@ -219,6 +223,32 @@ const RemoteConfiguration = () => {
         pagination={{ pageSize: 10 }}
         size={'middle'}
       />
+      <Modal
+        title="查看详情"
+        open={open}
+        onOk={confirmHandle}
+        confirmLoading={confirmLoading}
+        onCancel={closeModal}
+        footer={[
+          <Button key="cancel" onClick={closeModal}>
+            取消
+          </Button>,
+          <Button key="submit" type="primary" loading={confirmLoading} onClick={updateJson}>
+            恢复至此版本
+          </Button>,
+        ]}
+      >
+        <Editor
+          width={'28vw'}
+          height={'35vh'}
+          value={viewMonacoData}
+          onChange={editorChange}
+          language={'json'}
+          monacoRef={monacoRef}
+          editorRef={editorRef}
+          readOnly={true}
+        />
+      </Modal>
     </PageContainer>
   );
 };
