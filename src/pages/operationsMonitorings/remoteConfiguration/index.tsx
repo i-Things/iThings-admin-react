@@ -9,7 +9,7 @@ import { ProFormSelect } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, message } from 'antd';
+import { Button, message, Tag } from 'antd';
 import sizeof from 'object-sizeof';
 import { useEffect, useRef, useState } from 'react';
 import '../../systemMangers/menu/styles.less';
@@ -86,14 +86,6 @@ const RemoteConfiguration = () => {
     });
   }
 
-  // useEffect(() => {
-  //   console.log(monacoRef?.current.editor.getModelMarkers(editorRef?.current?.getValue?.()));
-
-  //   setEditError(false);
-  //   if (monacoRef?.current.editor.getModelMarkers(editorRef?.current?.getValue?.()))
-  //     setEditError(true);
-  // }, [editorRef?.current?.getValue?.()]);
-
   useEffect(() => {
     setProductSelect(selectOptions[0]?.value);
     querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
@@ -128,8 +120,12 @@ const RemoteConfiguration = () => {
           <header className="editor-header">
             <span className="header-tittle">配置模版</span>
             <span className="header-content">
-              当前文件大小 {jsonSize / 1024 >= 1 ? jsonSize / 1024 : jsonSize}
-              {jsonSize / 1024 >= 1 ? 'kb' : 'b'} (上限 64KB)
+              当前文件大小{' '}
+              <Tag color="orange">
+                {jsonSize / 1024 >= 1 ? (jsonSize / 1024).toFixed(2) : jsonSize}
+                {jsonSize / 1024 >= 1 ? 'kb' : 'b'}
+              </Tag>{' '}
+              (上限 64KB)
             </span>
             <span className="header-submit-time">
               提交于：
@@ -154,7 +150,7 @@ const RemoteConfiguration = () => {
             className="remote-configuration-btn-update"
             type="primary"
             onClick={updateHandle}
-            disabled={jsonSize / 1024 > 64}
+            disabled={jsonSize / 1024 >= 64}
           >
             {editFlag ? '批量更新' : '保存'}
           </Button>
