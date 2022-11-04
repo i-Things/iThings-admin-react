@@ -1,7 +1,16 @@
 import Editor from '@/components/MonacoEditor';
+import useGetDataContent from '@/hooks/useGetDataContent';
 import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useGetTableList from '@/hooks/useGetTableList';
+import useTableCreate from '@/hooks/useTableCreate';
+import useTableUpdate from '@/hooks/useTableUpdate';
 import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import {
+  postThingsProductRemoteConfigCreate,
+  postThingsProductRemoteConfigIndex,
+  postThingsProductRemoteConfigLastestRead,
+  postThingsProductRemoteConfigPushAll,
+} from '@/services/iThingsapi/chanpinyuanchengpeizhi';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
@@ -9,7 +18,7 @@ import { ProFormSelect } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Modal, Tag } from 'antd';
+import { Button, message, Modal, Skeleton, Tag } from 'antd';
 import sizeof from 'object-sizeof';
 import { useEffect, useRef, useState } from 'react';
 import '../../systemMangers/menu/styles.less';
@@ -19,8 +28,11 @@ import type { RemoteConfigurationItem } from './types';
 const debounce = require('lodash.debounce');
 
 const RemoteConfiguration = () => {
-  const { dataList } = useGetTableList();
+  const { queryPage } = useGetTableList();
+  const { queryData, dataContent } = useGetDataContent();
   const { querySelectOptions, selectOptions } = useGetSelectOptions();
+  const { createHandler } = useTableCreate();
+  const { updateHandler } = useTableUpdate();
 
   const [productSelect, setProductSelect] = useState('');
   const [monacoData, setMonacoData] = useState('');
@@ -36,6 +48,8 @@ const RemoteConfiguration = () => {
   const editorRef = useRef();
 
   type QueryProductProp = typeof postThingsProductInfoIndex;
+  type QueryDataProp = typeof postThingsProductRemoteConfigLastestRead;
+  type QueryProp = typeof postThingsProductRemoteConfigIndex;
 
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
@@ -57,11 +71,31 @@ const RemoteConfiguration = () => {
 
   const confirmHandle = () => {
     // 批量更新逻辑
+    updateHandler(postThingsProductRemoteConfigPushAll, undefined, {
+      productID: productSelect,
+    });
   };
 
-  const updateJson = () => {
-    setMonacoData(viewMonacoData);
+  const updateTableList = () => actionRef?.current?.reload();
+
+  const updateJson = (updateMonacoData: boolean) => {
     setConfirmLoading(true);
+    if (!editFlag)
+      createHandler(
+        postThingsProductRemoteConfigCreate,
+        undefined,
+        {
+          productID: productSelect,
+          content: updateMonacoData ? viewMonacoData : monacoData,
+        },
+        updateTableList,
+      ).then((res) => {
+        if (!res) {
+          setConfirmLoading(false);
+          closeModal();
+        }
+      });
+    if (updateMonacoData) setMonacoData(viewMonacoData);
   };
 
   const updateConfirm = () => {
@@ -87,9 +121,17 @@ const RemoteConfiguration = () => {
         okText: '确认更新',
         onOk: confirmHandle,
       });
+    } else {
+      Modal.confirm({
+        title:
+          '是否保存当前配置信息？保存后可以手动将配置批量更新到该产品下的所有设备，设备也可以主动获取配置。',
+        width: 450,
+        closable: true,
+        cancelText: '取消',
+        okText: '确认',
+        onOk: () => updateJson(false),
+      });
     }
-    // 保存json及恢复至此版本json逻辑
-    updateJson();
   };
 
   const columns: ProColumns<RemoteConfigurationItem>[] = [
@@ -114,7 +156,7 @@ const RemoteConfiguration = () => {
           type="primary"
           onClick={() => {
             openModal();
-            setViewMonacoData(record?.jsonData);
+            setViewMonacoData(record?.content);
           }}
         >
           查看
@@ -122,15 +164,6 @@ const RemoteConfiguration = () => {
       ),
     },
   ];
-
-  const tableListDataSource = [];
-  for (let i = 0; i < 5; i += 1) {
-    tableListDataSource.push({
-      key: i,
-      id: i,
-      updateTime: '1667371986422' + i,
-    });
-  }
 
   useEffect(() => {
     setProductSelect(selectOptions[0]?.value);
@@ -141,114 +174,125 @@ const RemoteConfiguration = () => {
     });
   }, [selectOptions.length]);
 
+  useEffect(() => {
+    if (productSelect?.length) {
+      queryData<QueryDataProp, { productID: string }>(postThingsProductRemoteConfigLastestRead, {
+        productID: productSelect,
+      });
+    }
+  }, [productSelect]);
+
+  useEffect(() => {
+    setMonacoData(JSON.stringify(dataContent?.content, null, 2));
+  }, [dataContent, productSelect]);
+
   return (
     <PageContainer>
-      <div style={{ backgroundColor: 'white', padding: '24px' }}>
-        <ProFormSelect
-          name="productID"
-          width={150}
-          label="产品"
-          placeholder="请选择产品"
-          showSearch
-          options={selectOptions}
-          fieldProps={{
-            value: productSelect,
-            onChange: (v: string) => setProductSelect(v),
-          }}
+      <Skeleton loading={!dataContent} active>
+        <div style={{ backgroundColor: 'white', padding: '24px' }}>
+          <ProFormSelect
+            name="productID"
+            width={150}
+            label="产品"
+            placeholder="请选择产品"
+            showSearch
+            options={selectOptions}
+            fieldProps={{
+              value: productSelect,
+              onChange: (v: string) => setProductSelect(v),
+            }}
+          />
+          <section className="menu-tool-tip">
+            <ExclamationCircleTwoTone className="menu-icon" twoToneColor="#ed6a0c" />
+            平台支持远程更新设备的配置文件（JSON
+            格式），您可以在下方编辑配置模板，对设备的系统参数、网络参数等进行远程配置，通过批量更新对设备进行批量远程维护和管理，详细说明请参见
+            <a>文档</a>
+          </section>
+          <div className="editor">
+            <header className="editor-header">
+              <span className="header-tittle">配置模版</span>
+              <span className="header-content">
+                当前文件大小{' '}
+                <Tag color="orange">
+                  {jsonSize / 1024 >= 1 ? (jsonSize / 1024).toFixed(2) : jsonSize}
+                  {jsonSize / 1024 >= 1 ? 'kb' : 'b'}
+                </Tag>{' '}
+                (上限 64KB)
+              </span>
+              <span className="header-submit-time">
+                提交于：
+                {timestampToDateStr(Number(dataContent?.createdTime))}
+              </span>
+            </header>
+            <Editor
+              height={'35vh'}
+              value={monacoData}
+              onChange={editorChange}
+              language={'json'}
+              monacoRef={monacoRef}
+              editorRef={editorRef}
+              readOnly={editFlag ? true : false}
+            />
+          </div>
+          <div className="remote-configuration-btn">
+            <Button onClick={editHandle}>{editFlag ? '编辑' : '取消'}</Button>
+            <Button
+              className="remote-configuration-btn-update"
+              type="primary"
+              onClick={updateConfirm}
+              disabled={jsonSize / 1024 >= 64}
+            >
+              {editFlag ? '批量更新' : '保存'}
+            </Button>
+          </div>
+        </div>
+        <ProTable<RemoteConfigurationItem>
+          headerTitle={'配置版本记录'}
+          actionRef={actionRef}
+          rowKey="deviceName"
+          options={{ ...PROTABLE_OPTIONS }}
+          search={false}
+          request={(params) =>
+            queryPage<QueryProp, RemoteConfigurationItem>(postThingsProductRemoteConfigIndex, {
+              ...params,
+              productID: productSelect,
+            })
+          }
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+          size={'middle'}
         />
-        <section className="menu-tool-tip">
-          <ExclamationCircleTwoTone className="menu-icon" twoToneColor="#ed6a0c" />
-          平台支持远程更新设备的配置文件（JSON
-          格式），您可以在下方编辑配置模板，对设备的系统参数、网络参数等进行远程配置，通过批量更新对设备进行批量远程维护和管理，详细说明请参见
-          <a>文档</a>
-        </section>
-        <div className="editor">
-          <header className="editor-header">
-            <span className="header-tittle">配置模版</span>
-            <span className="header-content">
-              当前文件大小{' '}
-              <Tag color="orange">
-                {jsonSize / 1024 >= 1 ? (jsonSize / 1024).toFixed(2) : jsonSize}
-                {jsonSize / 1024 >= 1 ? 'kb' : 'b'}
-              </Tag>{' '}
-              (上限 64KB)
-            </span>
-            <span className="header-submit-time">
-              提交于：
-              {dataList?.list?.[0]?.updateTime
-                ? Number(timestampToDateStr(Number(dataList?.list?.[0].updateTime)))
-                : ''}
-            </span>
-          </header>
+        <Modal
+          title="查看详情"
+          open={open}
+          onOk={confirmHandle}
+          confirmLoading={confirmLoading}
+          onCancel={closeModal}
+          footer={[
+            <Button key="cancel" onClick={closeModal}>
+              取消
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              loading={confirmLoading}
+              onClick={() => updateJson(true)}
+            >
+              恢复至此版本
+            </Button>,
+          ]}
+        >
           <Editor
             height={'35vh'}
-            value={monacoData}
+            value={viewMonacoData}
             onChange={editorChange}
             language={'json'}
             monacoRef={monacoRef}
             editorRef={editorRef}
-            readOnly={editFlag ? true : false}
+            readOnly={true}
           />
-        </div>
-        <div className="remote-configuration-btn">
-          <Button onClick={editHandle}>{editFlag ? '编辑' : '取消'}</Button>
-          <Button
-            className="remote-configuration-btn-update"
-            type="primary"
-            onClick={updateConfirm}
-            disabled={jsonSize / 1024 >= 64}
-          >
-            {editFlag ? '批量更新' : '保存'}
-          </Button>
-        </div>
-      </div>
-      <ProTable<RemoteConfigurationItem>
-        headerTitle={'配置版本记录'}
-        actionRef={actionRef}
-        rowKey="deviceName"
-        options={{ ...PROTABLE_OPTIONS }}
-        search={false}
-        // request={(params) =>
-        //   queryPage<any, any>(postThingsGroupDeviceIndex, {
-        //     ...params,
-        //   })
-        // }
-        request={() =>
-          Promise.resolve({
-            data: tableListDataSource,
-            success: true,
-          })
-        }
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-        size={'middle'}
-      />
-      <Modal
-        title="查看详情"
-        open={open}
-        onOk={confirmHandle}
-        confirmLoading={confirmLoading}
-        onCancel={closeModal}
-        footer={[
-          <Button key="cancel" onClick={closeModal}>
-            取消
-          </Button>,
-          <Button key="submit" type="primary" loading={confirmLoading} onClick={updateJson}>
-            恢复至此版本
-          </Button>,
-        ]}
-      >
-        <Editor
-          width={'28vw'}
-          height={'35vh'}
-          value={viewMonacoData}
-          onChange={editorChange}
-          language={'json'}
-          monacoRef={monacoRef}
-          editorRef={editorRef}
-          readOnly={true}
-        />
-      </Modal>
+        </Modal>
+      </Skeleton>
     </PageContainer>
   );
 };
