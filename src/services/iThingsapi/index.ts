@@ -17,18 +17,18 @@ import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
 import * as yonghuguanli from './yonghuguanli';
 export default {
-  shebeiguanli,
-  shebeifenzu,
-  caidanguanli,
-  jiaoseguanli,
-  task,
-  chanpinguanli,
-  firmware,
-  shebeixiaoxi,
   shebeijiaohu,
-  yonghuguanli,
-  wumoxing,
+  task,
+  shebeifenzu,
   shebeijianquan,
+  wumoxing,
+  chanpinguanli,
   chanpinyuanchengpeizhi,
+  shebeiguanli,
+  yonghuguanli,
+  caidanguanli,
+  firmware,
+  jiaoseguanli,
   wangguanzishebeiguanli,
+  shebeixiaoxi,
 };

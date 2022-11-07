@@ -5,7 +5,7 @@ import useTableDelete from '@/hooks/useTableDelete';
 import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
   postThingsGroupDeviceIndex,
-  postThingsGroupDeviceMulitDelete,
+  postThingsGroupDeviceMultiDelete,
 } from '@/services/iThingsapi/shebeifenzu';
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
@@ -47,7 +47,7 @@ const GroupDeviceList: React.FC<{
       list,
     };
     deleteHandler<{ groupID: string; list: { productID?: string; deviceName?: string }[] }>(
-      postThingsGroupDeviceMulitDelete,
+      postThingsGroupDeviceMultiDelete,
       actionRef,
       {
         title: '是否从分组中删除选中设备',
