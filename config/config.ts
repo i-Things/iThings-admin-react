@@ -9,7 +9,12 @@ const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
   antd: {},
-  publicPath: '/',
+  /*
+    front/iThingsCore/    iThings核心前端路由
+    front/iThingsCompany/  iThings企业版前端路由
+    front/custom/chengde/  企业版定制版前端路由
+  */
+  publicPath: '/front/iThingsCore/',
   dva: {
     hmr: true,
   },
