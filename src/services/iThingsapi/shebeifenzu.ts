@@ -124,7 +124,7 @@ export async function postThingsGroupInfoIndex(
   body: {
     page: { page?: number; size?: number };
     /** 父组ID, 1-根组 */
-    parentID: number;
+    parentID: string;
     /** 按分组名称筛选 */
     groupName?: string;
     tags?: { key?: string; value?: string }[];

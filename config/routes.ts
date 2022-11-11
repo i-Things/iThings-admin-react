@@ -104,6 +104,11 @@ export default [
             component: './operationsMonitorings/logService/index',
           },
           {
+            name: '远程配置',
+            path: '/operationsMonitorings/remoteConfiguration/index',
+            component: './operationsMonitorings/remoteConfiguration/index',
+          },
+          {
             component: '404',
           },
         ],

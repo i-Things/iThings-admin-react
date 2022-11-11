@@ -28,6 +28,7 @@ const useGetTableList = () => {
           total: 0,
         };
       }
+
       if (res.code === ResponseCode.SUCCESS) setDataList(res?.data);
     } catch (error) {
       message.error((error as Error)?.message);
