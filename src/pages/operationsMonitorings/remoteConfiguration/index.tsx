@@ -20,15 +20,17 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Modal, Skeleton, Tag } from 'antd';
 import debounce from 'lodash/debounce';
+import type { editor } from 'monaco-editor';
 import sizeof from 'object-sizeof';
 import { useEffect, useRef, useState } from 'react';
+import type { ChangeHandler, MonacoEditorProps } from 'react-monaco-editor';
 import '../../systemMangers/menu/styles.less';
 import './styles.less';
 import type { RemoteConfigurationItem } from './types';
 
 const RemoteConfiguration = () => {
   const { queryPage } = useGetTableList();
-  const { queryData, dataContent } = useGetDataContent();
+  const { queryData, dataContent } = useGetDataContent<RemoteConfigurationItem>();
   const { querySelectOptions, selectOptions } = useGetSelectOptions();
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
@@ -43,8 +45,8 @@ const RemoteConfiguration = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const actionRef = useRef<ActionType>();
-  const monacoRef = useRef();
-  const editorRef = useRef();
+  const monacoRef = useRef<MonacoEditorProps>();
+  const editorRef = useRef<editor.IStandaloneCodeEditor>();
 
   type QueryProductProp = typeof postThingsProductInfoIndex;
   type QueryDataProp = typeof postThingsProductRemoteConfigLastestRead;
@@ -54,12 +56,12 @@ const RemoteConfiguration = () => {
   const closeModal = () => setOpen(false);
 
   const onChangeError = debounce((value) => {
-    const error = monacoRef?.current.editor.getModelMarkers(value);
+    const error = monacoRef?.current?.editor.getModelMarkers(value);
     if (error.length) setEditError(true);
     else setEditError(false);
   }, 600);
 
-  const editorChange = (value) => {
+  const editorChange: ChangeHandler = (value) => {
     onChangeError(value);
     setEditError(false);
     setMonacoData(value);
@@ -181,7 +183,7 @@ const RemoteConfiguration = () => {
   }, [productSelect]);
 
   useEffect(() => {
-    setMonacoData(dataContent?.content);
+    setMonacoData(dataContent?.content as string);
   }, [dataContent, productSelect]);
 
   return (
@@ -223,7 +225,7 @@ const RemoteConfiguration = () => {
               </span>
               <span className="header-submit-time">
                 提交于：
-                {timestampToDateStr(Number(dataContent?.createdTime))}
+                {timestampToDateStr(Number(dataContent?.createTime))}
               </span>
             </header>
             <Editor
@@ -231,8 +233,8 @@ const RemoteConfiguration = () => {
               value={monacoData}
               onChange={editorChange}
               language={'json'}
-              monacoRef={monacoRef}
-              editorRef={editorRef}
+              monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
+              editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
               readOnly={editFlag ? true : false}
             />
           </div>
@@ -289,8 +291,8 @@ const RemoteConfiguration = () => {
             value={viewMonacoData}
             onChange={editorChange}
             language={'json'}
-            monacoRef={monacoRef}
-            editorRef={editorRef}
+            monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
+            editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
             readOnly={true}
           />
         </Modal>

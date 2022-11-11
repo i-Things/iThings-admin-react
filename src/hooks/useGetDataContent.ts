@@ -1,8 +1,8 @@
 import { ResponseCode } from '@/utils/base';
 import message from 'antd/lib/message';
 import { useState } from 'react';
-const useGetDataContent = () => {
-  const [dataContent, setDataContent] = useState();
+const useGetDataContent = <S>() => {
+  const [dataContent, setDataContent] = useState<S>();
   const queryData = async <T extends Function, K>(queryApi: T, params: K): Promise<any> => {
     const body = {
       ...params,
