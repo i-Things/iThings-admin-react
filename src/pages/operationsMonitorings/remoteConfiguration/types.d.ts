@@ -1,5 +1,5 @@
 export interface RemoteConfigurationItem {
   id: string;
-  updateTime: string;
+  createTime: string;
   content: string;
 }

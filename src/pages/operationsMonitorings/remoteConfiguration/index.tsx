@@ -19,13 +19,12 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Modal, Skeleton, Tag } from 'antd';
+import debounce from 'lodash/debounce';
 import sizeof from 'object-sizeof';
 import { useEffect, useRef, useState } from 'react';
 import '../../systemMangers/menu/styles.less';
 import './styles.less';
 import type { RemoteConfigurationItem } from './types';
-
-const debounce = require('lodash.debounce');
 
 const RemoteConfiguration = () => {
   const { queryPage } = useGetTableList();
@@ -80,7 +79,7 @@ const RemoteConfiguration = () => {
 
   const updateJson = (updateMonacoData: boolean) => {
     setConfirmLoading(true);
-    if (!editFlag)
+    if (!editFlag || updateMonacoData)
       createHandler(
         postThingsProductRemoteConfigCreate,
         undefined,
@@ -93,15 +92,15 @@ const RemoteConfiguration = () => {
         if (!res) {
           setConfirmLoading(false);
           closeModal();
+          if (updateMonacoData) setMonacoData(viewMonacoData);
         }
       });
-    if (updateMonacoData) setMonacoData(viewMonacoData);
   };
 
   const updateConfirm = () => {
     if ((!editFlag && editError) || (!editFlag && !monacoData))
       return message.error('json格式错误');
-    else if (editFlag) {
+    else if (editFlag)
       Modal.confirm({
         title: '是否确认对该产品下的所有设备进行批量远程配置更新？',
         width: 450,
@@ -121,7 +120,7 @@ const RemoteConfiguration = () => {
         okText: '确认更新',
         onOk: confirmHandle,
       });
-    } else {
+    else
       Modal.confirm({
         title:
           '是否保存当前配置信息？保存后可以手动将配置批量更新到该产品下的所有设备，设备也可以主动获取配置。',
@@ -131,7 +130,6 @@ const RemoteConfiguration = () => {
         okText: '确认',
         onOk: () => updateJson(false),
       });
-    }
   };
 
   const columns: ProColumns<RemoteConfigurationItem>[] = [
@@ -142,7 +140,7 @@ const RemoteConfiguration = () => {
     },
     {
       title: '版本更新时间',
-      dataIndex: 'updateTime',
+      dataIndex: 'createTime',
       valueType: 'dateTime',
       search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
@@ -183,7 +181,7 @@ const RemoteConfiguration = () => {
   }, [productSelect]);
 
   useEffect(() => {
-    setMonacoData(JSON.stringify(dataContent?.content, null, 2));
+    setMonacoData(dataContent?.content);
   }, [dataContent, productSelect]);
 
   return (
@@ -199,7 +197,11 @@ const RemoteConfiguration = () => {
             options={selectOptions}
             fieldProps={{
               value: productSelect,
-              onChange: (v: string) => setProductSelect(v),
+              onChange: (v: string) => {
+                setProductSelect(v);
+                actionRef?.current?.reload();
+                setEditFlag(true);
+              },
             }}
           />
           <section className="menu-tool-tip">
