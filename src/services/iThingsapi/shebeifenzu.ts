@@ -2,44 +2,6 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
-/** 添加分组设备(支持批量) POST /api/v1/things/group/device/create */
-export async function postThingsGroupDeviceCreate(
-  body: {
-    /** 分组ID */
-    groupID: string;
-    list: { productID?: string; deviceName?: string }[];
-  },
-  options?: { [key: string]: any },
-) {
-  return request<{ code: number; msg: string }>('/api/v1/things/group/device/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 删除分组设备(支持批量) POST /api/v1/things/group/device/delete */
-export async function postThingsGroupDevice__openAPI__delete(
-  body: {
-    /** 分组ID */
-    groupID: string;
-    list: { productID?: string; deviceName?: string }[];
-  },
-  options?: { [key: string]: any },
-) {
-  return request<{ code: number; msg: string }>('/api/v1/things/group/device/delete', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 获取分组设备列表 POST /api/v1/things/group/device/index */
 export async function postThingsGroupDeviceIndex(
   body: {
@@ -70,6 +32,44 @@ export async function postThingsGroupDeviceIndex(
       }[];
     };
   }>('/api/v1/things/group/device/index', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 添加分组设备(支持批量) POST /api/v1/things/group/device/multi-create */
+export async function postThingsGroupDeviceMultiCreate(
+  body: {
+    /** 分组ID */
+    groupID: string;
+    list: { productID?: string; deviceName?: string }[];
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string }>('/api/v1/things/group/device/multi-create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 删除分组设备(支持批量) POST /api/v1/things/group/device/multi-delete */
+export async function postThingsGroupDeviceMultiDelete(
+  body: {
+    /** 分组ID */
+    groupID: string;
+    list: { productID?: string; deviceName?: string }[];
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string }>('/api/v1/things/group/device/multi-delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
