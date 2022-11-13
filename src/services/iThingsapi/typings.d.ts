@@ -233,7 +233,7 @@ declare namespace API {
     productID: string;
     /** 物模型类型 1:property属性 2:event事件 3:action行为 */
     type: number;
-    /** 物模型标签 1:自定义 2:可选 3:必选 必选不可删除 */
+    /** 物模型标签 1:自定义 2:可选 3:必选  必选不可删除 */
     tag?: number;
     /** 标识符 */
     identifier: string;
@@ -261,7 +261,7 @@ declare namespace API {
     specs: SchemaDefine[];
     /** 枚举及bool类型 bool enum */
     mapping: string;
-    /** 数值最小值 int float */
+    /** 数值最小值 int  float */
     min: string;
     /** 数值最大值 int string float */
     max: string;
@@ -276,7 +276,7 @@ declare namespace API {
   };
 
   type SchemaEvent = {
-    /** 事件类型 信息:info 告警alert 故障:fault */
+    /** 事件类型 信息:info  告警alert  故障:fault */
     type: string;
     /** 事件参数 */
     params: SchemaParam[];
@@ -287,12 +287,14 @@ declare namespace API {
     identifier: string;
     /** 参数名称 */
     name: string;
+    /** 参数定义 */
     define: SchemaDefine;
   };
 
   type SchemaProperty = {
     /** 读写类型 r(只读) rw(可读可写) */
     mode: string;
+    /** 参数定义 */
     define: SchemaDefine;
   };
 
@@ -301,6 +303,7 @@ declare namespace API {
     identifier: string;
     /** 参数名称 */
     name: string;
+    /** 参数定义 */
     dataType: SchemaDefine;
   };
 

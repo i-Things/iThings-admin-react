@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import useTableCreate from '@/hooks/useTableCreate';
-import { postThingsGroupDeviceCreate } from '@/services/iThingsapi/shebeifenzu';
+import { postThingsGroupDeviceMultiCreate } from '@/services/iThingsapi/shebeifenzu';
+
 import { selectConfirm } from '@/utils/utils';
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
@@ -19,7 +20,7 @@ const DeviceList: React.FC<{ activeKey: activeKeyProps }> = ({ activeKey }) => {
   const actionListRef = useRef<ActionType>();
   const actionCreateRef = useRef<ActionType>();
 
-  type CreateProp = typeof postThingsGroupDeviceCreate;
+  type CreateProp = typeof postThingsGroupDeviceMultiCreate;
 
   const addDevice = () => setDrawerVisible(true);
 
@@ -32,7 +33,7 @@ const DeviceList: React.FC<{ activeKey: activeKeyProps }> = ({ activeKey }) => {
       list,
     };
     await createHandler<CreateProp, GroupDeviceCreateProps>(
-      postThingsGroupDeviceCreate,
+      postThingsGroupDeviceMultiCreate,
       actionCreateRef,
       body,
     );
