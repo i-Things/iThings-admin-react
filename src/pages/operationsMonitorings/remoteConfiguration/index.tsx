@@ -92,6 +92,7 @@ const RemoteConfiguration = () => {
         updateTableList,
       ).then((res) => {
         if (!res) {
+          setEditFlag(true);
           setConfirmLoading(false);
           closeModal();
           if (updateMonacoData) setMonacoData(viewMonacoData);
@@ -253,7 +254,7 @@ const RemoteConfiguration = () => {
         <ProTable<RemoteConfigurationItem>
           headerTitle={'配置版本记录'}
           actionRef={actionRef}
-          rowKey="deviceName"
+          rowKey="id"
           options={{ ...PROTABLE_OPTIONS }}
           search={false}
           request={(params) =>

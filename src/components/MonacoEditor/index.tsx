@@ -2,6 +2,7 @@ import { MONACO_OPTIONS } from '@/utils/const';
 import type { editor } from 'monaco-editor';
 import type { ChangeHandler, EditorDidMount, MonacoEditorProps } from 'react-monaco-editor';
 import MonacoEditor from 'react-monaco-editor';
+
 const Editor: React.FC<{
   width?: string;
   height: string;
