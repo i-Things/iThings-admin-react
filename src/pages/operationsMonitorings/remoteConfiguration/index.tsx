@@ -184,7 +184,9 @@ const RemoteConfiguration = () => {
   }, [productSelect]);
 
   useEffect(() => {
-    setMonacoData(dataContent?.content as string);
+    const json = dataContent?.content as string;
+    setJsonSize(sizeof(json));
+    setMonacoData(json);
   }, [dataContent, productSelect]);
 
   return (
