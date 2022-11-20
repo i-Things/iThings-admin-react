@@ -125,16 +125,33 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     {
       title: '子设备',
       dataIndex: 'deviceName',
+      copyable: true,
     },
     {
-      title: '设备所属产品',
+      title: '所属产品名称',
       dataIndex: 'productID',
       valueEnum: productsValue,
+      copyable: true,
+    },
+    {
+      title: '所属产品ID',
+      dataIndex: 'productID',
+      copyable: true,
     },
     {
       title: '状态',
       dataIndex: 'isOnline',
       valueEnum: isOnlineEnum,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdTime',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '激活时间',
+      dataIndex: 'firstLogin',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '最后上线时间',
@@ -186,8 +203,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       />
       {visible && (
         <AddSubServiceModal
+          setVisible={setVisible}
           visible={visible}
-          onCancel={() => setVisible(false)}
           refresh={refresh}
           gateWayProductID={productID}
           gateWaydeviceName={deviceName}

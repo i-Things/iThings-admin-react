@@ -13,7 +13,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-table/lib/typing';
-import { Button, message, Modal, Space } from 'antd';
+import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
 import DeviceTagsModal from '../detail/pages/deviceInfo/pages/tagsInfo/deviceTagsModal';
@@ -278,7 +278,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       valueType: 'option',
       key: 'option',
       render: (text, record: DEVICE_INFO) => (
-        <Space>
+        <>
           <a
             key="view"
             onClick={() => {
@@ -286,17 +286,10 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
                 '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName + '/1',
               );
             }}
+            style={{ marginRight: '16px' }}
           >
             查看
           </a>
-          {deviceType[record.productID || ''].text === '网关' && (
-            <a
-              className=""
-              href={`/deviceMangers/device/detail/${record.productID}/${record.deviceName}/7`}
-            >
-              子设备管理
-            </a>
-          )}
           <Button
             danger
             key="deleteProduct"
@@ -306,7 +299,17 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           >
             删除
           </Button>
-        </Space>
+          {deviceType[record.productID || ''].text === '网关' && (
+            <div>
+              <a
+                className=""
+                href={`/deviceMangers/device/detail/${record.productID}/${record.deviceName}/7`}
+              >
+                子设备管理
+              </a>
+            </div>
+          )}
+        </>
       ),
     },
   ];

@@ -1,9 +1,9 @@
 export interface ModalProps {
   visible: boolean;
-  onCancel: () => void;
   refresh: () => void;
   gateWayProductID: string;
   gateWaydeviceName: string;
+  setVisible: SetStateAction;
 }
 
 export interface SelectOption {
