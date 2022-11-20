@@ -2,24 +2,28 @@ import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli'
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { postThingsDeviceGatewayMultiCreate } from '@/services/iThingsapi/wangguanzishebeiguanli';
 import { DefaultPage, ResponseCode } from '@/utils/base';
-import { useRequest } from 'ahooks';
-import { Checkbox, Col, Divider, message, Modal, Pagination, Row, Select, Spin } from 'antd';
-import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import type { DEVICE_INFO } from '@/utils/const';
+import { timestampToDateStr } from '@/utils/date';
+import { isOnlineEnum } from '@/utils/utils';
+import { DrawerForm } from '@ant-design/pro-components';
+import type { ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import type { PageInfo } from '@ant-design/pro-table/lib/typing';
+import { useAntdTable, useRequest } from 'ahooks';
+import { Col, message, Row, Select } from 'antd';
+import type { Key } from 'react';
 import { useState } from 'react';
 import type { ModalProps, SelectOption } from './data';
 
 const AddSubServiceModal: React.FC<ModalProps> = (props) => {
-  const { visible, onCancel, gateWayProductID, gateWaydeviceName, refresh } = props;
+  const { visible, gateWayProductID, gateWaydeviceName, refresh, setVisible } = props;
 
   const [produceListOption, setProductListOption] = useState<SelectOption[]>();
-  const [pageNum, setPageNum] = useState(1);
   const [productID, setProductID] = useState('');
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [checkDevice, setCheckDevice] = useState<CheckboxValueType[]>([]);
-  const [allChecked, setAllChecked] = useState(false);
+  const [selectedDeviceKeys, setSelectedDeviceKeys] = useState<Key[]>([]);
+  const [selectedDevice, setSelectedDevice] = useState<DEVICE_INFO[]>([]);
 
-  /** 获取网关产品列表 */
+  /** 获取子设备产品列表 */
   useRequest(postThingsProductInfoIndex, {
     defaultParams: [
       {
@@ -27,7 +31,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
           size: 9999999,
           page: 1,
         },
-        deviceType: 2,
+        deviceType: 3,
       },
     ],
     onSuccess: (result) => {
@@ -44,100 +48,128 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
     },
   });
 
-  /** 获取设备列表 */
-  const { data: deviceInfo = { list: [], total: 0 }, loading } = useRequest(
-    async () => {
-      const res = await postThingsDeviceInfoIndex({
-        page: {
-          size: DefaultPage.size,
-          page: pageNum,
-        },
-        productID,
-      });
-      return res.data;
-    },
-    {
-      ready: !!productID,
-      refreshDeps: [pageNum, productID],
-      onError: (error) => {
-        message.error('获取设备列表错误:' + error.message);
-      },
-    },
-  );
+  /** 获取子设备列表 */
+  const subDeviceListTable = async ({ current, pageSize }: PageInfo) => {
+    // 初始化参数
+    const page = {
+      page: current,
+      size: pageSize,
+    };
+    const _params = {
+      productID,
+      page,
+    };
+
+    const res = await postThingsDeviceInfoIndex(_params);
+    return {
+      list: res.data.list || [],
+      total: res.data.total || 0,
+    };
+  };
+
+  const { tableProps } = useAntdTable(subDeviceListTable, {
+    defaultPageSize: DefaultPage.size,
+    refreshDeps: [productID],
+  });
 
   /** 切换产品选择 */
   const handleSelectProduct = (val: string) => {
     setProductID(val);
-    setCheckDevice([]);
-    setAllChecked(false);
+    setSelectedDeviceKeys([]);
+    setSelectedDevice([]);
   };
 
   /** 添加设备 */
-  const handleOk = () => {
-    if (checkDevice.length === 0) {
+  const onFinish = async () => {
+    if (selectedDeviceKeys.length === 0) {
       message.warning('请选择设备');
-      return;
+      return false;
     }
     const params = {
       gateWayProductID,
       gateWaydeviceName,
-      list: checkDevice.map((item) => ({ productID, deviceName: String(item) })),
+      list: selectedDevice.map((item) => ({ productID, deviceName: item.deviceName || '' })),
     };
-    setSubmitLoading(true);
-    postThingsDeviceGatewayMultiCreate(params)
-      .then((res) => {
-        if (res.code === ResponseCode.SUCCESS) {
-          message.success('添加成功');
-          refresh();
-          onCancel();
-        }
-      })
-      .catch((error) => {
-        message.error('添加失败:' + error.message);
-      })
-      .finally(() => {
-        setSubmitLoading(false);
-      });
+    try {
+      const res = await postThingsDeviceGatewayMultiCreate(params);
+      if (res.code === ResponseCode.SUCCESS) {
+        message.success('添加成功');
+        refresh();
+      }
+      return true;
+    } catch (error) {
+      message.error('添加失败:' + (error as Error).message);
+      return false;
+    }
   };
 
   /** 选择子设备 */
-  const handleCheckDevice = (e: CheckboxChangeEvent) => {
-    if (e.target.checked) {
-      setCheckDevice((oldVal) => [...oldVal, e.target.value]);
-    } else {
-      setCheckDevice((oldVal) => oldVal.filter((item) => item !== e.target.value));
-    }
+  const handleCheckDevice = (selectedRowKeys: Key[], selectedRows: DEVICE_INFO[]) => {
+    setSelectedDevice(selectedRows);
+    setSelectedDeviceKeys(selectedRowKeys);
   };
 
-  /** 全选当前页设备 */
-  const handleCheckAll = (e: CheckboxChangeEvent) => {
-    const checkValue = deviceInfo?.list?.map((item) => item.deviceName || '') || [];
-    setAllChecked(e.target.checked);
-    if (e.target.checked) {
-      setCheckDevice((oldVal) => Array.from(new Set([...oldVal, ...checkValue])));
-    } else {
-      setCheckDevice((oldValue) => {
-        for (let i = 0; i < checkValue.length; i++) {
-          for (let j = 0; j < oldValue.length; j++) {
-            if (checkValue[i] === oldValue[j]) {
-              oldValue.splice(j, 1);
-              break;
-            }
-          }
-        }
-        return [...oldValue];
-      });
-    }
-  };
+  const deviceColumns: ProColumns<DEVICE_INFO>[] = [
+    {
+      title: '子设备',
+      dataIndex: 'deviceName',
+      copyable: true,
+    },
+    {
+      title: '所属产品名称',
+      dataIndex: 'productID',
+      renderText: (text: string) =>
+        produceListOption?.filter((item) => item.value === text)[0].label,
+      copyable: true,
+    },
+    {
+      title: '所属产品ID',
+      dataIndex: 'productID',
+      copyable: true,
+    },
+    {
+      title: '状态',
+      dataIndex: 'isOnline',
+      valueEnum: isOnlineEnum,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdTime',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '激活时间',
+      dataIndex: 'firstLogin',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '最后上线时间',
+      dataIndex: 'lastLogin',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      key: 'option',
+      render: (_, record: DEVICE_INFO) => (
+        <a
+          href={`/deviceMangers/device/detail/${record.productID}/${record.deviceName}/1`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          查看
+        </a>
+      ),
+    },
+  ];
 
   return (
-    <Modal
+    <DrawerForm
       title="添加子设备"
       visible={visible}
-      width={800}
-      onCancel={onCancel}
-      onOk={handleOk}
-      confirmLoading={submitLoading}
+      onVisibleChange={setVisible}
+      width={1000}
+      onFinish={onFinish}
     >
       <Row align="middle" gutter={16}>
         <Col>产品</Col>
@@ -152,60 +184,20 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
         </Col>
       </Row>
       <div style={{ marginTop: '20px' }}>
-        <Row
-          justify="space-between"
-          style={{ backgroundColor: 'rgb(242, 242, 242)', padding: '4px' }}
-        >
-          <Col>已勾选{checkDevice.length}项</Col>
-          <Col>
-            <Checkbox checked={allChecked} onChange={handleCheckAll}>
-              全选
-            </Checkbox>
-          </Col>
-        </Row>
-        <Divider style={{ marginTop: '4px' }} />
-        <Spin spinning={loading}>
-          {deviceInfo?.list && deviceInfo.list.length > 0 && (
-            <Checkbox.Group value={checkDevice} style={{ width: '100%' }}>
-              <Row gutter={[16, 16]}>
-                {deviceInfo?.list?.map((item) => (
-                  <Col key={item.deviceName} span={8}>
-                    <Checkbox value={item.deviceName} onChange={handleCheckDevice}>
-                      <span style={{ marginRight: '4px' }}>{item.deviceName}</span>
-                      <a
-                        href={`/deviceMangers/device/detail/${productID}/${item.deviceName}/1`}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        详情
-                      </a>
-                    </Checkbox>
-                  </Col>
-                ))}
-              </Row>
-            </Checkbox.Group>
-          )}
-          {!loading && deviceInfo?.list && deviceInfo.list.length === 0 && (
-            <div style={{ textAlign: 'center' }}>当前暂无数据，请选择其他产品</div>
-          )}
-        </Spin>
-        <Divider />
-        <Row justify="space-between">
-          <Col>共{deviceInfo.total}条</Col>
-          <Col>
-            <Pagination
-              current={pageNum}
-              hideOnSinglePage
-              onChange={(page) => {
-                setAllChecked(false);
-                setPageNum(page);
-              }}
-              total={deviceInfo.total}
-            />
-          </Col>
-        </Row>
+        <ProTable
+          rowKey="secret"
+          toolBarRender={false}
+          search={false}
+          columns={deviceColumns}
+          {...tableProps}
+          rowSelection={{
+            selectedRowKeys: selectedDeviceKeys,
+            onChange: handleCheckDevice,
+            preserveSelectedRowKeys: true,
+          }}
+        />
       </div>
-    </Modal>
+    </DrawerForm>
   );
 };
 
