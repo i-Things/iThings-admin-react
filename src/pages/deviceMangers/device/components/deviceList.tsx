@@ -291,11 +291,12 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
             查看
           </a>
           <Button
-            danger
+            type="link"
             key="deleteProduct"
             onClick={() => {
               showDeleteConfirm(record);
             }}
+            style={{ padding: 0 }}
           >
             删除
           </Button>
