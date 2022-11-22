@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import useTableCreate from '@/hooks/useTableCreate';
 import { postThingsGroupDeviceMultiCreate } from '@/services/iThingsapi/shebeifenzu';
-
 import { selectConfirm } from '@/utils/utils';
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
