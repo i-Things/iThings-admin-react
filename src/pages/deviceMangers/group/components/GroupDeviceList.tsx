@@ -166,7 +166,7 @@ const GroupDeviceList: React.FC<{
           </LightFilter>
         }
         actionRef={actionRef}
-        rowKey="deviceName"
+        rowKey="secret"
         options={{ ...PROTABLE_OPTIONS }}
         search={false}
         toolBarRender={() => [
@@ -177,7 +177,10 @@ const GroupDeviceList: React.FC<{
           ) : undefined,
         ]}
         rowSelection={{
-          onChange: (_, selectedRows) => selectedRowsHandler(selectedRows),
+          onChange: (_, selectedRows) => {
+            selectedRowsHandler(selectedRows);
+            console.log(selectedRows);
+          },
         }}
         tableAlertRender={
           listFlag
