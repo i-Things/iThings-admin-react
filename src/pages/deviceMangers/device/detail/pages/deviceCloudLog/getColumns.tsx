@@ -17,12 +17,29 @@ const actionMap = new Map([
   ['action', '行为'],
 ]);
 
+const dataTypeMap = new Map([
+  ['bool', '布尔型'],
+  ['int', '整数型'],
+  ['string', '字符串'],
+  ['float', '浮点型'],
+  ['enum', '枚举整型'],
+  ['timestamp', '时间型'],
+  ['struct', '结构体'],
+  ['array', '数组'],
+]);
+
 export const getAttrColumns = (handleHistory: (record: Partial<AttrData>) => void) => {
   return [
     {
       title: '标识符',
       dataIndex: 'dataID',
       key: 'dataID',
+      render: (val: string) => val || '-',
+    },
+    {
+      title: '功能名称',
+      dataIndex: 'name',
+      key: 'name',
       render: (val: string) => val || '-',
     },
     {
@@ -34,6 +51,12 @@ export const getAttrColumns = (handleHistory: (record: Partial<AttrData>) => voi
           查看
         </Button>
       ),
+    },
+    {
+      title: '数据类型',
+      dataIndex: 'affordance',
+      key: 'affordance',
+      render: (val: string) => dataTypeMap.get(val) || '-',
     },
     {
       title: '最新值',

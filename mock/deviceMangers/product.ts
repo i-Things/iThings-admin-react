@@ -37,7 +37,7 @@ const waitTime = (time: number = 100) => {
 async function postThingsProductInfoIndex(req: Request, res: Response) {
   await waitTime(500);
   return res.json({
-    code: 0,
+    code: 200,
     msg: 'string',
     data: {
       list: productList,

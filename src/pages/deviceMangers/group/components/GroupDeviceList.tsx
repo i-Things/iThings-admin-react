@@ -5,7 +5,7 @@ import useTableDelete from '@/hooks/useTableDelete';
 import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
   postThingsGroupDeviceIndex,
-  postThingsGroupDevice__openAPI__delete,
+  postThingsGroupDeviceMultiDelete,
 } from '@/services/iThingsapi/shebeifenzu';
 import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
@@ -47,7 +47,7 @@ const GroupDeviceList: React.FC<{
       list,
     };
     deleteHandler<{ groupID: string; list: { productID?: string; deviceName?: string }[] }>(
-      postThingsGroupDevice__openAPI__delete,
+      postThingsGroupDeviceMultiDelete,
       actionRef,
       {
         title: '是否从分组中删除选中设备',
@@ -167,7 +167,7 @@ const GroupDeviceList: React.FC<{
           </LightFilter>
         }
         actionRef={actionRef}
-        rowKey="deviceName"
+        rowKey="secret"
         options={{ ...PROTABLE_OPTIONS }}
         search={false}
         toolBarRender={() => [
@@ -178,7 +178,10 @@ const GroupDeviceList: React.FC<{
           ) : undefined,
         ]}
         rowSelection={{
-          onChange: (_, selectedRows) => selectedRowsHandler(selectedRows),
+          onChange: (_, selectedRows) => {
+            selectedRowsHandler(selectedRows);
+            console.log(selectedRows);
+          },
         }}
         tableAlertRender={
           listFlag
