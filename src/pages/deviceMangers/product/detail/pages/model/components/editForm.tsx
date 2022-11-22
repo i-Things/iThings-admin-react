@@ -19,6 +19,7 @@ import {
 } from '@/services/iThingsapi/wumoxing';
 import { createAsyncFormActions, FormEffectHooks, FormSpy } from '@formily/antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { useParams } from 'umi';
 import type { EditFormType } from './const';
 import {
   dataTypeList,
@@ -40,6 +41,8 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
   const [isEdit, setIsEdit] = useState(false);
+  const urlParams = useParams() as { id: string };
+  const productID = urlParams.id ?? '';
 
   const currentFunctionType = useRef<1 | 2 | 3>(1);
   const ruleModalFormItemLayout = {
@@ -223,7 +226,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     }
 
     const _params = {
-      productID: '254pwnKQsvK',
+      productID,
       type,
       tag: 1,
       identifier,
@@ -565,193 +568,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     struct: ['mode', 'specs'],
   };
 
-  const structTypeFormItem = (
-    <FormLayout
-      className="rule_for_Table"
-      wrapperCol={{
-        span: 24,
-      }}
-    >
-      <Field
-        type="array"
-        name="specs"
-        title="数据定义"
-        x-component="ArrayTable"
-        required
-        x-props={{ visible: false }}
-        x-component-props={{
-          operationsWidth: 80,
-          operations: {
-            title: '操作',
-          },
-          renderMoveDown: () => null,
-          renderMoveUp: () => null,
-          renderRemove: (idx: number) => {
-            const mutators = ruleActions.current.createMutators('specs');
-            return (
-              <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                {({}) => {
-                  return (
-                    <a
-                      style={{
-                        width: '60px',
-                      }}
-                      onClick={async () => {
-                        (await mutators).remove(idx);
-                      }}
-                    >
-                      删除
-                    </a>
-                  );
-                }}
-              </FormSpy>
-            );
-          },
-        }}
-      >
-        <Field type="object">
-          <Field type="string" name="name" x-component="Input" title="参数名称" required />
-          <Field type="string" name="identifier" x-component="Input" title="参数标识符" required />
-          <Field
-            type="string"
-            name="type"
-            x-component="Select"
-            title="数据类型"
-            default={'bool'}
-            enum={_dataTypeList}
-          />
-          {/* 动态渲染 */}
-          <Field type="object" name="dataType" title="数据定义" required>
-            <Field
-              type="string"
-              name="elementType"
-              title="元素类型"
-              required
-              default={'int'}
-              x-props={{
-                placeholder: '请选择元素类型',
-                optionType: 'button',
-                options: yuansuleixingList,
-                visible: false,
-              }}
-              x-component="Radio"
-            />
-            <FormMegaLayout
-              gutter={10}
-              grid
-              autoRow
-              full
-              labelCol={8}
-              wrapperCol={24}
-              name="shuzhifanweiForbool"
-            >
-              <Field type="object" name="mapping" required x-props={{ visible: false }}>
-                <FormItemGrid gutter={10} style={{ marginBottom: -25 }}>
-                  <Field
-                    type="string"
-                    name="0"
-                    x-component="Input"
-                    required
-                    x-props={{
-                      placeholder: '请选择',
-                      addonBefore: '0',
-                    }}
-                  />
-                  <Field
-                    type="string"
-                    name="1"
-                    x-component="Input"
-                    required
-                    x-props={{
-                      placeholder: '请选择',
-                      addonBefore: 1,
-                    }}
-                  />
-                </FormItemGrid>
-              </Field>
-
-              {intTypeFormItem}
-              <Field
-                type="number"
-                name="max"
-                title="数据定义"
-                required
-                x-props={{
-                  placeholder: '请输入数据定义',
-                  visible: false,
-                  addonBefore: '字节',
-                }}
-                x-component="NumberPicker"
-              />
-              <Field
-                type="array"
-                name="shujudingyiForenum"
-                title=""
-                x-component="ArrayTable"
-                required
-                x-props={{
-                  visible: false,
-                }}
-                x-component-props={{
-                  operationsWidth: 80,
-                  operations: {
-                    title: '',
-                  },
-                  renderMoveDown: () => null,
-                  renderMoveUp: () => null,
-                  renderRemove: (idx: number) => {
-                    const mutators = ruleActions.current.createMutators('specs');
-                    return (
-                      <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                        {({}) => {
-                          return (
-                            <a
-                              style={{
-                                width: '60px',
-                              }}
-                              onClick={async () => {
-                                (await mutators).remove(idx);
-                              }}
-                            >
-                              删除
-                            </a>
-                          );
-                        }}
-                      </FormSpy>
-                    );
-                  },
-                }}
-              >
-                <Field type="object">
-                  <Field
-                    type="string"
-                    name="label"
-                    x-component="NumberPicker"
-                    title="枚举键值"
-                    required
-                  />
-                  <Field type="string" name="value" x-component="Input" title="枚举项描述" />
-                </Field>
-              </Field>
-              <Field
-                type="string"
-                name="timestamp"
-                x-component="Input"
-                x-props={{
-                  visible: false,
-                }}
-                x-component-props={{ defaultValue: 'INT类型的UTC时间戳（秒）' }}
-                required
-                default="INT类型的UTC时间戳（秒)"
-                readOnly
-              />
-            </FormMegaLayout>
-          </Field>
-        </Field>
-      </Field>
-    </FormLayout>
-  );
-
   const renderStructFormItem = (title: string, name: string) => {
     return (
       <FormLayout
@@ -1036,7 +852,11 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           });
 
           // 监听数据类型为数组时，元素类型的变化
-          onFieldValueChange$('elementType').subscribe((state) => {
+          onFieldValueChange$('elementType').subscribe(async (state) => {
+            const dataType = await ruleActions.current.getFieldState('dataType');
+            if (dataType !== 'array') {
+              return;
+            }
             const value = state.value;
             if (!value) {
               return;
@@ -1220,7 +1040,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           {stringTypeFormItem}
           {enumTypeFormItem}
           {timeTypeFormItem}
-          {structTypeFormItem}
+          {renderStructFormItem('数据定义', 'specs')}
         </>
         <>
           <Field
