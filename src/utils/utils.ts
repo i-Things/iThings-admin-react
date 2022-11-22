@@ -154,3 +154,41 @@ export function objTransferArr(
   }
   return result;
 }
+
+/**
+ *  判断是否为 合法的JSON
+ *
+ * @export
+ * @param {string} str 待校验的 json 字符串
+ * @return {*}
+ */
+export function isJSON(str: string) {
+  if (typeof str == 'string') {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+/**
+ * 在前端创建html或json文件，并通过浏览器进行导出
+ *
+ * @export
+ * @param {string} content 文件内容
+ * @param {string} [filename='tsl.json'] 文件名
+ */
+export function downloadFunction(content: string, filename = 'tsl.json') {
+  const eleLink = document.createElement('a');
+  eleLink.download = filename;
+  eleLink.style.display = 'none';
+  const blob = new Blob([content]);
+  eleLink.href = URL.createObjectURL(blob);
+  document.body.appendChild(eleLink);
+  eleLink.click();
+  document.body.removeChild(eleLink);
+}
