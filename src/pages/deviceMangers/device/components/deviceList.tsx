@@ -4,7 +4,7 @@ import {
   postThingsDeviceInfoIndex,
   postThingsDeviceInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeiguanli';
-import { ResponseCode } from '@/utils/base';
+import { FlagStatus, ResponseCode } from '@/utils/base';
 import type { DEVICE_INFO, PRODUCT_INFO } from '@/utils/const';
 import { DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -16,23 +16,39 @@ import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
+import DeviceTagsModal from '../detail/pages/deviceInfo/pages/tagsInfo/deviceTagsModal';
 
 const { confirm } = Modal;
+
+interface Tags {
+  key?: string;
+  value?: string;
+}
+
 type queryParam = {
   pageSize: number;
   current: number;
   productID?: string;
   deviceName?: string;
   /** 非模糊查询 为tag的名,value为tag对应的值 */
-  tags?: { key?: string; value?: string }[];
+  tags?: Tags[];
 };
 interface Props {
   productInfo?: PRODUCT_INFO;
 }
+
+const deviceTypeMap = new Map([
+  [1, '设备'],
+  [2, '网关'],
+  [3, '子设备'],
+]);
+
 const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const actionRef = useRef<ActionType>();
   const [productsValue, setProductsValue] = useState({});
+  const [deviceType, setDeviceType] = useState({});
   const [products, setProducts] = useState<PRODUCT_INFO[]>();
+  const [tags, setTags] = useState<Tags[]>();
   const getProductName = (productID: string) => {
     const info = productsValue[productID];
     if (info != undefined) {
@@ -84,7 +100,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       },
       productID: productID,
       deviceName: params.deviceName,
-      tags: params.tags,
+      tags: tags,
     };
     const res = await postThingsDeviceInfoIndex(body);
 
@@ -105,8 +121,13 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const queryProjectList = async () => {
     if (productInfo != undefined) {
       const productMap = {};
+      const deviceTypeObj = {};
       productMap[productInfo?.productID ?? ''] = { text: productInfo.productName };
+      deviceTypeObj[productInfo?.productID ?? ''] = {
+        text: deviceTypeMap.get(productInfo.deviceType || 0),
+      };
       setProductsValue(productMap);
+      setDeviceType(deviceTypeObj);
       const list = [productInfo];
       setProducts(list);
       return;
@@ -124,12 +145,15 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
     }
     setProducts(res.data.list);
     const productMap = {};
+    const deviceTypeObj = {};
     res.data.list?.map((item) => {
       if (item.productID != undefined) {
         productMap[item.productID] = { text: item.productName };
+        deviceTypeObj[item.productID] = { text: deviceTypeMap.get(item.deviceType || 0) };
       }
     });
     setProductsValue(productMap);
+    setDeviceType(deviceTypeObj);
   };
 
   /**
@@ -138,6 +162,10 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
   useEffect(() => {
     queryProjectList();
   }, []);
+
+  const changeTags = (val: Tags[]) => {
+    setTags(val);
+  };
 
   /**
    * 列信息
@@ -157,7 +185,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           key="view"
           onClick={() => {
             history.push(
-              '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName,
+              '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName + '/1',
             );
           }}
         >
@@ -180,9 +208,31 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       ellipsis: true,
       copyable: true,
       hideInTable: productInfo != undefined,
-      hideInSearch: productInfo != undefined,
+      search: false,
     },
-
+    {
+      title: '设备类型',
+      dataIndex: 'productID',
+      ellipsis: true,
+      copyable: true,
+      hideInTable: productInfo != undefined,
+      search: false,
+      valueEnum: deviceType,
+    },
+    {
+      title: '设备标签',
+      dataIndex: 'tags',
+      hideInTable: true,
+      renderFormItem: () => {
+        return (
+          <DeviceTagsModal
+            flag={FlagStatus.CREATE}
+            key="createDeviceTags"
+            changeTags={changeTags}
+          />
+        );
+      },
+    },
     {
       title: '固件版本',
       dataIndex: 'version',
@@ -227,27 +277,41 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       title: '操作',
       valueType: 'option',
       key: 'option',
-      render: (text, record: DEVICE_INFO) => [
-        <a
-          key="view"
-          onClick={() => {
-            history.push(
-              '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName,
-            );
-          }}
-        >
-          查看
-        </a>,
-        <Button
-          danger
-          key="deleteProduct"
-          onClick={() => {
-            showDeleteConfirm(record);
-          }}
-        >
-          删除
-        </Button>,
-      ],
+      render: (text, record: DEVICE_INFO) => (
+        <>
+          <a
+            key="view"
+            onClick={() => {
+              history.push(
+                '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName + '/1',
+              );
+            }}
+            style={{ marginRight: '16px' }}
+          >
+            查看
+          </a>
+          <Button
+            type="link"
+            key="deleteProduct"
+            onClick={() => {
+              showDeleteConfirm(record);
+            }}
+            style={{ padding: 0 }}
+          >
+            删除
+          </Button>
+          {deviceType[record.productID || ''].text === '网关' && (
+            <div>
+              <a
+                className=""
+                href={`/deviceMangers/device/detail/${record.productID}/${record.deviceName}/7`}
+              >
+                子设备管理
+              </a>
+            </div>
+          )}
+        </>
+      ),
     },
   ];
   return (
@@ -257,6 +321,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       actionRef={actionRef}
       cardBordered
       request={queryPage}
+      onReset={() => setTags(undefined)}
       editable={{
         type: 'multiple',
       }}
@@ -265,6 +330,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         persistenceType: 'localStorage',
       }}
       search={{
+        span: 6,
         labelWidth: 'auto',
       }}
       options={{
@@ -277,7 +343,11 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       }}
       dateFormatter="string"
       toolBarRender={() => [
-        <CreateForm productValues={products} onCommit={() => actionRef.current?.reload()} />,
+        <CreateForm
+          key="createDevice"
+          productValues={products}
+          onCommit={() => actionRef.current?.reload()}
+        />,
       ]}
     />
   );

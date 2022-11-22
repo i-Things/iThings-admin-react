@@ -132,7 +132,7 @@ const CreateOrUpdateUser: React.FC<{
         request={async () => ROLE_OPTION}
       />
       <ProFormText name="nickName" width="md" label="昵称" placeholder="请输入昵称" />
-      <ProFormSelect
+      {/* <ProFormSelect
         width="md"
         name="sex"
         label="性别"
@@ -144,7 +144,7 @@ const CreateOrUpdateUser: React.FC<{
       <ProFormText name="country" width="md" label="国家" placeholder="请输入所在国家" />
       <ProFormText name="province" width="md" label="省份" placeholder="请输入所在省份" />
       <ProFormText name="city" width="md" label="城市" placeholder="请输入所在城市" />
-      <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" />
+      <ProFormText name="language" width="md" label="语言" placeholder="请输入使用语言" /> */}
     </ModalForm>
   );
 };

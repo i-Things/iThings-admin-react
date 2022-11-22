@@ -4,6 +4,7 @@ import { FlagStatus } from '@/utils/base';
 import type { ParamsType } from '@ant-design/pro-components';
 import { ProDescriptions } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-table';
+import { useLatest } from 'ahooks';
 import { Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'umi';
@@ -23,12 +24,12 @@ const GroupDescriptons: React.FC<{
   const { queryPage, dataList, setDataList } = useGetTableList();
   const cascaderOptions = location.state ?? '';
   const [updateFlag, setUpdateFlag] = useState(false);
-  const [tagValues, setTagValues] = useState([]);
+
+  const lastRecordRef = useLatest(dataList);
 
   type QueryProp = typeof postThingsGroupInfoRead;
 
   const updateFlagHandler = () => setUpdateFlag(true);
-  const tagValuesHandler = (v) => setTagValues(v);
 
   const groupInfoBaseColumns: ProColumns<Pick<GroupDescriptonProps, 'groupName' | 'groupID'>>[] = [
     {
@@ -82,10 +83,9 @@ const GroupDescriptons: React.FC<{
         <CreateOrUpdateGroup
           flag={FlagStatus.UPDATE}
           key="updateGroup"
-          record={dataList as GroupListItem}
+          record={lastRecordRef.current as GroupListItem}
           cascaderOptions={cascaderOptions as GroupOption[]}
           updateFlagHandler={updateFlagHandler}
-          tagValues={tagValues}
         />
       );
     else
@@ -93,9 +93,8 @@ const GroupDescriptons: React.FC<{
         <GroupTags
           flag={FlagStatus.UPDATE}
           key="updateGroupTags"
-          record={dataList as GroupDescriptonProps}
+          record={lastRecordRef.current as GroupDescriptonProps}
           updateFlagHandler={updateFlagHandler}
-          tagValuesHandler={tagValuesHandler}
         />
       );
   };

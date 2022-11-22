@@ -21,6 +21,7 @@ const columns: ProColumns<DeviceInfo>[] = [
     title: '产品ID',
     key: 'productID',
     dataIndex: 'productID',
+    copyable: true,
   },
   {
     title: '设备密钥',

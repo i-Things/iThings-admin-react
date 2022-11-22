@@ -88,6 +88,7 @@ const GroupDeviceList: React.FC<{
       ellipsis: true,
       copyable: true,
       renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.value,
+      width: 160,
     },
     {
       title: '在线状态',

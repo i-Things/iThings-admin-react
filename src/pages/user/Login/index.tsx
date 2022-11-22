@@ -6,6 +6,7 @@ import { Checkbox, Col, message, Row } from 'antd';
 import MD5 from 'crypto-js/md5';
 import React, { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
+import logo from '../../../../public/icons/logo/Group.png';
 import type { loginType } from './data';
 
 import styles from './index.less';
@@ -77,11 +78,15 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Row>
+      <Row align="middle">
+        <img width={36} height={36} src={logo} />
+        <div className={styles.title}>iThings</div>
+      </Row>
+      <Row className={styles['row-content']}>
         <Col flex="auto">
           <div className={styles['content-wrap']}>
             <div className={styles.content}>
-              <p className={styles.title}>iThings</p>
+              <p className={styles.title}>用户登录</p>
               <p className={styles['sub-title']}>欢迎使用</p>
               <LoginForm
                 initialValues={{

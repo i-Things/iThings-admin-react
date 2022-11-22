@@ -23,13 +23,6 @@ export default [
     layout: false,
     routes: [
       {
-        path: 'https://ithings.pages.dev/',
-        name: '官网',
-        icon: 'icon_data_01',
-        access: 'canAdmin',
-        component: './deviceMangers/product/index',
-      },
-      {
         path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',
@@ -53,7 +46,7 @@ export default [
           {
             name: '设备详情',
             hideInMenu: true,
-            path: '/deviceMangers/device/detail/:id/:name',
+            path: '/deviceMangers/device/detail/:id/:name/:type',
             component: './deviceMangers/device/detail/index',
           },
           {
@@ -109,6 +102,11 @@ export default [
             name: '日志服务',
             path: '/operationsMonitorings/logService/index',
             component: './operationsMonitorings/logService/index',
+          },
+          {
+            name: '远程配置',
+            path: '/operationsMonitorings/remoteConfiguration/index',
+            component: './operationsMonitorings/remoteConfiguration/index',
           },
           {
             component: '404',

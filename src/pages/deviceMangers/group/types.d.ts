@@ -5,7 +5,7 @@ export interface GroupListItem {
   groupName: string;
   groupID: string;
   createdTime: string;
-  tags: TagProps;
+  tags: TagProps[];
 }
 
 export interface GroupDeviceItem {

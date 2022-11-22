@@ -9,6 +9,7 @@ export interface groupSearchParmasProps {
 export interface GroupDescriptonProps {
   groupName: string;
   groupID: string;
+  parentID: string;
   createdTime?: string;
   desc?: string;
   tags?: TagProps[];
