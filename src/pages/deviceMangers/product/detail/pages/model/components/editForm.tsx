@@ -1,4 +1,6 @@
-import { Field, FormPath, SchemaForm } from '@formily/antd';
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react-hooks/rules-of-hooks */
+import { Field, FormMegaLayout, FormPath, SchemaForm } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
   FormItemGrid,
@@ -9,87 +11,332 @@ import {
   Switch as FSwitch,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
-import { AutoComplete, Button, Form, Input, InputNumber, Modal, Radio, Space } from 'antd';
+import { AutoComplete, Modal, Radio } from 'antd';
 
+import {
+  postThingsProductSchemaCreate,
+  postThingsProductSchemaUpdate,
+} from '@/services/iThingsapi/wumoxing';
 import { createAsyncFormActions, FormEffectHooks, FormSpy } from '@formily/antd';
-import { useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import type { EditFormType } from './const';
+import {
+  dataTypeList,
+  eventTypeList,
+  rwTypeList,
+  typeBtnList,
+  yuansuleixingList,
+  _dataTypeList,
+  _yuansuleixingList,
+} from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
 
-type EditFormType = {
-  modalVisit: boolean;
-  setModalVisit: any;
-};
+export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) => {
+  useImperativeHandle(ref, () => ({
+    setModelModalValue: setModelModalValue,
+    clearModal: clearModal,
+  }));
 
-export const EditForm: React.FC<EditFormType> = (props) => {
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
+  const [isEdit, setIsEdit] = useState(false);
+
+  const currentFunctionType = useRef<1 | 2 | 3>(1);
   const ruleModalFormItemLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 },
   };
 
-  const typeBtnList = [
-    { label: '属性', value: 1 },
-    { label: '事件', value: 2 },
-    { label: '行为', value: 3 },
-  ];
+  const onModalFinish = async (values: any) => {
+    const {
+      type,
+      identifier,
+      name,
+      desc,
+      mode,
+      numericalRange,
+      start,
+      step,
+      unit,
+      max,
+      dataDefinitionForenum,
+      mapping,
+      specs = [],
+      input = [],
+      output = [],
+      params = [],
+      dataType,
+      eventType,
+    } = values;
 
-  const shujuleixingBtnList = [
-    { label: '布尔型', value: 'bool' },
-    { label: '整数型', value: 'int' },
-    { label: '字符串', value: 'string' },
-    { label: '浮点型', value: 'float' },
-    { label: '枚举整型', value: 'enum' },
-    // { label: '枚举字符串', value: 'action' }, 不支持
-    { label: '时间型', value: 'timestamp' },
-    { label: '结构体', value: 'struct' },
-    { label: '数组', value: 'array' },
-  ];
+    let arrayInfo = {};
+    //
+    specs.map((item: any) => {
+      item.dataType.type = item.type;
+      if (item?.dataType?.numericalRange) {
+        item.dataType.max = item.dataType.numericalRange.max + '';
+        item.dataType.min = item.dataType.numericalRange.min + '';
+        item.dataType.start = item.dataType.start + '';
+        item.dataType.step = item.dataType.step + '';
+        item.dataType.unit = item.dataType.unit + '';
+      }
 
-  const readWrtieList = [
-    { label: '读写', value: 'rw' },
-    { label: '自读', value: 'r' },
-  ];
+      if (item?.dataType?.shujudingyiForenum) {
+        const _mapping = {};
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+          const key = item.label;
+          const value = item.value;
+          _mapping[key] = value;
+        });
+        item.dataType.mapping = _mapping;
+      }
 
-  const onModalFinish = (values: any) => {
-    console.log('values', values);
+      if (item.dataType.type === 'array') {
+        item.dataType.arrayInfo = {
+          ...item.dataType,
+          type: item.dataType.elementType,
+          max: item.dataType.max + '',
+        };
+      }
+    });
+
+    input.map((item: any) => {
+      item.dataType.type = item.type;
+      if (item?.dataType?.numericalRange) {
+        item.dataType.max = item.dataType.numericalRange.max + '';
+        item.dataType.min = item.dataType.numericalRange.min + '';
+        item.dataType.start = item.dataType.start + '';
+        item.dataType.step = item.dataType.step + '';
+        item.dataType.unit = item.dataType.unit + '';
+      }
+
+      if (item?.dataType?.shujudingyiForenum) {
+        const _mapping = {};
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+          const key = item.label;
+          const value = item.value;
+          _mapping[key] = value;
+        });
+        item.dataType.mapping = _mapping;
+      }
+      item.define = {
+        ...item.dataType,
+        type: item.type,
+      };
+    });
+
+    output.map((item: any) => {
+      item.dataType.type = item.type;
+      if (item?.dataType?.numericalRange) {
+        item.dataType.max = item.dataType.numericalRange.max + '';
+        item.dataType.min = item.dataType.numericalRange.min + '';
+        item.dataType.start = item.dataType.start + '';
+        item.dataType.step = item.dataType.step + '';
+        item.dataType.unit = item.dataType.unit + '';
+      }
+
+      if (item?.dataType?.shujudingyiForenum) {
+        const _mapping = {};
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+          const key = item.label;
+          const value = item.value;
+          _mapping[key] = value;
+        });
+        item.dataType.mapping = _mapping;
+      }
+      item.define = {
+        ...item.dataType,
+        type: item.type,
+      };
+    });
+
+    params.map((item: any) => {
+      if (item?.dataType?.numericalRange) {
+        item.dataType.max = item.dataType.numericalRange.max + '';
+        item.dataType.min = item.dataType.numericalRange.min + '';
+        item.dataType.start = item.dataType.start + '';
+        item.dataType.step = item.dataType.step + '';
+        item.dataType.unit = item.dataType.unit + '';
+      }
+
+      if (item?.dataType?.shujudingyiForenum) {
+        const _mapping = {};
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+          const key = item.label;
+          const value = item.value;
+          _mapping[key] = value;
+        });
+        item.dataType.mapping = _mapping;
+      }
+      item.define = {
+        ...item.dataType,
+        type: item.type,
+      };
+    });
+
+    const _max = max ?? numericalRange?.max;
+
+    if (dataType === 'array') {
+      arrayInfo = {
+        max: _max + '',
+        min: numericalRange?.min + '',
+        start: start + '',
+        step: step + '',
+        unit: unit + '',
+      };
+    }
+
+    const _mapping = {};
+    dataDefinitionForenum?.map((item: any) => {
+      const key = item.label;
+      const value = item.value;
+      _mapping[key] = value;
+    });
+
+    const __mapping = mapping ?? _mapping;
+    const affordance = {
+      define: {
+        arrayInfo,
+        specs,
+        // input,
+        // output,
+        type: values?.dataType ?? eventType,
+        mapping: __mapping,
+        max: _max + '',
+        min: numericalRange?.min + '',
+        start: start + '',
+        step: step + '',
+        unit: unit + '',
+      },
+      params,
+      input,
+      output,
+      type: eventType,
+      mode,
+    };
+
+    // 过滤掉 undefined 字段
+    for (const key in affordance.define) {
+      if (!affordance.define[key] || affordance.define[key] === 'undefined') {
+        delete affordance.define[key];
+      }
+    }
+
+    const _params = {
+      productID: '254pwnKQsvK',
+      type,
+      tag: 1,
+      identifier,
+      name,
+      desc,
+      required: 2,
+      affordance: JSON.stringify(affordance),
+    };
+
+    let res = null;
+
+    if (isEdit) {
+      res = await postThingsProductSchemaUpdate(_params);
+    } else {
+      res = await postThingsProductSchemaCreate(_params);
+    }
+
+    if (res instanceof Response) {
+      return;
+    }
+
+    await ruleActions.current.reset({
+      validate: false,
+    });
+    props.setModalVisit(false);
   };
 
-  // 定义一个映射数组类型对应哪些 表单项显示
-  const modeFormItemMapping = {
-    bool: ['shujudingyi'],
-    int: ['shuzhifanwei', 'start', 'step', 'unit'],
-    string: ['shujudingyiForString'],
-    float: ['shuzhifanwei', 'start', 'step', 'unit'],
-    enum: ['shujudingyiForMeiju'],
-    timestamp: ['shujudingyiForTime'],
-    struct: ['struct'],
-    array: [],
-  };
+  async function clearModal() {
+    await ruleActions.current.reset({
+      validate: false,
+    });
+  }
 
-  // 不能直接用现有的 boolTypeFormItem 这些 直接渲染 结构体中的 要用原生的
-  // 所以需要全部复刻一遍
+  async function setModelModalValue(record: any, _isEdit: boolean) {
+    setIsEdit(_isEdit);
+    const { type, identifier, name, desc, affordance } = record;
+
+    ruleActions.current.setFieldValue('name', name);
+    ruleActions.current.setFieldValue('identifier', identifier);
+    ruleActions.current.setFieldValue('type', type);
+    ruleActions.current.setFieldValue('desc', desc);
+
+    const _affordance = JSON.parse(affordance);
+    const mode = _affordance.mode;
+    const specs = _affordance.define.specs;
+    const params = _affordance.params;
+    const input = _affordance.input;
+    const output = _affordance.output;
+    const dataType = _affordance.define.type;
+
+    ruleActions.current.setFieldValue('mode', mode);
+    ruleActions.current.setFieldValue('dataType', dataType);
+    ruleActions.current.setFieldValue('params', params);
+
+    ruleActions.current.setFieldValue('specs', specs);
+    ruleActions.current.setFieldValue('input', input);
+    ruleActions.current.setFieldValue('output', output);
+    ruleActions.current.setFieldValue('eventType', _affordance.type);
+    props.setModalVisit(true);
+  }
+
+  const rwTypeFormItem = (
+    <Field
+      type="string"
+      name="mode"
+      title="读写类型"
+      x-component="Radio"
+      x-props={{
+        visible: false,
+        placeholder: '请选择读写类型',
+        optionType: 'button',
+        options: rwTypeList,
+      }}
+    />
+  );
   const boolTypeFormItem = (
-    <Field type="object" name="shujudingyi" title="数据定义" required>
-      <FormItemGrid gutter={10} cols={[6, 6, 6]} style={{ marginBottom: -25 }}>
+    <Field
+      type="object"
+      name="mapping"
+      title="数据定义"
+      required
+      x-props={{
+        visible: false,
+        extra: '支持中文、英文、数字、下划线的组合，最多不超过12个字符',
+      }}
+    >
+      <FormItemGrid gutter={10} cols={[6, 6]} style={{ marginBottom: -25 }}>
         <Field
           type="string"
-          name="type1"
+          name="0"
           x-component="Input"
           required
           x-props={{
             placeholder: '请选择',
             addonBefore: '0',
           }}
+          x-rules={{
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{1,12}$/,
+            message: '请输入中文、英文、数字、下划线的组合，最多不超过12个字符',
+          }}
         />
         <Field
           type="string"
-          name="type"
+          name="1"
           x-component="Input"
           required
           x-props={{
             placeholder: '请选择',
             addonBefore: 1,
+          }}
+          x-rules={{
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{1,12}$/,
+            message: '请输入中文、英文、数字、下划线的组合，最多不超过12个字符',
           }}
         />
       </FormItemGrid>
@@ -98,35 +345,32 @@ export const EditForm: React.FC<EditFormType> = (props) => {
 
   const intTypeFormItem = (
     <>
-      {' '}
       <Field
         type="object"
-        name="shuzhifanwei"
+        name="numericalRange"
         title="数值范围"
         x-props={{ visible: false }}
         required
       >
-        <FormItemGrid gutter={12} cols={[3, 3]} style={{ marginBottom: -25 }}>
-          <Field
-            type="number"
-            name="type1"
-            x-component="NumberPicker"
-            required
-            x-props={{
-              placeholder: '请选择',
-            }}
-          />
-          -
-          <Field
-            type="number"
-            name="type"
-            x-component="NumberPicker"
-            required
-            x-props={{
-              placeholder: '请选择',
-            }}
-          />
-        </FormItemGrid>
+        <Field
+          type="number"
+          name="min"
+          x-component="NumberPicker"
+          required
+          x-props={{
+            placeholder: '请选择',
+          }}
+        />
+        -
+        <Field
+          type="number"
+          name="max"
+          x-component="NumberPicker"
+          required
+          x-props={{
+            placeholder: '请选择',
+          }}
+        />
       </Field>
       {/* 初始值 */}
       <Field
@@ -171,10 +415,9 @@ export const EditForm: React.FC<EditFormType> = (props) => {
 
   const stringTypeFormItem = (
     <>
-      {' '}
       <Field
         type="number"
-        name="shujudingyiForString"
+        name="max"
         title="数据定义"
         required
         x-props={{
@@ -197,10 +440,11 @@ export const EditForm: React.FC<EditFormType> = (props) => {
       >
         <Field
           type="array"
-          name="shujudingyiForMeiju"
-          title="数据定义"
+          name="dataDefinitionForenum"
+          title="数据定义枚举"
           x-component="ArrayTable"
           required
+          x-props={{ visible: false }}
           x-component-props={{
             operationsWidth: 80,
             operations: {
@@ -209,7 +453,7 @@ export const EditForm: React.FC<EditFormType> = (props) => {
             renderMoveDown: () => null,
             renderMoveUp: () => null,
             renderRemove: (idx: number) => {
-              const mutators = ruleActions.current.createMutators('shujudingyiForMeiju');
+              const mutators = ruleActions.current.createMutators('dataDefinitionForenum');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
                   {({}) => {
@@ -246,23 +490,270 @@ export const EditForm: React.FC<EditFormType> = (props) => {
     </>
   );
 
+  const arrayTypeFormItem = (
+    <Field
+      type="string"
+      name="elementType"
+      title="元素类型"
+      required
+      default={'int'}
+      x-props={{
+        placeholder: '请选择元素类型',
+        optionType: 'button',
+        options: _yuansuleixingList,
+        visible: false,
+      }}
+      x-component="Radio"
+    />
+  );
+
   const timeTypeFormItem = (
     <>
-      <Field type="object" name="shujudingyiForTime" title="数据定义" required>
+      <Field
+        type="object"
+        name="dataDefinitionFortimestamp"
+        title="数据定义Time"
+        required
+        x-props={{ visible: false }}
+      >
         <Field
           type="string"
-          name="type1"
+          name="type11111"
           x-component="Input"
+          x-component-props={{ defaultValue: 'INT类型的UTC时间戳（秒）' }}
           required
-          default="INT类型的UTC时间戳（秒）"
+          default="INT类型的UTC时间戳（秒)"
           readOnly
         />
       </Field>
     </>
   );
 
+  // 新的对应关系
+  const formItemMapping = {
+    1: ['dataType'],
+    2: ['eventType', 'params'],
+    3: ['input', 'output'],
+  };
+
+  const dataTypeMapping = {
+    bool: ['mode', 'mapping'],
+    int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+    string: ['mode', 'max'],
+    float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+    enum: ['mode', 'dataDefinitionForenum'],
+    timestamp: ['mode', 'dataDefinitionFortimestamp'],
+    struct: ['mode', 'specs'],
+    array: [
+      'mode',
+      'arrayInfo',
+      'elementType',
+      'numericalRange',
+      'start',
+      'step',
+      'unit',
+      'mode',
+      'max',
+      'mode',
+    ],
+  };
+
+  const elementTypeMapping = {
+    int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+    string: ['mode', 'max'],
+    float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+    struct: ['mode', 'specs'],
+  };
+
   const structTypeFormItem = (
-    <>
+    <FormLayout
+      className="rule_for_Table"
+      wrapperCol={{
+        span: 24,
+      }}
+    >
+      <Field
+        type="array"
+        name="specs"
+        title="数据定义"
+        x-component="ArrayTable"
+        required
+        x-props={{ visible: false }}
+        x-component-props={{
+          operationsWidth: 80,
+          operations: {
+            title: '操作',
+          },
+          renderMoveDown: () => null,
+          renderMoveUp: () => null,
+          renderRemove: (idx: number) => {
+            const mutators = ruleActions.current.createMutators('specs');
+            return (
+              <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
+                {({}) => {
+                  return (
+                    <a
+                      style={{
+                        width: '60px',
+                      }}
+                      onClick={async () => {
+                        (await mutators).remove(idx);
+                      }}
+                    >
+                      删除
+                    </a>
+                  );
+                }}
+              </FormSpy>
+            );
+          },
+        }}
+      >
+        <Field type="object">
+          <Field type="string" name="name" x-component="Input" title="参数名称" required />
+          <Field type="string" name="identifier" x-component="Input" title="参数标识符" required />
+          <Field
+            type="string"
+            name="type"
+            x-component="Select"
+            title="数据类型"
+            default={'bool'}
+            enum={_dataTypeList}
+          />
+          {/* 动态渲染 */}
+          <Field type="object" name="dataType" title="数据定义" required>
+            <Field
+              type="string"
+              name="elementType"
+              title="元素类型"
+              required
+              default={'int'}
+              x-props={{
+                placeholder: '请选择元素类型',
+                optionType: 'button',
+                options: yuansuleixingList,
+                visible: false,
+              }}
+              x-component="Radio"
+            />
+            <FormMegaLayout
+              gutter={10}
+              grid
+              autoRow
+              full
+              labelCol={8}
+              wrapperCol={24}
+              name="shuzhifanweiForbool"
+            >
+              <Field type="object" name="mapping" required x-props={{ visible: false }}>
+                <FormItemGrid gutter={10} style={{ marginBottom: -25 }}>
+                  <Field
+                    type="string"
+                    name="0"
+                    x-component="Input"
+                    required
+                    x-props={{
+                      placeholder: '请选择',
+                      addonBefore: '0',
+                    }}
+                  />
+                  <Field
+                    type="string"
+                    name="1"
+                    x-component="Input"
+                    required
+                    x-props={{
+                      placeholder: '请选择',
+                      addonBefore: 1,
+                    }}
+                  />
+                </FormItemGrid>
+              </Field>
+
+              {intTypeFormItem}
+              <Field
+                type="number"
+                name="max"
+                title="数据定义"
+                required
+                x-props={{
+                  placeholder: '请输入数据定义',
+                  visible: false,
+                  addonBefore: '字节',
+                }}
+                x-component="NumberPicker"
+              />
+              <Field
+                type="array"
+                name="shujudingyiForenum"
+                title=""
+                x-component="ArrayTable"
+                required
+                x-props={{
+                  visible: false,
+                }}
+                x-component-props={{
+                  operationsWidth: 80,
+                  operations: {
+                    title: '',
+                  },
+                  renderMoveDown: () => null,
+                  renderMoveUp: () => null,
+                  renderRemove: (idx: number) => {
+                    const mutators = ruleActions.current.createMutators('specs');
+                    return (
+                      <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
+                        {({}) => {
+                          return (
+                            <a
+                              style={{
+                                width: '60px',
+                              }}
+                              onClick={async () => {
+                                (await mutators).remove(idx);
+                              }}
+                            >
+                              删除
+                            </a>
+                          );
+                        }}
+                      </FormSpy>
+                    );
+                  },
+                }}
+              >
+                <Field type="object">
+                  <Field
+                    type="string"
+                    name="label"
+                    x-component="NumberPicker"
+                    title="枚举键值"
+                    required
+                  />
+                  <Field type="string" name="value" x-component="Input" title="枚举项描述" />
+                </Field>
+              </Field>
+              <Field
+                type="string"
+                name="timestamp"
+                x-component="Input"
+                x-props={{
+                  visible: false,
+                }}
+                x-component-props={{ defaultValue: 'INT类型的UTC时间戳（秒）' }}
+                required
+                default="INT类型的UTC时间戳（秒)"
+                readOnly
+              />
+            </FormMegaLayout>
+          </Field>
+        </Field>
+      </Field>
+    </FormLayout>
+  );
+
+  const renderStructFormItem = (title: string, name: string) => {
+    return (
       <FormLayout
         className="rule_for_Table"
         wrapperCol={{
@@ -271,19 +762,20 @@ export const EditForm: React.FC<EditFormType> = (props) => {
       >
         <Field
           type="array"
-          name="struct"
-          title="数据定义"
+          name={name}
+          title={title}
           x-component="ArrayTable"
           required
+          x-props={{ visible: false }}
           x-component-props={{
             operationsWidth: 80,
             operations: {
-              title: '',
+              title: '操作',
             },
             renderMoveDown: () => null,
             renderMoveUp: () => null,
             renderRemove: (idx: number) => {
-              const mutators = ruleActions.current.createMutators('struct');
+              const mutators = ruleActions.current.createMutators('specs');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
                   {({}) => {
@@ -306,34 +798,160 @@ export const EditForm: React.FC<EditFormType> = (props) => {
           }}
         >
           <Field type="object">
-            <Field type="string" name="label" x-component="Input" title="参数名称" required />
-            <Field type="string" name="label1" x-component="Input" title="参数标识符" required />
+            <Field type="string" name="name" x-component="Input" title="参数名称" required />
             <Field
               type="string"
-              name="value"
+              name="identifier"
+              x-component="Input"
+              title="参数标识符"
+              required
+            />
+            <Field
+              type="string"
+              name="type"
               x-component="Select"
               title="数据类型"
-              enum={shujuleixingBtnList}
+              enum={_dataTypeList}
             />
-            <Field type="object" name="value11" x-component="customFormItem" title="数据定义" />
+            {/* 动态渲染 */}
+            <Field type="object" name="dataType" title="数据定义" required>
+              <Field
+                type="string"
+                name="elementType"
+                title="元素类型"
+                required
+                x-props={{
+                  placeholder: '请选择元素类型',
+                  optionType: 'button',
+                  options: yuansuleixingList,
+                  visible: false,
+                }}
+                x-component="Radio"
+              />
+              <FormMegaLayout
+                gutter={10}
+                grid
+                autoRow
+                full
+                labelCol={8}
+                wrapperCol={24}
+                name="shuzhifanweiForbool"
+              >
+                <Field type="object" name="mapping" required x-props={{ visible: false }}>
+                  <FormItemGrid gutter={10} style={{ marginBottom: -25 }}>
+                    <Field
+                      type="string"
+                      name="0"
+                      x-component="Input"
+                      required
+                      x-props={{
+                        placeholder: '请选择',
+                        addonBefore: '0',
+                      }}
+                    />
+                    <Field
+                      type="string"
+                      name="1"
+                      x-component="Input"
+                      required
+                      x-props={{
+                        placeholder: '请选择',
+                        addonBefore: 1,
+                      }}
+                    />
+                  </FormItemGrid>
+                </Field>
+
+                {intTypeFormItem}
+                <Field
+                  type="number"
+                  name="max"
+                  title="数据定义"
+                  required
+                  x-props={{
+                    placeholder: '请输入数据定义',
+                    visible: false,
+                    addonBefore: '字节',
+                  }}
+                  x-component="NumberPicker"
+                />
+                <Field
+                  type="array"
+                  name="shujudingyiForenum"
+                  title=""
+                  x-component="ArrayTable"
+                  required
+                  x-props={{
+                    visible: false,
+                  }}
+                  x-component-props={{
+                    operationsWidth: 80,
+                    operations: {
+                      title: '',
+                    },
+                    renderMoveDown: () => null,
+                    renderMoveUp: () => null,
+                    renderRemove: (idx: number) => {
+                      const mutators = ruleActions.current.createMutators('specs');
+                      return (
+                        <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
+                          {({}) => {
+                            return (
+                              <a
+                                style={{
+                                  width: '60px',
+                                }}
+                                onClick={async () => {
+                                  (await mutators).remove(idx);
+                                }}
+                              >
+                                删除
+                              </a>
+                            );
+                          }}
+                        </FormSpy>
+                      );
+                    },
+                  }}
+                >
+                  <Field type="object">
+                    <Field
+                      type="string"
+                      name="label"
+                      x-component="NumberPicker"
+                      title="枚举键值"
+                      required
+                    />
+                    <Field type="string" name="value" x-component="Input" title="枚举项描述" />
+                  </Field>
+                </Field>
+                <Field
+                  type="string"
+                  name="timestamp"
+                  x-component="Input"
+                  x-props={{
+                    visible: false,
+                  }}
+                  x-component-props={{ defaultValue: 'INT类型的UTC时间戳（秒）' }}
+                  required
+                  default="INT类型的UTC时间戳（秒)"
+                  readOnly
+                />
+              </FormMegaLayout>
+            </Field>
           </Field>
         </Field>
       </FormLayout>
-    </>
-  );
-
-  // 定义一个映射数组类型对应 哪些 组件显示到 数据定义栏目
-  // const modeFormComponentMapping = {
-  //   'bool': boolTypeFormItem,
-  //   'int': intTypeFormItem,
-  //   'string': stringTypeFormItem,
-  //   'float': stringTypeFormItem,
-  //   'enum': enumTypeFormItem,
-  //   'timestamp': timeTypeFormItem,
-  //   'struct': structTypeFormItem
-  // }
+    );
+  };
 
   const formItemVisibleConfig = (formItems: string[], flag: boolean) => {
+    if (!formItems) {
+      return;
+    }
+    if (formItems.length === 0) {
+      return;
+    }
     formItems.map((item: string) => {
       ruleActions.current.setFieldState(item, (sta) => {
         sta.visible = flag;
@@ -352,8 +970,8 @@ export const EditForm: React.FC<EditFormType> = (props) => {
       onCancel={() => {
         props.setModalVisit();
       }}
-      title={'新建自定义规则'}
-      width={1100}
+      title={isEdit ? '编辑自定义规则' : '新建自定义规则'}
+      width={1300}
       maskClosable={false}
     >
       <SchemaForm
@@ -368,201 +986,176 @@ export const EditForm: React.FC<EditFormType> = (props) => {
           Radio: Radio.Group,
           ArrayTable: FArrayTable,
           NumberPicker: FNumberPicker,
-          boolTypeFormItemOrign: ({ value, onChange }) => (
-            <Space style={{ display: 'flex' }}>
-              <Input
-                addonBefore="0"
-                defaultValue="开"
-                onChange={(v) => {
-                  onChange({
-                    ...value,
-                    name1: v.target.value,
-                  });
-                }}
-                value={value ? value.name1 : undefined}
-              />
-              <Input
-                addonBefore="1"
-                defaultValue="关"
-                onChange={(v) => {
-                  onChange({
-                    ...value,
-                    name2: v.target.value,
-                  });
-                }}
-                value={value ? value.name2 : undefined}
-              />
-            </Space>
-          ),
-          intTypeFormItemOrigin: ({ value, onChange }) => {
-            return (
-              <Form
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                initialValues={{ remember: true }}
-                autoComplete="off"
-                onValuesChange={(changedValues, allValues) => {
-                  console.log('changedValues', changedValues);
-                  console.log('allValues', allValues);
-                  onChange({
-                    ...value,
-                    ...allValues,
-                  });
-                }}
-              >
-                <Form.Item label="数值范围">
-                  <Form.Item name="username1">
-                    <InputNumber />
-                  </Form.Item>
-                  -
-                  <Form.Item name="username2">
-                    <InputNumber />
-                  </Form.Item>
-                </Form.Item>
-                <Form.Item label="初始值" name="start">
-                  <InputNumber />
-                </Form.Item>
-
-                <Form.Item label="步长" name="step">
-                  <InputNumber />
-                </Form.Item>
-                <Form.Item label="单位" name="unit">
-                  <Input />
-                </Form.Item>
-              </Form>
-            );
-          },
-          stringTypeFormItemOrigin: ({ value, onChange }) => {
-            return (
-              <InputNumber
-                addonBefore="字节"
-                onChange={(v) => {
-                  onChange({ ...value, shujudingyiForString: v });
-                }}
-              />
-            );
-          },
-          enumTypeFormItemOrigin: ({ value, onChange }) => {
-            return (
-              <Form
-                name="dynamic_form_nest_item11"
-                autoComplete="off"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                initialValues={{ remember: true }}
-                onValuesChange={(changedValues, allValues) => {
-                  console.log('changedValues', changedValues);
-                  console.log('allValues', allValues);
-                  onChange({
-                    ...value,
-                    ...allValues,
-                  });
-                }}
-              >
-                <Form.List name="sights">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {fields.map((field) => (
-                        <Space key={field.key} align="baseline">
-                          <Form.Item
-                            noStyle
-                            shouldUpdate={(prevValues, curValues) =>
-                              prevValues.area !== curValues.area ||
-                              prevValues.sights !== curValues.sights
-                            }
-                          >
-                            {() => (
-                              <Form.Item
-                                {...field}
-                                label="Sight"
-                                name={[field.name, 'sight']}
-                                rules={[{ required: true, message: 'Missing sight' }]}
-                              >
-                                <InputNumber />
-                              </Form.Item>
-                            )}
-                          </Form.Item>
-                          <Form.Item
-                            {...field}
-                            label="Price"
-                            name={[field.name, 'price']}
-                            rules={[{ required: true, message: 'Missing price' }]}
-                          >
-                            <Input />
-                          </Form.Item>
-
-                          <Button type="link" onClick={() => add()}>
-                            添加
-                          </Button>
-                          <Button type="link" onClick={() => remove(field.name)}>
-                            删除
-                          </Button>
-                        </Space>
-                      ))}
-                    </>
-                  )}
-                </Form.List>
-              </Form>
-            );
-          },
-          customFormItem: () => <div> custorm div</div>,
         }}
         initialValues={{
           type: 1,
-          mode: 'bool',
-          duxieleixing: 'rw',
+          dataType: 'bool',
+          mode: 'rw',
+          eventType: 1,
         }}
         onSubmit={onModalFinish}
         effects={() => {
-          // 监听表单项显示
-          onFieldValueChange$('mode').subscribe((state) => {
+          // 监听 type 表单项显示 功能类型
+          onFieldValueChange$('type').subscribe((state) => {
             const value = state.value;
-            console.log('value', value);
-
             let allFormItem: string[] = [];
 
-            Object.keys(modeFormItemMapping).map((item) => {
-              allFormItem = allFormItem.concat(modeFormItemMapping[item]);
+            currentFunctionType.current = value;
+
+            Object.keys(formItemMapping).map((item) => {
+              allFormItem = allFormItem.concat(formItemMapping[item]);
+            });
+
+            Object.keys(dataTypeMapping).map((item) => {
+              allFormItem = allFormItem.concat(dataTypeMapping[item]);
             });
 
             // 先把所有的 设置为 false
             formItemVisibleConfig(allFormItem, false);
 
-            console.log('allFormItem', allFormItem);
-
-            const showFormItem = modeFormItemMapping[value];
-
-            // 再把对应的表单项展示出来
+            const showFormItem = formItemMapping[value];
             formItemVisibleConfig(showFormItem, true);
-
-            // 设置不同的 props
-            if (value === 'int') {
-              showFormItem.map((item: string) => {
-                ruleActions.current.setFieldState(item, (sta) => {
-                  sta.props['x-rules'] = {
-                    pattern: /^[1-9]\d*$/,
-                    message: '请输入整数',
-                  };
-                  console.log('sta.props]', sta.props['x-component-props']);
-                });
-              });
-            }
           });
 
-          onFieldValueChange$('struct.*.value').subscribe(async ({ name, value }) => {
-            console.log('name', name);
-            console.log('value', value);
+          // 监听 dataType 表单项显示 数据类型
+          onFieldValueChange$('dataType').subscribe((state) => {
+            const value = state.value;
+            if (!value) {
+              return;
+            }
 
-            // 根据不同的值 渲染不同的界面
-            await ruleActions.current.setFieldState(
-              FormPath.transform(name, /\d/, ($1) => {
-                return `struct.${$1}.value11`;
-              }),
-              (state) => {
-                state.props['x-component'] = 'stringTypeFormItemOrigin';
-              },
-            );
+            let allFormItem: string[] = [];
+
+            Object.keys(dataTypeMapping).map((item) => {
+              allFormItem = allFormItem.concat(dataTypeMapping[item]);
+            });
+
+            formItemVisibleConfig(allFormItem, false);
+            const showFormItem = dataTypeMapping[value];
+            formItemVisibleConfig(showFormItem, true);
+          });
+
+          // 监听数据类型为数组时，元素类型的变化
+          onFieldValueChange$('elementType').subscribe((state) => {
+            const value = state.value;
+            if (!value) {
+              return;
+            }
+
+            let allFormItem: string[] = [];
+
+            Object.keys(elementTypeMapping).map((item) => {
+              allFormItem = allFormItem.concat(elementTypeMapping[item]);
+            });
+
+            // 先把所有的 设置为 false
+            formItemVisibleConfig(allFormItem, false);
+            const showFormItem = elementTypeMapping[value];
+            // 再把对应的表单项展示出来
+            formItemVisibleConfig(showFormItem, true);
+          });
+
+          const array = ['specs', 'params', 'input', 'output'];
+
+          array.map((scope) => {
+            onFieldValueChange$(`${scope}.*.type`).subscribe((fieldState) => {
+              const value = fieldState.value;
+
+              if (!value) {
+                return;
+              }
+              const mapper = {
+                bool: ['mapping'],
+                int: ['numericalRange', 'start', 'step', 'unit'],
+                string: ['max'],
+                float: ['numericalRange', 'start', 'step', 'unit'],
+                enum: ['shujudingyiForenum'],
+                timestamp: ['timestamp'],
+                array: ['elementType'],
+              };
+
+              let allFormItem: string[] = [];
+
+              Object.keys(mapper).map((item) => {
+                allFormItem = allFormItem.concat(mapper[item]);
+              });
+
+              // 先把所有的 设置为 false
+              allFormItem.map((item: string) => {
+                ruleActions.current.setFieldState(
+                  FormPath.transform(
+                    fieldState.name,
+                    /\d/,
+                    ($1) => `${scope}.${$1}.dataType.${item}`,
+                  ),
+                  (state) => {
+                    state.visible = false;
+                  },
+                );
+              });
+
+              const arr = mapper[value];
+
+              arr.map((item: string) => {
+                ruleActions.current.setFieldState(
+                  FormPath.transform(
+                    fieldState.name,
+                    /\d/,
+                    ($1) => `${scope}.${$1}.dataType.${item}`,
+                  ),
+                  (state) => {
+                    state.visible = true;
+                  },
+                );
+              });
+            });
+            onFieldValueChange$(`${scope}.*.dataType.elementType`).subscribe((fieldState) => {
+              const value = fieldState.value;
+
+              const mapper = {
+                int: ['numericalRange', 'start', 'step', 'unit'],
+                string: ['max'],
+                float: ['numericalRange', 'start', 'step', 'unit'],
+              };
+
+              let allFormItem: string[] = [];
+
+              Object.keys(mapper).map((item) => {
+                allFormItem = allFormItem.concat(mapper[item]);
+              });
+
+              // 先把所有的 设置为 false
+              allFormItem.map((item: string) => {
+                ruleActions.current.setFieldState(
+                  FormPath.transform(
+                    fieldState.name,
+                    /\d/,
+                    ($1) => `${scope}.${$1}.dataType.${item}`,
+                  ),
+                  (state) => {
+                    state.visible = false;
+                  },
+                );
+              });
+
+              const arr = mapper[value];
+              if (!arr) {
+                return;
+              }
+
+              arr.map((item: string) => {
+                ruleActions.current.setFieldState(
+                  FormPath.transform(
+                    fieldState.name,
+                    /\d/,
+                    ($1) => `${scope}.${$1}.dataType.${item}`,
+                  ),
+                  (state) => {
+                    state.visible = true;
+                  },
+                );
+              });
+            });
           });
         }}
       >
@@ -584,10 +1177,14 @@ export const EditForm: React.FC<EditFormType> = (props) => {
           required
           x-props={{
             placeholder: '请输入功能名称',
+            extra: '支持中文、英文、数字、下划线的组合，最多不超过20个字符',
+          }}
+          x-rules={{
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}$/,
+            message: '请输入中文、英文、数字、下划线的组合，最多不超过20个字符',
           }}
           x-component="Input"
         />
-
         <Field
           type="string"
           name="identifier"
@@ -595,52 +1192,68 @@ export const EditForm: React.FC<EditFormType> = (props) => {
           required
           x-props={{
             placeholder: '请输入标识符',
+            extra: '第一个字符不能是数字，支持英文、数字、下划线的组合，最多不超过32个字符',
+          }}
+          x-rules={{
+            pattern: /^(?![0-9])[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}$/,
+            message: '请输入第一个字符不能是数字，支持英文、数字、下划线的组合，最多不超过32个字符',
           }}
           x-component="Input"
         />
-
+        <>
+          <Field
+            type="string"
+            name="dataType"
+            title="数据类型"
+            required
+            x-props={{
+              placeholder: '请选择数据类型',
+              optionType: 'button',
+              options: dataTypeList,
+            }}
+            x-component="Radio"
+          />
+          {arrayTypeFormItem}
+          {rwTypeFormItem}
+          {boolTypeFormItem}
+          {intTypeFormItem}
+          {stringTypeFormItem}
+          {enumTypeFormItem}
+          {timeTypeFormItem}
+          {structTypeFormItem}
+        </>
+        <>
+          <Field
+            type="string"
+            title="事件类型"
+            name="eventType"
+            x-component="Radio"
+            x-props={{
+              placeholder: '请选择事件类型',
+              optionType: 'button',
+              options: eventTypeList,
+            }}
+          />
+          {renderStructFormItem('事件参数', 'params')}
+        </>
+        {renderStructFormItem('调用参数', 'input')}
+        {renderStructFormItem('返回参数', 'output')}
         <Field
           type="string"
-          name="mode"
-          title="数据类型"
-          required
-          x-props={{
-            placeholder: '请选择数据类型',
-            optionType: 'button',
-            options: shujuleixingBtnList,
-          }}
-          x-component="Radio"
-        />
-
-        <Field
-          type="string"
-          name="duxieleixing"
-          title="读写类型"
-          required
-          x-props={{
-            placeholder: '请选择读写类型',
-            optionType: 'button',
-            options: readWrtieList,
-          }}
-          x-component="Radio"
-        />
-        {boolTypeFormItem}
-        {intTypeFormItem}
-        {stringTypeFormItem}
-        {enumTypeFormItem}
-        {timeTypeFormItem}
-        {structTypeFormItem}
-        <Field
-          type="string"
-          name="decs"
+          name="desc"
           title="描述"
           required
           x-props={{
             placeholder: '请输入描述',
+            extra: '最多不超过80个字符',
+            maxLength: 80,
           }}
           x-component="TextArea"
+          x-component-props={{
+            maxLength: 80,
+          }}
         />
       </SchemaForm>
     </Modal>
   );
-};
+});
