@@ -204,7 +204,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         specs,
         // input,
         // output,
+        dataDefinitionForenum,
         type: values?.dataType ?? eventType,
+        numericalRange,
         mapping: __mapping,
         max: _max + '',
         min: numericalRange?.min + '',
@@ -252,6 +254,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     await ruleActions.current.reset({
       validate: false,
     });
+    props?.actionRef?.current?.reload();
     props.setModalVisit(false);
   };
 
@@ -285,8 +288,24 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const input = _affordance.input;
     const output = _affordance.output;
     const dataType = _affordance.define.type;
+    const mapping = _affordance.define.mapping;
+    const max = _affordance.define.max;
+    const min = _affordance.define.min;
+    const start = _affordance.define.start;
+    const step = _affordance.define.step;
+    const unit = _affordance.define.unit;
+    const dataDefinitionForenum = _affordance.define.dataDefinitionForenum;
 
     ruleActions.current.setFieldValue('mode', mode);
+
+    ruleActions.current.setFieldValue('mapping', mapping);
+    ruleActions.current.setFieldValue('max', max);
+    ruleActions.current.setFieldValue('min', min);
+    ruleActions.current.setFieldValue('start', start);
+    ruleActions.current.setFieldValue('step', step);
+    ruleActions.current.setFieldValue('unit', unit);
+    ruleActions.current.setFieldValue('dataDefinitionForenum', dataDefinitionForenum);
+
     ruleActions.current.setFieldValue('dataType', dataType);
     ruleActions.current.setFieldValue('params', params);
 
@@ -1022,6 +1041,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           x-props={{
             placeholder: '请输入标识符',
             extra: '第一个字符不能是数字，支持英文、数字、下划线的组合，最多不超过32个字符',
+            disabled: isEdit,
           }}
           x-rules={{
             pattern: /^(?![0-9])[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}$/,
@@ -1071,7 +1091,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           type="string"
           name="desc"
           title="描述"
-          required
           x-props={{
             placeholder: '请输入描述',
             extra: '最多不超过80个字符',

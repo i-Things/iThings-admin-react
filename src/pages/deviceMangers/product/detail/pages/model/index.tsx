@@ -53,6 +53,67 @@ export default () => {
     setModelModalValue: (_: any, __: any) => {},
   });
 
+  const boolRender = (record: ProductSchemaInfo) => {
+    const mapping = JSON.parse(record?.affordance)?.define?.mapping;
+    const array = Object.entries(mapping);
+    return (
+      <div>
+        {array.map((item) => {
+          return (
+            <p key={item[0]}>
+              {item[0]} - {item[1]}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const intRender = (record: ProductSchemaInfo) => {
+    const { min, max, start, step, unit } = JSON.parse(record?.affordance)?.define;
+    return (
+      <div>
+        <p>
+          数值范围: {min} - {max}
+        </p>
+        <p>初始值: {start}</p>
+        <p>步长: {step}</p>
+        <p>单位: {unit}</p>
+      </div>
+    );
+  };
+
+  const stringRender = (record: ProductSchemaInfo) => {
+    const { max } = JSON.parse(record?.affordance)?.define;
+    return (
+      <div>
+        <p>
+          字符串长度: {0} - {max}
+        </p>
+      </div>
+    );
+  };
+
+  const timestampRender = () => {
+    return (
+      <div>
+        <p>INT类型的UTC时间戳（秒）</p>
+      </div>
+    );
+  };
+
+  const renderMap = (type: string, record: ProductSchemaInfo) => {
+    const map = {
+      bool: boolRender(record),
+      int: intRender(record),
+      float: intRender(record),
+      string: stringRender(record),
+      enum: boolRender(record),
+      timestamp: timestampRender(),
+    };
+    return map[type] ?? '-';
+  };
+
   const columns: ProColumns<ProductSchemaInfo>[] = [
     {
       title: '功能类型',
@@ -88,8 +149,10 @@ export default () => {
     {
       title: '数据定义',
       dataIndex: 'affordance',
-      ellipsis: true,
-      copyable: true,
+      render: (_: any, record: ProductSchemaInfo) => {
+        const type = JSON.parse(record?.affordance)?.define?.type;
+        return renderMap(type, record);
+      },
     },
     {
       title: '操作',
@@ -101,7 +164,6 @@ export default () => {
           key="view"
           onClick={() => {
             if (modelModalRef.current) {
-              console.log('???查看');
               modelModalRef.current.setModelModalValue(record, true);
             }
           }}
@@ -307,7 +369,12 @@ export default () => {
           </Button>,
         ]}
       />
-      <EditForm modalVisit={modalVisit} setModalVisit={setModalVisit} ref={modelModalRef} />
+      <EditForm
+        modalVisit={modalVisit}
+        setModalVisit={setModalVisit}
+        ref={modelModalRef}
+        actionRef={actionRef}
+      />
       {importModal} {exportModal}
     </>
   );
