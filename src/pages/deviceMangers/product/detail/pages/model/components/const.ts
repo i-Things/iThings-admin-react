@@ -1,3 +1,5 @@
+import type { MutableRefObject } from 'react';
+
 export const typeBtnList = [
   { label: '属性', value: 1 },
   { label: '事件', value: 2 },
@@ -53,6 +55,7 @@ export type EditFormType = {
   ref: any;
   modalVisit: boolean;
   setModalVisit: any;
+  actionRef: MutableRefObject<any>;
 };
 
 export const TYPE_ENUM = {
