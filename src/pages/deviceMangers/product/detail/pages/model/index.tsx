@@ -48,6 +48,7 @@ export default () => {
   const actionRef = useRef<ActionType>();
   const modelModalRef = useRef({
     clearModal: Function,
+    createModel: Function,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setModelModalValue: (_: any, __: any) => {},
   });
@@ -299,8 +300,7 @@ export default () => {
             key="show"
             type="primary"
             onClick={() => {
-              modelModalRef.current.clearModal();
-              setModalVisit(true);
+              modelModalRef.current.createModel();
             }}
           >
             新建自定义功能

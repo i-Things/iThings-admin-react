@@ -37,6 +37,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   useImperativeHandle(ref, () => ({
     setModelModalValue: setModelModalValue,
     clearModal: clearModal,
+    createModel: createModel,
   }));
 
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
@@ -258,6 +259,14 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     await ruleActions.current.reset({
       validate: false,
     });
+  }
+
+  async function createModel() {
+    await ruleActions.current.reset({
+      validate: false,
+    });
+    setIsEdit(false);
+    props.setModalVisit(true);
   }
 
   async function setModelModalValue(record: any, _isEdit: boolean) {
