@@ -121,6 +121,13 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         });
         item.dataType.mapping = _mapping;
       }
+      if (item.type === 'array') {
+        item.dataType.arrayInfo = {
+          ...item.dataType,
+          type: item.dataType.elementType,
+          max: item.dataType.max + '',
+        };
+      }
       item.define = {
         ...item.dataType,
         type: item.type,
@@ -146,6 +153,13 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         });
         item.dataType.mapping = _mapping;
       }
+      if (item.type === 'array') {
+        item.dataType.arrayInfo = {
+          ...item.dataType,
+          type: item.dataType.elementType,
+          max: item.dataType.max + '',
+        };
+      }
       item.define = {
         ...item.dataType,
         type: item.type,
@@ -170,7 +184,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         });
         item.dataType.mapping = _mapping;
       }
-      
+
       if (item.type === 'array') {
         item.dataType.arrayInfo = {
           ...item.dataType,
@@ -178,7 +192,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           max: item.dataType.max + '',
         };
       }
-      
+
       item.define = {
         ...item.dataType,
         type: item.type,
@@ -353,7 +367,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           name="0"
           x-component="Input"
           x-props={{
-            placeholder: '请选择',
+            placeholder: '请输入',
             addonBefore: '0',
           }}
           x-rules={{
@@ -367,7 +381,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           x-component="Input"
           required
           x-props={{
-            placeholder: '请选择',
+            placeholder: '请输入',
             addonBefore: 1,
           }}
           x-rules={{
@@ -394,7 +408,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             x-component="NumberPicker"
             required
             x-props={{
-              placeholder: '请选择',
+              placeholder: '请输入最小值',
             }}
           />
 
@@ -404,7 +418,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             x-component="NumberPicker"
             required
             x-props={{
-              placeholder: '请选择',
+              placeholder: '请输入最大值',
             }}
           />
         </FormMegaLayout>
@@ -415,7 +429,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         name="start"
         title="初始值"
         x-props={{
-          placeholder: '请输入功能名称',
+          placeholder: '请输入初始值',
           visible: false,
         }}
         x-component="NumberPicker"
@@ -426,7 +440,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         name="step"
         title="步长"
         x-props={{
-          placeholder: '请输入功能名称',
+          placeholder: '请输入步长',
           visible: false,
         }}
         x-component="NumberPicker"
@@ -454,7 +468,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         name="max"
         title="数据定义"
         x-props={{
-          placeholder: '请输入数据定义',
+          placeholder: '请输入最大值',
           visible: false,
           addonBefore: '字节',
         }}
@@ -686,7 +700,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                       x-component="Input"
                       required
                       x-props={{
-                        placeholder: '请选择',
+                        placeholder: '请输入',
                         addonBefore: '0',
                       }}
                     />
@@ -696,7 +710,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                       x-component="Input"
                       required
                       x-props={{
-                        placeholder: '请选择',
+                        placeholder: '请输入',
                         addonBefore: 1,
                       }}
                     />
@@ -1049,7 +1063,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             disabled: isEdit,
           }}
           x-rules={{
-            pattern: /^(?![0-9])[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}$/,
+            pattern: /^(?![0-9])[_a-zA-Z0-9_]{1,20}$/,
             message: '请输入第一个字符不能是数字，支持英文、数字、下划线的组合，最多不超过32个字符',
           }}
           x-component="Input"
