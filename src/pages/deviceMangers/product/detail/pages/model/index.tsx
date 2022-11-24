@@ -3,7 +3,7 @@ import {
   postThingsProductSchemaIndex,
   postThingsProductSchemaTslImport,
   postThingsProductSchemaTslRead,
-  postThingsProductSchema__openAPI__delete,
+  postThingsProductSchema__openAPI__delete
 } from '@/services/iThingsapi/wumoxing';
 import { downloadFunction, isJSON } from '@/utils/utils';
 import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -50,7 +50,7 @@ export default () => {
     clearModal: Function,
     createModel: Function,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setModelModalValue: (_: any, __: any) => {},
+    setModelModalValue: (_: any, __: any) => { },
   });
 
   const boolRender = (record: ProductSchemaInfo) => {
@@ -167,6 +167,7 @@ export default () => {
           key="view"
           onClick={() => {
             if (modelModalRef.current) {
+              console.log('record11', record);
               modelModalRef.current.setModelModalValue(record, true);
             }
           }}
@@ -194,7 +195,7 @@ export default () => {
                 message.success('删除成功');
                 actionRef.current?.reload();
               },
-              onCancel() {},
+              onCancel() { },
             });
           }}
         >
