@@ -9,62 +9,60 @@ interface InfoProps {
   deviceInfo: DeviceInfo;
 }
 
-const columns: ProColumns<DeviceInfo>[] = [
-  {
-    title: '设备名称',
-    key: 'deviceName',
-    dataIndex: 'deviceName',
-    ellipsis: true,
-    copyable: true,
-  },
-  {
-    title: '产品ID',
-    key: 'productID',
-    dataIndex: 'productID',
-    copyable: true,
-  },
-  {
-    title: '设备密钥',
-    key: 'secret',
-    dataIndex: 'secret',
-    copyable: true,
-  },
-  {
-    title: '设备创建时间',
-    key: 'createdTime',
-    dataIndex: 'createdTime',
-    renderText: (text: string) => timestampToDateStr(Number(text)),
-  },
-  {
-    title: '最后上线时间',
-    key: 'lastLogin',
-    dataIndex: 'lastLogin',
-    renderText: (text: string) => timestampToDateStr(Number(text)),
-  },
-  {
-    title: '激活时间',
-    key: 'firstLogin',
-    dataIndex: 'firstLogin',
-    renderText: (text: string) => timestampToDateStr(Number(text)),
-  },
-  {
-    title: '设备状态',
-    key: 'isOnline',
-    dataIndex: 'isOnline',
-    valueType: 'select',
-    valueEnum: isOnlineEnum,
-    // render: (_, record) =>
-    //   record.firstLogin === '0' ? '未激活' : STATUS.get(record.isOnline || 0),
-  },
-  {
-    title: '固件版本',
-    key: 'version',
-    dataIndex: 'version',
-  },
-];
-
 const BasicInfoPage: React.FC<InfoProps> = (props) => {
   const { deviceInfo } = props;
+
+  const columns: ProColumns<DeviceInfo>[] = [
+    {
+      title: '设备名称',
+      key: 'deviceName',
+      dataIndex: 'deviceName',
+      ellipsis: true,
+      copyable: true,
+    },
+    {
+      title: '产品ID',
+      key: 'productID',
+      dataIndex: 'productID',
+      copyable: true,
+    },
+    {
+      title: '设备密钥',
+      key: 'secret',
+      dataIndex: 'secret',
+      copyable: true,
+    },
+    {
+      title: '设备创建时间',
+      key: 'createdTime',
+      dataIndex: 'createdTime',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '最后上线时间',
+      key: 'lastLogin',
+      dataIndex: 'lastLogin',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '激活时间',
+      key: 'firstLogin',
+      dataIndex: 'firstLogin',
+      renderText: (text: string) => timestampToDateStr(Number(text)),
+    },
+    {
+      title: '设备状态',
+      key: 'isOnline',
+      dataIndex: 'isOnline',
+      valueType: 'select',
+      valueEnum: isOnlineEnum(deviceInfo),
+    },
+    {
+      title: '固件版本',
+      key: 'version',
+      dataIndex: 'version',
+    },
+  ];
   return (
     <ProDescriptions
       className={styles.descriptions}
