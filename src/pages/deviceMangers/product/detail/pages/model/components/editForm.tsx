@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Field, FormMegaLayout, FormPath, SchemaForm } from '@formily/antd';
+import {
+  postThingsProductSchemaCreate,
+  postThingsProductSchemaUpdate
+} from '@/services/iThingsapi/wumoxing';
+import { createAsyncFormActions, Field, FormEffectHooks, FormMegaLayout, FormPath, FormSpy, SchemaForm } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
   FormItemGrid,
@@ -8,16 +12,10 @@ import {
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
-  Switch as FSwitch,
+  Switch as FSwitch
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { AutoComplete, Modal, Radio } from 'antd';
-
-import {
-  postThingsProductSchemaCreate,
-  postThingsProductSchemaUpdate,
-} from '@/services/iThingsapi/wumoxing';
-import { createAsyncFormActions, FormEffectHooks, FormSpy } from '@formily/antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useParams } from 'umi';
 import type { EditFormType } from './const';
@@ -28,7 +26,7 @@ import {
   typeBtnList,
   yuansuleixingList,
   _dataTypeList,
-  _yuansuleixingList,
+  _yuansuleixingList
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -37,7 +35,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   useImperativeHandle(ref, () => ({
     setModelModalValue: setModelModalValue,
     clearModal: clearModal,
-    createModel: createModel,
+    createModel: createModel
   }));
 
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
@@ -172,6 +170,15 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         });
         item.dataType.mapping = _mapping;
       }
+      
+      if (item.type === 'array') {
+        item.dataType.arrayInfo = {
+          ...item.dataType,
+          type: item.dataType.elementType,
+          max: item.dataType.max + '',
+        };
+      }
+      
       item.define = {
         ...item.dataType,
         type: item.type,
@@ -335,7 +342,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       type="object"
       name="mapping"
       title="数据定义"
-      required
       x-props={{
         visible: false,
         extra: '支持中文、英文、数字、下划线的组合，最多不超过12个字符',
@@ -346,7 +352,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           type="string"
           name="0"
           x-component="Input"
-          required
           x-props={{
             placeholder: '请选择',
             addonBefore: '0',
@@ -381,34 +386,34 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         name="numericalRange"
         title="数值范围"
         x-props={{ visible: false }}
-        required
       >
-        <Field
-          type="number"
-          name="min"
-          x-component="NumberPicker"
-          required
-          x-props={{
-            placeholder: '请选择',
-          }}
-        />
-        -
-        <Field
-          type="number"
-          name="max"
-          x-component="NumberPicker"
-          required
-          x-props={{
-            placeholder: '请选择',
-          }}
-        />
+        <FormMegaLayout inline labelWidth={120} wrapperWidth={200} full hasBorder={false} isLayout={false}>
+          <Field
+            type="number"
+            name="min"
+            x-component="NumberPicker"
+            required
+            x-props={{
+              placeholder: '请选择',
+            }}
+          />
+
+          <Field
+            type="number"
+            name="max"
+            x-component="NumberPicker"
+            required
+            x-props={{
+              placeholder: '请选择',
+            }}
+          />
+        </FormMegaLayout>
       </Field>
       {/* 初始值 */}
       <Field
         type="number"
         name="start"
         title="初始值"
-        required
         x-props={{
           placeholder: '请输入功能名称',
           visible: false,
@@ -420,7 +425,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         type="number"
         name="step"
         title="步长"
-        required
         x-props={{
           placeholder: '请输入功能名称',
           visible: false,
@@ -432,7 +436,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         type="string"
         name="unit"
         title="单位"
-        required
         maxLength={12}
         x-props={{
           placeholder: '请输入单位',
@@ -450,7 +453,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         type="number"
         name="max"
         title="数据定义"
-        required
         x-props={{
           placeholder: '请输入数据定义',
           visible: false,
@@ -472,9 +474,8 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         <Field
           type="array"
           name="dataDefinitionForenum"
-          title="数据定义枚举"
+          title="数据定义"
           x-component="ArrayTable"
-          required
           x-props={{ visible: false }}
           x-component-props={{
             operationsWidth: 80,
@@ -487,7 +488,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators('dataDefinitionForenum');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
+                  {({ }) => {
                     return (
                       <a
                         style={{
@@ -526,7 +527,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       type="string"
       name="elementType"
       title="元素类型"
-      required
       default={'int'}
       x-props={{
         placeholder: '请选择元素类型',
@@ -543,8 +543,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       <Field
         type="object"
         name="dataDefinitionFortimestamp"
-        title="数据定义Time"
-        required
+        title="数据定义"
         x-props={{ visible: false }}
       >
         <Field
@@ -609,7 +608,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           name={name}
           title={title}
           x-component="ArrayTable"
-          required
           x-props={{ visible: false }}
           x-component-props={{
             operationsWidth: 80,
@@ -622,7 +620,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators('specs');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
+                  {({ }) => {
                     return (
                       <a
                         style={{
@@ -663,7 +661,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                 type="string"
                 name="elementType"
                 title="元素类型"
-                required
                 x-props={{
                   placeholder: '请选择元素类型',
                   optionType: 'button',
@@ -711,7 +708,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                   type="number"
                   name="max"
                   title="数据定义"
-                  required
                   x-props={{
                     placeholder: '请输入数据定义',
                     visible: false,
@@ -739,7 +735,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                       const mutators = ruleActions.current.createMutators('specs');
                       return (
                         <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                          {({}) => {
+                          {({ }) => {
                             return (
                               <a
                                 style={{
@@ -835,7 +831,16 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           type: 1,
           dataType: 'bool',
           mode: 'rw',
-          eventType: 1,
+          eventType: 'alert',
+          mapping: { '0': '关', '1': '开' },
+          numericalRange: { 'min': 1, 'max': 100 },
+          start: 0,
+          step: 1,
+          max: 2048,
+          specs: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
+          params: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
+          input: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
+          output: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
         }}
         onSubmit={onModalFinish}
         effects={() => {
@@ -882,7 +887,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           // 监听数据类型为数组时，元素类型的变化
           onFieldValueChange$('elementType').subscribe(async (state) => {
             const dataType = await ruleActions.current.getFieldState('dataType');
-            if (dataType !== 'array') {
+            if (dataType.value !== 'array') {
               return;
             }
             const value = state.value;
@@ -1054,7 +1059,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             type="string"
             name="dataType"
             title="数据类型"
-            required
             x-props={{
               placeholder: '请选择数据类型',
               optionType: 'button',
@@ -1102,6 +1106,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           }}
         />
       </SchemaForm>
-    </Modal>
+    </Modal >
   );
 });
