@@ -36,9 +36,17 @@ type queryParam = {
 interface Props {
   productInfo?: PRODUCT_INFO;
 }
+
+const deviceTypeMap = new Map([
+  [1, '设备'],
+  [2, '网关'],
+  [3, '子设备'],
+]);
+
 const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const actionRef = useRef<ActionType>();
   const [productsValue, setProductsValue] = useState({});
+  const [deviceType, setDeviceType] = useState({});
   const [products, setProducts] = useState<PRODUCT_INFO[]>();
   const [tags, setTags] = useState<Tags[]>();
   const getProductName = (productID: string) => {
@@ -113,8 +121,13 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const queryProjectList = async () => {
     if (productInfo != undefined) {
       const productMap = {};
+      const deviceTypeObj = {};
       productMap[productInfo?.productID ?? ''] = { text: productInfo.productName };
+      deviceTypeObj[productInfo?.productID ?? ''] = {
+        text: deviceTypeMap.get(productInfo.deviceType || 0),
+      };
       setProductsValue(productMap);
+      setDeviceType(deviceTypeObj);
       const list = [productInfo];
       setProducts(list);
       return;
@@ -132,12 +145,15 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
     }
     setProducts(res.data.list);
     const productMap = {};
+    const deviceTypeObj = {};
     res.data.list?.map((item) => {
       if (item.productID != undefined) {
         productMap[item.productID] = { text: item.productName };
+        deviceTypeObj[item.productID] = { text: deviceTypeMap.get(item.deviceType || 0) };
       }
     });
     setProductsValue(productMap);
+    setDeviceType(deviceTypeObj);
   };
 
   /**
@@ -169,7 +185,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           key="view"
           onClick={() => {
             history.push(
-              '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName,
+              '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName + '/1',
             );
           }}
         >
@@ -193,6 +209,15 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       copyable: true,
       hideInTable: productInfo != undefined,
       search: false,
+    },
+    {
+      title: '设备类型',
+      dataIndex: 'productID',
+      ellipsis: true,
+      copyable: true,
+      hideInTable: productInfo != undefined,
+      search: false,
+      valueEnum: deviceType,
     },
     {
       title: '设备标签',
@@ -252,27 +277,41 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       title: '操作',
       valueType: 'option',
       key: 'option',
-      render: (text, record: DEVICE_INFO) => [
-        <a
-          key="view"
-          onClick={() => {
-            history.push(
-              '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName,
-            );
-          }}
-        >
-          查看
-        </a>,
-        <Button
-          danger
-          key="deleteProduct"
-          onClick={() => {
-            showDeleteConfirm(record);
-          }}
-        >
-          删除
-        </Button>,
-      ],
+      render: (text, record: DEVICE_INFO) => (
+        <>
+          <a
+            key="view"
+            onClick={() => {
+              history.push(
+                '/deviceMangers/device/detail/' + record.productID + '/' + record.deviceName + '/1',
+              );
+            }}
+            style={{ marginRight: '16px' }}
+          >
+            查看
+          </a>
+          <Button
+            type="link"
+            key="deleteProduct"
+            onClick={() => {
+              showDeleteConfirm(record);
+            }}
+            style={{ padding: 0 }}
+          >
+            删除
+          </Button>
+          {deviceType[record.productID || ''].text === '网关' && (
+            <div>
+              <a
+                className=""
+                href={`/deviceMangers/device/detail/${record.productID}/${record.deviceName}/7`}
+              >
+                子设备管理
+              </a>
+            </div>
+          )}
+        </>
+      ),
     },
   ];
   return (

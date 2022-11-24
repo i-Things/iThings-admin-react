@@ -4,6 +4,7 @@ import {
   postThingsDeviceMsgHubLogIndex,
   postThingsDeviceMsgPropertyLatestIndex,
 } from '@/services/iThingsapi/shebeixiaoxi';
+import { postThingsProductSchemaIndex } from '@/services/iThingsapi/wumoxing';
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { EVENT_TYPE_DATA } from '@/utils/const';
 import { SyncOutlined } from '@ant-design/icons';
@@ -44,6 +45,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const [isRefresh, setRefresh] = useState(false);
   const [eventType, setEventType] = useState<string>(null!);
   const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
+  const [attrList, setAttrList] = useState<Partial<AttrData>[]>([]);
 
   const [visible, setVisible] = useState(false);
 
@@ -74,6 +76,55 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
         isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 5000 : 0,
     },
   );
+
+  // 获取物模型列表
+  const { data: modelList } = useRequest(
+    async () => {
+      const res = await postThingsProductSchemaIndex({
+        productID,
+        type: 1,
+      });
+      return res.data;
+    },
+    {
+      ready:
+        logType === LogType.MODEL &&
+        modelTYpe === ModelType.PROPERTY &&
+        !!(productID && deviceName),
+      refreshDeps: [isRefresh, logType, modelTYpe],
+      pollingInterval:
+        isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 5000 : 0,
+    },
+  );
+
+  // 匹配物模型名称
+  useEffect(() => {
+    if (modelList && attrData) {
+      const arr: Partial<AttrData>[] = [];
+      modelList?.list?.forEach((item) => {
+        attrData.list?.some((list) => {
+          if (list.dataID === item.identifier) {
+            arr.push({
+              ...list,
+              name: item.name,
+              affordance: JSON.parse(item.affordance).define.type,
+            });
+          }
+          return list.dataID === item.identifier;
+        });
+      });
+      setAttrList(arr);
+    }
+  }, [attrData, modelList]);
+
+  // 根据属性标识符筛选
+  useEffect(() => {
+    if (attrList.length > 0) {
+      setModelData(
+        () => (dataID ? attrList?.filter((item) => item.dataID?.includes(dataID)) : attrList) || [],
+      );
+    }
+  }, [dataID, attrList]);
 
   /** 获取物模型-事件 */
   const eventTable = async ({ current, pageSize }: PageInfo) => {
@@ -182,18 +233,6 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   };
 
   const attrColumns = getAttrColumns(handleHistory);
-
-  // 根据属性标识符筛选
-  useEffect(() => {
-    if (attrData) {
-      setModelData(
-        () =>
-          (dataID
-            ? attrData?.list?.filter((item) => item.dataID?.includes(dataID))
-            : attrData.list) || [],
-      );
-    }
-  }, [dataID, attrData]);
 
   /** 改变日志类型 */
   const logTypeChange = (e: RadioChangeEvent) => {

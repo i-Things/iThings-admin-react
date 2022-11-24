@@ -20,7 +20,7 @@ const useTableCreate = () => {
     } catch (error) {
       message.error((error as Error)?.message);
     }
-    return res.status === 200;
+    return res;
   };
   return {
     createHandler,
