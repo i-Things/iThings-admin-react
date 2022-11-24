@@ -11,6 +11,7 @@ import {
   postThingsProductRemoteConfigLastestRead,
   postThingsProductRemoteConfigPushAll,
 } from '@/services/iThingsapi/chanpinyuanchengpeizhi';
+import { ResponseCode } from '@/utils/base';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
@@ -91,7 +92,7 @@ const RemoteConfiguration = () => {
         },
         updateTableList,
       ).then((res) => {
-        if (!res) {
+        if (res?.code === ResponseCode.SUCCESS) {
           setEditFlag(true);
           setConfirmLoading(false);
           closeModal();
@@ -249,7 +250,7 @@ const RemoteConfiguration = () => {
               onClick={updateConfirm}
               disabled={jsonSize / 1024 >= 64}
             >
-              {editFlag ? '批量更新' : '保存'}
+              {editFlag ? '下发' : '保存'}
             </Button>
           </div>
         </div>
