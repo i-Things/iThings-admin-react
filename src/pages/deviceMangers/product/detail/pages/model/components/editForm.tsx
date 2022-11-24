@@ -35,7 +35,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   useImperativeHandle(ref, () => ({
     setModelModalValue: setModelModalValue,
     clearModal: clearModal,
-    createModel: createModel,
+    createModel: createModel
   }));
 
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
@@ -170,6 +170,15 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         });
         item.dataType.mapping = _mapping;
       }
+      
+      if (item.type === 'array') {
+        item.dataType.arrayInfo = {
+          ...item.dataType,
+          type: item.dataType.elementType,
+          max: item.dataType.max + '',
+        };
+      }
+      
       item.define = {
         ...item.dataType,
         type: item.type,
@@ -378,7 +387,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         title="数值范围"
         x-props={{ visible: false }}
       >
-        <FormMegaLayout inline labelWidth={120} wrapperWidth={200} full>
+        <FormMegaLayout inline labelWidth={120} wrapperWidth={200} full hasBorder={false} isLayout={false}>
           <Field
             type="number"
             name="min"
@@ -388,7 +397,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               placeholder: '请选择',
             }}
           />
-         
+
           <Field
             type="number"
             name="max"

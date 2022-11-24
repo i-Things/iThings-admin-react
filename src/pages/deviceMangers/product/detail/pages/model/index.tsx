@@ -245,6 +245,7 @@ export default () => {
     setIsImportModalVisible(false);
 
     message.success('导入成功');
+    actionRef.current?.reload()
     setTsl('');
   };
 
