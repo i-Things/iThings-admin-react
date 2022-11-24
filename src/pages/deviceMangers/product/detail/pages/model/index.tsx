@@ -104,14 +104,17 @@ export default () => {
 
   const renderMap = (type: string, record: ProductSchemaInfo) => {
     const map = {
-      bool: boolRender(record),
-      int: intRender(record),
-      float: intRender(record),
-      string: stringRender(record),
-      enum: boolRender(record),
-      timestamp: timestampRender(),
+      bool: boolRender,
+      int: intRender,
+      float: intRender,
+      string: stringRender,
+      enum: boolRender,
+      timestamp: timestampRender,
     };
-    return map[type] ?? '-';
+    if (!map[type]) {
+      return '-';
+    }
+    return map[type](record) ?? '-';
   };
 
   const columns: ProColumns<ProductSchemaInfo>[] = [
