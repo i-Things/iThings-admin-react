@@ -6,7 +6,7 @@ import {
   postThingsGroupInfoIndex,
   postThingsGroupInfoUpdate,
 } from '@/services/iThingsapi/shebeifenzu';
-import { FlagStatus } from '@/utils/base';
+import { FlagStatus, ResponseCode } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -15,7 +15,7 @@ import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import PubSub from 'pubsub-js';
 import { useEffect, useRef, useState } from 'react';
-import { history } from 'umi';
+import { useHistory } from 'umi';
 import type { GroupListItem, GroupOption } from '../types';
 import type { TagProps } from './types';
 
@@ -33,6 +33,8 @@ const CreateOrUpdateGroup: React.FC<{
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
   const [tagValues, setTagValues] = useState<TagProps[]>([]);
+
+  const history = useHistory();
 
   const editFormRef = useRef<ProFormInstance>();
 
@@ -65,7 +67,7 @@ const CreateOrUpdateGroup: React.FC<{
       if (updateFlagHandler) updateFlagHandler();
     } else {
       const parentID = values.parentID[values.parentID.length - 1];
-      await createHandler<CreateProp, GroupListItem>(
+      const jumpFlag = await createHandler<CreateProp, GroupListItem>(
         postThingsGroupInfoCreate,
         actionRef as React.MutableRefObject<ActionType | undefined>,
         {
@@ -81,7 +83,8 @@ const CreateOrUpdateGroup: React.FC<{
         ...values,
         parentID,
       });
-      history.push(`/deviceMangers/group/detail/${queryList?.data[0]?.groupID}`);
+      if (jumpFlag?.code === ResponseCode.SUCCESS)
+        history.push(`/deviceMangers/group/detail/${queryList?.data[0]?.groupID}`);
     }
     onClose();
     editFormRef.current?.resetFields();
@@ -143,6 +146,12 @@ const CreateOrUpdateGroup: React.FC<{
           changeOnSelect: true,
         }}
         disabled={flag === FlagStatus.UPDATE}
+        rules={[
+          {
+            required: true,
+            message: '请选择父组',
+          },
+        ]}
       />
       <ProFormText
         name="groupName"
