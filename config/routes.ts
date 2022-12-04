@@ -23,16 +23,10 @@ export default [
     layout: false,
     routes: [
       {
-        path: '/visualizations',
-        name: '可视化',
-        icon: 'icon_sewage',
-        routes: [
-          {
-            path: '/visualizations/screen/index',
-            name: '大屏',
-            component: './visualizations/screen/index',
-          },
-        ],
+        path: '/home',
+        name: '大屏',
+        component: './home/index',
+        icon: 'icon_dosing',
       },
       {
         path: '/deviceMangers',

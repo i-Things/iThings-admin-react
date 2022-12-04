@@ -55,7 +55,7 @@ const DeviceChart: React.FC<DeviceChartProps> = ({ data }) => {
       </div>
       <div className={styles['charts-wrapper']}>
         <div className={styles['chart-title']}>设备在线率</div>
-        <div className={styles.chartContent}>
+        <div className={styles['chart-content']}>
           {data && <ReactECharts option={deviceOnlineOptions} style={{ height: '100%' }} />}
         </div>
       </div>
