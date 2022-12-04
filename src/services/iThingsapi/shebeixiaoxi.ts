@@ -7,7 +7,7 @@ export async function postThingsDeviceMsgEventLogIndex(
   body: {
     /** 不填获取产品下所有设备 */
     deviceNames: string[];
-    /** 信息:info 告警alert 故障:fault */
+    /** 信息:info  告警alert  故障:fault */
     types?: string[];
     productID: string;
     dataID: string;
@@ -40,7 +40,7 @@ export async function postThingsDeviceMsgHubLogIndex(
     timeStart?: string;
     timeEnd?: string;
     page?: { page?: number; size?: number };
-    /** connected:上线 disconnected:下线 property:属性 event:事件 action:操作 thing:物模型提交的操作为匹配的日志 */
+    /** connected:上线 disconnected:下线  property:属性 event:事件 action:操作 thing:物模型提交的操作为匹配的日志 */
     actions?: string[];
     topics?: string[];
     content?: string;

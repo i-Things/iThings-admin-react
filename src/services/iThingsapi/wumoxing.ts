@@ -87,10 +87,7 @@ export async function postThingsProductSchemaTslRead(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    data: any;
-    tsl: string;
-  }>('/api/v1/things/product/schema/tsl-read', {
+  return request<{ tsl: string }>('/api/v1/things/product/schema/tsl-read', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -2,6 +2,36 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
+/** 设备统计详情 POST /api/v1/things/device/info/count */
+export async function postThingsDeviceInfoCount(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postThingsDeviceInfoCountParams,
+  body: {
+    endTime: number;
+    startTime: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{
+    code: number;
+    msg: string;
+    data: {
+      deviceCount: { online?: number; offline?: number; inactive?: number; unknown?: number };
+      deviceTypeCount: { device?: number; gateway?: number; subset?: number; unknown?: number };
+    };
+  }>('/api/v1/things/device/info/count', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {
+      ...params,
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 新增设备 POST /api/v1/things/device/info/create */
 export async function postThingsDeviceInfoCreate(
   body: {
