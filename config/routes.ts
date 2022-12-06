@@ -23,6 +23,12 @@ export default [
     layout: false,
     routes: [
       {
+        path: '/home',
+        name: '大屏',
+        component: './home/index',
+        icon: 'icon_dosing',
+      },
+      {
         path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',
