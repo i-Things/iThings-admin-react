@@ -3297,6 +3297,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/bmapgl@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmmirror.com/@types/bmapgl/-/bmapgl-0.0.5.tgz#daa92dcd501464b119c4bbfc22f9083f112d6c18"
+  integrity sha512-4LVndgKRKLT4OIgUENDb9Uf9CsT2FtIMvpfKxIQVerEYPEXlunof60qDJQb/+1bg78crv7QJiz71tfh6NfpHbg==
+
 "@types/body-parser@*":
   version "1.19.2"
   resolved "https://registry.npmmirror.com/@types/body-parser/-/body-parser-1.19.2.tgz#aea2059e28b7658639081347ac4fab3de166e6f0"
@@ -12117,6 +12122,11 @@ mapbox-gl@^1.2.1:
     tinyqueue "^2.0.3"
     vt-pbf "^3.1.1"
 
+mapvgl@^1.0.0-beta.163:
+  version "1.0.0-beta.165"
+  resolved "https://registry.npmmirror.com/mapvgl/-/mapvgl-1.0.0-beta.165.tgz#8a69557160a1598e93ded0b7f0487ca1e16027d2"
+  integrity sha512-/8PdMCUUbzLbk6ZuIPmQq9grTtW3HfERbbr2sbdTzDNZlsDI1AGhTUWgOBpFU7WxcAIXmbVpc9cEdSzk7Larqw==
+
 markdown-table@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/markdown-table/-/markdown-table-2.0.0.tgz#194a90ced26d31fe753d8b9434430214c011865b"
@@ -15357,6 +15367,14 @@ react-beautiful-dnd@^13.1.0:
     react-redux "^7.2.0"
     redux "^4.0.4"
     use-memo-one "^1.1.1"
+
+react-bmapgl@^0.2.11:
+  version "0.2.11"
+  resolved "https://registry.npmmirror.com/react-bmapgl/-/react-bmapgl-0.2.11.tgz#e242524a4b42780336c201b915af38b7c5ad00f9"
+  integrity sha512-dhgB6EEKE3qCO1lAUFbxKou9Wv+6TcigeOLUlF4DWB+NqQkbDUl9JS7jrNY8XtllaafSpn+x5RyUZ3VODYTT5w==
+  dependencies:
+    mapvgl "^1.0.0-beta.163"
+    shallowequal "^1.1.0"
 
 react-content-loader@^5.0.4:
   version "5.1.4"
