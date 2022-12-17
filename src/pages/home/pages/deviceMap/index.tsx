@@ -4,6 +4,7 @@ import { TitleComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import React from 'react';
 import { useHistory } from 'umi';
 
 import type { DeviceStatic } from '@/pages/home/data';
@@ -12,7 +13,8 @@ import type { EffectScatterSeriesOption, ScatterSeriesOption } from 'echarts/cha
 import type { TitleComponentOption, TooltipComponentOption } from 'echarts/components';
 
 import 'echarts/extension/bmap/bmap';
-import type { TopLevelFormatterParams } from 'echarts/types/dist/shared';
+
+import styles from './index.less';
 
 echarts.use([
   TitleComponent,
@@ -116,7 +118,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
     },
     tooltip: {
       trigger: 'item',
-      formatter: function (params: TopLevelFormatterParams) {
+      formatter: function (params) {
         let htmlStr = '<div style="padding:5px;line-height:28px;">';
         htmlStr +=
           "设备名称： <span style='color:#409EFF'>" + params.data.deviceName + '</span><br />';
@@ -140,7 +142,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
       },
     },
     bmap: {
-      center: [133, 38],
+      center: [105, 38],
       zoom: 5,
       roam: true,
       mapStyle: {
@@ -307,6 +309,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
   const getOption = () => option;
 
   const clickHandle = (params) => {
+    console.log(params);
     if (params.data.productID) {
       history.push(
         '/deviceMangers/device/detail/' +
@@ -324,7 +327,10 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
         echarts={echarts}
         option={getOption()}
         lazyUpdate={true}
-        style={{ height: '60vh', border: '1px solid #ccc', marginTop: '20px', borderRadius: '6px' }}
+        className={styles.map}
+        style={{
+          height: '70vh',
+        }}
         onEvents={{ click: clickHandle }}
       />
     </div>
