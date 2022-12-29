@@ -5,13 +5,14 @@
 import * as caidanguanli from './caidanguanli';
 import * as chanpinguanli from './chanpinguanli';
 import * as chanpinyuanchengpeizhi from './chanpinyuanchengpeizhi';
-import * as firmware from './firmware';
 import * as jiaoseguanli from './jiaoseguanli';
+import * as liu from './liu';
 import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
 import * as shebeijianquan from './shebeijianquan';
 import * as shebeijiaohu from './shebeijiaohu';
 import * as shebeixiaoxi from './shebeixiaoxi';
+import * as shengjibaoguanli from './shengjibaoguanli';
 import * as task from './task';
 import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
@@ -27,8 +28,9 @@ export default {
   jiaoseguanli,
   yonghuguanli,
   shebeifenzu,
-  firmware,
+  shengjibaoguanli,
   task,
   chanpinyuanchengpeizhi,
   wangguanzishebeiguanli,
+  liu,
 };

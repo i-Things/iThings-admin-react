@@ -81,22 +81,33 @@ export async function postThingsGroupDeviceMultiDelete(
 
 /** 创建分组 POST /api/v1/things/group/info/create */
 export async function postThingsGroupInfoCreate(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postThingsGroupInfoCreateParams,
   body: {
-    /** 分组名称 */
-    groupName: string;
-    /** 父组ID 1-根组 ，非根组，则传所选父分组的groupID 作为本组的parentID */
-    parentID?: string;
-    /** 分组描述 */
-    desc?: string;
+    district_id?: string;
   },
   options?: { [key: string]: any },
 ) {
+  const formData = new FormData();
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele];
+
+    if (item !== undefined && item !== null) {
+      formData.append(
+        ele,
+        typeof item === 'object' && !(item instanceof File) ? JSON.stringify(item) : item,
+      );
+    }
+  });
+
   return request<{ code: number; msg: string }>('/api/v1/things/group/info/create', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    params: {
+      ...params,
     },
-    data: body,
+    data: formData,
+    requestType: 'form',
     ...(options || {}),
   });
 }
