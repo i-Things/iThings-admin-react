@@ -16,6 +16,7 @@ import type { TitleComponentOption, TooltipComponentOption } from 'echarts/compo
 
 import 'echarts/extension/bmap/bmap';
 
+import { loadBMap } from '@/utils/map';
 import { useRequest } from 'ahooks';
 import { message } from 'antd';
 import styles from './index.less';
@@ -322,6 +323,10 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
       );
     }
   };
+
+  useEffect(() => {
+    loadBMap();
+  }, []);
 
   useEffect(() => {
     setData(

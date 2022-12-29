@@ -8,6 +8,7 @@ import DevicePositionModal from './devicePositionModal';
 import type { DeviceInfo } from '@/pages/deviceMangers/device/detail/pages/deviceInfo/data';
 
 import styles from '@/pages/home/pages/deviceMap/index.less';
+import { loadBMap } from '@/utils/map';
 
 interface InfoProps {
   deviceInfo: DeviceInfo;
@@ -123,6 +124,10 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       render: () => [<DevicePositionModal getDevicePositionVal={getDevicePositionVal} />],
     },
   ];
+
+  useEffect(() => {
+    loadBMap();
+  }, []);
 
   useEffect(() => {
     if (deviceInfo) {
