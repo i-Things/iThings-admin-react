@@ -25,6 +25,9 @@
       "name": "iThings-apisvr/物联网相关接口/产品/产品远程配置"
     },
     {
+      "name": "iThings-apisvr/物联网相关接口/设备分组"
+    },
+    {
       "name": "iThings-apisvr/物联网相关接口/设备"
     },
     {
@@ -38,9 +41,6 @@
     },
     {
       "name": "iThings-apisvr/物联网相关接口/设备/设备交互"
-    },
-    {
-      "name": "iThings-apisvr/物联网相关接口/设备/设备分组"
     },
     {
       "name": "iThings-apisvr/物联网相关接口/设备/网关子设备管理"
@@ -75,7 +75,7 @@
       "post": {
         "summary": "更新产品",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
@@ -126,9 +126,27 @@
                   "desc": {
                     "type": "string",
                     "title": "描述"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "x-apifox-orders": ["key", "value"],
+                      "required": ["key", "value"],
+                      "x-apifox-ignore-properties": []
+                    },
+                    "nullable": true
                   }
                 },
-                "x-apifox-orders": ["01G637XQHDEM08K06TVBRR05G6"],
+                "x-apifox-orders": ["01G637XQHDEM08K06TVBRR05G6", "tags"],
                 "x-apifox-refs": {
                   "01G637XQHDEM08K06TVBRR05G6": {
                     "$ref": "#/components/schemas/ProductInfo",
@@ -197,7 +215,7 @@
       "post": {
         "summary": "新增产品",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
@@ -244,9 +262,27 @@
                   "desc": {
                     "type": "string",
                     "title": "描述"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "x-apifox-orders": ["key", "value"],
+                      "required": ["key", "value"],
+                      "x-apifox-ignore-properties": []
+                    },
+                    "nullable": true
                   }
                 },
-                "x-apifox-orders": ["01G637YJ0GB6H6DR571D43C5CT"],
+                "x-apifox-orders": ["01G637YJ0GB6H6DR571D43C5CT", "tags"],
                 "x-apifox-refs": {
                   "01G637YJ0GB6H6DR571D43C5CT": {
                     "$ref": "#/components/schemas/ProductInfo",
@@ -301,15 +337,6 @@
                   },
                   "required": ["code", "msg"],
                   "x-apifox-ignore-properties": ["code", "msg"]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "成功示例 ",
-                    "value": {
-                      "code": 200,
-                      "msg": "success"
-                    }
-                  }
                 }
               }
             }
@@ -322,7 +349,7 @@
       "post": {
         "summary": "获取产品详情",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品管理",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
@@ -405,9 +432,27 @@
                         "devStatus": {
                           "type": "integer",
                           "title": "产品状态"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            },
+                            "x-apifox-orders": ["key", "value"],
+                            "required": ["key", "value"],
+                            "x-apifox-ignore-properties": []
+                          },
+                          "nullable": true
                         }
                       },
-                      "x-apifox-orders": ["01G6F02MEX62BT707XETY11ZZP"],
+                      "x-apifox-orders": ["01G6F02MEX62BT707XETY11ZZP", "tags"],
                       "x-apifox-refs": {
                         "01G6F02MEX62BT707XETY11ZZP": {
                           "$ref": "#/components/schemas/ProductInfo",
@@ -489,7 +534,7 @@
       "post": {
         "summary": "删除产品",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
@@ -554,7 +599,7 @@
       "post": {
         "summary": "获取产品列表",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
@@ -595,13 +640,33 @@
                       "type": "string"
                     },
                     "title": "过滤产品id列表"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "x-apifox-orders": ["key", "value"],
+                      "required": ["key", "value"],
+                      "x-apifox-ignore-properties": []
+                    },
+                    "title": "key tag过滤查询",
+                    "description": "非模糊查询 为tag的名,value为tag对应的值"
                   }
                 },
                 "x-apifox-orders": [
                   "01G635FTRG1AFSJGGZ3P71XRFP",
                   "deviceType",
                   "productName",
-                  "productIDs"
+                  "productIDs",
+                  "tags"
                 ],
                 "x-apifox-refs": {
                   "01G635FTRG1AFSJGGZ3P71XRFP": {
@@ -678,6 +743,10 @@
                               "devStatus": {
                                 "type": "integer",
                                 "title": "产品状态"
+                              },
+                              "tags": {
+                                "$ref": "#/components/schemas/tag",
+                                "title": "产品标签"
                               }
                             },
                             "x-apifox-orders": ["01G637TAJX9TDNEBS1XSRRCDWQ"],
@@ -690,7 +759,7 @@
                                 }
                               }
                             },
-                            "required": ["productID"],
+                            "required": ["productID", "tags"],
                             "x-apifox-ignore-properties": [
                               "productID",
                               "productName",
@@ -702,7 +771,8 @@
                               "categoryID",
                               "desc",
                               "createdTime",
-                              "devStatus"
+                              "devStatus",
+                              "tags"
                             ]
                           }
                         },
@@ -740,73 +810,6 @@
                     }
                   },
                   "x-apifox-ignore-properties": ["code", "msg"]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "成功示例 ",
-                    "value": {
-                      "code": 200,
-                      "msg": "success",
-                      "data": {
-                        "list": [
-                          {
-                            "createdTime": "1661438197",
-                            "productID": "24zjcCnIjss",
-                            "productName": "的通里马京查",
-                            "authMode": 1,
-                            "deviceType": 1,
-                            "categoryID": 0,
-                            "netType": 1,
-                            "dataProto": 1,
-                            "autoRegister": 1,
-                            "secret": "",
-                            "description": "方只律原用织处清去农里能上。个已多西小易去习少压往他时层参。空场通了领社日派会党半林几管子日体。平向想着六者时么处分给说教已达务。"
-                          },
-                          {
-                            "createdTime": "1661438203",
-                            "productID": "24zjcJL4uMU",
-                            "productName": "的通里马京查222",
-                            "authMode": 1,
-                            "deviceType": 1,
-                            "categoryID": 0,
-                            "netType": 1,
-                            "dataProto": 1,
-                            "autoRegister": 1,
-                            "secret": "",
-                            "description": "方只律原用织处清去农里能上。个已多西小易去习少压往他时层参。空场通了领社日派会党半林几管子日体。平向想着六者时么处分给说教已达务。"
-                          },
-                          {
-                            "createdTime": "1661438206",
-                            "productID": "24zjcMUi7uM",
-                            "productName": "gergwrfg",
-                            "authMode": 1,
-                            "deviceType": 1,
-                            "categoryID": 0,
-                            "netType": 1,
-                            "dataProto": 1,
-                            "autoRegister": 1,
-                            "secret": "",
-                            "description": "方只律原用织处清去农里能上。个已多西小易去习少压往他时层参。空场通了领社日派会党半林几管子日体。平向想着六者时么处分给说教已达务。"
-                          },
-                          {
-                            "createdTime": "1661438209",
-                            "productID": "24zjcQTJW8w",
-                            "productName": "test1",
-                            "authMode": 1,
-                            "deviceType": 1,
-                            "categoryID": 0,
-                            "netType": 1,
-                            "dataProto": 1,
-                            "autoRegister": 1,
-                            "secret": "",
-                            "description": "方只律原用织处清去农里能上。个已多西小易去习少压往他时层参。空场通了领社日派会党半林几管子日体。平向想着六者时么处分给说教已达务。"
-                          }
-                        ],
-                        "total": 4,
-                        "num": 4
-                      }
-                    }
-                  }
                 }
               }
             }
@@ -819,7 +822,7 @@
       "post": {
         "summary": "获取产品物模型列表",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/物模型",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
@@ -1032,7 +1035,7 @@
       "post": {
         "summary": "获取设备列表",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
@@ -1483,7 +1486,7 @@
       "post": {
         "summary": "获取设备详情",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
@@ -1656,7 +1659,7 @@
       "post": {
         "summary": "新增设备",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
@@ -1763,7 +1766,7 @@
       "post": {
         "summary": "删除设备",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
@@ -1849,7 +1852,7 @@
       "post": {
         "summary": "更新设备",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
@@ -2170,7 +2173,7 @@
       "post": {
         "summary": "获取单个id属性历史记录",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备消息",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
@@ -2339,7 +2342,7 @@
       "post": {
         "summary": "获取设备本地日志",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备消息",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "获取设备主动上传的sdk日志",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
@@ -2460,7 +2463,7 @@
       "post": {
         "summary": "获取云端诊断日志",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备消息",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
@@ -2687,7 +2690,7 @@
       "post": {
         "summary": "获取最新属性",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备消息",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
@@ -2871,7 +2874,7 @@
       "post": {
         "summary": "同步调用设备行为",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
@@ -2950,7 +2953,7 @@
       "post": {
         "summary": "同步调用设备属性",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
@@ -3032,7 +3035,7 @@
       "post": {
         "summary": "添加菜单",
         "x-apifox-folder": "iThings-apisvr/系统管理/菜单管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
@@ -3149,7 +3152,7 @@
       "post": {
         "summary": "获取菜单列表",
         "x-apifox-folder": "iThings-apisvr/系统管理/菜单管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
@@ -3317,7 +3320,7 @@
       "post": {
         "summary": "更新菜单",
         "x-apifox-folder": "iThings-apisvr/系统管理/菜单管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
@@ -3439,7 +3442,7 @@
       "post": {
         "summary": "删除菜单",
         "x-apifox-folder": "iThings-apisvr/系统管理/菜单管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
@@ -3514,7 +3517,7 @@
       "post": {
         "summary": "添加角色",
         "x-apifox-folder": "iThings-apisvr/系统管理/角色管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
@@ -3597,7 +3600,7 @@
       "post": {
         "summary": "获取角色列表",
         "x-apifox-folder": "iThings-apisvr/系统管理/角色管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
@@ -3745,7 +3748,7 @@
       "post": {
         "summary": "更新角色",
         "x-apifox-folder": "iThings-apisvr/系统管理/角色管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
@@ -3832,7 +3835,7 @@
       "post": {
         "summary": "删除角色",
         "x-apifox-folder": "iThings-apisvr/系统管理/角色管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
@@ -3907,7 +3910,7 @@
       "post": {
         "summary": "更新角色对应菜单列表",
         "x-apifox-folder": "iThings-apisvr/系统管理/角色管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
@@ -3989,7 +3992,7 @@
       "post": {
         "summary": "创建用户信息",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4146,7 +4149,7 @@
       "post": {
         "summary": "获取验证码",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4229,7 +4232,7 @@
       "post": {
         "summary": "登录",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4411,7 +4414,7 @@
       "post": {
         "summary": "删除用户",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4477,7 +4480,7 @@
       "post": {
         "summary": "获取用户信息",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4620,7 +4623,7 @@
       "post": {
         "summary": "更新用户基本数据",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4740,7 +4743,7 @@
       "post": {
         "summary": "获取用户信息列表",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -4922,7 +4925,7 @@
       "post": {
         "summary": "获取用户资源",
         "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
-        "x-apifox-status": "designing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
@@ -5137,7 +5140,7 @@
       "post": {
         "summary": "发送消息给设备",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
@@ -5204,11 +5207,11 @@
     "/api/v1/things/group/info/create": {
       "post": {
         "summary": "创建分组",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -5287,11 +5290,11 @@
     "/api/v1/things/group/info/index": {
       "post": {
         "summary": "获取分组列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -5539,11 +5542,11 @@
     "/api/v1/things/group/info/read": {
       "post": {
         "summary": "获取分组详情信息",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -5679,11 +5682,11 @@
     "/api/v1/things/group/info/update": {
       "post": {
         "summary": "更新分组信息",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -5776,11 +5779,11 @@
     "/api/v1/things/group/info/delete": {
       "post": {
         "summary": "删除分组",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -5851,11 +5854,11 @@
     "/api/v1/things/group/device/index": {
       "post": {
         "summary": "获取分组设备列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -6116,11 +6119,11 @@
     "/api/v1/things/group/device/multi-create": {
       "post": {
         "summary": "添加分组设备(支持批量)",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -6210,11 +6213,11 @@
     "/api/v1/things/group/device/multi-delete": {
       "post": {
         "summary": "删除分组设备(支持批量)",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备分组",
-        "x-apifox-status": "developing",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备分组",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备分组"],
+        "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -6305,7 +6308,7 @@
       "post": {
         "summary": "导入物模型tsl",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/物模型",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language）",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
@@ -6354,7 +6357,7 @@
       "post": {
         "summary": "获取产品物模型tsl",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/物模型",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language）",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
@@ -6404,7 +6407,7 @@
       "post": {
         "summary": "新增物模型功能",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/物模型",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
@@ -6439,7 +6442,7 @@
       "post": {
         "summary": "更新物模型功能",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/物模型",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
@@ -6526,7 +6529,7 @@
       "post": {
         "summary": "删除物模型功能",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/物模型",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
@@ -6580,7 +6583,7 @@
       "post": {
         "summary": "获取物模型事件历史记录",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备消息",
-        "x-apifox-status": "integrating",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
@@ -7564,9 +7567,9 @@
     },
     "/api/v1/things/device/gateway/multi-create": {
       "post": {
-        "summary": "添加网关子设备",
+        "summary": "批量添加网关子设备",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/网关子设备管理",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/网关子设备管理"],
@@ -7621,9 +7624,9 @@
     },
     "/api/v1/things/device/gateway/multi-delete": {
       "post": {
-        "summary": "解绑网关子设备",
+        "summary": "批量解绑网关子设备",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/网关子设备管理",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/网关子设备管理"],
@@ -7680,7 +7683,7 @@
       "post": {
         "summary": "获取子设备列表",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/网关子设备管理",
-        "x-apifox-status": "developing",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/网关子设备管理"],
@@ -7790,10 +7793,183 @@
         },
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-47710425-run"
       }
+    },
+    "/api/v1/things/device/info/count": {
+      "post": {
+        "summary": "设备统计详情",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
+        "parameters": [
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "查询统计的开始时间，非必填，秒",
+            "required": false,
+            "example": "",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "查询统计的结束时间，非必填，秒",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "endTime": {
+                    "type": "integer"
+                  },
+                  "startTime": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["endTime", "startTime"],
+                "x-apifox-orders": ["endTime", "startTime"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "msg": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deviceCount": {
+                          "type": "object",
+                          "properties": {
+                            "online": {
+                              "type": "integer",
+                              "title": "",
+                              "description": "在线数量"
+                            },
+                            "offline": {
+                              "type": "integer",
+                              "description": "离线数量"
+                            },
+                            "inactive": {
+                              "type": "integer",
+                              "description": "未激活数量"
+                            },
+                            "unknown": {
+                              "type": "integer",
+                              "description": "未知设备"
+                            }
+                          },
+                          "required": ["online", "offline", "inactive", "unknown"],
+                          "x-apifox-orders": ["online", "offline", "inactive", "unknown"],
+                          "x-apifox-ignore-properties": []
+                        },
+                        "deviceTypeCount": {
+                          "type": "object",
+                          "properties": {
+                            "device": {
+                              "type": "integer",
+                              "description": "设备类型数量"
+                            },
+                            "gateway": {
+                              "type": "integer",
+                              "description": "网关类型数量"
+                            },
+                            "subset": {
+                              "type": "integer",
+                              "description": "子设备类型数量"
+                            },
+                            "unknown": {
+                              "type": "integer",
+                              "description": "未知类型设备数量"
+                            }
+                          },
+                          "required": ["device", "gateway", "subset", "unknown"],
+                          "x-apifox-orders": ["device", "gateway", "subset", "unknown"],
+                          "x-apifox-ignore-properties": []
+                        }
+                      },
+                      "required": ["deviceCount", "deviceTypeCount"],
+                      "x-apifox-orders": ["deviceCount", "deviceTypeCount"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "required": ["code", "msg", "data"],
+                  "x-apifox-orders": ["code", "msg", "data"],
+                  "x-apifox-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": 200,
+                      "msg": "success",
+                      "data": {
+                        "deviceCount": {
+                          "online": 2,
+                          "offline": 2,
+                          "inactive": 17,
+                          "unknown": 0
+                        },
+                        "deviceTypeCount": {
+                          "device": 2,
+                          "gateway": 16,
+                          "subset": 3,
+                          "unknown": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-51344002-run"
+      }
     }
   },
   "components": {
     "schemas": {
+      "tag": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "x-apifox-orders": ["key", "value"],
+          "required": ["key", "value"],
+          "x-apifox-ignore-properties": []
+        },
+        "x-apifox-folder": "iThings数据模型"
+      },
       "deviceCore": {
         "type": "object",
         "properties": {
@@ -8906,9 +9082,13 @@
           "devStatus": {
             "type": "integer",
             "title": "产品状态"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/tag",
+            "title": "产品标签"
           }
         },
-        "required": ["productID"],
+        "required": ["productID", "tags"],
         "x-apifox-orders": [
           "productID",
           "productName",
@@ -8920,7 +9100,8 @@
           "categoryID",
           "desc",
           "createdTime",
-          "devStatus"
+          "devStatus",
+          "tags"
         ],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型"

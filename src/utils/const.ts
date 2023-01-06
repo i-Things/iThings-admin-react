@@ -133,6 +133,7 @@ export type PRODUCT_INFO = {
   desc?: string;
   createdTime?: string;
   devStatus?: number;
+  tags?: { key?: string; value?: string }[];
 };
 
 export const EVENT_TYPE_DATA = [

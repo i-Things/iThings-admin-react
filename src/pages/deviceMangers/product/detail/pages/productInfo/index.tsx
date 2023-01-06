@@ -1,14 +1,17 @@
+import { FlagStatus } from '@/utils/base';
+import type { PRODUCT_INFO } from '@/utils/const';
 import {
   AUTO_REGISTER_VALUE,
   DATA_PROTO_VALUE,
   DEVICE_TYPE_VALUE,
   NET_TYPE_VALUE,
-  PRODUCT_INFO,
 } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { Descriptions } from 'antd';
 import React from 'react';
+import ProductTagsModal from './components/deviceTagsModal';
 import { EditForm } from './components/editForm';
+import styles from './index.less';
 interface Props {
   productInfo: PRODUCT_INFO;
   onChange: () => void;
@@ -37,6 +40,23 @@ const ProductInfoPage: React.FC<Props> = ({ productInfo, onChange }) => {
       </Descriptions.Item>
       <Descriptions.Item label="创建时间">
         {timestampToDateStr(Number(productInfo.createdTime))}
+      </Descriptions.Item>
+      <Descriptions.Item label="标签" span={3}>
+        <div className={styles['tags-wrapper']}>
+          <div className={styles['tags-content']}>
+            {productInfo?.tags?.map((item) => (
+              <span className={styles.tags} key={item.key}>
+                {item.key + ':' + item.value}
+              </span>
+            )) || '无标签信息'}
+          </div>
+          <ProductTagsModal
+            flag={FlagStatus.UPDATE}
+            refresh={onChange}
+            key="link"
+            productInfo={productInfo}
+          />
+        </div>
       </Descriptions.Item>
       <Descriptions.Item label="描述">{productInfo.desc}</Descriptions.Item>
     </Descriptions>
