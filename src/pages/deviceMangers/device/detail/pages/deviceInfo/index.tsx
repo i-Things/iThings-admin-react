@@ -1,8 +1,8 @@
 import { postThingsDeviceInfoRead } from '@/services/iThingsapi/shebeiguanli';
+import { useParams } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { Card, message } from 'antd';
 import React, { useState } from 'react';
-import { useParams } from 'umi';
 import type { DeviceInfo } from './data';
 import BasicInfoPage from './pages/basicInfo';
 import LocalLogPage from './pages/localLog';

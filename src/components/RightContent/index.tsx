@@ -1,8 +1,8 @@
 import { GITHUB_WEBSITE, OFFICIAL_WEBSITE } from '@/utils/const';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import { Space } from 'antd';
 import React from 'react';
-import { useModel } from 'umi';
 import githubLogo from '../../../public/icons/github.png';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
@@ -18,7 +18,7 @@ const GlobalHeaderRight: React.FC = () => {
   const { navTheme, layout } = initialState.settings;
   let className = styles.right;
 
-  if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
+  if ((navTheme === 'realDark' && layout === 'top') || layout === 'mix') {
     className = `${styles.right}  ${styles.dark}`;
   }
 
@@ -30,9 +30,9 @@ const GlobalHeaderRight: React.FC = () => {
             src={githubLogo}
             alt=""
             style={{
-              width: 25,
-              height: 25,
-              marginBottom: 3,
+              width: 20,
+              height: 20,
+              marginTop: 20,
             }}
           />
         </a>

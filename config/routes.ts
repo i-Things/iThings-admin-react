@@ -130,6 +130,8 @@ export default [
   },
   {
     layout: false,
+    name: '404',
+    path: '/*',
     component: '404',
   },
 ];

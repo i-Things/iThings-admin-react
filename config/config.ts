@@ -1,5 +1,5 @@
+import { defineConfig } from '@umijs/max';
 import { join } from 'path';
-import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
@@ -16,43 +16,42 @@ export default defineConfig({
     front/custom/chengde/  企业版定制版前端路由
   */
   publicPath: '/front/iThingsCore/',
-  dva: {
-    hmr: true,
-  },
-  dynamicImport: {
-    loading: '@ant-design/pro-layout/es/PageLoading',
-  },
+  dva: {},
+  // dynamicImport: {
+  //   loading: '@ant-design/pro-layout/es/PageLoading',
+  // },
   targets: {
     ie: 11,
   },
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
-    'primary-color': defaultSettings.primaryColor,
+    'primary-color': defaultSettings.colorPrimary,
   },
   // esbuild is father build tools
   // https://umijs.org/plugins/plugin-esbuild
-  esbuild: {},
-  title: false,
+  // esbuild: {},
+  title: 'iThings',
+  request: {},
+  initialState: {},
+  presets: ['umi-presets-pro'],
+  model: {},
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
   },
-  fastRefresh: {},
+  fastRefresh: true,
+  requestRecord: {},
   openAPI: [
     {
-      requestLibPath: "import  request  from '@/utils/request'",
+      requestLibPath: "import { request } from '@umijs/max'",
       schemaPath: join(__dirname, 'iThingsapi.json'),
       mock: false,
       projectName: 'iThingsapi',
     },
   ],
-  nodeModulesTransform: {
-    type: 'none',
-  },
   mfsu: {},
-  webpack5: {},
   exportStatic: {},
   chainWebpack: (config: any, { env }) => {
     config.plugin('monaco-editor').use(MonacoWebpackPlugin, [

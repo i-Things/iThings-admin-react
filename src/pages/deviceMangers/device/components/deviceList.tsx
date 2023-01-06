@@ -13,9 +13,9 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-table/lib/typing';
+import { history } from '@umijs/max';
 import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { history } from 'umi';
 import DeviceTagsModal from '../detail/pages/deviceInfo/pages/tagsInfo/deviceTagsModal';
 
 const { confirm } = Modal;

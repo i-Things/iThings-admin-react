@@ -8,14 +8,13 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import React from 'react';
 // @ts-ignore
-import { Link, useModel } from 'umi';
+import { Link, Outlet, useModel } from '@umijs/max';
 import defaultSettings from '../../config/defaultSettings';
 import logo from '../../public/icons/logo/Group.png';
 
 moment.locale('zh-cn');
 
 const BasicLayout: React.FC = (props) => {
-  const { children } = props;
   const { initialState } = useModel('@@initialState');
   const menuTree = initialState?.currentUser?.menuInfo;
 
@@ -24,9 +23,9 @@ const BasicLayout: React.FC = (props) => {
       location={{
         pathname: '../pages/Welcome.tsx',
       }}
+      title="iThings"
       siderWidth={250}
       rightContentRender={() => <RightContent />}
-      disableContentMargin={false}
       footerRender={false}
       menuItemRender={(menuItemProps: any, defaultDom: any) => {
         if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
@@ -64,7 +63,9 @@ const BasicLayout: React.FC = (props) => {
       }}
     >
       <div>
-        <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
+        <ConfigProvider locale={zhCN}>
+          <Outlet />
+        </ConfigProvider>
       </div>
     </ProLayout>
   );
