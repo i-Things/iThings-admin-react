@@ -23,6 +23,7 @@ const BasicLayout: React.FC = (props) => {
       location={{
         pathname: '../pages/Welcome.tsx',
       }}
+      title="iThings"
       siderWidth={250}
       rightContentRender={() => <RightContent />}
       footerRender={false}
