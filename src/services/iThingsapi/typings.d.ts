@@ -203,6 +203,13 @@ declare namespace API {
     size?: number;
   };
 
+  type postThingsDeviceInfoCountParams = {
+    /** 查询统计的开始时间，非必填，秒 */
+    startTime?: number;
+    /** 查询统计的结束时间，非必填，秒 */
+    endTime?: number;
+  };
+
   type ProductInfo = {
     /** 产品id */
     productID: string;
@@ -226,6 +233,8 @@ declare namespace API {
     createdTime?: string;
     /** 产品状态 */
     devStatus?: number;
+    /** 产品标签 */
+    tags: tag;
   };
 
   type ProductSchemaInfo = {
@@ -313,6 +322,8 @@ declare namespace API {
     /** 返回消息 */
     msg: string;
   };
+
+  type tag = Record<string, any>;
 
   type TaskAnalysisReq = {
     taskUid: string;
