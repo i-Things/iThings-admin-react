@@ -12,10 +12,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
+import { history } from '@umijs/max';
 import { Button } from 'antd';
 import PubSub from 'pubsub-js';
 import { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'umi';
 import type { GroupListItem, GroupOption } from '../types';
 import type { TagProps } from './types';
 
@@ -33,8 +33,6 @@ const CreateOrUpdateGroup: React.FC<{
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
   const [tagValues, setTagValues] = useState<TagProps[]>([]);
-
-  const history = useHistory();
 
   const editFormRef = useRef<ProFormInstance>();
 

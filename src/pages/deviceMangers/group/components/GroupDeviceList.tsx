@@ -14,9 +14,9 @@ import { isOnlineEnum, selectConfirm } from '@/utils/utils';
 import { LightFilter, ProFormSelect } from '@ant-design/pro-form';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
+import { history, useParams } from '@umijs/max';
 import { Button, Divider, Input, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { history, useParams } from 'umi';
 import '../styles.less';
 import type { activeKeyProps, GroupDeviceItem } from '../types';
 

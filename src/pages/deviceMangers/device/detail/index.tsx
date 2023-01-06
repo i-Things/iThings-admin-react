@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout';
+import { history, useParams } from '@umijs/max';
 import { Card, message, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { history, useParams } from 'umi';
 
 import DeviceInfoPage from './pages/deviceInfo/index';
 
