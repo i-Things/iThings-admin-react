@@ -20,9 +20,6 @@ export default defineConfig({
   // dynamicImport: {
   //   loading: '@ant-design/pro-layout/es/PageLoading',
   // },
-  targets: {
-    ie: 11,
-  },
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
