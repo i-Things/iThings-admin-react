@@ -49,7 +49,6 @@ export default defineConfig({
     },
   ],
   mfsu: {},
-  exportStatic: {},
   chainWebpack: (config: any, { env }) => {
     config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
       {
