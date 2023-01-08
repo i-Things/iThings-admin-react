@@ -16,6 +16,7 @@ import type { TitleComponentOption, TooltipComponentOption } from 'echarts/compo
 
 import 'echarts/extension/bmap/bmap';
 
+import { timestampToDateStr } from '@/utils/date';
 import { loadBMap } from '@/utils/map';
 import { useRequest } from 'ahooks';
 import { message } from 'antd';
@@ -126,7 +127,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
         let htmlStr = '<div style="padding:5px;line-height:28px;">';
         htmlStr +=
           "设备名称： <span style='color:#409EFF'>" + params.data.deviceName + '</span><br />';
-        htmlStr += '设备创建时间： ' + params.data.createdTime + '<br />';
+        htmlStr += '设备创建时间： ' + timestampToDateStr(params.data.createdTime) + '<br />';
         htmlStr += '设备状态： ';
         if (params.data.firstLogin === '0') {
           htmlStr += "<span style='color:#E6A23C'>未激活</span>" + '<br />';
@@ -138,9 +139,9 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
         htmlStr += '产品ID： ' + params.data.productID + '<br />';
         htmlStr += '产品名称： ' + params.data.productName + '<br />';
         htmlStr += '设备位置： ' + params.data.address + '<br />';
-        htmlStr += '激活时间： ' + params.data.firstLogin + '<br />';
-        htmlStr += '最后上线时间： ' + params.data.lastLogin + '<br />';
-        htmlStr += '固件版本： Version ' + params.data.version + '<br />';
+        htmlStr += '激活时间： ' + timestampToDateStr(params.data.firstLogin) + '<br />';
+        htmlStr += '最后上线时间： ' + timestampToDateStr(params.data.lastLogin) + '<br />';
+        htmlStr += '固件版本： ' + params.data.version + '<br />';
         htmlStr += '</div>';
         return htmlStr;
       },

@@ -1,11 +1,11 @@
 import { postThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { message, Tag } from 'antd';
-import React, { useEffect, useRef } from 'react';
-import type { modalFormType } from './devicePositionModal';
+import React, { useEffect, useRef, useState } from 'react';
 import DevicePositionModal from './devicePositionModal';
 
 import type { DeviceInfo } from '@/pages/deviceMangers/device/detail/pages/deviceInfo/data';
+import type { modalFormType } from './devicePositionModal';
 
 import styles from '@/pages/home/pages/deviceMap/index.less';
 import { loadBMap } from '@/utils/map';
@@ -20,6 +20,8 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
   const geocoderRef = useRef(null);
   const pointRef = useRef(null);
   const deviceInfoStateRef = useRef({});
+
+  const [addre, setAddre] = useState('');
 
   const getmap = (info) => {
     const map = new BMap.Map('map');
@@ -42,6 +44,10 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
     map.panTo(pointRef.current);
 
     geocoderRef.current = new BMap.Geocoder();
+    geocoderRef.current?.getLocation(pointRef.current, (GeocoderResult) => {
+      if (!GeocoderResult) message.error('地址解析失败');
+      setAddre(GeocoderResult.address);
+    });
   };
 
   const devicePosHandle = (GeocoderResult) => {
@@ -66,17 +72,21 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
   };
 
   const getLocationHandle = (params) => {
+    console.log(params);
     const lng = params?.point?.lng || params?.point?.[0];
     const lat = params?.point?.lat || params?.point?.[1];
     const point = new BMap.Point(lng, lat);
     geocoderRef.current?.getLocation(point, (GeocoderResult) => {
       if (!GeocoderResult) message.error('地址解析失败');
+      addressRef.current = GeocoderResult.address;
       getmap(GeocoderResult);
       devicePosHandle(GeocoderResult);
     });
   };
 
   const getPointHandle = (params) => {
+    console.log(params);
+    addressRef.current = params?.address;
     geocoderRef.current?.getPoint(params?.address, (GeocoderResult) => {
       if (!GeocoderResult) message.error('地址解析失败');
       getmap({ point: GeocoderResult, address: params?.address });
@@ -100,17 +110,44 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       key: 'address',
       dataIndex: 'address',
       copyable: true,
-      render: () => <>{deviceInfo?.address?.length ? deviceInfo?.address : '-'}</>,
+      render: (_, record) => (
+        <>
+          {deviceInfo?.address?.length ? deviceInfo?.address : '-'}
+          <DevicePositionModal
+            getDevicePositionVal={getDevicePositionVal}
+            record={record}
+            flag={'pos'}
+          />
+        </>
+      ),
     },
+    // {
+    //   title: '位置详情',
+    //   key: 'address',
+    //   dataIndex: 'address',
+    //   copyable: true,
+    //   render: () => <>{deviceInfo?.address?.length ? deviceInfo?.address : '-'}</>,
+    // },
     {
-      title: '设备经纬度',
-      key: 'longitude',
-      dataIndex: 'longitude',
+      title: '设备定位',
+      key: 'position',
+      dataIndex: 'position',
       copyable: true,
-      render: () => (
+      render: (_, record) => (
         <>
           {deviceInfo?.position?.longitude ? (
-            <Tag>{`${deviceInfo?.position.longitude},${deviceInfo?.position.latitude}`}</Tag>
+            <>
+              <span>
+                经纬度：
+                <Tag>{`${deviceInfo?.position.longitude},${deviceInfo?.position.latitude}`}</Tag>
+                位置：{addre}
+              </span>
+              <DevicePositionModal
+                getDevicePositionVal={getDevicePositionVal}
+                record={record}
+                flag={'loc'}
+              />
+            </>
           ) : (
             '-'
           )}
@@ -118,11 +155,13 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       ),
     },
 
-    {
-      title: '操作',
-      valueType: 'option',
-      render: () => [<DevicePositionModal getDevicePositionVal={getDevicePositionVal} />],
-    },
+    // {
+    //   title: '操作',
+    //   valueType: 'option',
+    //   render: (_, record) => [
+    //     <DevicePositionModal getDevicePositionVal={getDevicePositionVal} record={record} />,
+    //   ],
+    // },
   ];
 
   useEffect(() => {
@@ -131,6 +170,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
 
   useEffect(() => {
     if (deviceInfo) {
+      console.log(deviceInfo);
       deviceInfoStateRef.current = deviceInfo;
       getmap(deviceInfo);
     }
