@@ -1,10 +1,14 @@
 import { LAYOUT_TYPE_VERTICAL } from '@/utils/const';
+import { SendOutlined } from '@ant-design/icons';
+import { ProList } from '@ant-design/pro-components';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormDigit, ProFormFieldSet, ProFormText } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
+import { throttle } from 'lodash';
 
 import type { DeviceInfo } from '@/pages/deviceMangers/device/detail/pages/deviceInfo/data';
-import React, { useMemo, useRef, useState } from 'react';
+import { loadBMap } from '@/utils/map';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 export interface modalFormType {
   address: string;
@@ -12,42 +16,99 @@ export interface modalFormType {
 }
 
 const DevicePositionModal: React.FC<{
-  getDevicePositionVal: (value: modalFormType) => void;
+  getDevicePositionVal: (value: modalFormType, tag) => void;
   record: DeviceInfo;
   flag: 'pos' | 'loc';
-}> = ({ getDevicePositionVal, record, flag }) => {
-  console.log(record);
+  pos?: string;
+}> = ({ getDevicePositionVal, record, flag, pos }) => {
   const [visible, setVisible] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [address, setAddress] = useState('');
+  const [local, setLocal] = useState(null);
+
   const editFormRef = useRef<ProFormInstance>();
+  const geocRef = useRef(null);
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
 
   const initialValues = useMemo(() => {
-    if (record?.address) {
+    if (record?.address && flag === 'loc') {
       return {
         address: record.address,
         point: [record.position?.longitude, record.position?.latitude],
       };
     }
     return undefined;
-  }, [record?.address, record?.position]);
+  }, [flag, record.address, record.position?.latitude, record.position?.longitude]);
+
+  const searchBtn = (addr: string | modalFormType) => {
+    console.log(addr);
+    if (options.length) {
+      getDevicePositionVal(Array.isArray(addr) ? addr[0] : addr, 'pos');
+    }
+    onClose();
+  };
+
+  const searchDebBtn = async (nV) => {
+    local.search(nV.target.value);
+    setAddress(nV.target.value);
+  };
 
   const formSubmit = async (values: modalFormType) => {
-    console.log(values);
-    if (!Object.keys(values).length) {
-      message.error('请输入某一项的值');
-      return false;
-    }
-    if (values?.point?.length > 0)
-      if (isNaN(Number(values?.point?.[0])) && isNaN(Number(values?.point?.[1]))) {
-        message.error('经纬度只能为数值且两项都要填');
+    if (flag === 'pos') {
+      if (options.length) {
+        getDevicePositionVal(options[0], 'pos');
+      }
+      onClose();
+    } else {
+      if (!Object.keys(values).length) {
+        message.error('请输入某一项的值');
         return false;
       }
-    getDevicePositionVal(values);
-    onClose();
+      if (values?.point?.length > 0)
+        if (isNaN(Number(values?.point?.[0])) && isNaN(Number(values?.point?.[1]))) {
+          message.error('经纬度只能为数值且两项都要填');
+          return false;
+        }
+      getDevicePositionVal(values, 'loc');
+      onClose();
+    }
     return true;
   };
+
+  useEffect(() => {
+    if (flag === 'pos') {
+      loadBMap().then(() => {
+        const map = new BMap.Map('map');
+        geocRef.current = new BMap.Geocoder();
+        geocRef.current?.getPoint(pos, (GeocoderResult) => {
+          if (!GeocoderResult) message.error('地址解析失败');
+          map.centerAndZoom(new BMap.Point(GeocoderResult.lng, GeocoderResult.lat), 14);
+        });
+
+        const option = {
+          onSearchComplete: function (results) {
+            const data = [];
+            for (let i = 0; i < results?.getCurrentNumPois(); i++) {
+              data.push(results?.getPoi(i));
+            }
+            setOptions(
+              data.map((item) => ({
+                ...item,
+                image: <SendOutlined />,
+              })),
+            );
+          },
+        };
+        setLocal(new BMap.LocalSearch(map, option));
+      });
+    }
+  }, [record]);
+
+  useEffect(() => {
+    setAddress(record.address as string);
+  }, [record]);
 
   return (
     <ModalForm<modalFormType>
@@ -69,17 +130,24 @@ const DevicePositionModal: React.FC<{
       layout={LAYOUT_TYPE_VERTICAL}
       onFinish={formSubmit}
     >
-      {/*<section className="menu-tool-tip">*/}
-      {/*  <ExclamationCircleTwoTone*/}
-      {/*    className="menu-icon"*/}
-      {/*    twoToneColor="#ed6a0c"*/}
-      {/*    style={{ margin: '10px 5px' }}*/}
-      {/*  />*/}
-      {/*  经纬度和位置详情二选一填即可，如果两个都填，以经纬度信息为准*/}
-      {/*</section>*/}
-      <ProFormText name="address" placeholder="" label="设备位置" width={'lg'} />
-      {/*<ProFormText name="address" placeholder="" label="位置详情" width={'lg'} />*/}
-      {flag === 'loc' && (
+      <ProFormText
+        id="suggestId"
+        name="address"
+        placeholder=""
+        label="设备位置"
+        width={'lg'}
+        disabled={flag === 'loc'}
+        fieldProps={
+          flag !== 'loc'
+            ? {
+                addonAfter: <a onClick={() => searchBtn(options)}>搜索</a>,
+                onChange: throttle((nV) => searchDebBtn(nV), 1000),
+                value: address,
+              }
+            : {}
+        }
+      />
+      {flag === 'loc' ? (
         <ProFormFieldSet name="point" label="设备经纬度">
           <ProFormDigit
             name="longitude"
@@ -98,6 +166,46 @@ const DevicePositionModal: React.FC<{
             fieldProps={{ precision: 9 }}
           />
         </ProFormFieldSet>
+      ) : (
+        <ProList<any>
+          onRow={(rec: any) => {
+            return {
+              onClick: () => {
+                searchBtn(rec);
+              },
+            };
+          }}
+          rowKey="title"
+          pagination={{
+            defaultPageSize: 5,
+            showSizeChanger: true,
+          }}
+          // headerTitle="基础列表"
+          dataSource={options}
+          metas={{
+            title: {
+              dataIndex: 'title',
+            },
+            avatar: {
+              dataIndex: 'image',
+            },
+            description: {
+              dataIndex: 'address',
+            },
+            // subTitle: {
+            //   render: () => {
+            //     return <>a</>;
+            //   },
+            // },
+            actions: {
+              render: (text, row) => [
+                <a href={row.detailUrl} target="_blank" key="link" rel="noreferrer">
+                  详情
+                </a>,
+              ],
+            },
+          }}
+        />
       )}
     </ModalForm>
   );
