@@ -16,7 +16,7 @@ export interface modalFormType {
 }
 
 const DevicePositionModal: React.FC<{
-  getDevicePositionVal: (value: modalFormType, tag) => void;
+  getDevicePositionVal: (value: modalFormType, tag: 'pos' | 'loc') => void;
   record: DeviceInfo;
   flag: 'pos' | 'loc';
   parseAddress?: string;
@@ -24,7 +24,6 @@ const DevicePositionModal: React.FC<{
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState([]);
   const [address, setAddress] = useState('');
-
   const [local, setLocal] = useState(null);
 
   const editFormRef = useRef<ProFormInstance>();
@@ -32,14 +31,9 @@ const DevicePositionModal: React.FC<{
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
 
-  const initialValues = () => {
-    if (flag === 'loc') {
-      return {
-        address: parseAddress,
-        point: [record.position?.longitude, record.position?.latitude],
-      };
-    }
-    return undefined;
+  const initialValues = {
+    address: parseAddress,
+    point: [record.position?.longitude, record.position?.latitude],
   };
   const searchBtn = (addr: string | modalFormType) => {
     if (options.length) {
@@ -103,16 +97,16 @@ const DevicePositionModal: React.FC<{
 
   useEffect(() => {
     loadOption();
-  }, [record]);
-
-  useEffect(() => {
     setAddress(record.address as string);
   }, [record]);
+
+  setTimeout(() => {
+    editFormRef.current?.setFieldsValue(initialValues);
+  }, 0);
 
   return (
     <ModalForm<modalFormType>
       formRef={editFormRef}
-      initialValues={initialValues()}
       width={500}
       title={'设备定位编辑'}
       trigger={
@@ -130,7 +124,6 @@ const DevicePositionModal: React.FC<{
       onFinish={formSubmit}
     >
       <ProFormText
-        id="suggestId"
         name="address"
         placeholder=""
         label="设备位置"
@@ -177,11 +170,6 @@ const DevicePositionModal: React.FC<{
             description: {
               dataIndex: 'address',
             },
-            // subTitle: {
-            //   render: () => {
-            //     return <>a</>;
-            //   },
-            // },
             actions: {
               render: (text, row) => [
                 <a href={row.detailUrl} target="_blank" key="link" rel="noreferrer">
