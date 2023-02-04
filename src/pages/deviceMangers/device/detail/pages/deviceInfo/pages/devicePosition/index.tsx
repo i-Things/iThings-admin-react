@@ -119,7 +119,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       dataIndex: 'address',
       copyable: true,
       render: (_, record) => (
-        <>
+        <div style={{ marginTop: '-4px' }}>
           {deviceInfo?.address?.length ? pos : '-'}
           <DevicePositionModal
             getDevicePositionVal={getDevicePositionVal}
@@ -127,7 +127,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
             flag={'pos'}
             pos={pos}
           />
-        </>
+        </div>
       ),
     },
     {
@@ -138,7 +138,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       render: (_, record) => (
         <>
           {deviceInfo?.position?.longitude ? (
-            <>
+            <div style={{ marginTop: '-4px' }}>
               <span>
                 经纬度：
                 <Tag>
@@ -152,7 +152,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
                 flag={'loc'}
                 parseAddress={addre}
               />
-            </>
+            </div>
           ) : (
             '-'
           )}

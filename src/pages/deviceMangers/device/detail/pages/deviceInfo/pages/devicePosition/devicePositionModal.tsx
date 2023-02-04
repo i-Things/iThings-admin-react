@@ -49,7 +49,7 @@ const DevicePositionModal: React.FC<{
   };
 
   const searchDebBtn = async (nV) => {
-    local.search(nV.target.value);
+    local.search(nV.target.value ?? '天安门');
     setAddress(nV.target.value);
   };
 
@@ -70,33 +70,39 @@ const DevicePositionModal: React.FC<{
     return true;
   };
 
-  useEffect(() => {
+  const loadOption = async () => {
     if (flag === 'pos') {
-      loadBMap().then((res) => {
-        if (res?.wV) {
-          const map = new BMap.Map('map');
-          map.centerAndZoom(
-            new BMap.Point(record?.position?.longitude, record?.position?.latitude),
-            14,
+      await loadBMap();
+      let map;
+      try {
+        map = new BMap.Map('map');
+      } catch {
+        location.reload();
+      }
+      map.centerAndZoom(
+        new BMap.Point(record?.position?.longitude, record?.position?.latitude),
+        14,
+      );
+      const option = {
+        onSearchComplete: function (results) {
+          const data = [];
+          for (let i = 0; i < results?.getCurrentNumPois(); i++) {
+            data.push(results?.getPoi(i));
+          }
+          setOptions(
+            data.map((item) => ({
+              ...item,
+              image: <SendOutlined />,
+            })),
           );
-          const option = {
-            onSearchComplete: function (results) {
-              const data = [];
-              for (let i = 0; i < results?.getCurrentNumPois(); i++) {
-                data.push(results?.getPoi(i));
-              }
-              setOptions(
-                data.map((item) => ({
-                  ...item,
-                  image: <SendOutlined />,
-                })),
-              );
-            },
-          };
-          setLocal(new BMap.LocalSearch(map, option));
-        }
-      });
+        },
+      };
+      setLocal(new BMap.LocalSearch(map, option));
     }
+  };
+
+  useEffect(() => {
+    loadOption();
   }, [record]);
 
   useEffect(() => {
