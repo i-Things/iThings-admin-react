@@ -27,6 +27,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
   const [addre, setAddre] = useState('');
 
   const getmap = (info) => {
+    console.log(info);
     loadBMap().then(() => {
       const map = new BMap.Map('map');
       const lng = info?.position?.longitude || info?.point?.lng;
@@ -56,7 +57,6 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
   };
 
   const devicePosHandle = (GeocoderResult, flag: 'pos' | 'loc') => {
-    console.log(GeocoderResult, flag);
     const body = {
       address: GeocoderResult.address ?? '',
       position: {
@@ -87,30 +87,26 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
     geocoderRef.current?.getLocation(point, (GeocoderResult) => {
       if (!GeocoderResult) message.error('地址解析失败');
       addressRef.current = GeocoderResult.address;
+      console.log(GeocoderResult);
+      setAddre(GeocoderResult.address);
       getmap(GeocoderResult);
-      devicePosHandle(GeocoderResult, 'loc');
+      devicePosHandle({ ...GeocoderResult, address: pos }, 'loc');
     });
   };
 
-  const getPointHandle = (params) => {
-    addressRef.current = params?.address;
-    geocoderRef.current?.getPoint(params?.address, (GeocoderResult) => {
-      if (!GeocoderResult) message.error('地址解析失败');
-      getmap({ point: GeocoderResult, address: params?.address });
-      devicePosHandle({ point: GeocoderResult, address: params?.address }, 'loc');
-    });
-  };
+  // const getPointHandle = (params) => {
+  //   addressRef.current = params?.address;
+  //   geocoderRef.current?.getPoint(params?.address, (GeocoderResult) => {
+  //     if (!GeocoderResult) message.error('地址解析失败');
+  //     getmap({ point: GeocoderResult, address: params?.address });
+  //     devicePosHandle({ point: GeocoderResult, address: params?.address }, 'loc');
+  //   });
+  // };
+
   const getDevicePositionVal = (value: modalFormType, tag: 'pos' | 'loc') => {
     if (tag === 'loc') {
-      // 判定值得情况
-      const { address, point } = value || {};
-      if ((address && point) || point) {
-        getLocationHandle(value);
-      } else {
-        getPointHandle(value);
-      }
+      getLocationHandle(value);
     } else {
-      console.log(value);
       setPos(value.address);
       devicePosHandle(value, 'pos');
     }
@@ -161,6 +157,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
                 getDevicePositionVal={getDevicePositionVal}
                 record={record}
                 flag={'loc'}
+                parseAddress={addre}
               />
             </>
           ) : (

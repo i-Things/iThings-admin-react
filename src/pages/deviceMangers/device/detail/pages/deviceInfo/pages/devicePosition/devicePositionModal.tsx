@@ -2,13 +2,13 @@ import { LAYOUT_TYPE_VERTICAL } from '@/utils/const';
 import { SendOutlined } from '@ant-design/icons';
 import { ProList } from '@ant-design/pro-components';
 import type { ProFormInstance } from '@ant-design/pro-form';
-import { ModalForm, ProFormDigit, ProFormFieldSet, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormFieldSet, ProFormText } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
 import { throttle } from 'lodash';
 
 import type { DeviceInfo } from '@/pages/deviceMangers/device/detail/pages/deviceInfo/data';
 import { loadBMap } from '@/utils/map';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface modalFormType {
   address: string;
@@ -19,31 +19,30 @@ const DevicePositionModal: React.FC<{
   getDevicePositionVal: (value: modalFormType, tag) => void;
   record: DeviceInfo;
   flag: 'pos' | 'loc';
-  pos?: string;
-}> = ({ getDevicePositionVal, record, flag, pos }) => {
+  parseAddress?: string;
+}> = ({ getDevicePositionVal, record, flag, parseAddress }) => {
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState([]);
   const [address, setAddress] = useState('');
+
   const [local, setLocal] = useState(null);
 
   const editFormRef = useRef<ProFormInstance>();
-  const geocRef = useRef(null);
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
 
-  const initialValues = useMemo(() => {
-    if (record?.address && flag === 'loc') {
+  const initialValues = () => {
+    if (flag === 'loc') {
       return {
-        address: record.address,
+        address: parseAddress,
         point: [record.position?.longitude, record.position?.latitude],
       };
     }
     return undefined;
-  }, [flag, record.address, record.position?.latitude, record.position?.longitude]);
-
+  };
+  console.log(initialValues());
   const searchBtn = (addr: string | modalFormType) => {
-    console.log(addr);
     if (options.length) {
       getDevicePositionVal(Array.isArray(addr) ? addr[0] : addr, 'pos');
     }
@@ -62,15 +61,10 @@ const DevicePositionModal: React.FC<{
       }
       onClose();
     } else {
-      if (!Object.keys(values).length) {
-        message.error('请输入某一项的值');
+      if (isNaN(Number(values?.point?.[0])) && isNaN(Number(values?.point?.[1]))) {
+        message.error('经纬度只能为数值且两项都要填');
         return false;
       }
-      if (values?.point?.length > 0)
-        if (isNaN(Number(values?.point?.[0])) && isNaN(Number(values?.point?.[1]))) {
-          message.error('经纬度只能为数值且两项都要填');
-          return false;
-        }
       getDevicePositionVal(values, 'loc');
       onClose();
     }
@@ -81,12 +75,10 @@ const DevicePositionModal: React.FC<{
     if (flag === 'pos') {
       loadBMap().then(() => {
         const map = new BMap.Map('map');
-        geocRef.current = new BMap.Geocoder();
-        geocRef.current?.getPoint(pos, (GeocoderResult) => {
-          if (!GeocoderResult) message.error('地址解析失败');
-          map.centerAndZoom(new BMap.Point(GeocoderResult.lng, GeocoderResult.lat), 14);
-        });
-
+        map.centerAndZoom(
+          new BMap.Point(record?.position?.longitude, record?.position?.latitude),
+          14,
+        );
         const option = {
           onSearchComplete: function (results) {
             const data = [];
@@ -113,7 +105,7 @@ const DevicePositionModal: React.FC<{
   return (
     <ModalForm<modalFormType>
       formRef={editFormRef}
-      initialValues={initialValues}
+      initialValues={initialValues()}
       width={500}
       title={'设备定位编辑'}
       trigger={
@@ -149,22 +141,8 @@ const DevicePositionModal: React.FC<{
       />
       {flag === 'loc' ? (
         <ProFormFieldSet name="point" label="设备经纬度">
-          <ProFormDigit
-            name="longitude"
-            placeholder="请输入设备经度"
-            min={0}
-            max={180}
-            width="sm"
-            fieldProps={{ precision: 9 }}
-          />
-          <ProFormDigit
-            name="latitude"
-            placeholder="请输入设备纬度"
-            min={0}
-            max={90}
-            width="sm"
-            fieldProps={{ precision: 9 }}
-          />
+          <ProFormText name="longitude" placeholder="请输入设备经度" width="sm" />
+          <ProFormText name="latitude" placeholder="请输入设备纬度" width="sm" />
         </ProFormFieldSet>
       ) : (
         <ProList<any>
