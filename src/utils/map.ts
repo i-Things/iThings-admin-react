@@ -1,5 +1,8 @@
-export function loadBMap() {
+import { getLocal } from '@/utils/utils';
+
+export async function loadBMap() {
   return new Promise(function (resolve, reject) {
+    const data = JSON.parse(getLocal('mapData') as string);
     if (typeof BMap !== 'undefined') {
       resolve(BMap);
       return true;
@@ -21,7 +24,7 @@ export function loadBMap() {
     script.type = 'text/javascript';
     script.src =
       'http://api.map.baidu.com/api?v=2.0&ak=' +
-      'UGmGEIzlEQWtRjC1uGb6f0oypHPQC3Bs' +
+      data.map.accessKey +
       '&__ec_v__=20190126&callback=onBMapCallback';
     script.onerror = reject;
     document.head.appendChild(script);

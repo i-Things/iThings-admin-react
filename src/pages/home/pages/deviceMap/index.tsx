@@ -327,9 +327,6 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
 
   useEffect(() => {
     loadBMap();
-  }, []);
-
-  useEffect(() => {
     setData(
       deviceList?.map((device) => {
         let productName: string = '';

@@ -25,37 +25,34 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
   const [pos, setPos] = useState('');
   const [addre, setAddre] = useState('');
 
-  const getmap = (info) => {
-    loadBMap().then((res) => {
-      if (res?.wV) {
-        const map = new BMap.Map('map');
-        const lng = info?.position?.longitude || info?.point?.lng;
-        const lat = info?.position?.latitude || info?.point?.lat;
-        if (lng && lat) {
-          pointRef.current = new BMap.Point(lng, lat);
-        } else {
-          pointRef.current = new BMap.Point(116.404, 39.915);
-        }
-        map.centerAndZoom(pointRef.current, 14);
-        map.enableScrollWheelZoom(true);
-        // 开启鼠标滚轮缩放
-        map.addControl(new BMap.NavigationControl());
+  const getmap = async (info) => {
+    await loadBMap();
+    const map = new BMap.Map('map');
+    const lng = info?.position?.longitude || info?.point?.lng;
+    const lat = info?.position?.latitude || info?.point?.lat;
+    if (lng && lat) {
+      pointRef.current = new BMap.Point(lng, lat);
+    } else {
+      pointRef.current = new BMap.Point(116.404, 39.915);
+    }
+    map.centerAndZoom(pointRef.current, 14);
+    map.enableScrollWheelZoom(true);
+    // 开启鼠标滚轮缩放
+    map.addControl(new BMap.NavigationControl());
 
-        markerRef.current = new BMap.Marker(pointRef.current, {
-          enableDragging: true,
-        });
+    markerRef.current = new BMap.Marker(pointRef.current, {
+      enableDragging: true,
+    });
 
-        map.addOverlay(markerRef.current);
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        markerRef.current?.addEventListener('mouseup', getLocationHandle);
-        map.panTo(pointRef.current);
+    map.addOverlay(markerRef.current);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    markerRef.current?.addEventListener('mouseup', getLocationHandle);
+    map.panTo(pointRef.current);
 
-        geocoderRef.current = new BMap.Geocoder();
-        geocoderRef.current?.getLocation(pointRef.current, (GeocoderResult) => {
-          if (!GeocoderResult) message.error('地址解析失败');
-          setAddre(GeocoderResult.address);
-        });
-      }
+    geocoderRef.current = new BMap.Geocoder();
+    geocoderRef.current?.getLocation(pointRef.current, (GeocoderResult) => {
+      if (!GeocoderResult) message.error('地址解析失败');
+      setAddre(GeocoderResult.address);
     });
   };
 
