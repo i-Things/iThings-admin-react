@@ -1,4 +1,5 @@
 import { LAYOUT_TYPE_VERTICAL } from '@/utils/const';
+import { loadBMap } from '@/utils/map';
 import { SendOutlined } from '@ant-design/icons';
 import { ProList } from '@ant-design/pro-components';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -7,7 +8,6 @@ import { Button, message } from 'antd';
 import { throttle } from 'lodash';
 
 import type { DeviceInfo } from '@/pages/deviceMangers/device/detail/pages/deviceInfo/data';
-import { loadBMap } from '@/utils/map';
 import React, { useEffect, useRef, useState } from 'react';
 
 export interface modalFormType {
@@ -41,7 +41,6 @@ const DevicePositionModal: React.FC<{
     }
     return undefined;
   };
-  console.log(initialValues());
   const searchBtn = (addr: string | modalFormType) => {
     if (options.length) {
       getDevicePositionVal(Array.isArray(addr) ? addr[0] : addr, 'pos');
@@ -73,27 +72,29 @@ const DevicePositionModal: React.FC<{
 
   useEffect(() => {
     if (flag === 'pos') {
-      loadBMap().then(() => {
-        const map = new BMap.Map('map');
-        map.centerAndZoom(
-          new BMap.Point(record?.position?.longitude, record?.position?.latitude),
-          14,
-        );
-        const option = {
-          onSearchComplete: function (results) {
-            const data = [];
-            for (let i = 0; i < results?.getCurrentNumPois(); i++) {
-              data.push(results?.getPoi(i));
-            }
-            setOptions(
-              data.map((item) => ({
-                ...item,
-                image: <SendOutlined />,
-              })),
-            );
-          },
-        };
-        setLocal(new BMap.LocalSearch(map, option));
+      loadBMap().then((res) => {
+        if (res?.wV) {
+          const map = new BMap.Map('map');
+          map.centerAndZoom(
+            new BMap.Point(record?.position?.longitude, record?.position?.latitude),
+            14,
+          );
+          const option = {
+            onSearchComplete: function (results) {
+              const data = [];
+              for (let i = 0; i < results?.getCurrentNumPois(); i++) {
+                data.push(results?.getPoi(i));
+              }
+              setOptions(
+                data.map((item) => ({
+                  ...item,
+                  image: <SendOutlined />,
+                })),
+              );
+            },
+          };
+          setLocal(new BMap.LocalSearch(map, option));
+        }
       });
     }
   }, [record]);
