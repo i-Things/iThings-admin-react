@@ -114,11 +114,13 @@ const GroupList: React.FC<{
           return null;
         }
         return (
-          <GroupTags
-            flag={FlagStatus.CREATE}
-            key="createGroupTags"
-            searchParamsHandler={searchParamsHandler}
-          />
+          <div style={{ marginTop: -16 }}>
+            <GroupTags
+              flag={FlagStatus.CREATE}
+              key="createGroupTags"
+              searchParamsHandler={searchParamsHandler}
+            />
+          </div>
         );
       },
     },

@@ -225,11 +225,13 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       hideInTable: true,
       renderFormItem: () => {
         return (
-          <DeviceTagsModal
-            flag={FlagStatus.CREATE}
-            key="createDeviceTags"
-            changeTags={changeTags}
-          />
+          <div style={{ marginTop: -16 }}>
+            <DeviceTagsModal
+              flag={FlagStatus.CREATE}
+              key="createDeviceTags"
+              changeTags={changeTags}
+            />
+          </div>
         );
       },
     },
