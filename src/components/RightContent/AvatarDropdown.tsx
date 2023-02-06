@@ -1,9 +1,10 @@
 import { LogoutOutlined } from '@ant-design/icons';
+import { history, useModel } from '@umijs/max';
 import { Avatar, Menu, Spin } from 'antd';
+import queryString from 'query-string';
 import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
-import { history, useModel } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
@@ -18,8 +19,11 @@ const defaultImgUrl =
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  const { query = {}, pathname } = history.location;
-  const { redirect } = query;
+  const query = queryString.parse(history.location.search);
+  const { redirect } = query as {
+    redirect: string;
+  };
+  const { pathname } = history.location;
   // Note: There may be security issues, please note
   if (window.location.pathname !== '/user/login' && !redirect) {
     history.replace({

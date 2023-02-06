@@ -4,8 +4,8 @@ import { postThingsGroupDeviceMultiCreate } from '@/services/iThingsapi/shebeife
 import { selectConfirm } from '@/utils/utils';
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
+import { useParams } from '@umijs/max';
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'umi';
 import GroupDeviceList from '../../../components/GroupDeviceList';
 import type { activeKeyProps, GroupDeviceCreateProps, GroupDeviceItem } from '../../../types';
 

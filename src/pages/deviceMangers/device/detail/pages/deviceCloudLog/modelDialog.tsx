@@ -3,11 +3,11 @@ import { postThingsDeviceMsgPropertyLogIndex } from '@/services/iThingsapi/shebe
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
 import { CloseOutlined } from '@ant-design/icons';
+import { useParams } from '@umijs/max';
 import { useAntdTable } from 'ahooks';
 import { Drawer, Space, Table } from 'antd';
 import type { RangePickerProps } from 'antd/lib/date-picker';
 import React, { useState } from 'react';
-import { useParams } from 'umi';
 import type { PageInfo } from '../../../data';
 import styles from './index.less';
 

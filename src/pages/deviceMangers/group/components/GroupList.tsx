@@ -11,9 +11,9 @@ import { spanTree } from '@/utils/utils';
 import { LightFilter } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
+import { history } from '@umijs/max';
 import { Button, Divider, Input } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'umi';
 import type { activeKeyProps, GroupListItem } from '../types';
 import CreateOrUpdateGroup from './CreateOrUpdateGroup';
 import GroupTags from './GroupTags';
@@ -24,7 +24,6 @@ const GroupList: React.FC<{
   parentID: string;
   activeKey?: activeKeyProps;
 }> = ({ flag, parentID, activeKey }) => {
-  const history = useHistory();
   const { queryPage, dataList } = useGetTableList();
   const { deleteHandler } = useTableDelete();
   const [searchParams, setSearchParams] = useState<groupSearchParmasProps>({
@@ -115,11 +114,13 @@ const GroupList: React.FC<{
           return null;
         }
         return (
-          <GroupTags
-            flag={FlagStatus.CREATE}
-            key="createGroupTags"
-            searchParamsHandler={searchParamsHandler}
-          />
+          <div style={{ marginTop: -16 }}>
+            <GroupTags
+              flag={FlagStatus.CREATE}
+              key="createGroupTags"
+              searchParamsHandler={searchParamsHandler}
+            />
+          </div>
         );
       },
     },

@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout';
+import { useParams } from '@umijs/max';
 import { Card, Tabs } from 'antd';
 import React, { useState } from 'react';
-import { useParams } from 'umi';
 import GroupDescriptons from '../components/GroupDescriptons';
 import GroupListPage from '../components/GroupList';
 import type { activeKeyProps } from '../types';

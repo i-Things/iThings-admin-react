@@ -3,7 +3,8 @@ import {
   postThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
 import { FlagStatus, ResponseCode } from '@/utils/base';
-import { DEVICE_TYPE_VALUE, PRODUCT_INFO, SEARCH_CONFIGURE } from '@/utils/const';
+import type { PRODUCT_INFO } from '@/utils/const';
+import { DEVICE_TYPE_VALUE, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { history } from '@@/core/history';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -14,7 +15,7 @@ import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import { CreateForm } from './createForm';
-import { TagsInfo } from './data';
+import type { TagsInfo } from './data';
 import ProductTagsModal from './detail/pages/productInfo/components/deviceTagsModal';
 
 const { confirm } = Modal;
@@ -101,11 +102,13 @@ const IndexPage: React.FC = () => {
       hideInTable: true,
       renderFormItem: () => {
         return (
-          <ProductTagsModal
-            flag={FlagStatus.CREATE}
-            key="createDeviceTags"
-            changeTags={changeTags}
-          />
+          <div style={{ marginTop: -16 }}>
+            <ProductTagsModal
+              flag={FlagStatus.CREATE}
+              key="createDeviceTags"
+              changeTags={changeTags}
+            />
+          </div>
         );
       },
     },
