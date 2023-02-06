@@ -81,7 +81,6 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
   };
 
   const getLocationHandle = (params) => {
-    console.log(params);
     const lng = params?.point?.lng || params?.point?.[0];
     const lat = params?.point?.lat || params?.point?.[1];
     const point = new BMap.Point(lng, lat);
@@ -89,6 +88,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       if (!GeocoderResult) message.error('地址解析失败');
       addressRef.current = GeocoderResult.address;
       setAddre(GeocoderResult.address);
+      // setPos(GeocoderResult.address);
       getmap(GeocoderResult);
       devicePosHandle({ ...GeocoderResult, address: pos }, 'loc');
     });
@@ -114,7 +114,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
 
   const columns = [
     {
-      title: '设备位置',
+      title: '位置详情',
       key: 'address',
       dataIndex: 'address',
       copyable: true,
@@ -125,7 +125,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
             getDevicePositionVal={getDevicePositionVal}
             record={record}
             flag={'pos'}
-            pos={pos}
+            parseAddress={pos}
           />
         </div>
       ),
