@@ -4,6 +4,7 @@ import { message } from 'antd';
 import { useMemo } from 'react';
 import DeviceChart from './pages/deviceChart/index';
 import DeviceCount from './pages/deviceCount/index';
+import DeviceMap from './pages/deviceMap/index';
 
 const IndexPage = () => {
   /** 获取设备统计 */
@@ -26,6 +27,7 @@ const IndexPage = () => {
     <div style={{ background: '#fff', padding: 24 }}>
       <DeviceCount data={data?.data} deviceTotal={deviceTotal} />
       <DeviceChart data={data?.data} />
+      <DeviceMap />
     </div>
   );
 };

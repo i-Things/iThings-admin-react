@@ -210,7 +210,7 @@ const RemoteConfiguration = () => {
               },
             }}
           />
-          <section className="menu-tool-tip">
+          <section style={{ backgroundColor: '#fff5ed' }}>
             <ExclamationCircleTwoTone className="menu-icon" twoToneColor="#ed6a0c" />
             平台支持远程更新设备的配置文件（JSON
             格式），您可以在下方编辑配置模板，对设备的系统参数、网络参数等进行远程配置，通过批量更新对设备进行批量远程维护和管理，详细说明请参见

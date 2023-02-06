@@ -75,7 +75,7 @@ export async function postThingsProductInfoIndex(
         desc?: string;
         createdTime?: string;
         devStatus?: number;
-        tags?: { key?: string; value?: string }[];
+        tags?: API.tag;
       }[];
       total?: number;
       num?: number;

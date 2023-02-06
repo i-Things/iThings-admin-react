@@ -12,6 +12,10 @@ export const isMobile = () => {
 };
 
 export const TOKEN_PREFIX = 'iThings';
+export const getLocal = (key: string) => localStorage.getItem(key);
+export const setLocal = (key: string, data: string) => {
+  localStorage.setItem(key, data);
+};
 
 export const setToken = (token: string) => {
   localStorage.setItem(`${TOKEN_PREFIX}-token`, token);
@@ -117,8 +121,8 @@ export function isOnlineEnum(row: DEVICE_INFO | GroupDeviceItem) {
  * @return {Object} 返回对象
  * @example
  *
-const arr = [{ label: 'title_one', val: '参数值1' }, { label: 'title_two', val: '参数值2' }];
-console.log(arrTransferObj(arr, 'label', 'val'))
+ const arr = [{ label: 'title_one', val: '参数值1' }, { label: 'title_two', val: '参数值2' }];
+ console.log(arrTransferObj(arr, 'label', 'val'))
  */
 export function arrTransferObj(
   original: Record<string, string>[],
@@ -137,8 +141,8 @@ export function arrTransferObj(
  * @return {Array} 返回对象
  * @example
  *
-const obj = { title_one: '参数值1', title_two: '参数值2' };
-console.log(objTransferArr(obj, 'label', 'val'))
+ const obj = { title_one: '参数值1', title_two: '参数值2' };
+ console.log(objTransferArr(obj, 'label', 'val'))
  */
 export function objTransferArr(
   original: Record<string, string>,
@@ -175,6 +179,7 @@ export function isJSON(str: string) {
     return false;
   }
 }
+
 /**
  * 在前端创建html或json文件，并通过浏览器进行导出
  *

@@ -15,4 +15,9 @@ export interface DeviceInfo {
   cert?: string;
   tags?: TagsInfo[];
   isOnline?: number;
+  address?: string;
+  position?: {
+    longitude: number;
+    latitude: number;
+  };
 }

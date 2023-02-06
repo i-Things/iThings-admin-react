@@ -5,6 +5,7 @@ import { Card, message } from 'antd';
 import React, { useState } from 'react';
 import type { DeviceInfo } from './data';
 import BasicInfoPage from './pages/basicInfo';
+import DevicePositionPage from './pages/devicePosition';
 import LocalLogPage from './pages/localLog';
 import TagsInfoPage from './pages/tagsInfo';
 
@@ -34,6 +35,7 @@ const DeviceInfoPage: React.FC = () => {
       <BasicInfoPage deviceInfo={deviceInfo} />
       <TagsInfoPage deviceInfo={deviceInfo} refresh={refresh} />
       <LocalLogPage deviceInfo={deviceInfo} refresh={refresh} />
+      <DevicePositionPage deviceInfo={deviceInfo} refresh={refresh} />
     </Card>
   );
 };

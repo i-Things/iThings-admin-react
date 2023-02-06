@@ -1,21 +1,4 @@
 declare namespace API {
-  type CloudeLogDebug = {
-    /** 发生时间戳 */
-    timestamp: string;
-    /** 操作类型 显示相应的操作名称、API名称、服务的method */
-    action: string;
-    /** 请求ID */
-    requestID: string;
-    /** 服务器端事务id */
-    tranceID: string;
-    /** 主题 */
-    topic: string;
-    /** 具体内容 */
-    content: string;
-    /** 请求结果状态 */
-    resultType: string;
-  };
-
   type deviceCore = {
     /** 产品id */
     productID: string;
@@ -66,7 +49,8 @@ declare namespace API {
     isDiff: number;
     /** 签名方法 MD5/SHA@256 */
     signMethod: string;
-    description: Record<string, any>;
+    /** 描述 */
+    desc: Record<string, any>;
     extData: Record<string, any>;
     /** 升级包附件列表，最多支持上传20个文件，总文件大小不能超过1,000 MB。 */
     files: FirmwareFile[];
@@ -144,7 +128,7 @@ declare namespace API {
     firmwareID: number;
     /** 升级包名称 */
     name: string;
-    description: Record<string, any>;
+    desc: Record<string, any>;
     extData: Record<string, any>;
   };
 
@@ -210,6 +194,12 @@ declare namespace API {
     endTime?: number;
   };
 
+  type postThingsGroupInfoCreateParams = {
+    district_id?: string;
+    data_type?: string;
+    ak?: string;
+  };
+
   type ProductInfo = {
     /** 产品id */
     productID: string;
@@ -254,66 +244,6 @@ declare namespace API {
     required: number;
     /** 各功能类型的详细参数定义 */
     affordance: string;
-  };
-
-  type SchemaAction = {
-    /** 调用参数 */
-    input: SchemaParam[];
-    /** 返回参数 */
-    output: SchemaParam[];
-  };
-
-  type SchemaDefine = {
-    /** 参数类型 bool int string struct float timestamp array enum */
-    type: string;
-    /** 结构体 struct */
-    specs: SchemaDefine[];
-    /** 枚举及bool类型 bool enum */
-    mapping: string;
-    /** 数值最小值 int  float */
-    min: string;
-    /** 数值最大值 int string float */
-    max: string;
-    /** 初始值 int float */
-    start: string;
-    /** 步长 float */
-    step: string;
-    /** 单位 int float */
-    unit: string;
-    /** 数组 */
-    arrayInfo: SchemaDefine | any;
-  };
-
-  type SchemaEvent = {
-    /** 事件类型 信息:info  告警alert  故障:fault */
-    type: string;
-    /** 事件参数 */
-    params: SchemaParam[];
-  };
-
-  type SchemaParam = {
-    /** 参数标识符 */
-    identifier: string;
-    /** 参数名称 */
-    name: string;
-    /** 参数定义 */
-    define: SchemaDefine;
-  };
-
-  type SchemaProperty = {
-    /** 读写类型 r(只读) rw(可读可写) */
-    mode: string;
-    /** 参数定义 */
-    define: SchemaDefine;
-  };
-
-  type SchemaSpec = {
-    /** 参数标识符 */
-    identifier: string;
-    /** 参数名称 */
-    name: string;
-    /** 参数定义 */
-    dataType: SchemaDefine;
   };
 
   type SuccRet = {
