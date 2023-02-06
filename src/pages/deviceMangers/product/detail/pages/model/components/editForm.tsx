@@ -2,9 +2,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   postThingsProductSchemaCreate,
-  postThingsProductSchemaUpdate
+  postThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
-import { createAsyncFormActions, Field, FormEffectHooks, FormMegaLayout, FormPath, FormSpy, SchemaForm } from '@formily/antd';
+import {
+  createAsyncFormActions,
+  Field,
+  FormEffectHooks,
+  FormMegaLayout,
+  FormPath,
+  FormSpy,
+  SchemaForm,
+} from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
   FormItemGrid,
@@ -12,12 +20,12 @@ import {
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
-  Switch as FSwitch
+  Switch as FSwitch,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
+import { useParams } from '@umijs/max';
 import { AutoComplete, Modal, Radio } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { useParams } from 'umi';
 import type { EditFormType } from './const';
 import {
   dataTypeList,
@@ -26,7 +34,7 @@ import {
   typeBtnList,
   yuansuleixingList,
   _dataTypeList,
-  _yuansuleixingList
+  _yuansuleixingList,
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -35,7 +43,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   useImperativeHandle(ref, () => ({
     setModelModalValue: setModelModalValue,
     clearModal: clearModal,
-    createModel: createModel
+    createModel: createModel,
   }));
 
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
@@ -395,13 +403,15 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
   const intTypeFormItem = (
     <>
-      <Field
-        type="object"
-        name="numericalRange"
-        title="数值范围"
-        x-props={{ visible: false }}
-      >
-        <FormMegaLayout inline labelWidth={120} wrapperWidth={200} full hasBorder={false} isLayout={false}>
+      <Field type="object" name="numericalRange" title="数值范围" x-props={{ visible: false }}>
+        <FormMegaLayout
+          inline
+          labelWidth={120}
+          wrapperWidth={200}
+          full
+          hasBorder={false}
+          isLayout={false}
+        >
           <Field
             type="number"
             name="min"
@@ -502,7 +512,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators('dataDefinitionForenum');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({ }) => {
+                  {({}) => {
                     return (
                       <a
                         style={{
@@ -634,7 +644,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators('specs');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({ }) => {
+                  {({}) => {
                     return (
                       <a
                         style={{
@@ -749,7 +759,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                       const mutators = ruleActions.current.createMutators('specs');
                       return (
                         <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                          {({ }) => {
+                          {({}) => {
                             return (
                               <a
                                 style={{
@@ -847,7 +857,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           mode: 'rw',
           eventType: 'alert',
           mapping: { '0': '关', '1': '开' },
-          numericalRange: { 'min': 1, 'max': 100 },
+          numericalRange: { min: 1, max: 100 },
           start: 0,
           step: 1,
           max: 2048,
@@ -1120,6 +1130,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           }}
         />
       </SchemaForm>
-    </Modal >
+    </Modal>
   );
 });

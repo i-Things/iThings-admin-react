@@ -2,6 +2,36 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
+/** 设备统计详情 POST /api/v1/things/device/info/count */
+export async function postThingsDeviceInfoCount(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postThingsDeviceInfoCountParams,
+  body: {
+    endTime: number;
+    startTime: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{
+    code: number;
+    msg: string;
+    data: {
+      deviceCount: { online?: number; offline?: number; inactive?: number; unknown?: number };
+      deviceTypeCount: { device?: number; gateway?: number; subset?: number; unknown?: number };
+    };
+  }>('/api/v1/things/device/info/count', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {
+      ...params,
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 新增设备 POST /api/v1/things/device/info/create */
 export async function postThingsDeviceInfoCreate(
   body: {
@@ -12,6 +42,10 @@ export async function postThingsDeviceInfoCreate(
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
+    /** 设备所在地址 */
+    address?: string;
+    /** 设备点坐标，,默认百度坐标系 */
+    position?: { longitude?: number; latitude?: number };
   },
   options?: { [key: string]: any },
 ) {
@@ -54,6 +88,10 @@ export async function postThingsDeviceInfoIndex(
     deviceName?: string;
     /** 非模糊查询 为tag的名,value为tag对应的值 */
     tags?: { key?: string; value?: string }[];
+    /** 过滤条件:距离坐标点固定范围内的设备 单位：米 */
+    range?: number;
+    /** 设备定位,默认百度坐标系，用于获取以该点为中心，Range范围内的设备列表，与Range连用 */
+    position?: { longitude?: number; latitude?: number };
   },
   options?: { [key: string]: any },
 ) {
@@ -72,6 +110,8 @@ export async function postThingsDeviceInfoIndex(
         logLevel?: number;
         tags?: { key?: string; value?: string }[];
         isOnline?: number;
+        address?: string;
+        position: { longitude?: number; latitude?: number };
       }[];
       total?: number;
       num?: number;
@@ -109,6 +149,8 @@ export async function postThingsDeviceInfoRead(
       logLevel?: number;
       tags?: { key?: string; value?: string }[];
       isOnline?: number;
+      address?: string;
+      position: { longitude?: number; latitude?: number };
     };
   }>('/api/v1/things/device/info/read', {
     method: 'POST',
@@ -130,6 +172,10 @@ export async function postThingsDeviceInfoUpdate(
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
     tags?: { key?: string; value?: string }[];
+    /** 设备所在地址 */
+    address?: string;
+    /** 设备坐标点,默认百度坐标系 */
+    position?: { longitude?: number; latitude?: number };
   },
   options?: { [key: string]: any },
 ) {

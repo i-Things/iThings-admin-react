@@ -18,6 +18,7 @@ export async function postThingsProductInfoCreate(
     autoRegister?: number;
     categoryID?: number;
     desc?: string;
+    tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
 ) {
@@ -55,6 +56,8 @@ export async function postThingsProductInfoIndex(
     deviceType?: number;
     productName?: string;
     productIDs?: string[];
+    /** 非模糊查询 为tag的名,value为tag对应的值 */
+    tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
 ) {
@@ -72,6 +75,7 @@ export async function postThingsProductInfoIndex(
         desc?: string;
         createdTime?: string;
         devStatus?: number;
+        tags?: API.tag;
       }[];
       total?: number;
       num?: number;
@@ -108,6 +112,7 @@ export async function postThingsProductInfoRead(
       desc?: string;
       createdTime?: string;
       devStatus?: number;
+      tags?: { key?: string; value?: string }[];
     };
     code: number;
     msg: string;
@@ -138,6 +143,7 @@ export async function postThingsProductInfoUpdate(
     autoRegister?: number;
     categoryID?: number;
     desc?: string;
+    tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
 ) {

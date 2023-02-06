@@ -24,7 +24,7 @@ export async function postThingsDeviceGatewayIndex(
   );
 }
 
-/** 添加网关子设备 POST /api/v1/things/device/gateway/multi-create */
+/** 批量添加网关子设备 POST /api/v1/things/device/gateway/multi-create */
 export async function postThingsDeviceGatewayMultiCreate(
   body: {
     list: API.deviceCore[];
@@ -43,7 +43,7 @@ export async function postThingsDeviceGatewayMultiCreate(
   });
 }
 
-/** 解绑网关子设备 POST /api/v1/things/device/gateway/multi-delete */
+/** 批量解绑网关子设备 POST /api/v1/things/device/gateway/multi-delete */
 export async function postThingsDeviceGatewayMultiDelete(
   body: {
     list: API.deviceCore[];

@@ -35,7 +35,7 @@ export const _dataTypeList = [
 
 export const rwTypeList = [
   { label: '读写', value: 'rw' },
-  { label: '自读', value: 'r' },
+  { label: '只读', value: 'r' },
 ];
 
 export const yuansuleixingList = [

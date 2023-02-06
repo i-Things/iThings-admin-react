@@ -4,16 +4,13 @@ const Settings: LayoutSettings & {
   logo?: string;
 } = {
   navTheme: 'light',
-  // 拂晓蓝
-  primaryColor: '#2F54EB',
+  colorPrimary: '#2F54EB',
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
   pwa: false,
-  title: 'iThings',
-  headerHeight: 48,
   iconfontUrl: '',
   splitMenus: false,
 };

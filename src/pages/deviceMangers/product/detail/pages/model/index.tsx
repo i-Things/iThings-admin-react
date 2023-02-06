@@ -3,18 +3,18 @@ import {
   postThingsProductSchemaIndex,
   postThingsProductSchemaTslImport,
   postThingsProductSchemaTslRead,
-  postThingsProductSchema__openAPI__delete
+  postThingsProductSchema__openAPI__delete,
 } from '@/services/iThingsapi/wumoxing';
 import { downloadFunction, isJSON } from '@/utils/utils';
 import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
+import { useParams } from '@umijs/max';
 import { Alert, Button, Input, message, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { useParams } from 'umi';
 import { DATA_TYPE_ENUM, MODE_ENUM, TYPE_ENUM } from './components/const';
 import { EditForm } from './components/editForm';
 import styles from './style.less';
@@ -50,7 +50,7 @@ export default () => {
     clearModal: Function,
     createModel: Function,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setModelModalValue: (_: any, __: any) => { },
+    setModelModalValue: (_: any, __: any) => {},
   });
 
   const boolRender = (record: ProductSchemaInfo) => {
@@ -195,7 +195,7 @@ export default () => {
                 message.success('删除成功');
                 actionRef.current?.reload();
               },
-              onCancel() { },
+              onCancel() {},
             });
           }}
         >
@@ -245,7 +245,7 @@ export default () => {
     setIsImportModalVisible(false);
 
     message.success('导入成功');
-    actionRef.current?.reload()
+    actionRef.current?.reload();
     setTsl('');
   };
 

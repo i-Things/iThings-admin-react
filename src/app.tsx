@@ -1,9 +1,10 @@
+import { postSystemCommonConfig } from '@/services/iThingsapi/xitongpeizhi';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { PageLoading } from '@ant-design/pro-layout';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 import { postSystemUserRead, postSystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
-import { getToken, getUID, spanTree } from './utils/utils';
+import { getToken, getUID, setLocal, spanTree } from './utils/utils';
+
 const loginPath = '/user/login';
 
 const loopMenuItem = (menus: any[]): MenuDataItem[] =>
@@ -28,9 +29,9 @@ const loopMenuItem = (menus: any[]): MenuDataItem[] =>
   });
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
-export const initialStateConfig = {
-  loading: <PageLoading />,
-};
+// export const initialStateConfig = {
+//   loading: <PageLoading />,
+// };
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -54,6 +55,8 @@ export async function getInitialState(): Promise<{
       const body = { uid: uid };
       const msg = await postSystemUserRead(body);
       const menuTree = await postSystemUserResourceRead({});
+      const { data } = await postSystemCommonConfig({});
+      setLocal(`mapData`, JSON.stringify(data));
       const menuInfo = loopMenuItem(
         spanTree(
           menuTree?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number)),

@@ -2,10 +2,12 @@ import { postSystemUserCaptcha, postSystemUserLogin } from '@/services/iThingsap
 import { setToken, setUID } from '@/utils/utils';
 import { FontColorsOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
+import { useModel } from '@umijs/max';
 import { Checkbox, Col, message, Row } from 'antd';
 import MD5 from 'crypto-js/md5';
+import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { history, useModel } from 'umi';
+import { history } from 'umi';
 import logo from '../../../../public/icons/logo/Group.png';
 import type { loginType } from './data';
 
@@ -54,18 +56,31 @@ const Login: React.FC = () => {
         setToken(msg.data.token.accessToken);
         setUID(msg?.data?.info?.uid ?? '');
 
+        console.log('====================================');
+        console.log('加载完毕');
+        console.log('====================================');
+
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
+        console.log('====================================');
+        console.log('加载完毕1');
+        console.log('====================================');
+
         if (!history) return;
-        const { query } = history.location;
+        const query = queryString.parse(history.location.search);
         const { redirect } = query as {
           redirect: string;
         };
         history.push(redirect || '/');
         return;
       }
+
+      console.log('====================================');
+      console.log('加载完毕2');
+      console.log('====================================');
     } catch (error) {
+      console.log('error', error);
       const defaultLoginFailureMessage = '登录失败，请重试！';
       message.error(defaultLoginFailureMessage);
       await fetchCaptcha();

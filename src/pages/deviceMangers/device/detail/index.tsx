@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout';
+import { history, useParams } from '@umijs/max';
 import { Card, message, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { history, useParams } from 'umi';
 
 import DeviceInfoPage from './pages/deviceInfo/index';
 
@@ -96,7 +96,7 @@ const IndexPage: React.FC = () => {
           <TabPane tab="在线调试" key="6">
             <OnlineDebugPage productID={id} deviceName={name} />
           </TabPane>
-          {data?.data?.list?.[0].deviceType === 2 && (
+          {data?.data?.list?.[0]?.deviceType === 2 && (
             <TabPane tab="子设备管理" key="7">
               <SubDevicePage productID={id} deviceName={name} />
             </TabPane>
