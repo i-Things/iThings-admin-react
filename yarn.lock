@@ -11176,13 +11176,6 @@ mapvgl@^1.0.0-beta.163:
   resolved "https://registry.npmmirror.com/mapvgl/-/mapvgl-1.0.0-beta.165.tgz#8a69557160a1598e93ded0b7f0487ca1e16027d2"
   integrity sha512-/8PdMCUUbzLbk6ZuIPmQq9grTtW3HfERbbr2sbdTzDNZlsDI1AGhTUWgOBpFU7WxcAIXmbVpc9cEdSzk7Larqw==
 
-markdown-table@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmmirror.com/markdown-table/-/markdown-table-2.0.0.tgz#194a90ced26d31fe753d8b9434430214c011865b"
-  integrity sha512-Ezda85ToJUBhM6WGaG6veasyym+Tbs3cMAw/ZhOPqXiYsr0jgocBV3j3nx+4lk47plLlIqjwuTm/ywVI+zjJ/A==
-  dependencies:
-    repeat-string "^1.0.0"
-
 marked-terminal@3.2.0:
   version "3.2.0"
   resolved "https://registry-npm.myscrm.cn/repository/pkg/marked-terminal/-/marked-terminal-3.2.0.tgz#3fc91d54569332bcf096292af178d82219000474"

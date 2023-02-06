@@ -7,7 +7,7 @@ import * as echarts from 'echarts/core';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'umi';
+import { history } from 'umi';
 
 import type { DeviceStatic } from '@/pages/home/data';
 import type { DEVICE_INFO } from '@/utils/const';
@@ -50,8 +50,6 @@ interface DeviceListProps extends DEVICE_INFO {
 }
 
 const DeviceMap: React.FC<DeviceMapProps> = () => {
-  const history = useHistory();
-
   const [data, setData] = useState<DeviceListProps[]>([]);
 
   const body = {
