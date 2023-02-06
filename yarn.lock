@@ -4265,7 +4265,29 @@
     enhanced-resolve "5.9.3"
     is-equal "^1.6.4"
 
-"@umijs/openapi@^1.3.0", "@umijs/openapi@^1.5.1":
+"@umijs/openapi@1.1.14":
+  version "1.1.14"
+  resolved "https://registry-npm.myscrm.cn/repository/pkg/@umijs/openapi/-/openapi-1.1.14.tgz#275d22b14f0189db6afadf997613a8882c6b529d"
+  integrity sha512-WXnFh9EmiOo+fftA2BznztPl2MaZqf+8A06Bblg/NsoYeSCWwVJAH9lR2G/rSzwIb9koZtDx/VdtXcypz3ppqg==
+  dependencies:
+    "@umijs/fabric" "^2.5.6"
+    dayjs "^1.10.3"
+    eslint "^7.18.0"
+    glob "^7.1.6"
+    lodash "^4.17.20"
+    memoizee "^0.4.15"
+    mock.js "^0.2.0"
+    mockjs "^1.1.0"
+    node-fetch "^2.6.1"
+    nunjucks "^3.2.2"
+    openapi3-ts "^2.0.1"
+    prettier "^2.2.1"
+    reserved-words "^0.1.2"
+    rimraf "^3.0.2"
+    swagger2openapi "^7.0.4"
+    tiny-pinyin "^1.3.2"
+
+"@umijs/openapi@^1.5.1":
   version "1.8.1"
   resolved "https://registry-npm.myscrm.cn/repository/pkg/@umijs/openapi/-/openapi-1.8.1.tgz#cdbe01381bebc07d6cf8546a08d13edcbb119c90"
   integrity sha512-xXOHhAHOJp37PIjJcyK3GQwRo81kyomB+OelSyDlc8Htct0/6tSPaj9OqDuUwg2gd+mGf90CpdssHaesfhPgkQ==
@@ -8219,7 +8241,7 @@ eslint@8.15.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-eslint@^7.11.0:
+eslint@^7.11.0, eslint@^7.18.0:
   version "7.32.0"
   resolved "https://registry-npm.myscrm.cn/repository/pkg/eslint/-/eslint-7.32.0.tgz#c6d328a14be3fb08c8d1d21e12c02fdb7a2a812d"
   integrity sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA==
