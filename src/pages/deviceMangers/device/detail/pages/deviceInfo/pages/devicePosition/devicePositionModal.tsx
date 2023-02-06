@@ -72,7 +72,13 @@ const DevicePositionModal: React.FC<{
     } catch {
       location.reload();
     }
-    map.centerAndZoom(new BMap.Point(record?.position?.longitude, record?.position?.latitude), 14);
+    map.centerAndZoom(
+      new BMap.Point(
+        record?.position?.longitude || 116.403963,
+        record?.position?.latitude || 39.915119,
+      ),
+      14,
+    );
     const option = {
       onSearchComplete: function (results) {
         const data = [];

@@ -33,7 +33,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
     if (lng && lat) {
       pointRef.current = new BMap.Point(lng, lat);
     } else {
-      pointRef.current = new BMap.Point(116.404, 39.915);
+      pointRef.current = new BMap.Point(116.403963, 39.915119);
     }
     map.centerAndZoom(pointRef.current, 14);
     map.enableScrollWheelZoom(true);
@@ -136,27 +136,24 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       dataIndex: 'position',
       copyable: true,
       render: (_, record) => (
-        <>
-          {deviceInfo?.position?.longitude ? (
-            <div style={{ marginTop: '-4px' }}>
-              <span>
-                经纬度：
-                <Tag>
-                  {`${deviceInfo?.position.longitude},${deviceInfo?.position.latitude}` ?? '-'}
-                </Tag>
-                位置：{addre ?? '-'}
-              </span>
-              <DevicePositionModal
-                getDevicePositionVal={getDevicePositionVal}
-                record={record}
-                flag={'loc'}
-                parseAddress={addre}
-              />
-            </div>
-          ) : (
-            '-'
-          )}
-        </>
+        <div style={{ marginTop: '-4px' }}>
+          <span>
+            经纬度：
+            <Tag>
+              {deviceInfo?.position?.longitude
+                ? `${deviceInfo?.position.longitude},${deviceInfo?.position.latitude}`
+                : '-'}
+            </Tag>
+            位置：{deviceInfo?.position?.longitude ? addre : '-'}
+          </span>
+
+          <DevicePositionModal
+            getDevicePositionVal={getDevicePositionVal}
+            record={record}
+            flag={'loc'}
+            parseAddress={addre}
+          />
+        </div>
       ),
     },
 
