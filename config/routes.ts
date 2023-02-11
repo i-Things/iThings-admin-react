@@ -90,6 +90,16 @@ export default [
             component: './systemMangers/menu/index',
           },
           {
+            name: '日志管理',
+            routes: [
+              {
+                name: '操作日志',
+                path: '/systemMangers/log/operationLog/index',
+                component: './systemMangers/log/operationLog/index',
+              },
+            ],
+          },
+          {
             component: '404',
           },
         ],
