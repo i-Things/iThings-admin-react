@@ -1,8 +1,11 @@
 import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
-import { postSystemUserCreate, postSystemUserUpdate } from '@/services/iThingsapi/yonghuguanli';
+import { postApiV1SystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
+import {
+  postApiV1SystemUserCreate,
+  postApiV1SystemUserUpdate,
+} from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -26,9 +29,9 @@ const CreateOrUpdateUser: React.FC<{
   const [visible, setVisible] = useState(false);
   // const [imageUrl, setImageUrl] = useState<string>();
   const editFormRef = useRef<ProFormInstance>();
-  type CreateProp = typeof postSystemUserCreate;
-  type UpdateProp = typeof postSystemUserUpdate;
-  type QueryRoleProp = typeof postSystemRoleIndex;
+  type CreateProp = typeof postApiV1SystemUserCreate;
+  type UpdateProp = typeof postApiV1SystemUserUpdate;
+  type QueryRoleProp = typeof postApiV1SystemRoleIndex;
 
   const ROLE_OPTION = selectOptions;
 
@@ -38,11 +41,11 @@ const CreateOrUpdateUser: React.FC<{
   const formSubmit = async (values: UserListItem) => {
     const body = { ...values, reqType: 'pwd' };
     if (flag === 'update')
-      await updateHandler<UpdateProp, UserListItem>(postSystemUserUpdate, actionRef, {
+      await updateHandler<UpdateProp, UserListItem>(postApiV1SystemUserUpdate, actionRef, {
         ...body,
         uid: record?.uid as string,
       });
-    else await createHandler<CreateProp, UserListItem>(postSystemUserCreate, actionRef, body);
+    else await createHandler<CreateProp, UserListItem>(postApiV1SystemUserCreate, actionRef, body);
     onClose();
     editFormRef.current?.resetFields();
   };
@@ -52,7 +55,7 @@ const CreateOrUpdateUser: React.FC<{
   }, [editFlag, record]);
 
   useEffect(() => {
-    querySelectOptions<QueryRoleProp>(postSystemRoleIndex, {
+    querySelectOptions<QueryRoleProp>(postApiV1SystemRoleIndex, {
       page: { page: 1, size: 99999 },
       label: 'name',
       value: 'id',

@@ -1,5 +1,5 @@
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postThingsGroupInfoUpdate } from '@/services/iThingsapi/shebeifenzu';
+import { postApiV1ThingsGroupInfoUpdate } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus } from '@/utils/base';
 import { LAYOUT_TYPE_VERTICAL } from '@/utils/const';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
@@ -27,7 +27,7 @@ const GroupTags: React.FC<{
   const editFormRef = useRef<ProFormInstance>();
   const tagFormRef = useRef<ProFormInstance>();
 
-  type UpdateProp = typeof postThingsGroupInfoUpdate;
+  type UpdateProp = typeof postApiV1ThingsGroupInfoUpdate;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -54,7 +54,7 @@ const GroupTags: React.FC<{
       });
     else {
       await updateHandler<UpdateProp, GroupDescriptonProps>(
-        postThingsGroupInfoUpdate,
+        postApiV1ThingsGroupInfoUpdate,
         undefined,
         body,
       );

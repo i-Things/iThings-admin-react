@@ -1,4 +1,7 @@
-import { postSystemUserCaptcha, postSystemUserLogin } from '@/services/iThingsapi/yonghuguanli';
+import {
+  postApiV1SystemUserCaptcha,
+  postApiV1SystemUserLogin,
+} from '@/services/iThingsapi/yonghuguanli';
 import { setToken, setUID } from '@/utils/utils';
 import { FontColorsOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
@@ -31,7 +34,7 @@ const Login: React.FC = () => {
       use: 'login',
     };
 
-    postSystemUserCaptcha(body).then((res) => {
+    postApiV1SystemUserCaptcha(body).then((res) => {
       setCodeID(res?.data?.codeID ?? '');
       setCaptchaURL(res?.data?.url ?? '');
     });
@@ -49,7 +52,7 @@ const Login: React.FC = () => {
       };
 
       // 登录
-      const msg = await postSystemUserLogin(body);
+      const msg = await postApiV1SystemUserLogin(body);
       if (msg.data.token?.accessToken) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);

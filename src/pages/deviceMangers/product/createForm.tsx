@@ -1,12 +1,12 @@
-import { postThingsProductInfoCreate } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoCreate } from '@/services/iThingsapi/chanpinguanli';
 import { ResponseCode } from '@/utils/base';
+import type { PRODUCT_INFO } from '@/utils/const';
 import {
   AUTH_MODE_FORM,
   AUTO_REGISTER_FORM,
   DATA_PROTO_FORM,
   DEVICE_TYPE_FORM,
   NET_TYPE_FORM,
-  PRODUCT_INFO,
 } from '@/utils/const';
 import {
   ModalForm,
@@ -29,7 +29,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
   };
   const formCommit = async (values: PRODUCT_INFO) => {
     const body = values;
-    return postThingsProductInfoCreate(body)
+    return postApiV1ThingsProductInfoCreate(body)
       .then((res) => {
         console.log('res', res);
         setCreateVisible(false);

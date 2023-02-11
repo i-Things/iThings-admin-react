@@ -2,9 +2,9 @@ import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import {
-  postSystemRoleIndex,
-  postSystemRoleRoleMenuUpdate,
-  postSystemRole__openAPI__delete,
+  postApiV1SystemRoleIndex,
+  postApiV1SystemRoleRoleMenuUpdate,
+  postApiV1SystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -26,15 +26,15 @@ const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [currentData, setCurrentData] = useState<RoleListItem>();
-  type QueryProp = typeof postSystemRoleIndex;
-  type UpdateProp = typeof postSystemRoleRoleMenuUpdate;
+  type QueryProp = typeof postApiV1SystemRoleIndex;
+  type UpdateProp = typeof postApiV1SystemRoleRoleMenuUpdate;
 
   // 删除操作
   const showDeleteConfirm = (record: { id: string; name: string }) => {
     const body = {
       id: record?.id,
     };
-    deleteHandler<{ id: string }>(postSystemRole__openAPI__delete, actionRef, {
+    deleteHandler<{ id: string }>(postApiV1SystemRole__openAPI__delete, actionRef, {
       title: '是否删除当前角色',
       content: `所选角色: ${record?.name ?? '未知角色'},  删除后无法恢复，请确认`,
       body,
@@ -43,7 +43,7 @@ const RoleList: React.FC = () => {
 
   const formSubmit = async (values: FormSubmitValueProp) => {
     await updateHandler<UpdateProp, FormSubmitValueProp>(
-      postSystemRoleRoleMenuUpdate,
+      postApiV1SystemRoleRoleMenuUpdate,
       actionRef,
       values,
     );
@@ -119,7 +119,7 @@ const RoleList: React.FC = () => {
           <CreateOrUpdateRole flag="create" actionRef={actionRef} key="createRole" />,
         ]}
         request={(params) =>
-          queryPage<QueryProp, RoleListItem>(postSystemRoleIndex, {
+          queryPage<QueryProp, RoleListItem>(postApiV1SystemRoleIndex, {
             ...params,
             status: Number(params.status),
           })

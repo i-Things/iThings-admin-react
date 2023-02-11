@@ -1,6 +1,6 @@
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
-import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
-import { postThingsDeviceGatewayMultiCreate } from '@/services/iThingsapi/wangguanzishebeiguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceGatewayMultiCreate } from '@/services/iThingsapi/wangguanzishebeiguanli';
 import { DefaultPage, ResponseCode } from '@/utils/base';
 import type { DEVICE_INFO } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -24,7 +24,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
   const [selectedDevice, setSelectedDevice] = useState<DEVICE_INFO[]>([]);
 
   /** 获取子设备产品列表 */
-  useRequest(postThingsProductInfoIndex, {
+  useRequest(postApiV1ThingsProductInfoIndex, {
     defaultParams: [
       {
         page: {
@@ -60,7 +60,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceInfoIndex(_params);
+    const res = await postApiV1ThingsDeviceInfoIndex(_params);
     return {
       list: res.data.list || [],
       total: res.data.total || 0,
@@ -91,7 +91,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
       list: selectedDevice.map((item) => ({ productID, deviceName: item.deviceName || '' })),
     };
     try {
-      const res = await postThingsDeviceGatewayMultiCreate(params);
+      const res = await postApiV1ThingsDeviceGatewayMultiCreate(params);
       if (res.code === ResponseCode.SUCCESS) {
         message.success('添加成功');
         refresh();

@@ -1,11 +1,12 @@
 import useGetTableList from '@/hooks/useGetTableList';
-import { postSystemMenuIndex } from '@/services/iThingsapi/caidanguanli';
+import { postApiV1SystemMenuIndex } from '@/services/iThingsapi/caidanguanli';
 import { recursionTree, spanTree } from '@/utils/utils';
 import { Button, Form, Input, Tree } from 'antd';
 import type { DataNode } from 'antd/lib/tree';
 import React, { useEffect, useState } from 'react';
 import type { MenuListItem } from '../../menu/types';
 import type { RoleListItem } from '../types';
+
 const FormItem = Form.Item;
 
 const MenuForm: React.FC<{
@@ -20,7 +21,7 @@ const MenuForm: React.FC<{
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedKey, setSelectedKey] = useState<string[] | number[]>([]);
-  type QueryProp = typeof postSystemMenuIndex;
+  type QueryProp = typeof postApiV1SystemMenuIndex;
 
   const handleFinish = () => {
     const body = {
@@ -34,7 +35,7 @@ const MenuForm: React.FC<{
     if (drawerVisible) {
       setSelectedKey([]);
       setCheckedKeys([]);
-      queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, {}).then((res) => {
+      queryPage<QueryProp, MenuListItem>(postApiV1SystemMenuIndex, {}).then((res) => {
         if (res.data.length === 0) return;
         const tree = spanTree(recursionTree(res.data), 1, 'parentID');
         setTreeData(tree);

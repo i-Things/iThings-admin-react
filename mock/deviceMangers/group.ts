@@ -96,7 +96,8 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-async function postThingsGroupInfoIndex(req: Request, res: Response) {
+
+async function postApiV1ThingsGroupInfoIndex(req: Request, res: Response) {
   await waitTime(100);
   return res.json({
     code: 0,
@@ -106,7 +107,8 @@ async function postThingsGroupInfoIndex(req: Request, res: Response) {
     },
   });
 }
-async function postThingsGroupInfoRead(req: Request, res: Response) {
+
+async function postApiV1ThingsGroupInfoRead(req: Request, res: Response) {
   await waitTime(100);
   return res.json({
     code: 0,
@@ -114,7 +116,8 @@ async function postThingsGroupInfoRead(req: Request, res: Response) {
     data: groupInfoList,
   });
 }
-async function postThingsGroupDeviceIndex(req: Request, res: Response) {
+
+async function postApiV1ThingsGroupDeviceIndex(req: Request, res: Response) {
   await waitTime(100);
   return res.json({
     code: 0,
@@ -124,8 +127,9 @@ async function postThingsGroupDeviceIndex(req: Request, res: Response) {
     },
   });
 }
+
 export default {
-  'POST /api/v1/things/group/info/index': postThingsGroupInfoIndex,
-  'POST /api/v1/things/group/info/read': postThingsGroupInfoRead,
-  'POST /api/v1/things/group/device/index': postThingsGroupDeviceIndex,
+  'POST /api/v1/things/group/info/index': postApiV1ThingsGroupInfoIndex,
+  'POST /api/v1/things/group/info/read': postApiV1ThingsGroupInfoRead,
+  'POST /api/v1/things/group/device/index': postApiV1ThingsGroupDeviceIndex,
 };

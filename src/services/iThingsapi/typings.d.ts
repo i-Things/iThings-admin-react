@@ -176,6 +176,17 @@ declare namespace API {
     createdTime: number;
   };
 
+  type flow = {
+    /** 唯一id-雪花算法 */
+    ruleID: string;
+    /** 流名称 */
+    ruleName?: string;
+    /** 是否禁用 1:是 2:否 */
+    isDisabled?: number;
+    /** 描述 markdown格式 */
+    desc?: string;
+  };
+
   type page = {
     page?: { page?: number; size?: number };
   };
@@ -187,14 +198,18 @@ declare namespace API {
     size?: number;
   };
 
-  type postThingsDeviceInfoCountParams = {
+  type postApiV1SystemMenuIndexParams = {
+    role: number;
+  };
+
+  type postApiV1ThingsDeviceInfoCountParams = {
     /** 查询统计的开始时间，非必填，秒 */
     startTime?: number;
     /** 查询统计的结束时间，非必填，秒 */
     endTime?: number;
   };
 
-  type postThingsGroupInfoCreateParams = {
+  type postApiV1ThingsGroupInfoCreateParams = {
     district_id?: string;
     data_type?: string;
     ak?: string;
@@ -244,6 +259,15 @@ declare namespace API {
     required: number;
     /** 各功能类型的详细参数定义 */
     affordance: string;
+  };
+
+  type putIthings25hcK5yzlbqZipParams = {
+    'X-Amz-Algorithm'?: string;
+    'X-Amz-Credential'?: string;
+    'X-Amz-Date'?: string;
+    'X-Amz-Expires'?: string;
+    'X-Amz-SignedHeaders'?: string;
+    'X-Amz-Signature'?: string;
   };
 
   type SuccRet = {

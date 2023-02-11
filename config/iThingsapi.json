@@ -22,7 +22,7 @@
       "name": "iThings-apisvr/物联网相关接口/产品/物模型"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/产品/产品远程配置"
+      "name": "iThings-apisvr/物联网相关接口/产品/远程配置"
     },
     {
       "name": "iThings-apisvr/物联网相关接口/设备分组"
@@ -64,7 +64,13 @@
       "name": "iThings-apisvr/物联网相关接口/规则引擎/流"
     },
     {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/场景联动"
+    },
+    {
       "name": "iThings-apisvr/系统管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/日志管理"
     },
     {
       "name": "iThings-apisvr/系统管理/角色管理"
@@ -74,6 +80,12 @@
     },
     {
       "name": "iThings-apisvr/系统管理/用户管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/系统配置"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/接口管理"
     }
   ],
   "paths": {
@@ -3287,7 +3299,17 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "role",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5032,12 +5054,12 @@
                           }
                         },
                         "total": {
-                          "type": "string",
-                          "description": "总数"
+                          "description": "总数",
+                          "type": "integer"
                         }
                       },
                       "x-apifox-orders": ["list", "total"],
-                      "required": ["total"],
+                      "required": ["total", "list"],
                       "x-apifox-ignore-properties": []
                     }
                   },
@@ -5377,14 +5399,26 @@
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "district_id": {
+                  "groupName": {
+                    "type": "string",
+                    "description": "分组名称"
+                  },
+                  "parentID": {
+                    "description": "父组ID 1-根组 ，非根组，则传所选父分组的groupID 作为本组的parentID",
                     "type": "string"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "description": "分组描述"
                   }
-                }
+                },
+                "x-apifox-orders": ["groupName", "parentID", "desc"],
+                "required": ["groupName"],
+                "x-apifox-ignore-properties": []
               }
             }
           }
@@ -7372,11 +7406,11 @@
     "/api/v1/things/product/remote-config/create": {
       "post": {
         "summary": "创建配置",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "integrating",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7443,11 +7477,11 @@
     "/api/v1/things/product/remote-config/index": {
       "post": {
         "summary": "获取配置列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7566,11 +7600,11 @@
     "/api/v1/things/product/remote-config/push-all": {
       "post": {
         "summary": "推送配置",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7632,11 +7666,11 @@
     "/api/v1/things/product/remote-config/lastest-read": {
       "post": {
         "summary": "获取最新配置",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8106,7 +8140,7 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-51344002-run"
       }
     },
-    "/api/v1/things/rule/flow/index": {
+    "/api/v1/things/rule/flow/info/index": {
       "post": {
         "summary": "获取流列表",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
@@ -8115,6 +8149,41 @@
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": ["01GNVS1YR0DT5VPJ0S4V8NE82M"],
+                "x-apifox-refs": {
+                  "01GNVS1YR0DT5VPJ0S4V8NE82M": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
@@ -8122,9 +8191,44 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {},
-                  "x-apifox-ignore-properties": [],
-                  "x-apifox-orders": []
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/flow"
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["list"],
+                      "required": ["list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GNVS5D2HKV9ZW0XC3P06DVX3", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GNVS5D2HKV9ZW0XC3P06DVX3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
                 }
               }
             }
@@ -8133,7 +8237,7 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291695-run"
       }
     },
-    "/api/v1/things/rule/flow/create": {
+    "/api/v1/things/rule/flow/info/create": {
       "post": {
         "summary": "创建流",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
@@ -8142,16 +8246,55 @@
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "x-apifox-overrides": {},
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GNVSG44NK5JPVNH5KWBQEZV3": {
+                    "$ref": "#/components/schemas/flow"
+                  }
+                },
+                "x-apifox-orders": ["01GNVSG44NK5JPVNH5KWBQEZV3"],
+                "properties": {
+                  "ruleID": {
+                    "title": "唯一id-雪花算法",
+                    "type": "string"
+                  },
+                  "ruleName": {
+                    "title": "流名称",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "isDisabled": {
+                    "title": "是否禁用",
+                    "description": "1:是 2:否",
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "desc": {
+                    "title": "描述",
+                    "description": "markdown格式",
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": ["ruleID"],
+                "x-apifox-ignore-properties": ["ruleID", "ruleName", "isDisabled", "desc"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "x-apifox-ignore-properties": [],
-                  "x-apifox-orders": []
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
                 }
               }
             }
@@ -8160,7 +8303,7 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291699-run"
       }
     },
-    "/api/v1/things/rule/flow/update": {
+    "/api/v1/things/rule/flow/info/update": {
       "post": {
         "summary": "修改流",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
@@ -8169,16 +8312,54 @@
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ruleID": {
+                    "title": "唯一id-雪花算法",
+                    "type": "string"
+                  },
+                  "ruleName": {
+                    "title": "流名称",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "isDisabled": {
+                    "title": "是否禁用",
+                    "description": "1:是 2:否",
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "desc": {
+                    "title": "描述",
+                    "description": "markdown格式",
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "x-apifox-orders": ["01GNVSRP7KAA5MQ4JWRXQXNKZY"],
+                "required": ["ruleID"],
+                "x-apifox-refs": {
+                  "01GNVSRP7KAA5MQ4JWRXQXNKZY": {
+                    "$ref": "#/components/schemas/flow"
+                  }
+                },
+                "x-apifox-ignore-properties": ["ruleID", "ruleName", "isDisabled", "desc"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "x-apifox-ignore-properties": [],
-                  "x-apifox-orders": []
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
                 }
               }
             }
@@ -8187,7 +8368,7 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291700-run"
       }
     },
-    "/api/v1/things/rule/flow/delete": {
+    "/api/v1/things/rule/flow/info/delete": {
       "post": {
         "summary": "删除流",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
@@ -8196,6 +8377,210 @@
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "x-apifox-overrides": {},
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GNVSSHND69A6H6Q897PW9ZZT": {
+                    "$ref": "#/components/schemas/flow"
+                  }
+                },
+                "x-apifox-orders": ["01GNVSSHND69A6H6Q897PW9ZZT"],
+                "properties": {
+                  "ruleID": {
+                    "title": "唯一id-雪花算法",
+                    "type": "string"
+                  }
+                },
+                "required": ["ruleID"],
+                "x-apifox-ignore-properties": ["ruleID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291715-run"
+      }
+    },
+    "/api/v1/system/common/config": {
+      "post": {
+        "summary": "获取系统配置",
+        "x-apifox-folder": "iThings-apisvr/系统管理/系统配置",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/系统配置"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "x-apifox-ignore-properties": [],
+                "x-apifox-orders": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "map": {
+                          "type": "object",
+                          "properties": {
+                            "mode": {
+                              "type": "string",
+                              "description": "坐标系 默认百度坐标系"
+                            },
+                            "accessKey": {
+                              "type": "string",
+                              "description": "设备地图key"
+                            }
+                          },
+                          "x-apifox-orders": ["mode", "accessKey"],
+                          "required": ["mode", "accessKey"],
+                          "x-apifox-ignore-properties": []
+                        }
+                      },
+                      "x-apifox-orders": ["map"],
+                      "required": ["map"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GNEDV5CP1YJPEWKNZK233K94", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GNEDV5CP1YJPEWKNZK233K94": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56532734-run"
+      }
+    },
+    "/ithings/25hcK5yzlbq/3file.zip": {
+      "put": {
+        "summary": "文件直传",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "地址由《获取升级包直传的signed url》接口返回",
+        "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
+        "parameters": [
+          {
+            "name": "X-Amz-Algorithm",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "AWS4-HMAC-SHA256",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Credential",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "root%2F20230112%2Fus-east-1%2Fs3%2Faws4_request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Date",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "20230112T060402Z",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Expires",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "86400",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-SignedHeaders",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "host",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Signature",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "9439ebca259ddc1cdb0062b296a4d734af949bb7159766a82f996246e77b2fda",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
@@ -8211,12 +8596,1775 @@
             }
           }
         },
-        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291715-run"
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-57036451-run"
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "获取场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "triggerType": {
+                          "type": "string"
+                        },
+                        "trigger": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "device": {
+                              "type": "object",
+                              "properties": {
+                                "selector": {
+                                  "type": "string"
+                                },
+                                "selectorValues": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "value": {
+                                        "type": "string"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["value", "name"],
+                                    "x-apifox-orders": ["value", "name"],
+                                    "x-apifox-ignore-properties": []
+                                  }
+                                },
+                                "productId": {
+                                  "type": "string"
+                                },
+                                "operation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "operator": {
+                                      "type": "string"
+                                    },
+                                    "timer": {
+                                      "type": "object",
+                                      "properties": {
+                                        "trigger": {
+                                          "type": "string"
+                                        },
+                                        "when": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "mod": {
+                                          "type": "string"
+                                        },
+                                        "period": {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "to": {
+                                              "type": "string"
+                                            },
+                                            "every": {
+                                              "type": "integer"
+                                            },
+                                            "unit": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["from", "to", "every", "unit"],
+                                          "x-apifox-orders": ["from", "to", "every", "unit"],
+                                          "x-apifox-ignore-properties": []
+                                        }
+                                      },
+                                      "required": ["trigger", "when", "mod", "period"],
+                                      "x-apifox-orders": ["trigger", "when", "mod", "period"],
+                                      "x-apifox-ignore-properties": []
+                                    },
+                                    "readProperties": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "required": ["operator", "timer", "readProperties"],
+                                  "x-apifox-orders": ["operator", "timer", "readProperties"],
+                                  "x-apifox-ignore-properties": []
+                                }
+                              },
+                              "required": ["selector", "selectorValues", "productId", "operation"],
+                              "x-apifox-orders": [
+                                "selector",
+                                "selectorValues",
+                                "productId",
+                                "operation"
+                              ],
+                              "x-apifox-ignore-properties": []
+                            }
+                          },
+                          "required": ["type", "device"],
+                          "x-apifox-orders": ["type", "device"],
+                          "x-apifox-ignore-properties": []
+                        },
+                        "parallel": {
+                          "type": "boolean"
+                        },
+                        "branches": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "when": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string"
+                                    },
+                                    "termType": {
+                                      "type": "string"
+                                    },
+                                    "options": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "terms": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "column": {
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "type": "object",
+                                            "properties": {
+                                              "value": {
+                                                "type": "string"
+                                              },
+                                              "source": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "required": ["value", "source"],
+                                            "x-apifox-orders": ["value", "source"],
+                                            "x-apifox-ignore-properties": []
+                                          },
+                                          "type": {
+                                            "type": "string"
+                                          },
+                                          "termType": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "terms": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string"
+                                            }
+                                          }
+                                        },
+                                        "x-apifox-orders": [
+                                          "column",
+                                          "value",
+                                          "type",
+                                          "termType",
+                                          "options",
+                                          "terms"
+                                        ],
+                                        "x-apifox-ignore-properties": []
+                                      }
+                                    }
+                                  },
+                                  "x-apifox-orders": ["type", "termType", "options", "terms"],
+                                  "x-apifox-ignore-properties": []
+                                }
+                              },
+                              "shakeLimit": {
+                                "type": "object",
+                                "properties": {
+                                  "enabled": {
+                                    "type": "boolean"
+                                  },
+                                  "time": {
+                                    "type": "integer"
+                                  },
+                                  "threshold": {
+                                    "type": "integer"
+                                  },
+                                  "alarmFirst": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "required": ["enabled", "time", "threshold", "alarmFirst"],
+                                "x-apifox-orders": ["enabled", "time", "threshold", "alarmFirst"],
+                                "x-apifox-ignore-properties": []
+                              },
+                              "then": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "parallel": {
+                                      "type": "boolean"
+                                    },
+                                    "actions": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "executor": {
+                                            "type": "string"
+                                          },
+                                          "device": {
+                                            "type": "object",
+                                            "properties": {
+                                              "source": {
+                                                "type": "string"
+                                              },
+                                              "selector": {
+                                                "type": "string"
+                                              },
+                                              "selectorValues": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "value": {
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "x-apifox-orders": ["value", "name"],
+                                                  "x-apifox-ignore-properties": []
+                                                }
+                                              },
+                                              "productId": {
+                                                "type": "string"
+                                              },
+                                              "message": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "messageType": {
+                                                    "type": "string"
+                                                  },
+                                                  "properties": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "string"
+                                                    }
+                                                  }
+                                                },
+                                                "required": ["messageType", "properties"],
+                                                "x-apifox-orders": ["messageType", "properties"],
+                                                "x-apifox-ignore-properties": []
+                                              }
+                                            },
+                                            "required": [
+                                              "source",
+                                              "selector",
+                                              "selectorValues",
+                                              "productId",
+                                              "message"
+                                            ],
+                                            "x-apifox-orders": [
+                                              "source",
+                                              "selector",
+                                              "selectorValues",
+                                              "productId",
+                                              "message"
+                                            ],
+                                            "x-apifox-ignore-properties": []
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "name": {
+                                                "type": "string"
+                                              },
+                                              "type": {
+                                                "type": "string"
+                                              },
+                                              "properties": {
+                                                "type": "string"
+                                              },
+                                              "propertiesValue": {
+                                                "type": "string"
+                                              },
+                                              "selector": {
+                                                "type": "string"
+                                              },
+                                              "productName": {
+                                                "type": "string"
+                                              },
+                                              "relationName": {
+                                                "type": "string"
+                                              },
+                                              "triggerName": {
+                                                "type": "string"
+                                              },
+                                              "taglist": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "columns": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "otherColumns": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "required": [
+                                              "name",
+                                              "type",
+                                              "properties",
+                                              "propertiesValue",
+                                              "selector",
+                                              "productName",
+                                              "relationName",
+                                              "triggerName",
+                                              "taglist",
+                                              "columns",
+                                              "otherColumns"
+                                            ],
+                                            "x-apifox-orders": [
+                                              "name",
+                                              "type",
+                                              "properties",
+                                              "propertiesValue",
+                                              "selector",
+                                              "productName",
+                                              "relationName",
+                                              "triggerName",
+                                              "taglist",
+                                              "columns",
+                                              "otherColumns"
+                                            ],
+                                            "x-apifox-ignore-properties": []
+                                          }
+                                        },
+                                        "x-apifox-orders": ["executor", "device", "options"],
+                                        "x-apifox-ignore-properties": []
+                                      }
+                                    }
+                                  },
+                                  "x-apifox-orders": ["parallel", "actions"],
+                                  "x-apifox-ignore-properties": []
+                                }
+                              }
+                            },
+                            "x-apifox-orders": ["when", "shakeLimit", "then"],
+                            "x-apifox-ignore-properties": []
+                          }
+                        },
+                        "creatorId": {
+                          "type": "string"
+                        },
+                        "createTime": {
+                          "type": "integer"
+                        },
+                        "modifierId": {
+                          "type": "string"
+                        },
+                        "modifyTime": {
+                          "type": "integer"
+                        },
+                        "startTime": {
+                          "type": "integer"
+                        },
+                        "state": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "required": ["text", "value"],
+                          "x-apifox-orders": ["text", "value"],
+                          "x-apifox-ignore-properties": []
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "trigger": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "extraName": {
+                                  "type": "string"
+                                },
+                                "onlyName": {
+                                  "type": "boolean"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "typeIcon": {
+                                  "type": "string"
+                                },
+                                "productName": {
+                                  "type": "string"
+                                },
+                                "selectorIcon": {
+                                  "type": "string"
+                                },
+                                "time": {
+                                  "type": "string"
+                                },
+                                "when": {
+                                  "type": "string"
+                                },
+                                "extraTime": {
+                                  "type": "string"
+                                },
+                                "action": {
+                                  "type": "string"
+                                },
+                                "productPage": {
+                                  "type": "integer"
+                                },
+                                "productPageSize": {
+                                  "type": "integer"
+                                },
+                                "devicePage": {
+                                  "type": "integer"
+                                },
+                                "devicePageSize": {
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "name",
+                                "extraName",
+                                "onlyName",
+                                "type",
+                                "typeIcon",
+                                "productName",
+                                "selectorIcon",
+                                "time",
+                                "when",
+                                "extraTime",
+                                "action",
+                                "productPage",
+                                "productPageSize",
+                                "devicePage",
+                                "devicePageSize"
+                              ],
+                              "x-apifox-orders": [
+                                "name",
+                                "extraName",
+                                "onlyName",
+                                "type",
+                                "typeIcon",
+                                "productName",
+                                "selectorIcon",
+                                "time",
+                                "when",
+                                "extraTime",
+                                "action",
+                                "productPage",
+                                "productPageSize",
+                                "devicePage",
+                                "devicePageSize"
+                              ],
+                              "x-apifox-ignore-properties": []
+                            },
+                            "when": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "terms": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "terms": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "array",
+                                            "items": {
+                                              "oneOf": [
+                                                {
+                                                  "type": "string"
+                                                },
+                                                {
+                                                  "properties": {
+                                                    "0": {
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object",
+                                                  "x-apifox-orders": ["0"],
+                                                  "x-apifox-ignore-properties": []
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "termType": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "x-apifox-orders": ["terms", "termType"],
+                                      "x-apifox-ignore-properties": []
+                                    }
+                                  }
+                                },
+                                "x-apifox-orders": ["terms"],
+                                "x-apifox-ignore-properties": []
+                              }
+                            }
+                          },
+                          "required": ["trigger", "when"],
+                          "x-apifox-orders": ["trigger", "when"],
+                          "x-apifox-ignore-properties": []
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "triggerType",
+                        "trigger",
+                        "parallel",
+                        "branches",
+                        "creatorId",
+                        "createTime",
+                        "modifierId",
+                        "modifyTime",
+                        "startTime",
+                        "state",
+                        "options"
+                      ],
+                      "x-apifox-orders": [
+                        "id",
+                        "name",
+                        "triggerType",
+                        "trigger",
+                        "parallel",
+                        "branches",
+                        "creatorId",
+                        "createTime",
+                        "modifierId",
+                        "modifyTime",
+                        "startTime",
+                        "state",
+                        "options"
+                      ],
+                      "x-apifox-ignore-properties": []
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": ["message", "result", "status", "timestamp"],
+                  "x-apifox-orders": ["message", "result", "status", "timestamp"],
+                  "x-apifox-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例 ",
+                    "value": {
+                      "message": "success",
+                      "result": {
+                        "id": "1619980970936041472",
+                        "name": "测试0130",
+                        "triggerType": "device",
+                        "trigger": {
+                          "type": "device",
+                          "device": {
+                            "selector": "fixed",
+                            "selectorValues": [
+                              {
+                                "value": "8DEF",
+                                "name": "WD-灯00002"
+                              },
+                              {
+                                "value": "1613081320681439232",
+                                "name": "WF-灯00001"
+                              }
+                            ],
+                            "productId": "1613080523902091264",
+                            "operation": {
+                              "operator": "readProperty",
+                              "timer": {
+                                "trigger": "week",
+                                "when": [],
+                                "mod": "period",
+                                "period": {
+                                  "from": "00:00:00",
+                                  "to": "23:59:59",
+                                  "every": 12,
+                                  "unit": "seconds"
+                                }
+                              },
+                              "readProperties": ["wF-uid"]
+                            }
+                          }
+                        },
+                        "parallel": false,
+                        "branches": [
+                          {
+                            "when": [
+                              {
+                                "type": "and",
+                                "termType": "eq",
+                                "options": [],
+                                "terms": [
+                                  {
+                                    "column": "timestamp",
+                                    "value": {
+                                      "value": "06:02:02",
+                                      "source": "manual"
+                                    },
+                                    "type": "and",
+                                    "termType": "eq",
+                                    "options": [],
+                                    "terms": []
+                                  }
+                                ]
+                              }
+                            ],
+                            "shakeLimit": {
+                              "enabled": false,
+                              "time": 0,
+                              "threshold": 0,
+                              "alarmFirst": false
+                            },
+                            "then": [
+                              {
+                                "parallel": false,
+                                "actions": [
+                                  {
+                                    "executor": "device",
+                                    "device": {
+                                      "source": "fixed",
+                                      "selector": "fixed",
+                                      "selectorValues": [
+                                        {
+                                          "value": "8DEF",
+                                          "name": "WD-灯00002"
+                                        }
+                                      ],
+                                      "productId": "1613080523902091264",
+                                      "message": {
+                                        "messageType": "READ_PROPERTY",
+                                        "properties": ["wF-uid"]
+                                      }
+                                    },
+                                    "options": {
+                                      "name": "WD-灯00002",
+                                      "type": "读取",
+                                      "properties": "WF-编号",
+                                      "propertiesValue": "",
+                                      "selector": "fixed",
+                                      "productName": "WF-灯",
+                                      "relationName": "",
+                                      "triggerName": "WD-灯00002",
+                                      "taglist": [],
+                                      "columns": [],
+                                      "otherColumns": []
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "creatorId": "fe32597c37157f4d0ff0c97f11dc5151",
+                        "createTime": 1675068535919,
+                        "modifierId": "fe32597c37157f4d0ff0c97f11dc5151",
+                        "modifyTime": 1675069729184,
+                        "startTime": 1675069729184,
+                        "state": {
+                          "text": "正常",
+                          "value": "started"
+                        },
+                        "options": {
+                          "trigger": {
+                            "name": "WD-灯00002、WF-灯00001",
+                            "extraName": "",
+                            "onlyName": false,
+                            "type": "",
+                            "typeIcon": "icon-Group",
+                            "productName": "",
+                            "selectorIcon": "icon-shebei1",
+                            "time": "00:00:00-23:59:59",
+                            "when": "每天",
+                            "extraTime": "每12秒执行1次",
+                            "action": "读取 WF-编号",
+                            "productPage": 0,
+                            "productPageSize": 12,
+                            "devicePage": 0,
+                            "devicePageSize": 12
+                          },
+                          "when": [
+                            {
+                              "terms": [
+                                {
+                                  "terms": [
+                                    [
+                                      "上报时间",
+                                      "eq",
+                                      {
+                                        "0": "06:02:02"
+                                      },
+                                      "and"
+                                    ]
+                                  ],
+                                  "termType": "并且"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "status": 200,
+                      "timestamp": 1675330238076
+                    }
+                  },
+                  "2": {
+                    "summary": "成功示例 ",
+                    "value": {
+                      "message": "success",
+                      "result": {
+                        "id": "1613090163956187136",
+                        "name": "环境控制-定时触发演示",
+                        "triggerType": "timer",
+                        "trigger": {
+                          "type": "timer",
+                          "timer": {
+                            "trigger": "cron",
+                            "cron": "0 0 14 * * ?"
+                          }
+                        },
+                        "parallel": false,
+                        "branches": [
+                          {
+                            "when": [
+                              {
+                                "type": "and",
+                                "termType": "eq",
+                                "options": [],
+                                "terms": [
+                                  {
+                                    "type": "and",
+                                    "termType": "eq",
+                                    "options": [],
+                                    "terms": []
+                                  }
+                                ]
+                              }
+                            ],
+                            "shakeLimit": {
+                              "enabled": false,
+                              "time": 0,
+                              "threshold": 0,
+                              "alarmFirst": false
+                            },
+                            "then": [
+                              {
+                                "parallel": true,
+                                "actions": [
+                                  {
+                                    "executor": "device",
+                                    "device": {
+                                      "source": "fixed",
+                                      "selector": "fixed",
+                                      "selectorValues": [
+                                        {
+                                          "value": "1606095288638963712",
+                                          "name": "加湿器"
+                                        }
+                                      ],
+                                      "productId": "1605854045820485632",
+                                      "message": {
+                                        "messageType": "INVOKE_FUNCTION",
+                                        "functionId": "switch",
+                                        "inputs": [
+                                          {
+                                            "name": "state",
+                                            "value": true
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "name": "加湿器",
+                                      "type": "执行",
+                                      "properties": "开关",
+                                      "propertiesValue": "",
+                                      "selector": "fixed",
+                                      "productName": "加湿器产品",
+                                      "relationName": "",
+                                      "triggerName": "触发设备",
+                                      "taglist": [],
+                                      "columns": [],
+                                      "otherColumns": []
+                                    }
+                                  },
+                                  {
+                                    "executor": "device",
+                                    "device": {
+                                      "source": "fixed",
+                                      "selector": "fixed",
+                                      "selectorValues": [
+                                        {
+                                          "value": "1613054588700131328",
+                                          "name": "温室空调"
+                                        }
+                                      ],
+                                      "productId": "1613052868175659008",
+                                      "message": {
+                                        "messageType": "INVOKE_FUNCTION",
+                                        "functionId": "switch",
+                                        "inputs": [
+                                          {
+                                            "name": "state",
+                                            "value": true
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "name": "温室空调",
+                                      "type": "执行",
+                                      "properties": "开关",
+                                      "propertiesValue": "",
+                                      "selector": "fixed",
+                                      "productName": "空调产品",
+                                      "relationName": "",
+                                      "triggerName": "触发设备",
+                                      "taglist": [],
+                                      "columns": [],
+                                      "otherColumns": []
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "creatorId": "1199596756811550720",
+                        "createTime": 1673425639510,
+                        "modifierId": "1199596756811550720",
+                        "modifyTime": 1673603707589,
+                        "startTime": 1673603707589,
+                        "state": {
+                          "text": "正常",
+                          "value": "started"
+                        },
+                        "options": {
+                          "trigger": {
+                            "time": "0 0 14 * * ?"
+                          },
+                          "when": [
+                            {
+                              "terms": [
+                                {
+                                  "terms": [
+                                    [
+                                      "含水量/当前值",
+                                      "lte",
+                                      {
+                                        "0": 10
+                                      },
+                                      "and"
+                                    ]
+                                  ],
+                                  "termType": "并且"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "status": 200,
+                      "timestamp": 1675330637573
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-60072267-run"
+      }
+    },
+    "/api/v1/system/log/login/index": {
+      "post": {
+        "summary": "获取登录日志列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/日志管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/日志管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "ipAddr": {
+                    "type": "string",
+                    "description": "按ip地址查找"
+                  },
+                  "loginLocation": {
+                    "type": "string",
+                    "description": "按登录地址查找"
+                  },
+                  "date": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "description": "开始时间 格式：yyyy-mm-dd"
+                      },
+                      "end": {
+                        "type": "string",
+                        "description": "结束时间 格式：yyyy-mm-dd"
+                      }
+                    },
+                    "x-apifox-orders": ["start", "end"],
+                    "description": "按时间范围查找",
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GREFNDMF17M1C4MSGTQWCY6B",
+                  "ipAddr",
+                  "loginLocation",
+                  "date"
+                ],
+                "x-apifox-refs": {
+                  "01GREFNDMF17M1C4MSGTQWCY6B": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "string",
+                          "description": "登录日志列表总记录数"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "description": "用户id",
+                                "type": "integer"
+                              },
+                              "userName": {
+                                "type": "string",
+                                "description": "登录账号"
+                              },
+                              "ipAddr": {
+                                "type": "string",
+                                "description": "登录IP地址"
+                              },
+                              "loginLocation": {
+                                "type": "string",
+                                "description": "登录地点"
+                              },
+                              "browser": {
+                                "type": "string",
+                                "description": "浏览器类型"
+                              },
+                              "os": {
+                                "type": "string",
+                                "description": "操作系统"
+                              },
+                              "code": {
+                                "description": "登录状态（200成功 其它失败）",
+                                "type": "integer"
+                              },
+                              "msg": {
+                                "type": "string",
+                                "description": "提示消息"
+                              },
+                              "createdTime": {
+                                "type": "string",
+                                "description": "登录时间"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "uid",
+                              "userName",
+                              "ipAddr",
+                              "loginLocation",
+                              "browser",
+                              "os",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "required": [
+                              "uid",
+                              "userName",
+                              "ipAddr",
+                              "loginLocation",
+                              "browser",
+                              "os",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "x-apifox-ignore-properties": []
+                          },
+                          "description": "登录日志列表数据"
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GREFT08FYYWTAMPAXHQFWCHT", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GREFT08FYYWTAMPAXHQFWCHT": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-60352991-run"
+      }
+    },
+    "/api/v1/system/log/oper/index": {
+      "post": {
+        "summary": "获取操作日志列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/日志管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/日志管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "operName": {
+                    "type": "string",
+                    "description": "按操作名称查找"
+                  },
+                  "operUserName": {
+                    "type": "string",
+                    "description": "按操作人员名称查找"
+                  },
+                  "businessType": {
+                    "description": "按业务类型（1新增 2修改 3删除 4查询 5其它）查找",
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GREG3XZKQMBYAPBHV6Z1W7NY",
+                  "operName",
+                  "operUserName",
+                  "businessType"
+                ],
+                "x-apifox-refs": {
+                  "01GREG3XZKQMBYAPBHV6Z1W7NY": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "description": "用户id",
+                                "type": "integer"
+                              },
+                              "operUserName": {
+                                "type": "string",
+                                "description": "操作人员名称"
+                              },
+                              "operName": {
+                                "type": "string",
+                                "description": "操作名称"
+                              },
+                              "businessType": {
+                                "description": "业务类型（1新增 2修改 3删除 4查询 5其它）",
+                                "type": "integer"
+                              },
+                              "uri": {
+                                "type": "string",
+                                "description": "请求地址"
+                              },
+                              "operIpAddr": {
+                                "type": "string",
+                                "description": "操作主机ip地址"
+                              },
+                              "operLocation": {
+                                "type": "string",
+                                "description": "操作地点"
+                              },
+                              "req": {
+                                "type": "string",
+                                "description": "请求参数"
+                              },
+                              "resp": {
+                                "type": "string",
+                                "description": "返回参数"
+                              },
+                              "code": {
+                                "description": "错误码（200成功 其它失败）",
+                                "type": "integer"
+                              },
+                              "msg": {
+                                "type": "string",
+                                "description": "提示消息"
+                              },
+                              "createdTime": {
+                                "description": "操作时间",
+                                "type": "string"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "uid",
+                              "operUserName",
+                              "operName",
+                              "businessType",
+                              "uri",
+                              "operIpAddr",
+                              "operLocation",
+                              "req",
+                              "resp",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "required": [
+                              "uid",
+                              "operUserName",
+                              "operName",
+                              "businessType",
+                              "uri",
+                              "operIpAddr",
+                              "operLocation",
+                              "req",
+                              "resp",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "x-apifox-ignore-properties": []
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GREG5CC8M6ZSCDB6MDF28QY1", "data"],
+                  "x-apifox-refs": {
+                    "01GREG5CC8M6ZSCDB6MDF28QY1": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-60353029-run"
+      }
+    },
+    "/api/v1/system/api/create": {
+      "post": {
+        "summary": "添加接口",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "route": {
+                    "type": "string",
+                    "description": "接口路由"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "接口请求方式: POST GET等"
+                  },
+                  "group": {
+                    "type": "string",
+                    "description": "接口分组"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "接口名称"
+                  },
+                  "businessType": {
+                    "description": "业务类型（1新增 2修改 3删除 4查询 5其它）",
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["route", "method", "group", "name", "businessType"],
+                "required": ["route", "method", "group", "name", "businessType"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR1EYRTV4VQQNNC33B0NAJ3"],
+                  "x-apifox-refs": {
+                    "01GRR1EYRTV4VQQNNC33B0NAJ3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例 ",
+                    "value": {
+                      "code": 0,
+                      "msg": "success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61124468-run"
+      }
+    },
+    "/api/v1/system/api/index": {
+      "post": {
+        "summary": "获取接口列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "route": {
+                    "type": "string",
+                    "description": "接口路由"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "接口请求方式(POST,  GET等)"
+                  },
+                  "group": {
+                    "type": "string",
+                    "description": "接口分组"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "接口名称"
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GRR1K6S155SFMBT6ZEK92JRE",
+                  "route",
+                  "method",
+                  "group",
+                  "name"
+                ],
+                "x-apifox-refs": {
+                  "01GRR1K6S155SFMBT6ZEK92JRE": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "接口列表总记录数"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "接口编号"
+                              },
+                              "route": {
+                                "type": "string",
+                                "description": "接口路由"
+                              },
+                              "method": {
+                                "type": "string",
+                                "description": "接口请求方式: POST GET等"
+                              },
+                              "group": {
+                                "type": "string",
+                                "description": "接口分组"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "接口名称"
+                              },
+                              "businessType": {
+                                "type": "integer",
+                                "description": "业务类型（1新增 2修改 3删除 4查询 5其它)"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "id",
+                              "route",
+                              "method",
+                              "group",
+                              "name",
+                              "businessType"
+                            ],
+                            "required": ["id", "route", "method", "group", "name", "businessType"],
+                            "x-apifox-ignore-properties": []
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR1NP4QRYCQ33HK8Q8S92N4", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GRR1NP4QRYCQ33HK8Q8S92N4": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61125728-run"
+      }
+    },
+    "/api/v1/system/api/update": {
+      "post": {
+        "summary": "更新接口",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "description": "接口编号",
+                    "type": "integer"
+                  },
+                  "route": {
+                    "type": "string",
+                    "description": "接口路由"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "接口请求方式: POST GET等"
+                  },
+                  "group": {
+                    "type": "string",
+                    "description": "接口分组"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "接口名称"
+                  }
+                },
+                "x-apifox-orders": ["id", "route", "method", "group", "name"],
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR235ZFV9JFZTS586EVB7K7"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GRR235ZFV9JFZTS586EVB7K7": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61127399-run"
+      }
+    },
+    "/api/v1/system/api/delete": {
+      "post": {
+        "summary": "删除接口",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "description": "接口编号",
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR25JZ3XE5Q8MK7RCS9BNZ4"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GRR25JZ3XE5Q8MK7RCS9BNZ4": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61128614-run"
       }
     }
   },
   "components": {
     "schemas": {
+      "flow": {
+        "type": "object",
+        "properties": {
+          "ruleID": {
+            "title": "唯一id-雪花算法",
+            "type": "string"
+          },
+          "ruleName": {
+            "title": "流名称",
+            "type": "string",
+            "nullable": true
+          },
+          "isDisabled": {
+            "title": "是否禁用",
+            "description": "1:是 2:否",
+            "type": "number",
+            "nullable": true
+          },
+          "desc": {
+            "title": "描述",
+            "description": "markdown格式",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["ruleID"],
+        "x-apifox-orders": ["ruleID", "ruleName", "isDisabled", "desc"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine"
+      },
       "deviceCore": {
         "type": "object",
         "properties": {

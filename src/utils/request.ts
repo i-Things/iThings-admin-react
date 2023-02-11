@@ -70,6 +70,7 @@ const redirectLoginPage = () => {
 
 // 请求拦截
 const authInterceptor = (url: string, options: any) => {
+  console.log('1');
   const token = getToken();
   options.headers[GUIDKEY] = getTimestamp();
 

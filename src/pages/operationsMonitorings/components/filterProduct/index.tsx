@@ -1,6 +1,6 @@
 import type { ProductParams } from '@/pages/operationsMonitorings/data';
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
-import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { useRequest } from 'ahooks';
 import { Card, Form, message, Select } from 'antd';
 import type { DefaultOptionType } from 'antd/lib/select';
@@ -23,7 +23,7 @@ const Filter: React.FC<FilterProps> = (props) => {
   /** 获取产品列表 */
   useRequest(
     async () => {
-      const res = await postThingsProductInfoIndex({
+      const res = await postApiV1ThingsProductInfoIndex({
         page: { page: 1, size: 9999 },
       });
       return res.data;
@@ -53,7 +53,7 @@ const Filter: React.FC<FilterProps> = (props) => {
   /** 获取设备列表 */
   useRequest(
     async () => {
-      const res = await postThingsDeviceInfoIndex({
+      const res = await postApiV1ThingsDeviceInfoIndex({
         page: { page: 1, size: 9999 },
         productID: params?.productID,
       });

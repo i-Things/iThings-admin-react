@@ -2,12 +2,12 @@
 import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
-  postThingsGroupDeviceIndex,
-  postThingsGroupDeviceMultiDelete,
+  postApiV1ThingsGroupDeviceIndex,
+  postApiV1ThingsGroupDeviceMultiDelete,
 } from '@/services/iThingsapi/shebeifenzu';
-import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { isOnlineEnum, selectConfirm } from '@/utils/utils';
@@ -34,9 +34,9 @@ const GroupDeviceList: React.FC<{
   const { deleteHandler } = useTableDelete();
   const [searchParams, setSearchParams] = useState({ productID: '', deviceName: '' });
 
-  type QueryGroupDeviceProp = typeof postThingsGroupDeviceIndex;
-  type QueryDeviceInfoProp = typeof postThingsDeviceInfoIndex;
-  type QueryProductProp = typeof postThingsProductInfoIndex;
+  type QueryGroupDeviceProp = typeof postApiV1ThingsGroupDeviceIndex;
+  type QueryDeviceInfoProp = typeof postApiV1ThingsDeviceInfoIndex;
+  type QueryProductProp = typeof postApiV1ThingsProductInfoIndex;
 
   const listFlag = flag === 'list';
   // 删除操作
@@ -47,7 +47,7 @@ const GroupDeviceList: React.FC<{
       list,
     };
     deleteHandler<{ groupID: string; list: { productID?: string; deviceName?: string }[] }>(
-      postThingsGroupDeviceMultiDelete,
+      postApiV1ThingsGroupDeviceMultiDelete,
       actionRef,
       {
         title: '是否从分组中删除选中设备',
@@ -135,7 +135,7 @@ const GroupDeviceList: React.FC<{
   useEffect(() => {
     if (activeKey === '2') {
       actionRef?.current?.reloadAndRest();
-      querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
+      querySelectOptions<QueryProductProp>(postApiV1ThingsProductInfoIndex, {
         page: { page: 1, size: 99999 },
         label: 'productName',
         value: 'productID',
@@ -218,11 +218,11 @@ const GroupDeviceList: React.FC<{
         params={searchParams}
         request={(params) =>
           listFlag
-            ? queryPage<QueryGroupDeviceProp, GroupDeviceItem>(postThingsGroupDeviceIndex, {
+            ? queryPage<QueryGroupDeviceProp, GroupDeviceItem>(postApiV1ThingsGroupDeviceIndex, {
                 ...params,
                 groupID,
               })
-            : queryPage<QueryDeviceInfoProp, GroupDeviceItem>(postThingsDeviceInfoIndex, {
+            : queryPage<QueryDeviceInfoProp, GroupDeviceItem>(postApiV1ThingsDeviceInfoIndex, {
                 ...params,
                 groupID,
               })

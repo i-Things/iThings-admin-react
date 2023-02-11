@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
-  postThingsProductSchemaCreate,
-  postThingsProductSchemaUpdate,
+  postApiV1ThingsProductSchemaCreate,
+  postApiV1ThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
 import {
   createAsyncFormActions,
@@ -271,9 +271,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     let res = null;
 
     if (isEdit) {
-      res = await postThingsProductSchemaUpdate(_params);
+      res = await postApiV1ThingsProductSchemaUpdate(_params);
     } else {
-      res = await postThingsProductSchemaCreate(_params);
+      res = await postApiV1ThingsProductSchemaCreate(_params);
     }
 
     if (res instanceof Response) {

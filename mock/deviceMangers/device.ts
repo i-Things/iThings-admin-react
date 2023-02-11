@@ -34,7 +34,8 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-async function postThingsDeviceInfoIndex(req: Request, res: Response) {
+
+async function postApiV1ThingsDeviceInfoIndex(req: Request, res: Response) {
   await waitTime(2000);
   return res.json({
     code: 0,
@@ -46,5 +47,5 @@ async function postThingsDeviceInfoIndex(req: Request, res: Response) {
 }
 
 export default {
-  'POST /api/v1/things/device/info/index': postThingsDeviceInfoIndex,
+  'POST /api/v1/things/device/info/index': postApiV1ThingsDeviceInfoIndex,
 };

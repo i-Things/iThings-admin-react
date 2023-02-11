@@ -1,6 +1,9 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemRoleCreate, postSystemRoleUpdate } from '@/services/iThingsapi/jiaoseguanli';
+import {
+  postApiV1SystemRoleCreate,
+  postApiV1SystemRoleUpdate,
+} from '@/services/iThingsapi/jiaoseguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -9,6 +12,7 @@ import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import type { RoleListItem } from '../types';
+
 const CreateOrUpdateRole: React.FC<{
   flag: string;
   record?: RoleListItem;
@@ -20,8 +24,8 @@ const CreateOrUpdateRole: React.FC<{
   const [visible, setVisible] = useState(false);
 
   const editFormRef = useRef<ProFormInstance>();
-  type CreateProp = typeof postSystemRoleCreate;
-  type UpdateProp = typeof postSystemRoleUpdate;
+  type CreateProp = typeof postApiV1SystemRoleCreate;
+  type UpdateProp = typeof postApiV1SystemRoleUpdate;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -29,8 +33,8 @@ const CreateOrUpdateRole: React.FC<{
   const formSubmit = async (values: RoleListItem) => {
     const body = { ...values, id: record?.id as string };
     if (flag === 'update')
-      await updateHandler<UpdateProp, RoleListItem>(postSystemRoleUpdate, actionRef, body);
-    else await createHandler<CreateProp, RoleListItem>(postSystemRoleCreate, actionRef, body);
+      await updateHandler<UpdateProp, RoleListItem>(postApiV1SystemRoleUpdate, actionRef, body);
+    else await createHandler<CreateProp, RoleListItem>(postApiV1SystemRoleCreate, actionRef, body);
     onClose();
     editFormRef.current?.resetFields();
   };

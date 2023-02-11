@@ -1,4 +1,4 @@
-import { postThingsDeviceInteractSendMsg } from '@/services/iThingsapi/shebeijiaohu';
+import { postApiV1ThingsDeviceInteractSendMsg } from '@/services/iThingsapi/shebeijiaohu';
 import { ResponseCode } from '@/utils/base';
 import { Button, Form, Input, message } from 'antd';
 import React from 'react';
@@ -13,7 +13,7 @@ const SendMsg: React.FC = () => {
     const body = {
       ...values,
     };
-    return postThingsDeviceInteractSendMsg(body)
+    return postApiV1ThingsDeviceInteractSendMsg(body)
       .then((res) => {
         if (res.code === ResponseCode.SUCCESS) {
           message.success('发送成功');

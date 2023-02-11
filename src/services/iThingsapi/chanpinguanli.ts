@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 新增产品 POST /api/v1/things/product/info/create */
-export async function postThingsProductInfoCreate(
+export async function postApiV1ThingsProductInfoCreate(
   body: {
     productName?: string;
     /** 1:其他,2:wi-fi,3:2G/3G/4G,4:5G,5:BLE,6:LoRaWAN */
@@ -33,7 +33,7 @@ export async function postThingsProductInfoCreate(
 }
 
 /** 删除产品 POST /api/v1/things/product/info/delete */
-export async function postThingsProductInfo__openAPI__delete(
+export async function postApiV1ThingsProductInfo__openAPI__delete(
   body: {
     productID: string;
   },
@@ -50,7 +50,7 @@ export async function postThingsProductInfo__openAPI__delete(
 }
 
 /** 获取产品列表 POST /api/v1/things/product/info/index */
-export async function postThingsProductInfoIndex(
+export async function postApiV1ThingsProductInfoIndex(
   body: {
     page?: { page?: number; size?: number };
     deviceType?: number;
@@ -93,7 +93,7 @@ export async function postThingsProductInfoIndex(
 }
 
 /** 获取产品详情 POST /api/v1/things/product/info/read */
-export async function postThingsProductInfoRead(
+export async function postApiV1ThingsProductInfoRead(
   body: {
     productID: string;
   },
@@ -127,7 +127,7 @@ export async function postThingsProductInfoRead(
 }
 
 /** 更新产品 POST /api/v1/things/product/info/update */
-export async function postThingsProductInfoUpdate(
+export async function postApiV1ThingsProductInfoUpdate(
   body: {
     productID: string;
     productName?: string;

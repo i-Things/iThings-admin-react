@@ -1,8 +1,8 @@
 import { CreateForm } from '@/pages/deviceMangers/device/components/createForm';
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
-  postThingsDeviceInfoIndex,
-  postThingsDeviceInfo__openAPI__delete,
+  postApiV1ThingsDeviceInfoIndex,
+  postApiV1ThingsDeviceInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeiguanli';
 import { FlagStatus, ResponseCode } from '@/utils/base';
 import type { DEVICE_INFO, PRODUCT_INFO } from '@/utils/const';
@@ -33,6 +33,7 @@ type queryParam = {
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: Tags[];
 };
+
 interface Props {
   productInfo?: PRODUCT_INFO;
 }
@@ -73,7 +74,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           productID: record?.productID ?? '',
           deviceName: record?.deviceName ?? '',
         };
-        postThingsDeviceInfo__openAPI__delete(body).then((res) => {
+        postApiV1ThingsDeviceInfo__openAPI__delete(body).then((res) => {
           if (res.code === ResponseCode.SUCCESS) {
             message.success('删除成功');
             actionRef.current?.reload();
@@ -102,7 +103,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       deviceName: params.deviceName,
       tags: tags,
     };
-    const res = await postThingsDeviceInfoIndex(body);
+    const res = await postApiV1ThingsDeviceInfoIndex(body);
 
     if (res instanceof Response) {
       return {
@@ -138,7 +139,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         page: 1,
       },
     };
-    const res = await postThingsProductInfoIndex(body);
+    const res = await postApiV1ThingsProductInfoIndex(body);
     if (res instanceof Response) {
       message.error('获取产品列表失败:' + res.msg);
       return;

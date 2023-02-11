@@ -1,5 +1,5 @@
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
-import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
 import { EffectScatterChart, ScatterChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent } from 'echarts/components';
@@ -61,7 +61,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
 
   const { data: deviceList = [] } = useRequest(
     async () => {
-      const res = await postThingsDeviceInfoIndex(body);
+      const res = await postApiV1ThingsDeviceInfoIndex(body);
       return res.data.list;
     },
     {
@@ -73,7 +73,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
 
   const { data: productList = [] } = useRequest(
     async () => {
-      const res = await postThingsProductInfoIndex(body);
+      const res = await postApiV1ThingsProductInfoIndex(body);
       return res.data.list;
     },
     {

@@ -10,7 +10,7 @@ import DeviceCloudLogPage from './pages/deviceCloudLog/index';
 import DeviceLocalLogPage from './pages/deviceLocalLog/index';
 import SubDevicePage from './pages/SubDevice/index';
 
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { useRequest } from 'ahooks';
 import type { DeviceInfo } from '../data';
@@ -59,7 +59,7 @@ const IndexPage: React.FC = () => {
   }, [type]);
 
   /** 获取产品详情,用于判断是否展示子设备管理-只有网关类型才展示 */
-  const { data } = useRequest(postThingsProductInfoIndex, {
+  const { data } = useRequest(postApiV1ThingsProductInfoIndex, {
     defaultParams: [
       {
         productIDs: [id],

@@ -1,4 +1,4 @@
-import { postThingsProductInfoRead } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoRead } from '@/services/iThingsapi/chanpinguanli';
 import { ColumnConfig } from '@/utils/base';
 import type { PRODUCT_INFO } from '@/utils/const';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -10,6 +10,7 @@ import DevicePage from './pages/device/index';
 import ModelPage from './pages/model/index';
 import ProductInfoPage from './pages/productInfo/index';
 import TopicPage from './pages/topic/index';
+
 const { TabPane } = Tabs;
 
 const IndexPage: React.FC = () => {
@@ -17,7 +18,7 @@ const IndexPage: React.FC = () => {
   const params = useParams() as { id: string };
   const productID = params.id ?? '';
   const onChange = (/*key: string*/) => {};
-  const { run } = useRequest(postThingsProductInfoRead, {
+  const { run } = useRequest(postApiV1ThingsProductInfoRead, {
     defaultParams: [{ productID: productID }],
     onSuccess: (result) => {
       setProductInfo(result.data);

@@ -1,11 +1,11 @@
-import { postThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
+import type { PRODUCT_INFO } from '@/utils/const';
 import {
   AUTH_MODE_FORM,
   AUTO_REGISTER_FORM,
   DATA_PROTO_FORM,
   DEVICE_TYPE_FORM,
   NET_TYPE_FORM,
-  PRODUCT_INFO,
 } from '@/utils/const';
 import { EditOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
@@ -38,7 +38,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
       ...value,
       productID: productInfo?.productID ?? '',
     };
-    return postThingsProductInfoUpdate(body)
+    return postApiV1ThingsProductInfoUpdate(body)
       .then((res) => {
         setCreateVisible(false);
         if (res.code === 200) {

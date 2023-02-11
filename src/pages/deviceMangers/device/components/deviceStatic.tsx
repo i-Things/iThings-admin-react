@@ -1,4 +1,4 @@
-import { postThingsDeviceInfoCount } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoCount } from '@/services/iThingsapi/shebeiguanli';
 import { useRequest } from 'ahooks';
 import { message } from 'antd';
 import { useMemo } from 'react';
@@ -6,7 +6,7 @@ import styles from '../index.less';
 
 const DeviceStatic = () => {
   /** 获取设备统计 */
-  const { data } = useRequest(postThingsDeviceInfoCount, {
+  const { data } = useRequest(postApiV1ThingsDeviceInfoCount, {
     onError: (error) => {
       message.error('获取设备统计错误:' + error.message);
     },

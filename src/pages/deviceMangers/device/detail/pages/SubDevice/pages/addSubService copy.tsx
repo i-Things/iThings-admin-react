@@ -1,6 +1,6 @@
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
-import { postThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
-import { postThingsDeviceGatewayMultiCreate } from '@/services/iThingsapi/wangguanzishebeiguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsDeviceInfoIndex } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceGatewayMultiCreate } from '@/services/iThingsapi/wangguanzishebeiguanli';
 import { DefaultPage, ResponseCode } from '@/utils/base';
 import { useRequest } from 'ahooks';
 import { Checkbox, Col, Divider, message, Modal, Pagination, Row, Select, Spin } from 'antd';
@@ -20,7 +20,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
   const [allChecked, setAllChecked] = useState(false);
 
   /** 获取子设备产品列表 */
-  useRequest(postThingsProductInfoIndex, {
+  useRequest(postApiV1ThingsProductInfoIndex, {
     defaultParams: [
       {
         page: {
@@ -47,7 +47,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
   /** 获取设备列表 */
   const { data: deviceInfo = { list: [], total: 0 }, loading } = useRequest(
     async () => {
-      const res = await postThingsDeviceInfoIndex({
+      const res = await postApiV1ThingsDeviceInfoIndex({
         page: {
           size: DefaultPage.size,
           page: pageNum,
@@ -84,7 +84,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
       list: checkDevice.map((item) => ({ productID, deviceName: String(item) })),
     };
     setSubmitLoading(true);
-    postThingsDeviceGatewayMultiCreate(params)
+    postApiV1ThingsDeviceGatewayMultiCreate(params)
       .then((res) => {
         if (res.code === ResponseCode.SUCCESS) {
           message.success('添加成功');

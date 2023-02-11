@@ -1,4 +1,4 @@
-import { postThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
 import { loadBMap } from '@/utils/map';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { message, Tag } from 'antd';
@@ -67,7 +67,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       deviceName: deviceInfoStateRef.current?.deviceName ?? '',
     };
 
-    postThingsDeviceInfoUpdate(body)
+    postApiV1ThingsDeviceInfoUpdate(body)
       .then((res) => {
         if (res.code === 200) {
           message.success('提交成功');

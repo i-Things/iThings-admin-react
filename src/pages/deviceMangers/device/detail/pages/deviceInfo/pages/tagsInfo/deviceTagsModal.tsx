@@ -1,4 +1,4 @@
-import { postThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
 import { FlagStatus } from '@/utils/base';
 import { DownOutlined, InfoCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -76,7 +76,7 @@ const DeviceTagsModal: React.FC<ModalProps> = (props) => {
       productID: deviceInfo?.productID ?? '',
       deviceName: deviceInfo?.deviceName ?? '',
     };
-    return postThingsDeviceInfoUpdate(body)
+    return postApiV1ThingsDeviceInfoUpdate(body)
       .then((res) => {
         setVisible(false);
         if (res.code === 200) {

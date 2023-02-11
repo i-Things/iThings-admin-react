@@ -1,7 +1,7 @@
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
-  postThingsDeviceGatewayIndex,
-  postThingsDeviceGatewayMultiDelete,
+  postApiV1ThingsDeviceGatewayIndex,
+  postApiV1ThingsDeviceGatewayMultiDelete,
 } from '@/services/iThingsapi/wangguanzishebeiguanli';
 
 import { DefaultPage, ResponseCode } from '@/utils/base';
@@ -40,7 +40,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceGatewayIndex(_params);
+    const res = await postApiV1ThingsDeviceGatewayIndex(_params);
     return {
       list: res.data.list || [],
       total: res.data.total || 0,
@@ -52,7 +52,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   });
 
   /** 获取网关产品列表 */
-  useRequest(postThingsProductInfoIndex, {
+  useRequest(postApiV1ThingsProductInfoIndex, {
     defaultParams: [
       {
         page: {
@@ -93,7 +93,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       })),
     };
     setDeleteLoading(true);
-    postThingsDeviceGatewayMultiDelete(params)
+    postApiV1ThingsDeviceGatewayMultiDelete(params)
       .then((res) => {
         if (res.code === ResponseCode.SUCCESS) {
           message.success('解绑成功');
