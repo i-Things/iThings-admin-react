@@ -28,11 +28,6 @@ const loopMenuItem = (menus: any[]): MenuDataItem[] =>
     };
   });
 
-/** 获取用户信息比较慢的时候会展示一个 loading */
-// export const initialStateConfig = {
-//   loading: <PageLoading />,
-// };
-
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */

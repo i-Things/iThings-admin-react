@@ -6,9 +6,9 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import React from 'react';
+import React, { useState } from 'react';
 // @ts-ignore
-import { Link, Outlet, useModel } from '@umijs/max';
+import { history, Outlet, useModel } from '@umijs/max';
 import defaultSettings from '../../config/defaultSettings';
 import logo from '../../public/icons/logo/Group.png';
 
@@ -16,37 +16,28 @@ moment.locale('zh-cn');
 
 const BasicLayout: React.FC = (props) => {
   const { initialState } = useModel('@@initialState');
+  const [pathname, setPathname] = useState('/welcome');
   const menuTree = initialState?.currentUser?.menuInfo;
 
   return (
     <ProLayout
       location={{
-        pathname: '../pages/Welcome.tsx',
+        pathname,
       }}
       title="iThings"
       siderWidth={250}
       rightContentRender={() => <RightContent />}
       footerRender={false}
-      menuItemRender={(menuItemProps: any, defaultDom: any) => {
-        if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
-          return (
-            // @ts-ignore
-            <Link to={menuItemProps.path ? menuItemProps.path : '#'}>{defaultDom}</Link>
-          );
-        }
-        if (menuItemProps.pro_layout_parentKeys.length < 2) {
-          // @ts-ignore
-          return <Link to={menuItemProps.path}>{defaultDom}</Link>;
-        } else {
-          return (
-            // @ts-ignore
-            <Link to={menuItemProps.path}>
-              {menuItemProps.icon}
-              {defaultDom}
-            </Link>
-          );
-        }
-      }}
+      menuItemRender={(item, dom) => (
+        <a
+          onClick={() => {
+            setPathname(item.path || '/welcome');
+            history.push(item.path ?? '/welcome');
+          }}
+        >
+          {dom}
+        </a>
+      )}
       subMenuItemRender={(TWTProps: any, defaultDom: any) => {
         return (
           <>
