@@ -126,7 +126,6 @@ const UserList: React.FC = () => {
           queryPage<QueryProp, UserListItem>(postApiV1SystemUserIndex, { ...params })
         }
         columns={columns}
-        pagination={{ pageSize: 10 }}
         size={'middle'}
       />
     </PageContainer>
