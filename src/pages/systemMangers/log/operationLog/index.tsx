@@ -179,6 +179,7 @@ const OperationLog: React.FC = () => {
             page: { page: params.current || 1, size: params.pageSize || 10 },
           })
         }
+        pagination={{ defaultPageSize: 10 }}
         columns={columns}
         size={'middle'}
       />
