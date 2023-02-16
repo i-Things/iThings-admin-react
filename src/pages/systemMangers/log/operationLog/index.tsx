@@ -6,27 +6,29 @@ import { ProDescriptions, ProTable } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { useRequest } from 'ahooks';
-import { Badge, Button, message, Modal, Space, Tag } from 'antd';
+import { Badge, message, Modal, Space, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
+
+import '../styles.less';
 
 type OperationLogType = {
   uid?: number;
   operUserName?: string;
   operName?: string;
-  businessType?: number;
+  businessType?: string;
   uri?: string;
   operIpAddr?: string;
   operLocation?: string;
   req?: string;
   resp?: string;
-  code?: number;
+  code?: string;
   msg?: string;
   createdTime?: string;
 };
 
 const OperationLog: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [recordList, setRecordList] = useState('');
+  const [recordList, setRecordList] = useState<OperationLogType>({});
   const actionRef = useRef<ActionType>();
 
   const { runAsync, error } = useRequest(
@@ -41,17 +43,13 @@ const OperationLog: React.FC = () => {
       manual: true, // 手动触发请求
     },
   );
-  const statusValueEnum = {
-    200: { text: '成功', color: '#2569eb' },
-    other: { text: '失败', color: '#2569eb' },
-  };
 
   const businessTypeEnum = {
-    1: { text: '新增', color: 'blue' },
-    2: { text: '删除', color: 'red' },
-    3: { text: '修改', color: 'yellow' },
-    4: { text: '查询', color: 'green' },
-    5: { text: '其它', color: '#ccc' },
+    '1': { text: '新增', color: 'blue' },
+    '2': { text: '删除', color: 'red' },
+    '3': { text: '修改', color: 'yellow' },
+    '4': { text: '查询', color: 'green' },
+    '5': { text: '其它', color: '#ccc' },
   };
 
   const onOpen = () => {
@@ -67,6 +65,11 @@ const OperationLog: React.FC = () => {
   };
 
   const columns: ProColumns<OperationLogType>[] = [
+    {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
     {
       title: '用户id',
       dataIndex: 'uid',
@@ -94,10 +97,10 @@ const OperationLog: React.FC = () => {
       render: (_, record) => (
         <Space>
           <Tag
-            color={businessTypeEnum[record.businessType as number].color}
+            color={businessTypeEnum[record?.businessType as string].color}
             key={record.businessType}
           >
-            {businessTypeEnum[record.businessType as number].text}
+            {businessTypeEnum[record?.businessType as string].text}
           </Tag>
         </Space>
       ),
@@ -106,7 +109,6 @@ const OperationLog: React.FC = () => {
       title: '操作人员',
       dataIndex: 'operUserName',
       defaultSortOrder: 'ascend',
-      sorter: (a, b) => a.operUserName - b.operUserName,
       copyable: true,
     },
     {
@@ -140,7 +142,6 @@ const OperationLog: React.FC = () => {
       title: '操作时间',
       dataIndex: 'createdTime',
       valueType: 'dateTime',
-      sorter: (a, b) => a.createdTime - b.createdTime,
       hideInSearch: true,
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
@@ -148,16 +149,17 @@ const OperationLog: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 100,
       render: (_, record) => (
-        <Button
-          type="primary"
+        <a
+          key="show"
           onClick={() => {
             setRecordList(record);
             onOpen();
           }}
         >
-          详情
-        </Button>
+          查看
+        </a>
       ),
     },
   ];
@@ -166,6 +168,7 @@ const OperationLog: React.FC = () => {
     <PageContainer>
       <ProTable<OperationLogType>
         headerTitle="操作日志"
+        bordered
         actionRef={actionRef}
         rowKey="uid"
         search={SEARCH_CONFIGURE}
@@ -179,34 +182,39 @@ const OperationLog: React.FC = () => {
         columns={columns}
         size={'middle'}
       />
-      <Modal title="操作日志详情" visible={isModalOpen} onOk={onOpen} onCancel={onClose}>
+      <Modal
+        title="操作日志详情"
+        visible={isModalOpen}
+        onOk={onOpen}
+        onCancel={onClose}
+        width={800}
+      >
         <ProDescriptions column={2}>
-          <ProDescriptions.Item valueType="text" ellipsis label="操作模块">
-            {recordList?.systemModule}/{recordList?.type?.[0].name}
+          <ProDescriptions.Item valueType="text" ellipsis label="操作名称">
+            {recordList?.operName}
           </ProDescriptions.Item>
-          <ProDescriptions.Item valueType="text" ellipsis label="请求地址">
-            {recordList?.systemModule}/{recordList?.type?.[0].name}
+          <ProDescriptions.Item valueType="text" label="请求地址">
+            {recordList?.uri}
           </ProDescriptions.Item>
-          <ProDescriptions.Item valueType="text" ellipsis label="登录信息">
-            {recordList?.operator}/{recordList?.ip}
+          <ProDescriptions.Item span={2} valueType="text" ellipsis label="登录信息">
+            {`${recordList?.operUserName}/${recordList?.operIpAddr}/${recordList?.operLocation}`}
           </ProDescriptions.Item>
-          <ProDescriptions.Item valueType="text" ellipsis label="请求方式">
-            {recordList?.requestMethod}
+          <ProDescriptions.Item span={2} valueType="jsonCode" label="请求参数">
+            {recordList?.req}
           </ProDescriptions.Item>
-          <ProDescriptions.Item span={2} valueType="code" ellipsis label="操作方法">
-            {recordList?.requestMethod}
+          <ProDescriptions.Item span={2} valueType="jsonCode" label="返回参数">
+            {recordList?.resp}
           </ProDescriptions.Item>
-          <ProDescriptions.Item span={2} valueType="code" ellipsis label="请求参数">
-            {recordList?.requestMethod}
+          <ProDescriptions.Item valueType="text" label="操作状态">
+            <Space>
+              <Badge
+                status={recordList?.code == '200' ? 'success' : 'error'}
+                text={recordList?.code == '200' ? '成功' : '失败'}
+              />
+            </Space>
           </ProDescriptions.Item>
-          <ProDescriptions.Item span={2} valueType="code" ellipsis label="返回参数">
-            {recordList?.requestMethod}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item valueType="text" ellipsis label="操作状态">
-            {statusValueEnum?.[recordList?.status]?.text}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item valueType="dateTime" ellipsis label="操作时间">
-            {recordList?.operationTime}
+          <ProDescriptions.Item valueType="dateTime" label="操作时间">
+            {timestampToDateStr(Number(recordList?.createdTime))}
           </ProDescriptions.Item>
         </ProDescriptions>
       </Modal>

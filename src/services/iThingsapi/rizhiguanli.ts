@@ -64,13 +64,13 @@ export async function postApiV1SystemLogOperIndex(
         uid?: number;
         operUserName?: string;
         operName?: string;
-        businessType?: number;
+        businessType?: string;
         uri?: string;
         operIpAddr?: string;
         operLocation?: string;
         req?: string;
         resp?: string;
-        code?: number;
+        code?: string;
         msg?: string;
         createdTime?: string;
       }[];
