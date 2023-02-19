@@ -1,5 +1,5 @@
 import { postApiV1SystemLogOperIndex } from '@/services/iThingsapi/rizhiguanli';
-import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
+import { BUSINESS_TYPE_VALUE, PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import type { ParamsType } from '@ant-design/pro-components';
 import { ProDescriptions, ProTable } from '@ant-design/pro-components';
@@ -44,14 +44,6 @@ const OperationLog: React.FC = () => {
     },
   );
 
-  const businessTypeEnum = {
-    '1': { text: '新增', color: 'blue' },
-    '2': { text: '删除', color: 'red' },
-    '3': { text: '修改', color: 'yellow' },
-    '4': { text: '查询', color: 'green' },
-    '5': { text: '其它', color: '#ccc' },
-  };
-
   const onOpen = () => {
     setIsModalOpen(true);
   };
@@ -86,7 +78,7 @@ const OperationLog: React.FC = () => {
       dataIndex: 'businessType',
       valueType: 'select',
       hideInTable: true,
-      valueEnum: businessTypeEnum,
+      valueEnum: BUSINESS_TYPE_VALUE,
       copyable: true,
     },
     {
@@ -97,10 +89,10 @@ const OperationLog: React.FC = () => {
       render: (_, record) => (
         <Space>
           <Tag
-            color={businessTypeEnum[record?.businessType as string].color}
+            color={BUSINESS_TYPE_VALUE[record?.businessType as string]?.color}
             key={record.businessType}
           >
-            {businessTypeEnum[record?.businessType as string].text}
+            {BUSINESS_TYPE_VALUE[record?.businessType as string]?.text}
           </Tag>
         </Space>
       ),

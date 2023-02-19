@@ -93,8 +93,8 @@ const LoginLog: React.FC = () => {
       render: (_, record) => (
         <Space>
           <Badge
-            status={record.code == '200' ? 'success' : 'error'}
-            text={record.code == '200' ? '成功' : '失败'}
+            status={record.code === '200' ? 'success' : 'error'}
+            text={record.code === '200' ? '成功' : '失败'}
           />
         </Space>
       ),

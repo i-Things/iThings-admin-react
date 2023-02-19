@@ -5,13 +5,13 @@ import request from '@/utils/request';
 /** 创建场景信息 POST /api/v1/things/rule/scene/info/create */
 export async function postApiV1ThingsRuleSceneInfoCreate(
   body: {
-    id: number;
-    name: string;
-    trigger: { type?: string; device?: API.triggerDevice | any };
+    id?: number;
+    name?: string;
+    trigger?: string;
     /** 触发条件 */
-    when: API.term[];
-    then: API.action[];
-    desc: string;
+    when?: string;
+    then?: string;
+    desc?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -46,11 +46,10 @@ export async function postApiV1ThingsRuleSceneInfo__openAPI__delete(
 export async function postApiV1ThingsRuleSceneInfoIndex(
   body: {
     page?: { page?: number; size?: number };
-    id: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; list: API.scene[]; total: number }>(
+  return request<{ code: number; msg: string; data: { list?: API.scene[]; total?: number } }>(
     '/api/v1/things/rule/scene/info/index',
     {
       method: 'POST',
@@ -64,11 +63,20 @@ export async function postApiV1ThingsRuleSceneInfoIndex(
 }
 
 /** 获取场景信息 POST /api/v1/things/rule/scene/info/read */
-export async function postApiV1ThingsRuleSceneInfoRead(options?: { [key: string]: any }) {
+export async function postApiV1ThingsRuleSceneInfoRead(
+  body: {
+    id: number;
+  },
+  options?: { [key: string]: any },
+) {
   return request<{ code: number; msg: string; data: API.scene }>(
     '/api/v1/things/rule/scene/info/read',
     {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
       ...(options || {}),
     },
   );
@@ -77,13 +85,13 @@ export async function postApiV1ThingsRuleSceneInfoRead(options?: { [key: string]
 /** 更新场景信息 POST /api/v1/things/rule/scene/info/update */
 export async function postApiV1ThingsRuleSceneInfoUpdate(
   body: {
-    id: number;
-    name: string;
-    trigger: { type?: string; device?: API.triggerDevice | any };
+    id?: number;
+    name?: string;
+    trigger?: string;
     /** 触发条件 */
-    when: API.term[];
-    then: API.action[];
-    desc: string;
+    when?: string;
+    then?: string;
+    desc?: string;
   },
   options?: { [key: string]: any },
 ) {

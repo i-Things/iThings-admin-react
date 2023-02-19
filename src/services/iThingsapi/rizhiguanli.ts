@@ -11,7 +11,7 @@ export async function postApiV1SystemLogLoginIndex(
     /** 按登录地址查找 */
     loginLocation?: string;
     /** 按时间范围查找 */
-    date?: { start?: string; end?: string };
+    dateRange?: { start?: string; end?: string };
   },
   options?: { [key: string]: any },
 ) {
@@ -19,7 +19,7 @@ export async function postApiV1SystemLogLoginIndex(
     code: number;
     msg: string;
     data: {
-      total?: string;
+      total?: number;
       list?: {
         uid?: number;
         userName?: string;
@@ -27,7 +27,7 @@ export async function postApiV1SystemLogLoginIndex(
         loginLocation?: string;
         browser?: string;
         os?: string;
-        code?: number;
+        code?: string;
         msg?: string;
         createdTime?: string;
       }[];
