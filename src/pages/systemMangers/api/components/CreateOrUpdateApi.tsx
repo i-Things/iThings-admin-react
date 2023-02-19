@@ -9,7 +9,7 @@ import {
   METHOD_VALUE,
 } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
-import { ProFormSelect } from '@ant-design/pro-components';
+import { ActionType, ProFormSelect } from '@ant-design/pro-components';
 import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { useRequest } from 'ahooks';
 import { Button, message } from 'antd';
@@ -21,7 +21,8 @@ import type { ApiListType } from '..';
 const CreateOrUpdateApi: React.FC<{
   flag: string;
   record?: ApiListType;
-}> = ({ flag, record }) => {
+  actionRef: React.MutableRefObject<ActionType | undefined>;
+}> = ({ flag, record, actionRef }) => {
   const enumToArray = (valueEnum: Record<number, { text: string; color?: string }>) =>
     Object.entries(valueEnum).map(([key, value]) => ({
       label: value.text,
@@ -40,6 +41,7 @@ const CreateOrUpdateApi: React.FC<{
     },
     onSuccess: (data) => {
       message.success('更新接口成功:' + data.msg);
+      actionRef.current?.reloadAndRest?.();
     },
   });
 
@@ -50,6 +52,7 @@ const CreateOrUpdateApi: React.FC<{
     },
     onSuccess: (data) => {
       message.success('新建接口成功:' + data.msg);
+      actionRef.current?.reloadAndRest?.();
     },
   });
 

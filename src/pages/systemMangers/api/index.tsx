@@ -8,12 +8,13 @@ import {
   PROTABLE_OPTIONS,
   SEARCH_CONFIGURE,
 } from '@/utils/const';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ParamsType } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { useRequest } from 'ahooks';
-import { Button, Divider, message, Space, Tag } from 'antd';
+import { Button, Divider, message, Modal, Space, Tag } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateApi from './components/CreateOrUpdateApi';
 
@@ -25,6 +26,8 @@ export type ApiListType = {
   group: string;
   name: string;
 };
+
+const { confirm } = Modal;
 
 const ApiList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -49,12 +52,25 @@ const ApiList: React.FC = () => {
     },
     onSuccess: (data) => {
       message.success('删除接口成功:' + data.msg);
+      actionRef.current?.reloadAndRest?.();
     }, // 手动触发请求
   });
 
   const queryPage = async (params: ParamsType) => {
     if (error) message.error('获取操作日志错误:' + error.message);
     return runAsync(params);
+  };
+
+  // 删除操作
+  const showDeleteConfirm = (record: { id: number; name: string }) => {
+    confirm({
+      title: '是否删除当前接口',
+      icon: <ExclamationCircleOutlined />,
+      content: `所选接口  ${record?.name},  删除后无法恢复，请确认`,
+      onOk() {
+        runDelete({ id: record?.id });
+      },
+    });
   };
 
   const columns: ProColumns<ApiListType>[] = [
@@ -109,15 +125,9 @@ const ApiList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <CreateOrUpdateApi flag="update" record={record} key="updateApi" />
+          <CreateOrUpdateApi flag="update" record={record} key="updateApi" actionRef={actionRef} />
           <Divider type="vertical" />
-          <Button
-            danger
-            key="deleteProduct"
-            onClick={() => {
-              runDelete({ id: record.id as number });
-            }}
-          >
+          <Button danger key="deleteProduct" onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>
@@ -134,7 +144,9 @@ const ApiList: React.FC = () => {
         rowKey="id"
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
-        toolBarRender={() => [<CreateOrUpdateApi flag="create" key="createApi" />]}
+        toolBarRender={() => [
+          <CreateOrUpdateApi flag="create" key="createApi" actionRef={actionRef} />,
+        ]}
         request={(params) =>
           queryPage({
             ...params,
