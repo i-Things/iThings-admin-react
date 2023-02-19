@@ -7,10 +7,10 @@ export async function postApiV1ThingsRuleSceneInfoCreate(
   body: {
     id?: number;
     name?: string;
-    trigger?: { type?: string; device?: API.triggerDevice | any };
+    trigger?: string;
     /** 触发条件 */
-    when?: API.term[];
-    then?: API.action[];
+    when?: string;
+    then?: string;
     desc?: string;
   },
   options?: { [key: string]: any },
@@ -87,10 +87,10 @@ export async function postApiV1ThingsRuleSceneInfoUpdate(
   body: {
     id?: number;
     name?: string;
-    trigger?: { type?: string; device?: API.triggerDevice | any };
+    trigger?: string;
     /** 触发条件 */
-    when?: API.term[];
-    then?: API.action[];
+    when?: string;
+    then?: string;
     desc?: string;
   },
   options?: { [key: string]: any },

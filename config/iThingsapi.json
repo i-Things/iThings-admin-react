@@ -9587,56 +9587,15 @@
                     "title": "场景名称"
                   },
                   "trigger": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "description": "device: 设备触发  timer: 定时触发 manual:手动触发",
-                        "title": "触发类型"
-                      },
-                      "device": {
-                        "title": "设备触发详情",
-                        "description": "设备类型不为空",
-                        "oneOf": [
-                          {
-                            "title": "设备触发详情",
-                            "description": "设备类型不为空",
-                            "oneOf": [
-                              {
-                                "$ref": "#/definitions/30444363",
-                                "title": "设备触发详情",
-                                "description": "设备类型不为空"
-                              },
-                              {
-                                "type": "null"
-                              }
-                            ],
-                            "$ref": "#/components/schemas/triggerDevice"
-                          },
-                          {
-                            "type": "null"
-                          }
-                        ]
-                      }
-                    },
-                    "title": "触发器",
-                    "x-apifox-orders": ["type", "device"],
-                    "required": ["type"],
-                    "x-apifox-refs": {},
-                    "x-apifox-ignore-properties": []
+                    "type": "string",
+                    "title": "触发器"
                   },
                   "when": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/term"
-                    },
+                    "type": "string",
                     "description": "触发条件"
                   },
                   "then": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/action"
-                    },
+                    "type": "string",
                     "title": "满足条件时执行的动作"
                   },
                   "desc": {
@@ -9717,56 +9676,15 @@
                     "title": "场景名称"
                   },
                   "trigger": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "description": "device: 设备触发  timer: 定时触发 manual:手动触发",
-                        "title": "触发类型"
-                      },
-                      "device": {
-                        "title": "设备触发详情",
-                        "description": "设备类型不为空",
-                        "oneOf": [
-                          {
-                            "title": "设备触发详情",
-                            "description": "设备类型不为空",
-                            "oneOf": [
-                              {
-                                "$ref": "#/definitions/30444363",
-                                "title": "设备触发详情",
-                                "description": "设备类型不为空"
-                              },
-                              {
-                                "type": "null"
-                              }
-                            ],
-                            "$ref": "#/components/schemas/triggerDevice"
-                          },
-                          {
-                            "type": "null"
-                          }
-                        ]
-                      }
-                    },
-                    "title": "触发器",
-                    "x-apifox-orders": ["type", "device"],
-                    "required": ["type"],
-                    "x-apifox-refs": {},
-                    "x-apifox-ignore-properties": []
+                    "type": "string",
+                    "title": "触发器"
                   },
                   "when": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/term"
-                    },
+                    "type": "string",
                     "description": "触发条件"
                   },
                   "then": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/action"
-                    },
+                    "type": "string",
                     "title": "满足条件时执行的动作"
                   },
                   "desc": {
@@ -9899,47 +9817,15 @@
             "title": "场景名称"
           },
           "trigger": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "description": "device: 设备触发  timer: 定时触发 manual:手动触发",
-                "title": "触发类型"
-              },
-              "device": {
-                "title": "设备触发详情",
-                "description": "设备类型不为空",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/30444363",
-                    "title": "设备触发详情",
-                    "description": "设备类型不为空"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "$ref": "#/components/schemas/triggerDevice"
-              }
-            },
-            "title": "触发器",
-            "x-apifox-orders": ["type", "device"],
-            "required": ["type"],
-            "x-apifox-refs": {},
-            "x-apifox-ignore-properties": []
+            "type": "string",
+            "title": "触发器"
           },
           "when": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/term"
-            },
+            "type": "string",
             "description": "触发条件"
           },
           "then": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/action"
-            },
+            "type": "string",
             "title": "满足条件时执行的动作"
           },
           "desc": {
@@ -9949,153 +9835,6 @@
         },
         "x-apifox-orders": ["id", "name", "trigger", "when", "then", "desc"],
         "title": "场景联动",
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
-      },
-      "action": {
-        "type": "object",
-        "properties": {
-          "executor": {
-            "type": "string",
-            "title": "执行器类型",
-            "description": "notify: 通知 delay:延迟  device:设备输出  alarm: 告警"
-          },
-          "notify": {
-            "type": "object",
-            "properties": {},
-            "x-apifox-orders": [],
-            "title": "通知",
-            "x-apifox-ignore-properties": []
-          },
-          "delay": {
-            "type": "object",
-            "properties": {
-              "time": {
-                "type": "integer",
-                "title": "延迟时间"
-              },
-              "unit": {
-                "type": "string",
-                "title": "时间单位",
-                "description": "seconds:秒  minutes:分钟  hours:小时"
-              }
-            },
-            "x-apifox-orders": ["time", "unit"],
-            "required": ["time", "unit"],
-            "x-apifox-ignore-properties": []
-          },
-          "alarm": {
-            "type": "object",
-            "properties": {
-              "mode": {
-                "type": "string",
-                "title": "告警模式",
-                "description": "trigger: 触发告警  relieve: 解除告警"
-              }
-            },
-            "x-apifox-orders": ["mode"],
-            "required": ["mode"],
-            "x-apifox-ignore-properties": []
-          },
-          "device": {
-            "type": "object",
-            "properties": {
-              "productID": {
-                "type": "string",
-                "title": "产品id"
-              },
-              "selectorValues": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "title": "选择器的值"
-              }
-            },
-            "x-apifox-orders": ["productID", "selectorValues"],
-            "required": ["productID", "selectorValues"],
-            "x-apifox-ignore-properties": []
-          }
-        },
-        "title": "执行动作",
-        "x-apifox-orders": ["executor", "notify", "delay", "alarm", "device"],
-        "required": ["executor"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
-      },
-      "term": {
-        "type": "object",
-        "properties": {
-          "column": {
-            "type": "string",
-            "title": "字段名"
-          },
-          "value": {
-            "type": "string",
-            "title": "条件值"
-          },
-          "type": {
-            "type": "string",
-            "title": "多个条件关联类型",
-            "description": "or  and"
-          },
-          "termType": {
-            "type": "string",
-            "title": "动态条件类型",
-            "description": "eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间  "
-          },
-          "terms": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/term"
-            },
-            "description": "嵌套条件",
-            "nullable": true
-          }
-        },
-        "title": "触发条件",
-        "x-apifox-orders": ["column", "value", "type", "termType", "terms"],
-        "required": ["column", "value", "type", "termType"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
-      },
-      "triggerDevice": {
-        "type": "object",
-        "properties": {
-          "productID": {
-            "type": "string",
-            "title": "产品id"
-          },
-          "selector": {
-            "type": "string",
-            "title": "设备选择方式",
-            "description": "all: 全部 fixed:指定的设备"
-          },
-          "selectorValues": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "title": "选择的列表",
-            "description": "选择的列表, fixed类型是设备名列表"
-          },
-          "operation": {
-            "type": "object",
-            "properties": {
-              "operator": {
-                "type": "string",
-                "title": "触发类型",
-                "description": "online:上线 offline:下线 reportProperty:属性上报 reportEvent: 事件上报"
-              }
-            },
-            "x-apifox-orders": ["operator"],
-            "required": ["operator"],
-            "x-apifox-ignore-properties": []
-          }
-        },
-        "x-apifox-orders": ["productID", "selector", "selectorValues", "operation"],
-        "required": ["productID", "selector", "selectorValues", "operation"],
-        "title": "设备触发",
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
       },

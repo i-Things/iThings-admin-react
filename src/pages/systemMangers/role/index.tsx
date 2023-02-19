@@ -125,7 +125,6 @@ const RoleList: React.FC = () => {
           })
         }
         columns={columns}
-        pagination={{ pageSize: 10 }}
         size={'middle'}
       />
 

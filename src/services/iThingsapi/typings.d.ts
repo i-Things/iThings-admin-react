@@ -285,11 +285,11 @@ declare namespace API {
     /** 场景名称 */
     name?: string;
     /** 触发器 */
-    trigger?: { type?: string; device?: triggerDevice };
+    trigger?: string;
     /** 触发条件 */
-    when?: term[];
+    when?: string;
     /** 满足条件时执行的动作 */
-    then?: action[];
+    then?: string;
     /** 描述 */
     desc?: string;
   };

@@ -270,7 +270,6 @@ const RemoteConfiguration = () => {
             })
           }
           columns={columns}
-          pagination={{ pageSize: 10 }}
           size={'middle'}
         />
         <Modal
