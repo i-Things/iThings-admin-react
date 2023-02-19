@@ -7,8 +7,8 @@ export async function postApiV1SystemApiCreate(
   body: {
     /** 接口路由 */
     route: string;
-    /** 接口请求方式: POST GET等 */
-    method: string;
+    /** 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它） */
+    method: number;
     /** 接口分组 */
     group: string;
     /** 接口名称 */
@@ -52,8 +52,8 @@ export async function postApiV1SystemApiIndex(
     page?: { page?: number; size?: number };
     /** 接口路由 */
     route?: string;
-    /** 接口请求方式(POST,  GET等) */
-    method?: string;
+    /** 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它） */
+    method?: number;
     /** 接口分组 */
     group?: string;
     /** 接口名称 */
@@ -69,7 +69,7 @@ export async function postApiV1SystemApiIndex(
       list?: {
         id?: number;
         route?: string;
-        method?: string;
+        method?: number;
         group?: string;
         name?: string;
         businessType?: number;
@@ -92,8 +92,8 @@ export async function postApiV1SystemApiUpdate(
     id: number;
     /** 接口路由 */
     route?: string;
-    /** 接口请求方式: POST GET等 */
-    method?: string;
+    /** 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它） */
+    method?: number;
     /** 接口分组 */
     group?: string;
     /** 接口名称 */

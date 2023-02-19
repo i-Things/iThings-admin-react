@@ -270,6 +270,20 @@ declare namespace API {
     'X-Amz-Signature'?: string;
   };
 
+  type scene = {
+    id?: number;
+    /** 场景名称 */
+    name?: string;
+    /** 触发器 */
+    trigger?: string;
+    /** 触发条件 */
+    when?: string;
+    /** 满足条件时执行的动作 */
+    then?: string;
+    /** 描述 */
+    desc?: string;
+  };
+
   type SuccRet = {
     /** 返回code */
     code: number;
