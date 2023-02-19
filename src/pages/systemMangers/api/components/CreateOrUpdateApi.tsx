@@ -22,16 +22,16 @@ const CreateOrUpdateApi: React.FC<{
   flag: string;
   record?: ApiListType;
 }> = ({ flag, record }) => {
+  const enumToArray = (valueEnum: Record<number, { text: string; color?: string }>) =>
+    Object.entries(valueEnum).map(([key, value]) => ({
+      label: value.text,
+      value: Number(key),
+    }));
+
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const editFormRef = useRef<ProFormInstance>();
-
-  const initValue = {
-    ...record,
-    method: METHOD_VALUE[record?.method as number]?.text,
-    businessType: BUSINESS_TYPE_VALUE[record?.businessType as number]?.text,
-  };
 
   const { run: runUpdateApi } = useRequest(postApiV1SystemApiUpdate, {
     manual: true, // 手动触发请求
@@ -57,21 +57,15 @@ const CreateOrUpdateApi: React.FC<{
   const onClose = () => setVisible(false);
 
   const formSubmit = async (values: ApiListType) => {
-    const body = {
-      ...values,
-      id: record?.id as number,
-      businessType: Number(values.businessType),
-      method: Number(values.method),
-    };
-    if (flag === 'update') runUpdateApi(body);
-    else runCreateApi(body);
+    if (flag === 'update') runUpdateApi({ ...values, id: record?.id as number });
+    else runCreateApi(values);
     onClose();
     editFormRef.current?.resetFields();
   };
 
   useEffect(() => {
-    editFormRef.current?.setFieldsValue(initValue);
-  }, [editFlag, initValue]);
+    editFormRef.current?.setFieldsValue(record);
+  }, [editFlag, record]);
   return (
     <ModalForm<ApiListType>
       width={550}
@@ -126,7 +120,7 @@ const CreateOrUpdateApi: React.FC<{
             message: '请求方式为必填项！',
           },
         ]}
-        valueEnum={METHOD_VALUE}
+        request={async () => enumToArray(METHOD_VALUE)}
       />
       <ProFormText
         name="group"
@@ -152,18 +146,20 @@ const CreateOrUpdateApi: React.FC<{
           },
         ]}
       />
-      <ProFormSelect
-        name="businessType"
-        width="md"
-        label="业务类型"
-        rules={[
-          {
-            required: true,
-            message: '请求方式为必填项！',
-          },
-        ]}
-        valueEnum={BUSINESS_TYPE_VALUE}
-      />
+      {flag === 'create' && (
+        <ProFormSelect
+          name="businessType"
+          width="md"
+          label="业务类型"
+          rules={[
+            {
+              required: true,
+              message: '请求方式为必填项！',
+            },
+          ]}
+          request={async () => enumToArray(BUSINESS_TYPE_VALUE)}
+        />
+      )}
     </ModalForm>
   );
 };
