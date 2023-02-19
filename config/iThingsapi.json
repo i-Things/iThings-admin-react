@@ -61,10 +61,13 @@
       "name": "iThings-apisvr/物联网相关接口/规则引擎"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/规则引擎/流"
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/场景联动"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/规则引擎/场景联动"
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/规则编排"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"
     },
     {
       "name": "iThings-apisvr/系统管理"
@@ -8143,11 +8146,11 @@
     "/api/v1/things/rule/flow/info/index": {
       "post": {
         "summary": "获取流列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8240,11 +8243,11 @@
     "/api/v1/things/rule/flow/info/create": {
       "post": {
         "summary": "创建流",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8306,11 +8309,11 @@
     "/api/v1/things/rule/flow/info/update": {
       "post": {
         "summary": "修改流",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8371,11 +8374,11 @@
     "/api/v1/things/rule/flow/info/delete": {
       "post": {
         "summary": "删除流",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8599,8 +8602,8 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-57036451-run"
       }
     },
-    "/": {
-      "get": {
+    "/api/v1/things/rule/scene/info/read": {
+      "post": {
         "summary": "获取场景信息",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
         "x-apifox-status": "developing",
@@ -8608,6 +8611,24 @@
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": ""
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
@@ -8616,928 +8637,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string"
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
                     },
-                    "result": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "triggerType": {
-                          "type": "string"
-                        },
-                        "trigger": {
-                          "type": "object",
-                          "properties": {
-                            "type": {
-                              "type": "string"
-                            },
-                            "device": {
-                              "type": "object",
-                              "properties": {
-                                "selector": {
-                                  "type": "string"
-                                },
-                                "selectorValues": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object",
-                                    "properties": {
-                                      "value": {
-                                        "type": "string"
-                                      },
-                                      "name": {
-                                        "type": "string"
-                                      }
-                                    },
-                                    "required": ["value", "name"],
-                                    "x-apifox-orders": ["value", "name"],
-                                    "x-apifox-ignore-properties": []
-                                  }
-                                },
-                                "productId": {
-                                  "type": "string"
-                                },
-                                "operation": {
-                                  "type": "object",
-                                  "properties": {
-                                    "operator": {
-                                      "type": "string"
-                                    },
-                                    "timer": {
-                                      "type": "object",
-                                      "properties": {
-                                        "trigger": {
-                                          "type": "string"
-                                        },
-                                        "when": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "string"
-                                          }
-                                        },
-                                        "mod": {
-                                          "type": "string"
-                                        },
-                                        "period": {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "to": {
-                                              "type": "string"
-                                            },
-                                            "every": {
-                                              "type": "integer"
-                                            },
-                                            "unit": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": ["from", "to", "every", "unit"],
-                                          "x-apifox-orders": ["from", "to", "every", "unit"],
-                                          "x-apifox-ignore-properties": []
-                                        }
-                                      },
-                                      "required": ["trigger", "when", "mod", "period"],
-                                      "x-apifox-orders": ["trigger", "when", "mod", "period"],
-                                      "x-apifox-ignore-properties": []
-                                    },
-                                    "readProperties": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  },
-                                  "required": ["operator", "timer", "readProperties"],
-                                  "x-apifox-orders": ["operator", "timer", "readProperties"],
-                                  "x-apifox-ignore-properties": []
-                                }
-                              },
-                              "required": ["selector", "selectorValues", "productId", "operation"],
-                              "x-apifox-orders": [
-                                "selector",
-                                "selectorValues",
-                                "productId",
-                                "operation"
-                              ],
-                              "x-apifox-ignore-properties": []
-                            }
-                          },
-                          "required": ["type", "device"],
-                          "x-apifox-orders": ["type", "device"],
-                          "x-apifox-ignore-properties": []
-                        },
-                        "parallel": {
-                          "type": "boolean"
-                        },
-                        "branches": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "when": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "type": {
-                                      "type": "string"
-                                    },
-                                    "termType": {
-                                      "type": "string"
-                                    },
-                                    "options": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "string"
-                                      }
-                                    },
-                                    "terms": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "column": {
-                                            "type": "string"
-                                          },
-                                          "value": {
-                                            "type": "object",
-                                            "properties": {
-                                              "value": {
-                                                "type": "string"
-                                              },
-                                              "source": {
-                                                "type": "string"
-                                              }
-                                            },
-                                            "required": ["value", "source"],
-                                            "x-apifox-orders": ["value", "source"],
-                                            "x-apifox-ignore-properties": []
-                                          },
-                                          "type": {
-                                            "type": "string"
-                                          },
-                                          "termType": {
-                                            "type": "string"
-                                          },
-                                          "options": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "terms": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        },
-                                        "x-apifox-orders": [
-                                          "column",
-                                          "value",
-                                          "type",
-                                          "termType",
-                                          "options",
-                                          "terms"
-                                        ],
-                                        "x-apifox-ignore-properties": []
-                                      }
-                                    }
-                                  },
-                                  "x-apifox-orders": ["type", "termType", "options", "terms"],
-                                  "x-apifox-ignore-properties": []
-                                }
-                              },
-                              "shakeLimit": {
-                                "type": "object",
-                                "properties": {
-                                  "enabled": {
-                                    "type": "boolean"
-                                  },
-                                  "time": {
-                                    "type": "integer"
-                                  },
-                                  "threshold": {
-                                    "type": "integer"
-                                  },
-                                  "alarmFirst": {
-                                    "type": "boolean"
-                                  }
-                                },
-                                "required": ["enabled", "time", "threshold", "alarmFirst"],
-                                "x-apifox-orders": ["enabled", "time", "threshold", "alarmFirst"],
-                                "x-apifox-ignore-properties": []
-                              },
-                              "then": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "parallel": {
-                                      "type": "boolean"
-                                    },
-                                    "actions": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "executor": {
-                                            "type": "string"
-                                          },
-                                          "device": {
-                                            "type": "object",
-                                            "properties": {
-                                              "source": {
-                                                "type": "string"
-                                              },
-                                              "selector": {
-                                                "type": "string"
-                                              },
-                                              "selectorValues": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "value": {
-                                                      "type": "string"
-                                                    },
-                                                    "name": {
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "x-apifox-orders": ["value", "name"],
-                                                  "x-apifox-ignore-properties": []
-                                                }
-                                              },
-                                              "productId": {
-                                                "type": "string"
-                                              },
-                                              "message": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "messageType": {
-                                                    "type": "string"
-                                                  },
-                                                  "properties": {
-                                                    "type": "array",
-                                                    "items": {
-                                                      "type": "string"
-                                                    }
-                                                  }
-                                                },
-                                                "required": ["messageType", "properties"],
-                                                "x-apifox-orders": ["messageType", "properties"],
-                                                "x-apifox-ignore-properties": []
-                                              }
-                                            },
-                                            "required": [
-                                              "source",
-                                              "selector",
-                                              "selectorValues",
-                                              "productId",
-                                              "message"
-                                            ],
-                                            "x-apifox-orders": [
-                                              "source",
-                                              "selector",
-                                              "selectorValues",
-                                              "productId",
-                                              "message"
-                                            ],
-                                            "x-apifox-ignore-properties": []
-                                          },
-                                          "options": {
-                                            "type": "object",
-                                            "properties": {
-                                              "name": {
-                                                "type": "string"
-                                              },
-                                              "type": {
-                                                "type": "string"
-                                              },
-                                              "properties": {
-                                                "type": "string"
-                                              },
-                                              "propertiesValue": {
-                                                "type": "string"
-                                              },
-                                              "selector": {
-                                                "type": "string"
-                                              },
-                                              "productName": {
-                                                "type": "string"
-                                              },
-                                              "relationName": {
-                                                "type": "string"
-                                              },
-                                              "triggerName": {
-                                                "type": "string"
-                                              },
-                                              "taglist": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "columns": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "otherColumns": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "string"
-                                                }
-                                              }
-                                            },
-                                            "required": [
-                                              "name",
-                                              "type",
-                                              "properties",
-                                              "propertiesValue",
-                                              "selector",
-                                              "productName",
-                                              "relationName",
-                                              "triggerName",
-                                              "taglist",
-                                              "columns",
-                                              "otherColumns"
-                                            ],
-                                            "x-apifox-orders": [
-                                              "name",
-                                              "type",
-                                              "properties",
-                                              "propertiesValue",
-                                              "selector",
-                                              "productName",
-                                              "relationName",
-                                              "triggerName",
-                                              "taglist",
-                                              "columns",
-                                              "otherColumns"
-                                            ],
-                                            "x-apifox-ignore-properties": []
-                                          }
-                                        },
-                                        "x-apifox-orders": ["executor", "device", "options"],
-                                        "x-apifox-ignore-properties": []
-                                      }
-                                    }
-                                  },
-                                  "x-apifox-orders": ["parallel", "actions"],
-                                  "x-apifox-ignore-properties": []
-                                }
-                              }
-                            },
-                            "x-apifox-orders": ["when", "shakeLimit", "then"],
-                            "x-apifox-ignore-properties": []
-                          }
-                        },
-                        "creatorId": {
-                          "type": "string"
-                        },
-                        "createTime": {
-                          "type": "integer"
-                        },
-                        "modifierId": {
-                          "type": "string"
-                        },
-                        "modifyTime": {
-                          "type": "integer"
-                        },
-                        "startTime": {
-                          "type": "integer"
-                        },
-                        "state": {
-                          "type": "object",
-                          "properties": {
-                            "text": {
-                              "type": "string"
-                            },
-                            "value": {
-                              "type": "string"
-                            }
-                          },
-                          "required": ["text", "value"],
-                          "x-apifox-orders": ["text", "value"],
-                          "x-apifox-ignore-properties": []
-                        },
-                        "options": {
-                          "type": "object",
-                          "properties": {
-                            "trigger": {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "type": "string"
-                                },
-                                "extraName": {
-                                  "type": "string"
-                                },
-                                "onlyName": {
-                                  "type": "boolean"
-                                },
-                                "type": {
-                                  "type": "string"
-                                },
-                                "typeIcon": {
-                                  "type": "string"
-                                },
-                                "productName": {
-                                  "type": "string"
-                                },
-                                "selectorIcon": {
-                                  "type": "string"
-                                },
-                                "time": {
-                                  "type": "string"
-                                },
-                                "when": {
-                                  "type": "string"
-                                },
-                                "extraTime": {
-                                  "type": "string"
-                                },
-                                "action": {
-                                  "type": "string"
-                                },
-                                "productPage": {
-                                  "type": "integer"
-                                },
-                                "productPageSize": {
-                                  "type": "integer"
-                                },
-                                "devicePage": {
-                                  "type": "integer"
-                                },
-                                "devicePageSize": {
-                                  "type": "integer"
-                                }
-                              },
-                              "required": [
-                                "name",
-                                "extraName",
-                                "onlyName",
-                                "type",
-                                "typeIcon",
-                                "productName",
-                                "selectorIcon",
-                                "time",
-                                "when",
-                                "extraTime",
-                                "action",
-                                "productPage",
-                                "productPageSize",
-                                "devicePage",
-                                "devicePageSize"
-                              ],
-                              "x-apifox-orders": [
-                                "name",
-                                "extraName",
-                                "onlyName",
-                                "type",
-                                "typeIcon",
-                                "productName",
-                                "selectorIcon",
-                                "time",
-                                "when",
-                                "extraTime",
-                                "action",
-                                "productPage",
-                                "productPageSize",
-                                "devicePage",
-                                "devicePageSize"
-                              ],
-                              "x-apifox-ignore-properties": []
-                            },
-                            "when": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "terms": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "terms": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "array",
-                                            "items": {
-                                              "oneOf": [
-                                                {
-                                                  "type": "string"
-                                                },
-                                                {
-                                                  "properties": {
-                                                    "0": {
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "type": "object",
-                                                  "x-apifox-orders": ["0"],
-                                                  "x-apifox-ignore-properties": []
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        },
-                                        "termType": {
-                                          "type": "string"
-                                        }
-                                      },
-                                      "x-apifox-orders": ["terms", "termType"],
-                                      "x-apifox-ignore-properties": []
-                                    }
-                                  }
-                                },
-                                "x-apifox-orders": ["terms"],
-                                "x-apifox-ignore-properties": []
-                              }
-                            }
-                          },
-                          "required": ["trigger", "when"],
-                          "x-apifox-orders": ["trigger", "when"],
-                          "x-apifox-ignore-properties": []
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "name",
-                        "triggerType",
-                        "trigger",
-                        "parallel",
-                        "branches",
-                        "creatorId",
-                        "createTime",
-                        "modifierId",
-                        "modifyTime",
-                        "startTime",
-                        "state",
-                        "options"
-                      ],
-                      "x-apifox-orders": [
-                        "id",
-                        "name",
-                        "triggerType",
-                        "trigger",
-                        "parallel",
-                        "branches",
-                        "creatorId",
-                        "createTime",
-                        "modifierId",
-                        "modifyTime",
-                        "startTime",
-                        "state",
-                        "options"
-                      ],
-                      "x-apifox-ignore-properties": []
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
                     },
-                    "status": {
-                      "type": "integer"
-                    },
-                    "timestamp": {
-                      "type": "integer"
+                    "data": {
+                      "$ref": "#/components/schemas/scene"
                     }
                   },
-                  "required": ["message", "result", "status", "timestamp"],
-                  "x-apifox-orders": ["message", "result", "status", "timestamp"],
-                  "x-apifox-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "成功示例 ",
-                    "value": {
-                      "message": "success",
-                      "result": {
-                        "id": "1619980970936041472",
-                        "name": "测试0130",
-                        "triggerType": "device",
-                        "trigger": {
-                          "type": "device",
-                          "device": {
-                            "selector": "fixed",
-                            "selectorValues": [
-                              {
-                                "value": "8DEF",
-                                "name": "WD-灯00002"
-                              },
-                              {
-                                "value": "1613081320681439232",
-                                "name": "WF-灯00001"
-                              }
-                            ],
-                            "productId": "1613080523902091264",
-                            "operation": {
-                              "operator": "readProperty",
-                              "timer": {
-                                "trigger": "week",
-                                "when": [],
-                                "mod": "period",
-                                "period": {
-                                  "from": "00:00:00",
-                                  "to": "23:59:59",
-                                  "every": 12,
-                                  "unit": "seconds"
-                                }
-                              },
-                              "readProperties": ["wF-uid"]
-                            }
-                          }
-                        },
-                        "parallel": false,
-                        "branches": [
-                          {
-                            "when": [
-                              {
-                                "type": "and",
-                                "termType": "eq",
-                                "options": [],
-                                "terms": [
-                                  {
-                                    "column": "timestamp",
-                                    "value": {
-                                      "value": "06:02:02",
-                                      "source": "manual"
-                                    },
-                                    "type": "and",
-                                    "termType": "eq",
-                                    "options": [],
-                                    "terms": []
-                                  }
-                                ]
-                              }
-                            ],
-                            "shakeLimit": {
-                              "enabled": false,
-                              "time": 0,
-                              "threshold": 0,
-                              "alarmFirst": false
-                            },
-                            "then": [
-                              {
-                                "parallel": false,
-                                "actions": [
-                                  {
-                                    "executor": "device",
-                                    "device": {
-                                      "source": "fixed",
-                                      "selector": "fixed",
-                                      "selectorValues": [
-                                        {
-                                          "value": "8DEF",
-                                          "name": "WD-灯00002"
-                                        }
-                                      ],
-                                      "productId": "1613080523902091264",
-                                      "message": {
-                                        "messageType": "READ_PROPERTY",
-                                        "properties": ["wF-uid"]
-                                      }
-                                    },
-                                    "options": {
-                                      "name": "WD-灯00002",
-                                      "type": "读取",
-                                      "properties": "WF-编号",
-                                      "propertiesValue": "",
-                                      "selector": "fixed",
-                                      "productName": "WF-灯",
-                                      "relationName": "",
-                                      "triggerName": "WD-灯00002",
-                                      "taglist": [],
-                                      "columns": [],
-                                      "otherColumns": []
-                                    }
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ],
-                        "creatorId": "fe32597c37157f4d0ff0c97f11dc5151",
-                        "createTime": 1675068535919,
-                        "modifierId": "fe32597c37157f4d0ff0c97f11dc5151",
-                        "modifyTime": 1675069729184,
-                        "startTime": 1675069729184,
-                        "state": {
-                          "text": "正常",
-                          "value": "started"
-                        },
-                        "options": {
-                          "trigger": {
-                            "name": "WD-灯00002、WF-灯00001",
-                            "extraName": "",
-                            "onlyName": false,
-                            "type": "",
-                            "typeIcon": "icon-Group",
-                            "productName": "",
-                            "selectorIcon": "icon-shebei1",
-                            "time": "00:00:00-23:59:59",
-                            "when": "每天",
-                            "extraTime": "每12秒执行1次",
-                            "action": "读取 WF-编号",
-                            "productPage": 0,
-                            "productPageSize": 12,
-                            "devicePage": 0,
-                            "devicePageSize": 12
-                          },
-                          "when": [
-                            {
-                              "terms": [
-                                {
-                                  "terms": [
-                                    [
-                                      "上报时间",
-                                      "eq",
-                                      {
-                                        "0": "06:02:02"
-                                      },
-                                      "and"
-                                    ]
-                                  ],
-                                  "termType": "并且"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      },
-                      "status": 200,
-                      "timestamp": 1675330238076
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
                     }
                   },
-                  "2": {
-                    "summary": "成功示例 ",
-                    "value": {
-                      "message": "success",
-                      "result": {
-                        "id": "1613090163956187136",
-                        "name": "环境控制-定时触发演示",
-                        "triggerType": "timer",
-                        "trigger": {
-                          "type": "timer",
-                          "timer": {
-                            "trigger": "cron",
-                            "cron": "0 0 14 * * ?"
-                          }
-                        },
-                        "parallel": false,
-                        "branches": [
-                          {
-                            "when": [
-                              {
-                                "type": "and",
-                                "termType": "eq",
-                                "options": [],
-                                "terms": [
-                                  {
-                                    "type": "and",
-                                    "termType": "eq",
-                                    "options": [],
-                                    "terms": []
-                                  }
-                                ]
-                              }
-                            ],
-                            "shakeLimit": {
-                              "enabled": false,
-                              "time": 0,
-                              "threshold": 0,
-                              "alarmFirst": false
-                            },
-                            "then": [
-                              {
-                                "parallel": true,
-                                "actions": [
-                                  {
-                                    "executor": "device",
-                                    "device": {
-                                      "source": "fixed",
-                                      "selector": "fixed",
-                                      "selectorValues": [
-                                        {
-                                          "value": "1606095288638963712",
-                                          "name": "加湿器"
-                                        }
-                                      ],
-                                      "productId": "1605854045820485632",
-                                      "message": {
-                                        "messageType": "INVOKE_FUNCTION",
-                                        "functionId": "switch",
-                                        "inputs": [
-                                          {
-                                            "name": "state",
-                                            "value": true
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    "options": {
-                                      "name": "加湿器",
-                                      "type": "执行",
-                                      "properties": "开关",
-                                      "propertiesValue": "",
-                                      "selector": "fixed",
-                                      "productName": "加湿器产品",
-                                      "relationName": "",
-                                      "triggerName": "触发设备",
-                                      "taglist": [],
-                                      "columns": [],
-                                      "otherColumns": []
-                                    }
-                                  },
-                                  {
-                                    "executor": "device",
-                                    "device": {
-                                      "source": "fixed",
-                                      "selector": "fixed",
-                                      "selectorValues": [
-                                        {
-                                          "value": "1613054588700131328",
-                                          "name": "温室空调"
-                                        }
-                                      ],
-                                      "productId": "1613052868175659008",
-                                      "message": {
-                                        "messageType": "INVOKE_FUNCTION",
-                                        "functionId": "switch",
-                                        "inputs": [
-                                          {
-                                            "name": "state",
-                                            "value": true
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    "options": {
-                                      "name": "温室空调",
-                                      "type": "执行",
-                                      "properties": "开关",
-                                      "propertiesValue": "",
-                                      "selector": "fixed",
-                                      "productName": "空调产品",
-                                      "relationName": "",
-                                      "triggerName": "触发设备",
-                                      "taglist": [],
-                                      "columns": [],
-                                      "otherColumns": []
-                                    }
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ],
-                        "creatorId": "1199596756811550720",
-                        "createTime": 1673425639510,
-                        "modifierId": "1199596756811550720",
-                        "modifyTime": 1673603707589,
-                        "startTime": 1673603707589,
-                        "state": {
-                          "text": "正常",
-                          "value": "started"
-                        },
-                        "options": {
-                          "trigger": {
-                            "time": "0 0 14 * * ?"
-                          },
-                          "when": [
-                            {
-                              "terms": [
-                                {
-                                  "terms": [
-                                    [
-                                      "含水量/当前值",
-                                      "lte",
-                                      {
-                                        "0": 10
-                                      },
-                                      "and"
-                                    ]
-                                  ],
-                                  "termType": "并且"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      },
-                      "status": 200,
-                      "timestamp": 1675330637573
-                    }
-                  }
+                  "x-apifox-ignore-properties": ["code", "msg"]
                 }
               }
             }
@@ -9585,7 +8710,7 @@
                     "type": "string",
                     "description": "按登录地址查找"
                   },
-                  "date": {
+                  "dateRange": {
                     "type": "object",
                     "properties": {
                       "start": {
@@ -9606,7 +8731,7 @@
                   "01GREFNDMF17M1C4MSGTQWCY6B",
                   "ipAddr",
                   "loginLocation",
-                  "date"
+                  "dateRange"
                 ],
                 "x-apifox-refs": {
                   "01GREFNDMF17M1C4MSGTQWCY6B": {
@@ -9644,8 +8769,8 @@
                       "type": "object",
                       "properties": {
                         "total": {
-                          "type": "string",
-                          "description": "登录日志列表总记录数"
+                          "description": "登录日志列表总记录数",
+                          "type": "integer"
                         },
                         "list": {
                           "type": "array",
@@ -9678,7 +8803,7 @@
                               },
                               "code": {
                                 "description": "登录状态（200成功 其它失败）",
-                                "type": "integer"
+                                "type": "string"
                               },
                               "msg": {
                                 "type": "string",
@@ -9845,7 +8970,7 @@
                               },
                               "businessType": {
                                 "description": "业务类型（1新增 2修改 3删除 4查询 5其它）",
-                                "type": "integer"
+                                "type": "string"
                               },
                               "uri": {
                                 "type": "string",
@@ -9869,7 +8994,7 @@
                               },
                               "code": {
                                 "description": "错误码（200成功 其它失败）",
-                                "type": "integer"
+                                "type": "string"
                               },
                               "msg": {
                                 "type": "string",
@@ -9954,8 +9079,8 @@
                     "description": "接口路由"
                   },
                   "method": {
-                    "type": "string",
-                    "description": "接口请求方式: POST GET等"
+                    "type": "integer",
+                    "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）"
                   },
                   "group": {
                     "type": "string",
@@ -9971,7 +9096,7 @@
                   }
                 },
                 "x-apifox-orders": ["route", "method", "group", "name", "businessType"],
-                "required": ["route", "method", "group", "name", "businessType"],
+                "required": ["route", "group", "name", "businessType", "method"],
                 "x-apifox-ignore-properties": []
               }
             }
@@ -10061,8 +9186,8 @@
                     "description": "接口路由"
                   },
                   "method": {
-                    "type": "string",
-                    "description": "接口请求方式(POST,  GET等)"
+                    "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                    "type": "integer"
                   },
                   "group": {
                     "type": "string",
@@ -10133,8 +9258,8 @@
                                 "description": "接口路由"
                               },
                               "method": {
-                                "type": "string",
-                                "description": "接口请求方式: POST GET等"
+                                "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                                "type": "integer"
                               },
                               "group": {
                                 "type": "string",
@@ -10208,8 +9333,8 @@
                     "description": "接口路由"
                   },
                   "method": {
-                    "type": "string",
-                    "description": "接口请求方式: POST GET等"
+                    "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                    "type": "integer"
                   },
                   "group": {
                     "type": "string",
@@ -10331,10 +9456,649 @@
         },
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61128614-run"
       }
+    },
+    "/api/v1/things/rule/scene/info/index": {
+      "post": {
+        "summary": "获取场景列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GS86J197SXSZ636KJSEFWHAP": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": ["01GS86J197SXSZ636KJSEFWHAP"],
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/scene"
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": ""
+                        }
+                      },
+                      "x-apifox-orders": ["list", "total"],
+                      "required": ["list", "total"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GS5NHWQPGP9HK9W69FXFDKV9", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GS5NHWQPGP9HK9W69FXFDKV9": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106160-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/create": {
+      "post": {
+        "summary": "创建场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GS5NQENQEZD06Z36ZRC0MZFW": {
+                    "$ref": "#/components/schemas/scene"
+                  }
+                },
+                "x-apifox-orders": ["01GS5NQENQEZD06Z36ZRC0MZFW"],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "场景名称"
+                  },
+                  "trigger": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "device: 设备触发  timer: 定时触发 manual:手动触发",
+                        "title": "触发类型"
+                      },
+                      "device": {
+                        "title": "设备触发详情",
+                        "description": "设备类型不为空",
+                        "oneOf": [
+                          {
+                            "title": "设备触发详情",
+                            "description": "设备类型不为空",
+                            "oneOf": [
+                              {
+                                "$ref": "#/definitions/30444363",
+                                "title": "设备触发详情",
+                                "description": "设备类型不为空"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "$ref": "#/components/schemas/triggerDevice"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "title": "触发器",
+                    "x-apifox-orders": ["type", "device"],
+                    "required": ["type"],
+                    "x-apifox-refs": {},
+                    "x-apifox-ignore-properties": []
+                  },
+                  "when": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/term"
+                    },
+                    "description": "触发条件"
+                  },
+                  "then": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/action"
+                    },
+                    "title": "满足条件时执行的动作"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "title": "描述"
+                  }
+                },
+                "x-apifox-ignore-properties": ["id", "name", "trigger", "when", "then", "desc"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106162-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/update": {
+      "post": {
+        "summary": "更新场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GS5NQENQEZD06Z36ZRC0MZFW": {
+                    "$ref": "#/components/schemas/scene"
+                  }
+                },
+                "x-apifox-orders": ["01GS5NQENQEZD06Z36ZRC0MZFW"],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "场景名称"
+                  },
+                  "trigger": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "device: 设备触发  timer: 定时触发 manual:手动触发",
+                        "title": "触发类型"
+                      },
+                      "device": {
+                        "title": "设备触发详情",
+                        "description": "设备类型不为空",
+                        "oneOf": [
+                          {
+                            "title": "设备触发详情",
+                            "description": "设备类型不为空",
+                            "oneOf": [
+                              {
+                                "$ref": "#/definitions/30444363",
+                                "title": "设备触发详情",
+                                "description": "设备类型不为空"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "$ref": "#/components/schemas/triggerDevice"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "title": "触发器",
+                    "x-apifox-orders": ["type", "device"],
+                    "required": ["type"],
+                    "x-apifox-refs": {},
+                    "x-apifox-ignore-properties": []
+                  },
+                  "when": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/term"
+                    },
+                    "description": "触发条件"
+                  },
+                  "then": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/action"
+                    },
+                    "title": "满足条件时执行的动作"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "title": "描述"
+                  }
+                },
+                "x-apifox-ignore-properties": ["id", "name", "trigger", "when", "then", "desc"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106293-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/delete": {
+      "post": {
+        "summary": "删除场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {},
+                "x-apifox-orders": ["id"],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "场景id"
+                  }
+                },
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106301-run"
+      }
     }
   },
   "components": {
     "schemas": {
+      "scene": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string",
+            "title": "场景名称"
+          },
+          "trigger": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "device: 设备触发  timer: 定时触发 manual:手动触发",
+                "title": "触发类型"
+              },
+              "device": {
+                "title": "设备触发详情",
+                "description": "设备类型不为空",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/30444363",
+                    "title": "设备触发详情",
+                    "description": "设备类型不为空"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "$ref": "#/components/schemas/triggerDevice"
+              }
+            },
+            "title": "触发器",
+            "x-apifox-orders": ["type", "device"],
+            "required": ["type"],
+            "x-apifox-refs": {},
+            "x-apifox-ignore-properties": []
+          },
+          "when": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/term"
+            },
+            "description": "触发条件"
+          },
+          "then": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/action"
+            },
+            "title": "满足条件时执行的动作"
+          },
+          "desc": {
+            "type": "string",
+            "title": "描述"
+          }
+        },
+        "x-apifox-orders": ["id", "name", "trigger", "when", "then", "desc"],
+        "title": "场景联动",
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "action": {
+        "type": "object",
+        "properties": {
+          "executor": {
+            "type": "string",
+            "title": "执行器类型",
+            "description": "notify: 通知 delay:延迟  device:设备输出  alarm: 告警"
+          },
+          "notify": {
+            "type": "object",
+            "properties": {},
+            "x-apifox-orders": [],
+            "title": "通知",
+            "x-apifox-ignore-properties": []
+          },
+          "delay": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "integer",
+                "title": "延迟时间"
+              },
+              "unit": {
+                "type": "string",
+                "title": "时间单位",
+                "description": "seconds:秒  minutes:分钟  hours:小时"
+              }
+            },
+            "x-apifox-orders": ["time", "unit"],
+            "required": ["time", "unit"],
+            "x-apifox-ignore-properties": []
+          },
+          "alarm": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "title": "告警模式",
+                "description": "trigger: 触发告警  relieve: 解除告警"
+              }
+            },
+            "x-apifox-orders": ["mode"],
+            "required": ["mode"],
+            "x-apifox-ignore-properties": []
+          },
+          "device": {
+            "type": "object",
+            "properties": {
+              "productID": {
+                "type": "string",
+                "title": "产品id"
+              },
+              "selectorValues": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "选择器的值"
+              }
+            },
+            "x-apifox-orders": ["productID", "selectorValues"],
+            "required": ["productID", "selectorValues"],
+            "x-apifox-ignore-properties": []
+          }
+        },
+        "title": "执行动作",
+        "x-apifox-orders": ["executor", "notify", "delay", "alarm", "device"],
+        "required": ["executor"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "term": {
+        "type": "object",
+        "properties": {
+          "column": {
+            "type": "string",
+            "title": "字段名"
+          },
+          "value": {
+            "type": "string",
+            "title": "条件值"
+          },
+          "type": {
+            "type": "string",
+            "title": "多个条件关联类型",
+            "description": "or  and"
+          },
+          "termType": {
+            "type": "string",
+            "title": "动态条件类型",
+            "description": "eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间  "
+          },
+          "terms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/term"
+            },
+            "description": "嵌套条件",
+            "nullable": true
+          }
+        },
+        "title": "触发条件",
+        "x-apifox-orders": ["column", "value", "type", "termType", "terms"],
+        "required": ["column", "value", "type", "termType"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "triggerDevice": {
+        "type": "object",
+        "properties": {
+          "productID": {
+            "type": "string",
+            "title": "产品id"
+          },
+          "selector": {
+            "type": "string",
+            "title": "设备选择方式",
+            "description": "all: 全部 fixed:指定的设备"
+          },
+          "selectorValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "选择的列表",
+            "description": "选择的列表, fixed类型是设备名列表"
+          },
+          "operation": {
+            "type": "object",
+            "properties": {
+              "operator": {
+                "type": "string",
+                "title": "触发类型",
+                "description": "online:上线 offline:下线 reportProperty:属性上报 reportEvent: 事件上报"
+              }
+            },
+            "x-apifox-orders": ["operator"],
+            "required": ["operator"],
+            "x-apifox-ignore-properties": []
+          }
+        },
+        "x-apifox-orders": ["productID", "selector", "selectorValues", "operation"],
+        "required": ["productID", "selector", "selectorValues", "operation"],
+        "title": "设备触发",
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
       "flow": {
         "type": "object",
         "properties": {

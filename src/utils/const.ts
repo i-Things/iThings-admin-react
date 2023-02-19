@@ -108,6 +108,26 @@ export const DATA_PROTO_FORM = [
   { label: '数据模板', value: 2 },
 ];
 
+export const BUSINESS_TYPE_VALUE = {
+  1: { text: '新增', color: 'blue' },
+  2: { text: '删除', color: 'red' },
+  3: { text: '修改', color: 'yellow' },
+  4: { text: '查询', color: 'green' },
+  5: { text: '其它', color: '#ccc' },
+};
+
+export const METHOD_VALUE = {
+  1: { text: 'GET' },
+  2: { text: 'POST' },
+  3: { text: 'HEAD' },
+  4: { text: 'OPTIONS' },
+  5: { text: 'PUT' },
+  6: { text: 'DELETE' },
+  7: { text: 'TRACE' },
+  8: { text: 'CONNECT' },
+  9: { text: '其它' },
+};
+
 export type DEVICE_INFO = {
   productID?: string;
   deviceName?: string;

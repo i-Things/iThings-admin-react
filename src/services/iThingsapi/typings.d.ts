@@ -1,4 +1,14 @@
 declare namespace API {
+  type action = {
+    /** 执行器类型 notify: 通知 delay:延迟  device:设备输出  alarm: 告警 */
+    executor: string;
+    /** 通知 */
+    notify?: Record<string, any>;
+    delay?: { time?: number; unit?: string };
+    alarm?: { mode?: string };
+    device?: { productID?: string; selectorValues?: string[] };
+  };
+
   type deviceCore = {
     /** 产品id */
     productID: string;
@@ -270,6 +280,20 @@ declare namespace API {
     'X-Amz-Signature'?: string;
   };
 
+  type scene = {
+    id?: number;
+    /** 场景名称 */
+    name?: string;
+    /** 触发器 */
+    trigger?: { type?: string; device?: triggerDevice };
+    /** 触发条件 */
+    when?: term[];
+    /** 满足条件时执行的动作 */
+    then?: action[];
+    /** 描述 */
+    desc?: string;
+  };
+
   type SuccRet = {
     /** 返回code */
     code: number;
@@ -362,5 +386,28 @@ declare namespace API {
     autoRepeat: number;
     /** 创建时间 只读 */
     createdTime: number;
+  };
+
+  type term = {
+    /** 字段名 */
+    column: string;
+    /** 条件值 */
+    value: string;
+    /** 多个条件关联类型 or  and */
+    type: string;
+    /** 动态条件类型 eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间   */
+    termType: string;
+    /** 嵌套条件 */
+    terms?: term[];
+  };
+
+  type triggerDevice = {
+    /** 产品id */
+    productID: string;
+    /** 设备选择方式 all: 全部 fixed:指定的设备 */
+    selector: string;
+    /** 选择的列表 选择的列表, fixed类型是设备名列表 */
+    selectorValues: string[];
+    operation: { operator?: string };
   };
 }

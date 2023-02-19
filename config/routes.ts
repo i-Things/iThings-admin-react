@@ -90,6 +90,11 @@ export default [
             component: './systemMangers/menu/index',
           },
           {
+            name: '接口管理',
+            path: '/systemMangers/api/index',
+            component: './systemMangers/api/index',
+          },
+          {
             component: '404',
           },
         ],

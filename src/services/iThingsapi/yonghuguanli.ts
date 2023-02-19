@@ -29,7 +29,7 @@ export async function postApiV1SystemUserCaptcha(
 /** 创建用户信息 POST /api/v1/system/user/create */
 export async function postApiV1SystemUserCreate(
   body: {
-    /** 注册方式:  phone手机号注册 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序 密码方式 pwd 账密方式 */
+    /** 注册方式:	phone手机号注册 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序 密码方式 pwd 账密方式 */
     reqType: string;
     /** 手机号注册时填写手机号,账密登录时填写用户账号 */
     userName: string;
