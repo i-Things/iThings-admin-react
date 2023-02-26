@@ -22,7 +22,8 @@ const DevicePositionModal: React.FC<{
   parseAddress?: string;
 }> = ({ getDevicePositionVal, record, flag, parseAddress }) => {
   const [visible, setVisible] = useState(false);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<modalFormType[]>([]);
+
   const [address, setAddress] = useState('');
   const [local, setLocal] = useState(null);
 
@@ -39,8 +40,7 @@ const DevicePositionModal: React.FC<{
     if (options.length) {
       getDevicePositionVal(Array.isArray(addr) ? addr[0] : addr, 'loc');
       onClose();
-    }
-    message.warning('暂无搜索结果');
+    } else message.warning('暂无搜索结果');
   };
 
   const searchDebBtn = async (nV) => {
@@ -66,14 +66,9 @@ const DevicePositionModal: React.FC<{
 
   const loadOption = async () => {
     await loadBMap();
-    let map;
-    try {
-      map = new BMap.Map('map');
-    } catch {
-      location.reload();
-    }
+    const map = new window.BMap.Map('map');
     map.centerAndZoom(
-      new BMap.Point(
+      new window.BMap.Point(
         record?.position?.longitude || 116.403963,
         record?.position?.latitude || 39.915119,
       ),
@@ -94,11 +89,12 @@ const DevicePositionModal: React.FC<{
       },
     };
 
-    setLocal(new BMap.LocalSearch(map, option));
+    setLocal(new window.BMap.LocalSearch(map, option));
   };
 
   useEffect(() => {
     loadOption();
+    local?.search(parseAddress);
     setAddress(parseAddress as string);
   }, [flag, record, parseAddress]);
 
