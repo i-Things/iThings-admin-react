@@ -303,7 +303,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           >
             删除
           </Button>
-          {deviceType[record.productID || ''].text === '网关' && (
+          {deviceType[record.productID as string]?.text === '网关' && (
             <div>
               <a
                 className=""

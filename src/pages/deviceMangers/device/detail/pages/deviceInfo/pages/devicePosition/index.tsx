@@ -9,6 +9,7 @@ import type { DeviceInfo } from '@/pages/deviceMangers/device/detail/pages/devic
 import type { modalFormType } from './devicePositionModal';
 
 import styles from '@/pages/home/pages/deviceMap/index.less';
+import { getLocal, setLocal } from '@/utils/utils';
 
 interface InfoProps {
   deviceInfo: DeviceInfo;
@@ -16,45 +17,10 @@ interface InfoProps {
 }
 
 const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
-  const markerRef = useRef(null);
   const geocoderRef = useRef(null);
-  const pointRef = useRef(null);
-  const addressRef = useRef(null);
   const deviceInfoStateRef = useRef({});
 
   const [pos, setPos] = useState('');
-  const [addre, setAddre] = useState('');
-
-  const getmap = async (info) => {
-    await loadBMap();
-    const map = new BMap.Map('map');
-    const lng = info?.position?.longitude || info?.point?.lng;
-    const lat = info?.position?.latitude || info?.point?.lat;
-    if (lng && lat) {
-      pointRef.current = new BMap.Point(lng, lat);
-    } else {
-      pointRef.current = new BMap.Point(116.403963, 39.915119);
-    }
-    map.centerAndZoom(pointRef.current, 14);
-    map.enableScrollWheelZoom(true);
-    // 开启鼠标滚轮缩放
-    map.addControl(new BMap.NavigationControl());
-
-    markerRef.current = new BMap.Marker(pointRef.current, {
-      enableDragging: true,
-    });
-
-    map.addOverlay(markerRef.current);
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    markerRef.current?.addEventListener('mouseup', getLocationHandle);
-    map.panTo(pointRef.current);
-
-    geocoderRef.current = new BMap.Geocoder();
-    geocoderRef.current?.getLocation(pointRef.current, (GeocoderResult) => {
-      if (!GeocoderResult) message.error('地址解析失败');
-      setAddre(GeocoderResult.address);
-    });
-  };
 
   const devicePosHandle = (GeocoderResult, flag: 'pos' | 'loc') => {
     const body = {
@@ -80,28 +46,49 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       });
   };
 
-  const getLocationHandle = (params) => {
-    const lng = params?.point?.lng || params?.point?.[0];
-    const lat = params?.point?.lat || params?.point?.[1];
-    const point = new BMap.Point(lng, lat);
+  const getAddr = (point, flag) => {
+    geocoderRef.current = new window.BMap.Geocoder();
     geocoderRef.current?.getLocation(point, (GeocoderResult) => {
       if (!GeocoderResult) message.error('地址解析失败');
-      addressRef.current = GeocoderResult.address;
-      setAddre(GeocoderResult.address);
-      // setPos(GeocoderResult.address);
-      getmap(GeocoderResult);
-      devicePosHandle({ ...GeocoderResult, address: pos }, 'loc');
+      setLocal('addr', GeocoderResult.address);
+      if (flag === 'loc') devicePosHandle({ ...GeocoderResult, address: pos }, 'loc');
     });
   };
 
-  // const getPointHandle = (params) => {
-  //   addressRef.current = params?.address;
-  //   geocoderRef.current?.getPoint(params?.address, (GeocoderResult) => {
-  //     if (!GeocoderResult) message.error('地址解析失败');
-  //     getmap({ point: GeocoderResult, address: params?.address });
-  //     devicePosHandle({ point: GeocoderResult, address: params?.address }, 'loc');
-  //   });
-  // };
+  const getmap = async (info) => {
+    await loadBMap();
+    const map = new window.BMap.Map('map');
+    const lng = info?.position?.longitude || info?.point?.lng;
+    const lat = info?.position?.latitude || info?.point?.lat;
+    let point;
+    if (lng && lat) {
+      point = new window.BMap.Point(lng, lat);
+    } else {
+      point = new window.BMap.Point(116.403963, 39.915119);
+    }
+    map.centerAndZoom(point, 14);
+    map.enableScrollWheelZoom(true);
+    // 开启鼠标滚轮缩放
+    map.addControl(new window.BMap.NavigationControl());
+
+    const marker = new window.BMap.Marker(point, {
+      enableDragging: true,
+    });
+
+    map.addOverlay(marker);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    marker?.addEventListener('mouseup', getLocationHandle);
+    map.panTo(point);
+
+    getAddr(point, undefined);
+  };
+
+  const getLocationHandle = (params) => {
+    const lng = params?.point?.lng || params?.point?.[0];
+    const lat = params?.point?.lat || params?.point?.[1];
+    const point = new window.BMap.Point(lng, lat);
+    getAddr(point, 'loc');
+  };
 
   const getDevicePositionVal = (value: modalFormType, tag: 'pos' | 'loc') => {
     if (tag === 'loc') {
@@ -144,14 +131,14 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
                 ? `${deviceInfo?.position.longitude},${deviceInfo?.position.latitude}`
                 : '-'}
             </Tag>
-            位置：{deviceInfo?.position?.longitude ? addre : '-'}
+            位置：{deviceInfo?.position?.longitude ? getLocal('addr') : '-'}
           </span>
 
           <DevicePositionModal
             getDevicePositionVal={getDevicePositionVal}
             record={record}
             flag={'loc'}
-            parseAddress={addre}
+            parseAddress={getLocal('addr')}
           />
         </div>
       ),
@@ -171,15 +158,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
       deviceInfoStateRef.current = deviceInfo;
       getmap(deviceInfo);
     }
-
-    return () => {
-      markerRef.current?.removeEventListener('mouseup', getLocationHandle, true);
-    };
   }, [deviceInfo]);
-
-  useEffect(() => {
-    setPos(deviceInfo?.address as string);
-  }, [deviceInfo?.address]);
 
   return (
     <div id="edit-map">
@@ -196,4 +175,5 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
     </div>
   );
 };
+
 export default DevicePositionPage;

@@ -63,7 +63,7 @@ const GroupDeviceList: React.FC<{
   const inputSearch = (value: string) => setSearchParams({ ...searchParams, deviceName: value });
 
   const jumpToDeviceList = (record: GroupDeviceItem) =>
-    history.push(`/deviceMangers/device/detail/${record?.productID}/${record.deviceName}`);
+    history.push(`/deviceMangers/device/detail/${record?.productID}/${record.deviceName}/1`);
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {

@@ -1,6 +1,6 @@
 import { postApiV1ThingsDeviceInfoCount } from '@/services/iThingsapi/shebeiguanli';
 import { useRequest } from 'ahooks';
-import { message } from 'antd';
+import { Col, message, Row } from 'antd';
 import { useMemo } from 'react';
 import DeviceChart from './pages/deviceChart/index';
 import DeviceCount from './pages/deviceCount/index';
@@ -25,9 +25,17 @@ const IndexPage = () => {
 
   return (
     <div style={{ background: '#fff', padding: 24 }}>
-      <DeviceCount data={data?.data} deviceTotal={deviceTotal} />
-      <DeviceChart data={data?.data} />
-      <DeviceMap />
+      <Row gutter={20}>
+        <Col span={15}>
+          <DeviceMap />
+        </Col>
+        <Col span={9}>
+          <div style={{ height: '70vh', boxSizing: 'border-box' }}>
+            <DeviceCount data={data?.data} deviceTotal={deviceTotal} />
+            <DeviceChart data={data?.data} />
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };

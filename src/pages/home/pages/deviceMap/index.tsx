@@ -6,7 +6,7 @@ import { TitleComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { history } from 'umi';
 
 import type { DeviceStatic } from '@/pages/home/data';
@@ -50,8 +50,6 @@ interface DeviceListProps extends DEVICE_INFO {
 }
 
 const DeviceMap: React.FC<DeviceMapProps> = () => {
-  const [data, setData] = useState<DeviceListProps[]>([]);
-
   const body = {
     page: {
       size: 99999,
@@ -82,6 +80,25 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
       },
     },
   );
+
+  const data = useMemo(() => {
+    const res = deviceList?.map((device) => {
+      let productName: string = '';
+      let isOnline = device.isOnline;
+      if (device.isOnline === 2 && device.firstLogin === '0') isOnline = 3;
+      productList?.map((product) => {
+        if (device.productID === product.productID) {
+          productName = product.productName as string;
+        }
+      });
+      return {
+        ...device,
+        productName,
+        isOnline,
+      };
+    }) as DeviceListProps[];
+    return res;
+  }, [deviceList, productList]);
 
   const convertData = function (list: DeviceListProps[], status: number) {
     const res: Omit<DeviceListProps, 'position'>[] = [];
@@ -325,24 +342,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
 
   useEffect(() => {
     loadBMap();
-    setData(
-      deviceList?.map((device) => {
-        let productName: string = '';
-        let isOnline = device.isOnline;
-        if (device.isOnline === 2 && device.firstLogin === '0') isOnline = 3;
-        productList?.map((product) => {
-          if (device.productID === product.productID) {
-            productName = product.productName as string;
-          }
-        });
-        return {
-          ...device,
-          productName,
-          isOnline,
-        };
-      }) as DeviceListProps[],
-    );
-  }, [deviceList, productList]);
+  }, []);
 
   return (
     <div id="map">
