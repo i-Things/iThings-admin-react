@@ -3,7 +3,7 @@ import { Col, Row, Typography } from 'antd';
 import type { DeviceStatic } from '../../data';
 import styles from './index.less';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 interface DeviceCountProps {
   data?: DeviceStatic;
   deviceTotal: number;
@@ -14,8 +14,7 @@ const DeviceCount: React.FC<DeviceCountProps> = ({ data, deviceTotal }) => {
   return (
     <div
       style={{
-        height: '27vh',
-        padding: '0 20px 25px',
+        padding: '0 20px 24px',
         border: '1px solid #ccc',
         borderRadius: '6px',
         boxSizing: 'border-box',
@@ -29,10 +28,9 @@ const DeviceCount: React.FC<DeviceCountProps> = ({ data, deviceTotal }) => {
             style={{
               borderTop: '4px solid #08f',
               background: 'rgba(0, 136, 255, 0.1)',
-              borderRadius: '6px',
             }}
           >
-            <div>设备总数</div>
+            <Text ellipsis>设备总数</Text>
             <div className={styles.num} style={{ color: '#08f' }}>
               {deviceTotal}
             </div>
@@ -44,10 +42,9 @@ const DeviceCount: React.FC<DeviceCountProps> = ({ data, deviceTotal }) => {
             style={{
               borderTop: '4px solid #FF401A',
               background: 'rgba(255, 64, 26, 0.1)',
-              borderRadius: '6px',
             }}
           >
-            <div>未激活设备</div>
+            <Text ellipsis>未激活设备</Text>
             <div className={styles.num} style={{ color: '#ff401a' }}>
               {data?.deviceCount.inactive}
             </div>
@@ -62,7 +59,7 @@ const DeviceCount: React.FC<DeviceCountProps> = ({ data, deviceTotal }) => {
               borderRadius: '6px',
             }}
           >
-            <div>在线设备</div>
+            <Text ellipsis>在线设备</Text>
             <div className={styles.num} style={{ color: '#00b354' }}>
               {data?.deviceCount.online}
             </div>
@@ -77,7 +74,7 @@ const DeviceCount: React.FC<DeviceCountProps> = ({ data, deviceTotal }) => {
               borderRadius: '6px',
             }}
           >
-            <div>离线设备</div>
+            <Text ellipsis>离线设备</Text>
             <div className={styles.num} style={{ color: '#FFB700' }}>
               {data?.deviceCount.offline}
             </div>
