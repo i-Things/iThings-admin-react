@@ -48,32 +48,28 @@ const DeviceChart: React.FC<DeviceChartProps> = ({ data }) => {
   }, [data?.deviceCount]);
 
   return (
-    <div
-      style={{
-        height: '43vh',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
-      <Row gutter={20}>
-        <Col span={12}>
-          <div className={styles['charts-wrapper']}>
-            <Title level={4}>设备接入类型</Title>
-            <div style={{ height: '100%' }}>
-              {data && <ReactECharts option={deviceTypeOptions} style={{ height: '100%' }} />}
-            </div>
+    <Row gutter={20}>
+      <Col span={12}>
+        <div className={styles['charts-wrapper']}>
+          <Title level={4} ellipsis>
+            设备接入类型
+          </Title>
+          <div style={{ height: '100%' }}>
+            {data && <ReactECharts option={deviceTypeOptions} style={{ height: '100%' }} />}
           </div>
-        </Col>
-        <Col span={12}>
-          <div className={styles['charts-wrapper']}>
-            <Title level={4}>设备在线率</Title>
-            <div style={{ height: '100%' }}>
-              {data && <ReactECharts option={deviceOnlineOptions} style={{ height: '100%' }} />}
-            </div>
+        </div>
+      </Col>
+      <Col span={12}>
+        <div className={styles['charts-wrapper']}>
+          <Title level={4} ellipsis>
+            设备在线率
+          </Title>
+          <div style={{ height: '100%' }}>
+            {data && <ReactECharts option={deviceOnlineOptions} style={{ height: '100%' }} />}
           </div>
-        </Col>
-      </Row>
-    </div>
+        </div>
+      </Col>
+    </Row>
   );
 };
 
