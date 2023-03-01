@@ -1,8 +1,8 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
 import {
-  postThingsGroupInfoIndex,
-  postThingsGroupInfo__openAPI__delete,
+  postApiV1ThingsGroupInfoIndex,
+  postApiV1ThingsGroupInfo__openAPI__delete,
 } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
@@ -33,7 +33,7 @@ const GroupList: React.FC<{
 
   const actionRef = useRef<ActionType | undefined>();
 
-  type QueryProp = typeof postThingsGroupInfoIndex;
+  type QueryProp = typeof postApiV1ThingsGroupInfoIndex;
 
   const indexFlag = flag === 'index';
 
@@ -63,7 +63,7 @@ const GroupList: React.FC<{
     const body = {
       groupID: record?.groupID,
     };
-    deleteHandler<{ groupID: string }>(postThingsGroupInfo__openAPI__delete, actionRef, {
+    deleteHandler<{ groupID: string }>(postApiV1ThingsGroupInfo__openAPI__delete, actionRef, {
       title: '是否删除当前分组',
       content: `所选分组: ${record?.groupName ?? '未知分组'},  删除后无法恢复，请确认`,
       body,
@@ -183,7 +183,7 @@ const GroupList: React.FC<{
       params={indexFlag ? undefined : searchParams}
       request={(params) =>
         queryPage<QueryProp, GroupListItem>(
-          postThingsGroupInfoIndex,
+          postApiV1ThingsGroupInfoIndex,
           indexFlag
             ? {
                 ...params,
@@ -194,7 +194,6 @@ const GroupList: React.FC<{
         )
       }
       columns={columns}
-      pagination={{ pageSize: 10 }}
       size={'middle'}
     />
   );

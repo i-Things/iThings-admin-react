@@ -45,7 +45,8 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-async function postThingsProductRemoteConfigLastestRead(req: Request, res: Response) {
+
+async function postApiV1ThingsProductRemoteConfigLastestRead(req: Request, res: Response) {
   await waitTime(2000);
   return res.json({
     code: 200,
@@ -53,7 +54,8 @@ async function postThingsProductRemoteConfigLastestRead(req: Request, res: Respo
     data: List,
   });
 }
-async function postThingsProductRemoteConfigIndex(req: Request, res: Response) {
+
+async function postApiV1ThingsProductRemoteConfigIndex(req: Request, res: Response) {
   await waitTime(2000);
   return res.json({
     code: 200,
@@ -67,6 +69,6 @@ async function postThingsProductRemoteConfigIndex(req: Request, res: Response) {
 
 export default {
   'POST /api/v1/things/product/remote-config/lastest-read':
-    postThingsProductRemoteConfigLastestRead,
-  'POST /api/v1/things/product/remote-config/index': postThingsProductRemoteConfigIndex,
+    postApiV1ThingsProductRemoteConfigLastestRead,
+  'POST /api/v1/things/product/remote-config/index': postApiV1ThingsProductRemoteConfigIndex,
 };

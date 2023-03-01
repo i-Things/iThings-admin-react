@@ -1,7 +1,10 @@
-import { postSystemCommonConfig } from '@/services/iThingsapi/xitongpeizhi';
+import { postApiV1SystemCommonConfig } from '@/services/iThingsapi/xitongpeizhi';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { history } from '@umijs/max';
-import { postSystemUserRead, postSystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
+import {
+  postApiV1SystemUserRead,
+  postApiV1SystemUserResourceRead,
+} from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
 import { getToken, getUID, setLocal, spanTree } from './utils/utils';
 
@@ -28,11 +31,6 @@ const loopMenuItem = (menus: any[]): MenuDataItem[] =>
     };
   });
 
-/** 获取用户信息比较慢的时候会展示一个 loading */
-// export const initialStateConfig = {
-//   loading: <PageLoading />,
-// };
-
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -53,9 +51,9 @@ export async function getInitialState(): Promise<{
       }
 
       const body = { uid: uid };
-      const msg = await postSystemUserRead(body);
-      const menuTree = await postSystemUserResourceRead({});
-      const { data } = await postSystemCommonConfig({});
+      const msg = await postApiV1SystemUserRead(body);
+      const menuTree = await postApiV1SystemUserResourceRead({});
+      const { data } = await postApiV1SystemCommonConfig({});
       setLocal(`mapData`, JSON.stringify(data));
       const menuInfo = loopMenuItem(
         spanTree(

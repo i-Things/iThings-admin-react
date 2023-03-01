@@ -1,10 +1,10 @@
 import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
-import { postSystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
+import { postApiV1SystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
 import {
-  postSystemUserIndex,
-  postSystemUser__openAPI__delete,
+  postApiV1SystemUserIndex,
+  postApiV1SystemUser__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -16,6 +16,7 @@ import { Button, Divider } from 'antd';
 import React, { useEffect, useRef } from 'react';
 import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
+
 const UserList: React.FC = () => {
   const { queryPage } = useGetTableList();
   const { deleteHandler } = useTableDelete();
@@ -23,15 +24,15 @@ const UserList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const ROLE_VALUE_ENUM = arrTransferObj(selectOptions, 'value', 'label');
 
-  type QueryProp = typeof postSystemUserIndex;
-  type QueryRoleProp = typeof postSystemRoleIndex;
+  type QueryProp = typeof postApiV1SystemUserIndex;
+  type QueryRoleProp = typeof postApiV1SystemRoleIndex;
 
   // 删除操作
   const showDeleteConfirm = (record: { uid: string; userName: string }) => {
     const body = {
       uid: record?.uid ?? '',
     };
-    deleteHandler<{ uid: string }>(postSystemUser__openAPI__delete, actionRef, {
+    deleteHandler<{ uid: string }>(postApiV1SystemUser__openAPI__delete, actionRef, {
       title: '是否删除当前用户',
       content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
       body,
@@ -103,7 +104,7 @@ const UserList: React.FC = () => {
   ];
 
   useEffect(() => {
-    querySelectOptions<QueryRoleProp>(postSystemRoleIndex, {
+    querySelectOptions<QueryRoleProp>(postApiV1SystemRoleIndex, {
       page: { page: 1, size: 99999 },
       label: 'name',
       value: 'id',
@@ -121,9 +122,10 @@ const UserList: React.FC = () => {
         toolBarRender={() => [
           <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
         ]}
-        request={(params) => queryPage<QueryProp, UserListItem>(postSystemUserIndex, { ...params })}
+        request={(params) =>
+          queryPage<QueryProp, UserListItem>(postApiV1SystemUserIndex, { ...params })
+        }
         columns={columns}
-        pagination={{ pageSize: 10 }}
         size={'middle'}
       />
     </PageContainer>

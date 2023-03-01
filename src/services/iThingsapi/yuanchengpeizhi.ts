@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 创建配置 POST /api/v1/things/product/remote-config/create */
-export async function postThingsProductRemoteConfigCreate(
+export async function postApiV1ThingsProductRemoteConfigCreate(
   body: {
     /** 产品id */
     productID: string;
@@ -23,7 +23,7 @@ export async function postThingsProductRemoteConfigCreate(
 }
 
 /** 获取配置列表 POST /api/v1/things/product/remote-config/index */
-export async function postThingsProductRemoteConfigIndex(
+export async function postApiV1ThingsProductRemoteConfigIndex(
   body: {
     page?: { page?: number; size?: number };
     /** 产品id */
@@ -46,7 +46,7 @@ export async function postThingsProductRemoteConfigIndex(
 }
 
 /** 获取最新配置 POST /api/v1/things/product/remote-config/lastest-read */
-export async function postThingsProductRemoteConfigLastestRead(
+export async function postApiV1ThingsProductRemoteConfigLastestRead(
   body: {
     /** 产品id */
     productID: string;
@@ -68,7 +68,7 @@ export async function postThingsProductRemoteConfigLastestRead(
 }
 
 /** 推送配置 POST /api/v1/things/product/remote-config/push-all */
-export async function postThingsProductRemoteConfigPushAll(
+export async function postApiV1ThingsProductRemoteConfigPushAll(
   body: {
     /** 产品id */
     productID: string;

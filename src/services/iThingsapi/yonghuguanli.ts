@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 获取验证码 POST /api/v1/system/user/captcha */
-export async function postSystemUserCaptcha(
+export async function postApiV1SystemUserCaptcha(
   body: {
     /** 用途 */
     use: string;
@@ -27,7 +27,7 @@ export async function postSystemUserCaptcha(
 }
 
 /** 创建用户信息 POST /api/v1/system/user/create */
-export async function postSystemUserCreate(
+export async function postApiV1SystemUserCreate(
   body: {
     /** 注册方式:	phone手机号注册 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序 密码方式 pwd 账密方式 */
     reqType: string;
@@ -75,7 +75,7 @@ export async function postSystemUserCreate(
 }
 
 /** 删除用户 POST /api/v1/system/user/delete */
-export async function postSystemUser__openAPI__delete(
+export async function postApiV1SystemUser__openAPI__delete(
   body: {
     /** 用户id */
     uid: string;
@@ -93,7 +93,7 @@ export async function postSystemUser__openAPI__delete(
 }
 
 /** 获取用户信息列表 POST /api/v1/system/user/index */
-export async function postSystemUserIndex(
+export async function postApiV1SystemUserIndex(
   body: {
     /** 分页 */
     page: { page?: number; size?: number };
@@ -128,7 +128,7 @@ export async function postSystemUserIndex(
         headImgUrl?: string;
         createdTime?: string;
       }[];
-      total?: string;
+      total?: number;
     };
   }>('/api/v1/system/user/index', {
     method: 'POST',
@@ -141,7 +141,7 @@ export async function postSystemUserIndex(
 }
 
 /** 登录 POST /api/v1/system/user/login */
-export async function postSystemUserLogin(
+export async function postApiV1SystemUserLogin(
   body: {
     /** 账号密码登录时需要填写.0,无密码 1，明文 2，md5加密 */
     pwdType: number;
@@ -193,7 +193,7 @@ export async function postSystemUserLogin(
 }
 
 /** 获取用户信息 POST /api/v1/system/user/read */
-export async function postSystemUserRead(
+export async function postApiV1SystemUserRead(
   body: {
     /** 用户id */
     uid?: string;
@@ -232,7 +232,7 @@ export async function postSystemUserRead(
 }
 
 /** 获取用户资源 POST /api/v1/system/user/resource-read */
-export async function postSystemUserResourceRead(body: {}, options?: { [key: string]: any }) {
+export async function postApiV1SystemUserResourceRead(body: {}, options?: { [key: string]: any }) {
   return request<{
     code: number;
     msg: string;
@@ -261,7 +261,7 @@ export async function postSystemUserResourceRead(body: {}, options?: { [key: str
 }
 
 /** 更新用户基本数据 POST /api/v1/system/user/update */
-export async function postSystemUserUpdate(
+export async function postApiV1SystemUserUpdate(
   body: {
     /** 用户id */
     uid: string;

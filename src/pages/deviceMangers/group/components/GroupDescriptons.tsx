@@ -1,5 +1,5 @@
 import useGetTableList from '@/hooks/useGetTableList';
-import { postThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
+import { postApiV1ThingsGroupInfoRead } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus } from '@/utils/base';
 import type { ParamsType } from '@ant-design/pro-components';
 import { ProDescriptions } from '@ant-design/pro-components';
@@ -27,7 +27,7 @@ const GroupDescriptons: React.FC<{
 
   const lastRecordRef = useLatest(dataList);
 
-  type QueryProp = typeof postThingsGroupInfoRead;
+  type QueryProp = typeof postApiV1ThingsGroupInfoRead;
 
   const updateFlagHandler = () => setUpdateFlag(true);
 
@@ -104,7 +104,7 @@ const GroupDescriptons: React.FC<{
     setDataList(undefined);
     setUpdateFlag(false);
     const param = { groupID };
-    queryPage<QueryProp, ParamsType>(postThingsGroupInfoRead, param);
+    queryPage<QueryProp, ParamsType>(postApiV1ThingsGroupInfoRead, param);
   }, [updateFlag, location]);
 
   return (

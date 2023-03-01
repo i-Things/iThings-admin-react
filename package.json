@@ -108,7 +108,6 @@
     "omit.js": "^2.0.2",
     "postcss-px2viewport": "^0.1.3",
     "pubsub-js": "^1.9.4",
-    "react": "^17.0.0",
     "react-bmapgl": "^0.2.11",
     "query-string": "^8.1.0",
     "react": "^18.2.0",

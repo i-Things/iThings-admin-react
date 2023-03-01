@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 获取物模型事件历史记录 POST /api/v1/things/device/msg/event-log/index */
-export async function postThingsDeviceMsgEventLogIndex(
+export async function postApiV1ThingsDeviceMsgEventLogIndex(
   body: {
     /** 不填获取产品下所有设备 */
     deviceNames: string[];
@@ -33,7 +33,7 @@ export async function postThingsDeviceMsgEventLogIndex(
 }
 
 /** 获取云端诊断日志 POST /api/v1/things/device/msg/hub-log/index */
-export async function postThingsDeviceMsgHubLogIndex(
+export async function postApiV1ThingsDeviceMsgHubLogIndex(
   body: {
     deviceName: string;
     productID: string;
@@ -72,7 +72,7 @@ export async function postThingsDeviceMsgHubLogIndex(
 }
 
 /** 获取最新属性 POST /api/v1/things/device/msg/property-latest/index */
-export async function postThingsDeviceMsgPropertyLatestIndex(
+export async function postApiV1ThingsDeviceMsgPropertyLatestIndex(
   body: {
     deviceName: string;
     productID: string;
@@ -94,7 +94,7 @@ export async function postThingsDeviceMsgPropertyLatestIndex(
 }
 
 /** 获取单个id属性历史记录 POST /api/v1/things/device/msg/property-log/index */
-export async function postThingsDeviceMsgPropertyLogIndex(
+export async function postApiV1ThingsDeviceMsgPropertyLogIndex(
   body: {
     /** 不填获取产品下所有设备 */
     deviceNames: string[];
@@ -119,7 +119,7 @@ export async function postThingsDeviceMsgPropertyLogIndex(
 }
 
 /** 获取设备本地日志 获取设备主动上传的sdk日志 POST /api/v1/things/device/msg/sdk-log/index */
-export async function postThingsDeviceMsgSdkLogIndex(
+export async function postApiV1ThingsDeviceMsgSdkLogIndex(
   body: {
     deviceName: string;
     productID: string;

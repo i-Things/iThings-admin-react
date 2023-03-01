@@ -1,4 +1,4 @@
-import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
+import { postApiV1ThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage } from '@/utils/base';
 import { milliTdToDate } from '@/utils/date';
 import { useRequest } from 'ahooks';
@@ -20,7 +20,7 @@ const OnLineDebug: React.FC<DeviceInfo> = (props) => {
   // 获取内容日志
   useRequest(
     async () => {
-      const res = await postThingsDeviceMsgHubLogIndex({
+      const res = await postApiV1ThingsDeviceMsgHubLogIndex({
         timeStart,
         productID,
         deviceName,

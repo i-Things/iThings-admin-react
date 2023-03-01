@@ -3,12 +3,12 @@ import { getLocal } from '@/utils/utils';
 export async function loadBMap() {
   return new Promise(function (resolve, reject) {
     const data = JSON.parse(getLocal('mapData') as string);
-    if (typeof BMap !== 'undefined') {
-      resolve(BMap);
+    if (typeof window.BMap !== 'undefined') {
+      resolve(window.BMap);
       return true;
     }
     window.onBMapCallback = function () {
-      resolve(BMap);
+      resolve(window.BMap);
     };
     // 使用https协议需要添加一下meta标签
     const protocolStr = document.location.protocol;

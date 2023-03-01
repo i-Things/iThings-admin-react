@@ -1,5 +1,5 @@
 import TimeFilter from '@/components/TimeFilter';
-import { postThingsDeviceMsgPropertyLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
+import { postApiV1ThingsDeviceMsgPropertyLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
 import { CloseOutlined } from '@ant-design/icons';
@@ -58,7 +58,7 @@ const ModelDetail: React.FC<ModelProps> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceMsgPropertyLogIndex(_params);
+    const res = await postApiV1ThingsDeviceMsgPropertyLogIndex(_params);
     const result = res?.data;
     return {
       list: result?.list || [],

@@ -1,5 +1,5 @@
 import TimeFilter from '@/components/TimeFilter';
-import { postThingsDeviceMsgSdkLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
+import { postApiV1ThingsDeviceMsgSdkLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { DEVICE_LOG_LEVEL_FORM, DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -54,7 +54,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceMsgSdkLogIndex(_params);
+    const res = await postApiV1ThingsDeviceMsgSdkLogIndex(_params);
     const result = res?.data;
     return {
       list: result?.list || [],

@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 同步调用设备行为 POST /api/v1/things/device/interact/send-action */
-export async function postThingsDeviceInteractSendAction(
+export async function postApiV1ThingsDeviceInteractSendAction(
   body: {
     productID: string;
     deviceName: string;
@@ -27,7 +27,7 @@ export async function postThingsDeviceInteractSendAction(
 }
 
 /** 发送消息给设备 POST /api/v1/things/device/interact/send-msg */
-export async function postThingsDeviceInteractSendMsg(
+export async function postApiV1ThingsDeviceInteractSendMsg(
   body: {
     topic: string;
     payload: string;
@@ -45,7 +45,7 @@ export async function postThingsDeviceInteractSendMsg(
 }
 
 /** 同步调用设备属性 POST /api/v1/things/device/interact/send-property */
-export async function postThingsDeviceInteractSendProperty(
+export async function postApiV1ThingsDeviceInteractSendProperty(
   body: {
     productID: string;
     deviceName: string;

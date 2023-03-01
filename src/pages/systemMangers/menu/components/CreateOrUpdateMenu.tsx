@@ -1,6 +1,9 @@
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postSystemMenuCreate, postSystemMenuUpdate } from '@/services/iThingsapi/caidanguanli';
+import {
+  postApiV1SystemMenuCreate,
+  postApiV1SystemMenuUpdate,
+} from '@/services/iThingsapi/caidanguanli';
 import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { ICON_OPTION } from '@/utils/iconMap';
@@ -28,8 +31,8 @@ const CreateOrUpdateMenu: React.FC<{
   const editFormRef = useRef<ProFormInstance>();
   const options = cloneDeep(cascaderOptions);
 
-  type CreateProp = typeof postSystemMenuCreate;
-  type UpdateProp = typeof postSystemMenuUpdate;
+  type CreateProp = typeof postApiV1SystemMenuCreate;
+  type UpdateProp = typeof postApiV1SystemMenuUpdate;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -76,8 +79,8 @@ const CreateOrUpdateMenu: React.FC<{
     };
 
     if (flag === FlagStatus.UPDATE)
-      await updateHandler<UpdateProp, MenuListItem>(postSystemMenuUpdate, actionRef, body);
-    else await createHandler<CreateProp, MenuListItem>(postSystemMenuCreate, actionRef, body);
+      await updateHandler<UpdateProp, MenuListItem>(postApiV1SystemMenuUpdate, actionRef, body);
+    else await createHandler<CreateProp, MenuListItem>(postApiV1SystemMenuCreate, actionRef, body);
     onClose();
     editFormRef.current?.resetFields();
   };

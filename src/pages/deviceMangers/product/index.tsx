@@ -1,6 +1,6 @@
 import {
-  postThingsProductInfoIndex,
-  postThingsProductInfo__openAPI__delete,
+  postApiV1ThingsProductInfoIndex,
+  postApiV1ThingsProductInfo__openAPI__delete,
 } from '@/services/iThingsapi/chanpinguanli';
 import { FlagStatus, ResponseCode } from '@/utils/base';
 import type { PRODUCT_INFO } from '@/utils/const';
@@ -40,11 +40,11 @@ const IndexPage: React.FC = () => {
         size: params.pageSize,
         page: params.current,
       },
-      deviceType: Number(params.deviceType),
+      // deviceType: Number(params.deviceType),
       productName: params.productName,
       tags: tags,
     };
-    const res = await postThingsProductInfoIndex(body);
+    const res = await postApiV1ThingsProductInfoIndex(body);
 
     if (res instanceof Response) {
       return {
@@ -144,7 +144,7 @@ const IndexPage: React.FC = () => {
                 const body = {
                   productID: record?.productID ?? '',
                 };
-                postThingsProductInfo__openAPI__delete(body).then(
+                postApiV1ThingsProductInfo__openAPI__delete(body).then(
                   (res: { code: number; msg: string }) => {
                     if (res.code === ResponseCode.SUCCESS) {
                       message.success('删除成功');

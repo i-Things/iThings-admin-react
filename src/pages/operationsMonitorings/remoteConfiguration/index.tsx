@@ -4,13 +4,13 @@ import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
 import {
-  postThingsProductRemoteConfigCreate,
-  postThingsProductRemoteConfigIndex,
-  postThingsProductRemoteConfigLastestRead,
-  postThingsProductRemoteConfigPushAll,
-} from '@/services/iThingsapi/chanpinyuanchengpeizhi';
+  postApiV1ThingsProductRemoteConfigCreate,
+  postApiV1ThingsProductRemoteConfigIndex,
+  postApiV1ThingsProductRemoteConfigLastestRead,
+  postApiV1ThingsProductRemoteConfigPushAll,
+} from '@/services/iThingsapi/yuanchengpeizhi';
 import { ResponseCode } from '@/utils/base';
 import { PROTABLE_OPTIONS } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
@@ -49,9 +49,9 @@ const RemoteConfiguration = () => {
   const monacoRef = useRef<MonacoEditorProps>();
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
 
-  type QueryProductProp = typeof postThingsProductInfoIndex;
-  type QueryDataProp = typeof postThingsProductRemoteConfigLastestRead;
-  type QueryProp = typeof postThingsProductRemoteConfigIndex;
+  type QueryProductProp = typeof postApiV1ThingsProductInfoIndex;
+  type QueryDataProp = typeof postApiV1ThingsProductRemoteConfigLastestRead;
+  type QueryProp = typeof postApiV1ThingsProductRemoteConfigIndex;
 
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
@@ -73,7 +73,7 @@ const RemoteConfiguration = () => {
 
   const confirmHandle = () => {
     // 批量更新逻辑
-    updateHandler(postThingsProductRemoteConfigPushAll, undefined, {
+    updateHandler(postApiV1ThingsProductRemoteConfigPushAll, undefined, {
       productID: productSelect,
     });
   };
@@ -84,7 +84,7 @@ const RemoteConfiguration = () => {
     setConfirmLoading(true);
     if (!editFlag || updateMonacoData)
       createHandler(
-        postThingsProductRemoteConfigCreate,
+        postApiV1ThingsProductRemoteConfigCreate,
         undefined,
         {
           productID: productSelect,
@@ -169,7 +169,7 @@ const RemoteConfiguration = () => {
 
   useEffect(() => {
     setProductSelect(selectOptions[0]?.value);
-    querySelectOptions<QueryProductProp>(postThingsProductInfoIndex, {
+    querySelectOptions<QueryProductProp>(postApiV1ThingsProductInfoIndex, {
       page: { page: 1, size: 99999 },
       label: 'productName',
       value: 'productID',
@@ -178,9 +178,12 @@ const RemoteConfiguration = () => {
 
   useEffect(() => {
     if (productSelect?.length) {
-      queryData<QueryDataProp, { productID: string }>(postThingsProductRemoteConfigLastestRead, {
-        productID: productSelect,
-      });
+      queryData<QueryDataProp, { productID: string }>(
+        postApiV1ThingsProductRemoteConfigLastestRead,
+        {
+          productID: productSelect,
+        },
+      );
     }
   }, [productSelect]);
 
@@ -261,13 +264,12 @@ const RemoteConfiguration = () => {
           options={{ ...PROTABLE_OPTIONS }}
           search={false}
           request={(params) =>
-            queryPage<QueryProp, RemoteConfigurationItem>(postThingsProductRemoteConfigIndex, {
+            queryPage<QueryProp, RemoteConfigurationItem>(postApiV1ThingsProductRemoteConfigIndex, {
               ...params,
               productID: productSelect,
             })
           }
           columns={columns}
-          pagination={{ pageSize: 10 }}
           size={'middle'}
         />
         <Modal

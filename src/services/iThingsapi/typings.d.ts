@@ -1,4 +1,14 @@
 declare namespace API {
+  type action = {
+    /** 执行器类型 notify: 通知 delay:延迟  device:设备输出  alarm: 告警 */
+    executor: string;
+    /** 通知 */
+    notify?: Record<string, any>;
+    delay?: { time?: number; unit?: string };
+    alarm?: { mode?: string };
+    device?: { productID?: string; selectorValues?: string[] };
+  };
+
   type deviceCore = {
     /** 产品id */
     productID: string;
@@ -176,6 +186,17 @@ declare namespace API {
     createdTime: number;
   };
 
+  type flow = {
+    /** 唯一id-雪花算法 */
+    ruleID: string;
+    /** 流名称 */
+    ruleName?: string;
+    /** 是否禁用 1:是 2:否 */
+    isDisabled?: number;
+    /** 描述 markdown格式 */
+    desc?: string;
+  };
+
   type page = {
     page?: { page?: number; size?: number };
   };
@@ -187,14 +208,18 @@ declare namespace API {
     size?: number;
   };
 
-  type postThingsDeviceInfoCountParams = {
+  type postApiV1SystemMenuIndexParams = {
+    role: number;
+  };
+
+  type postApiV1ThingsDeviceInfoCountParams = {
     /** 查询统计的开始时间，非必填，秒 */
     startTime?: number;
     /** 查询统计的结束时间，非必填，秒 */
     endTime?: number;
   };
 
-  type postThingsGroupInfoCreateParams = {
+  type postApiV1ThingsGroupInfoCreateParams = {
     district_id?: string;
     data_type?: string;
     ak?: string;
@@ -244,6 +269,29 @@ declare namespace API {
     required: number;
     /** 各功能类型的详细参数定义 */
     affordance: string;
+  };
+
+  type putIthings25hcK5yzlbqZipParams = {
+    'X-Amz-Algorithm'?: string;
+    'X-Amz-Credential'?: string;
+    'X-Amz-Date'?: string;
+    'X-Amz-Expires'?: string;
+    'X-Amz-SignedHeaders'?: string;
+    'X-Amz-Signature'?: string;
+  };
+
+  type scene = {
+    id?: number;
+    /** 场景名称 */
+    name?: string;
+    /** 触发器 */
+    trigger?: string;
+    /** 触发条件 */
+    when?: string;
+    /** 满足条件时执行的动作 */
+    then?: string;
+    /** 描述 */
+    desc?: string;
   };
 
   type SuccRet = {
@@ -338,5 +386,28 @@ declare namespace API {
     autoRepeat: number;
     /** 创建时间 只读 */
     createdTime: number;
+  };
+
+  type term = {
+    /** 字段名 */
+    column: string;
+    /** 条件值 */
+    value: string;
+    /** 多个条件关联类型 or  and */
+    type: string;
+    /** 动态条件类型 eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间   */
+    termType: string;
+    /** 嵌套条件 */
+    terms?: term[];
+  };
+
+  type triggerDevice = {
+    /** 产品id */
+    productID: string;
+    /** 设备选择方式 all: 全部 fixed:指定的设备 */
+    selector: string;
+    /** 选择的列表 选择的列表, fixed类型是设备名列表 */
+    selectorValues: string[];
+    operation: { operator?: string };
   };
 }

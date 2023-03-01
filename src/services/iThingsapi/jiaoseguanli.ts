@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 添加角色 POST /api/v1/system/role/create */
-export async function postSystemRoleCreate(
+export async function postApiV1SystemRoleCreate(
   body: {
     /** 角色名称 */
     name: string;
@@ -25,7 +25,7 @@ export async function postSystemRoleCreate(
 }
 
 /** 删除角色 POST /api/v1/system/role/delete */
-export async function postSystemRole__openAPI__delete(
+export async function postApiV1SystemRole__openAPI__delete(
   body: {
     /** 角色编号 */
     id: string;
@@ -43,7 +43,7 @@ export async function postSystemRole__openAPI__delete(
 }
 
 /** 获取角色列表 POST /api/v1/system/role/index */
-export async function postSystemRoleIndex(
+export async function postApiV1SystemRoleIndex(
   body: {
     page?: { page?: number; size?: number };
     /** 按名称查找角色 */
@@ -74,7 +74,7 @@ export async function postSystemRoleIndex(
 }
 
 /** 更新角色对应菜单列表 POST /api/v1/system/role/role-menu/update */
-export async function postSystemRoleRoleMenuUpdate(
+export async function postApiV1SystemRoleRoleMenuUpdate(
   body: {
     /** 角色编号 */
     id: number;
@@ -94,7 +94,7 @@ export async function postSystemRoleRoleMenuUpdate(
 }
 
 /** 更新角色 POST /api/v1/system/role/update */
-export async function postSystemRoleUpdate(
+export async function postApiV1SystemRoleUpdate(
   body: {
     /** 编号 */
     id: number;

@@ -271,7 +271,7 @@ let menuList = [
   },
 ];
 
-async function postSystemMenuIndex(req: Request, res: Response) {
+async function postApiV1SystemMenuIndex(req: Request, res: Response) {
   return res.json({
     code: 200,
     msg: 'string',
@@ -281,7 +281,8 @@ async function postSystemMenuIndex(req: Request, res: Response) {
     },
   });
 }
-async function postSystemMenuCreate(req: Request, res: Response) {
+
+async function postApiV1SystemMenuCreate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
     menuList.push({ ...req.body, uid: 123456, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
   return res.json({
@@ -290,7 +291,8 @@ async function postSystemMenuCreate(req: Request, res: Response) {
     data: menuList,
   });
 }
-async function postSystemMenuUpdate(req: Request, res: Response) {
+
+async function postApiV1SystemMenuUpdate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
     menuList.push({ ...req.body, uid: 123, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
   return res.json({
@@ -299,7 +301,8 @@ async function postSystemMenuUpdate(req: Request, res: Response) {
     data: menuList,
   });
 }
-async function postSystemMenu__openAPI__delete(req: Request, res: Response) {
+
+async function postApiV1SystemMenu__openAPI__delete(req: Request, res: Response) {
   menuList = menuList.filter((item) => item.id != req.body?.id);
   return res.json({
     code: 200,
@@ -309,8 +312,8 @@ async function postSystemMenu__openAPI__delete(req: Request, res: Response) {
 }
 
 export default {
-  'POST /api/v1/system/menu/index': postSystemMenuIndex,
-  'POST /api/v1/system/menu/create': postSystemMenuCreate,
-  'POST /api/v1/system/menu/update': postSystemMenuUpdate,
-  'POST /api/v1/system/menu/delete': postSystemMenu__openAPI__delete,
+  'POST /api/v1/system/menu/index': postApiV1SystemMenuIndex,
+  'POST /api/v1/system/menu/create': postApiV1SystemMenuCreate,
+  'POST /api/v1/system/menu/update': postApiV1SystemMenuUpdate,
+  'POST /api/v1/system/menu/delete': postApiV1SystemMenu__openAPI__delete,
 };

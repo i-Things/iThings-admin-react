@@ -1,4 +1,4 @@
-import { postThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormSwitch } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
@@ -69,7 +69,7 @@ const EditForm: React.FC<ModalProps> = (props) => {
       productID: deviceInfo.productID ?? '',
       deviceName: deviceInfo.deviceName ?? '',
     };
-    return postThingsDeviceInfoUpdate(body)
+    return postApiV1ThingsDeviceInfoUpdate(body)
       .then((res) => {
         setVisible(false);
         if (res.code === 200) {

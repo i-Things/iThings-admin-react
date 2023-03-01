@@ -73,3 +73,23 @@ export async function update(body: API.FirmwareInfoUpdateReq, options?: { [key: 
     ...(options || {}),
   });
 }
+
+/** 文件直传 地址由《获取升级包直传的signed url》接口返回 PUT /ithings/25hcK5yzlbq/3file.zip */
+export async function putIthings25hcK5yzlbqZip(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.putIthings25hcK5yzlbqZipParams,
+  body: string,
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/ithings/25hcK5yzlbq/3file.zip', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/octet-stream',
+    },
+    params: {
+      ...params,
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

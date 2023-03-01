@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
-  postThingsProductSchemaIndex,
-  postThingsProductSchemaTslImport,
-  postThingsProductSchemaTslRead,
-  postThingsProductSchema__openAPI__delete,
+  postApiV1ThingsProductSchemaIndex,
+  postApiV1ThingsProductSchemaTslImport,
+  postApiV1ThingsProductSchemaTslRead,
+  postApiV1ThingsProductSchema__openAPI__delete,
 } from '@/services/iThingsapi/wumoxing';
 import { downloadFunction, isJSON } from '@/utils/utils';
 import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -188,7 +188,7 @@ export default () => {
                   productID,
                   identifier,
                 };
-                const res = await postThingsProductSchema__openAPI__delete(params);
+                const res = await postApiV1ThingsProductSchema__openAPI__delete(params);
                 if (res instanceof Response) {
                   return;
                 }
@@ -215,7 +215,7 @@ export default () => {
         page: params.current,
       },
     };
-    const res = await postThingsProductSchemaIndex(param);
+    const res = await postApiV1ThingsProductSchemaIndex(param);
     if (res instanceof Response) {
       return {
         data: [],
@@ -238,7 +238,7 @@ export default () => {
       productID,
       tsl,
     };
-    const res = await postThingsProductSchemaTslImport(params);
+    const res = await postApiV1ThingsProductSchemaTslImport(params);
     if (res instanceof Response) {
       return;
     }
@@ -340,7 +340,7 @@ export default () => {
       </Button>
       <Button
         onClick={async () => {
-          const res = await postThingsProductSchemaTslRead({ productID });
+          const res = await postApiV1ThingsProductSchemaTslRead({ productID });
           if (res instanceof Response) {
             return;
           }

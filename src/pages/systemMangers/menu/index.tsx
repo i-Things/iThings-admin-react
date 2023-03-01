@@ -1,8 +1,8 @@
 import useGetTableList from '@/hooks/useGetTableList';
 import useTableDelete from '@/hooks/useTableDelete';
 import {
-  postSystemMenuIndex,
-  postSystemMenu__openAPI__delete,
+  postApiV1SystemMenuIndex,
+  postApiV1SystemMenu__openAPI__delete,
 } from '@/services/iThingsapi/caidanguanli';
 import { FlagStatus } from '@/utils/base';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
@@ -25,14 +25,14 @@ const MenuList: React.FC = () => {
   const [cascaderOptions, setCascaderOptions] = useState<MenuListItem[]>([]);
   const [flatOptions, setFlatOptions] = useState<MenuListItem[]>([]);
   const actionRef = useRef<ActionType>();
-  type QueryProp = typeof postSystemMenuIndex;
+  type QueryProp = typeof postApiV1SystemMenuIndex;
 
   // 删除操作
   const showDeleteConfirm = (record: MenuListItem) => {
     const body = {
       id: record?.id,
     };
-    deleteHandler<{ id: number }>(postSystemMenu__openAPI__delete, actionRef, {
+    deleteHandler<{ id: number }>(postApiV1SystemMenu__openAPI__delete, actionRef, {
       title: '是否删除当前菜单',
       content: `所选菜单: ${record?.name ?? '未知菜单'},  删除后无法恢复，请确认`,
       body,
@@ -157,7 +157,7 @@ const MenuList: React.FC = () => {
       keyword?: string | undefined;
     },
   ) => {
-    const treeList = await queryPage<QueryProp, MenuListItem>(postSystemMenuIndex, params);
+    const treeList = await queryPage<QueryProp, MenuListItem>(postApiV1SystemMenuIndex, params);
     setFlatOptions(treeList?.data);
     const tree = { ...treeList, data: spanTree(treeList?.data, 1, 'parentID') };
     const cascadertree = cloneDeep(recursionTree(treeList?.data));

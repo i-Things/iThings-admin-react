@@ -3,9 +3,9 @@
 import request from '@/utils/request';
 
 /** 设备统计详情 POST /api/v1/things/device/info/count */
-export async function postThingsDeviceInfoCount(
+export async function postApiV1ThingsDeviceInfoCount(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postThingsDeviceInfoCountParams,
+  params: API.postApiV1ThingsDeviceInfoCountParams,
   body: {
     endTime: number;
     startTime: number;
@@ -33,7 +33,7 @@ export async function postThingsDeviceInfoCount(
 }
 
 /** 新增设备 POST /api/v1/things/device/info/create */
-export async function postThingsDeviceInfoCreate(
+export async function postApiV1ThingsDeviceInfoCreate(
   body: {
     /** 不可修改 */
     productID: string;
@@ -60,7 +60,7 @@ export async function postThingsDeviceInfoCreate(
 }
 
 /** 删除设备 POST /api/v1/things/device/info/delete */
-export async function postThingsDeviceInfo__openAPI__delete(
+export async function postApiV1ThingsDeviceInfo__openAPI__delete(
   body: {
     /** 不可修改 */
     productID: string;
@@ -80,7 +80,7 @@ export async function postThingsDeviceInfo__openAPI__delete(
 }
 
 /** 获取设备列表 POST /api/v1/things/device/info/index */
-export async function postThingsDeviceInfoIndex(
+export async function postApiV1ThingsDeviceInfoIndex(
   body: {
     page?: { page?: number; size?: number };
     /** 为空时获取所有产品 */
@@ -127,7 +127,7 @@ export async function postThingsDeviceInfoIndex(
 }
 
 /** 获取设备详情 POST /api/v1/things/device/info/read */
-export async function postThingsDeviceInfoRead(
+export async function postApiV1ThingsDeviceInfoRead(
   body: {
     /** 为空时获取所有产品 */
     productID: string;
@@ -163,7 +163,7 @@ export async function postThingsDeviceInfoRead(
 }
 
 /** 更新设备 POST /api/v1/things/device/info/update */
-export async function postThingsDeviceInfoUpdate(
+export async function postApiV1ThingsDeviceInfoUpdate(
   body: {
     /** 不可修改 */
     productID: string;
