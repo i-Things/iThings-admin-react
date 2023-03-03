@@ -65,7 +65,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   // 获取本地日志
   const { tableProps } = useAntdTable(localLogTable, {
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, logLevel],
+    refreshDeps: [timeRange, logLevel, productID, deviceName],
     ready: !!(productID && deviceName),
   });
 
