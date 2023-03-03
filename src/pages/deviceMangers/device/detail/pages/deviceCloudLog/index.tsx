@@ -71,7 +71,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
         logType === LogType.MODEL &&
         modelTYpe === ModelType.PROPERTY &&
         !!(productID && deviceName),
-      refreshDeps: [isRefresh, logType, modelTYpe],
+      refreshDeps: [isRefresh, logType, modelTYpe, productID, deviceName],
       pollingInterval:
         isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 5000 : 0,
     },
@@ -119,7 +119,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   // 根据属性标识符筛选
   useEffect(() => {
-    if (attrList.length > 0) {
+    if (attrList.length >= 0) {
       setModelData(
         () => (dataID ? attrList?.filter((item) => item.dataID?.includes(dataID)) : attrList) || [],
       );
@@ -156,7 +156,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     ready:
       logType === LogType.MODEL && modelTYpe === ModelType.EVENT && !!(productID && deviceName),
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, eventType, isRefresh],
+    refreshDeps: [timeRange, eventType, isRefresh, productID, deviceName],
     pollingInterval:
       isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.EVENT ? 5000 : 0,
   });
@@ -190,7 +190,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const { tableProps: contentTableProps, refresh: contentRun } = useAntdTable(contentTable, {
     ready: logType === LogType.CONTENT && !!(productID && deviceName),
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, contentParams, isRefresh],
+    refreshDeps: [timeRange, contentParams, isRefresh, productID, deviceName],
     pollingInterval: isRefresh && logType === LogType.CONTENT ? 5000 : 0,
   });
 
@@ -222,7 +222,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const { tableProps: onOffTableProps, refresh: onOffRun } = useAntdTable(onOffTable, {
     ready: logType === LogType.ONOFFLINE && !!(productID && deviceName),
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, isRefresh],
+    refreshDeps: [timeRange, isRefresh, productID, deviceName],
     pollingInterval: isRefresh && logType === LogType.ONOFFLINE ? 5000 : 0,
   });
 
@@ -390,7 +390,13 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
         <Table size="middle" rowKey="tranceID" columns={onofflineColumns} {...onOffTableProps} />
       )}
       {visible && (
-        <ModelDetail visible={visible} dataID={historyDataID} handleClose={handleClose} />
+        <ModelDetail
+          visible={visible}
+          dataID={historyDataID}
+          handleClose={handleClose}
+          deviceName={deviceName}
+          productId={productID}
+        />
       )}
     </Space>
   );
