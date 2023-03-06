@@ -14,7 +14,7 @@ const timeStart = String(Date.now());
 
 /** 在线调试 */
 const OnLineDebug: React.FC<DeviceInfo> = (props) => {
-  const { productID, deviceName } = props;
+  const { productID, deviceName, deviceIsChange } = props;
   const [contentData, setContentData] = useState<debugType[]>([]);
 
   // 获取内容日志
@@ -29,9 +29,9 @@ const OnLineDebug: React.FC<DeviceInfo> = (props) => {
       return res.data;
     },
     {
-      refreshDeps: [productID, deviceName],
+      refreshDeps: [deviceIsChange],
       pollingInterval: 5000,
-      ready: !!(productID && deviceName),
+      ready: !!productID,
       onSuccess: (result) => {
         setContentData(result?.list ?? []);
       },
