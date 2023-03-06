@@ -19,7 +19,7 @@ let roleList = [
   },
 ];
 
-async function postSystemRoleIndex(req: Request, res: Response) {
+async function postApiV1SystemRoleIndex(req: Request, res: Response) {
   return res.json({
     code: 200,
     msg: 'string',
@@ -29,7 +29,8 @@ async function postSystemRoleIndex(req: Request, res: Response) {
     },
   });
 }
-async function postSystemRoleCreate(req: Request, res: Response) {
+
+async function postApiV1SystemRoleCreate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
     roleList.push({ ...req.body, uid: 123456, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
   return res.json({
@@ -38,7 +39,8 @@ async function postSystemRoleCreate(req: Request, res: Response) {
     data: roleList,
   });
 }
-async function postSystemRoleUpdate(req: Request, res: Response) {
+
+async function postApiV1SystemRoleUpdate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
     roleList.push({ ...req.body, uid: 123, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
   return res.json({
@@ -47,7 +49,8 @@ async function postSystemRoleUpdate(req: Request, res: Response) {
     data: roleList,
   });
 }
-async function postSystemRole__openAPI__delete(req: Request, res: Response) {
+
+async function postApiV1SystemRole__openAPI__delete(req: Request, res: Response) {
   roleList = roleList.filter((item) => item.uid != req.body?.id);
   return res.json({
     code: 200,
@@ -55,7 +58,8 @@ async function postSystemRole__openAPI__delete(req: Request, res: Response) {
     data: roleList,
   });
 }
-async function postSystemRoleRoleMenuUpdate(req: Request, res: Response) {
+
+async function postApiV1SystemRoleRoleMenuUpdate(req: Request, res: Response) {
   return res.json({
     code: 200,
     msg: '添加成功',
@@ -64,9 +68,9 @@ async function postSystemRoleRoleMenuUpdate(req: Request, res: Response) {
 }
 
 export default {
-  'POST /api/v1/system/role/index': postSystemRoleIndex,
-  'POST /api/v1/system/role/create': postSystemRoleCreate,
-  'POST /api/v1/system/role/update': postSystemRoleUpdate,
-  'POST /api/v1/system/role/delete': postSystemRole__openAPI__delete,
-  'POST /api/v1/system/role/role-menu/update': postSystemRoleRoleMenuUpdate,
+  'POST /api/v1/system/role/index': postApiV1SystemRoleIndex,
+  'POST /api/v1/system/role/create': postApiV1SystemRoleCreate,
+  'POST /api/v1/system/role/update': postApiV1SystemRoleUpdate,
+  'POST /api/v1/system/role/delete': postApiV1SystemRole__openAPI__delete,
+  'POST /api/v1/system/role/role-menu/update': postApiV1SystemRoleRoleMenuUpdate,
 };

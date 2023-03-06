@@ -1,10 +1,12 @@
-import { postThingsDeviceInfoCreate } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoCreate } from '@/services/iThingsapi/shebeiguanli';
 import { ResponseCode } from '@/utils/base';
-import { DEVICE_INFO, DEVICE_LOG_LEVEL_FORM, PRODUCT_INFO } from '@/utils/const';
-import { ProFormInstance } from '@ant-design/pro-components';
+import type { DEVICE_INFO, PRODUCT_INFO } from '@/utils/const';
+import { DEVICE_LOG_LEVEL_FORM } from '@/utils/const';
+import type { ProFormInstance } from '@ant-design/pro-components';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+
 interface Props {
   productValues?: PRODUCT_INFO[];
   onCommit: () => void;
@@ -16,7 +18,7 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productValues }) => {
 
   const formCommit = async (values: DEVICE_INFO) => {
     const body = values;
-    return postThingsDeviceInfoCreate(body)
+    return postApiV1ThingsDeviceInfoCreate(body)
       .then((res: API.SuccRet) => {
         setCreateVisible(false);
         if (res.code === ResponseCode.SUCCESS) {

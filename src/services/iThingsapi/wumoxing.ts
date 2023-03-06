@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 新增物模型功能 POST /api/v1/things/product/schema/create */
-export async function postThingsProductSchemaCreate(
+export async function postApiV1ThingsProductSchemaCreate(
   body: API.ProductSchemaInfo,
   options?: { [key: string]: any },
 ) {
@@ -18,7 +18,7 @@ export async function postThingsProductSchemaCreate(
 }
 
 /** 删除物模型功能 POST /api/v1/things/product/schema/delete */
-export async function postThingsProductSchema__openAPI__delete(
+export async function postApiV1ThingsProductSchema__openAPI__delete(
   body: {
     productID: string;
     identifier: string;
@@ -36,7 +36,7 @@ export async function postThingsProductSchema__openAPI__delete(
 }
 
 /** 获取产品物模型列表 POST /api/v1/things/product/schema/index */
-export async function postThingsProductSchemaIndex(
+export async function postApiV1ThingsProductSchemaIndex(
   body: {
     productID: string;
     /** 1:property属性 2:event事件 3:action行为 */
@@ -63,7 +63,7 @@ export async function postThingsProductSchemaIndex(
 }
 
 /** 导入物模型tsl 物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language） POST /api/v1/things/product/schema/tsl-import */
-export async function postThingsProductSchemaTslImport(
+export async function postApiV1ThingsProductSchemaTslImport(
   body: {
     productID: string;
     tsl: string;
@@ -81,7 +81,7 @@ export async function postThingsProductSchemaTslImport(
 }
 
 /** 获取产品物模型tsl 物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language） POST /api/v1/things/product/schema/tsl-read */
-export async function postThingsProductSchemaTslRead(
+export async function postApiV1ThingsProductSchemaTslRead(
   body: {
     productID: string;
   },
@@ -98,7 +98,7 @@ export async function postThingsProductSchemaTslRead(
 }
 
 /** 更新物模型功能 POST /api/v1/things/product/schema/update */
-export async function postThingsProductSchemaUpdate(
+export async function postApiV1ThingsProductSchemaUpdate(
   body: {
     productID: string;
     /** 1:property属性 2:event事件 3:action行为 */

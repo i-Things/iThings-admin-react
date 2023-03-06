@@ -1,4 +1,4 @@
-import { postThingsDeviceInfoRead } from '@/services/iThingsapi/shebeiguanli';
+import { postApiV1ThingsDeviceInfoRead } from '@/services/iThingsapi/shebeiguanli';
 import { useParams } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { Card, message } from 'antd';
@@ -15,7 +15,7 @@ const DeviceInfoPage: React.FC = () => {
 
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>(null!);
 
-  const { refresh } = useRequest(postThingsDeviceInfoRead, {
+  const { refresh } = useRequest(postApiV1ThingsDeviceInfoRead, {
     defaultParams: [
       {
         productID: id,

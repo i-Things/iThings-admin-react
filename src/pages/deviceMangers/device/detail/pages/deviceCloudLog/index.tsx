@@ -1,10 +1,10 @@
 import TimeFilter from '@/components/TimeFilter';
 import {
-  postThingsDeviceMsgEventLogIndex,
-  postThingsDeviceMsgHubLogIndex,
-  postThingsDeviceMsgPropertyLatestIndex,
+  postApiV1ThingsDeviceMsgEventLogIndex,
+  postApiV1ThingsDeviceMsgHubLogIndex,
+  postApiV1ThingsDeviceMsgPropertyLatestIndex,
 } from '@/services/iThingsapi/shebeixiaoxi';
-import { postThingsProductSchemaIndex } from '@/services/iThingsapi/wumoxing';
+import { postApiV1ThingsProductSchemaIndex } from '@/services/iThingsapi/wumoxing';
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { EVENT_TYPE_DATA } from '@/utils/const';
 import { SyncOutlined } from '@ant-design/icons';
@@ -59,7 +59,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     refresh: attrRun,
   } = useRequest(
     async () => {
-      const res = await postThingsDeviceMsgPropertyLatestIndex({
+      const res = await postApiV1ThingsDeviceMsgPropertyLatestIndex({
         productID,
         deviceName,
         dataIDs: [],
@@ -80,7 +80,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   // 获取物模型列表
   const { data: modelList } = useRequest(
     async () => {
-      const res = await postThingsProductSchemaIndex({
+      const res = await postApiV1ThingsProductSchemaIndex({
         productID,
         type: 1,
       });
@@ -143,7 +143,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceMsgEventLogIndex(_params);
+    const res = await postApiV1ThingsDeviceMsgEventLogIndex(_params);
     const result = res?.data;
     return {
       list: result?.list || [],
@@ -178,7 +178,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceMsgHubLogIndex(_params);
+    const res = await postApiV1ThingsDeviceMsgHubLogIndex(_params);
     const result = res?.data;
     return {
       list: result?.list || [],
@@ -210,7 +210,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceMsgHubLogIndex(_params);
+    const res = await postApiV1ThingsDeviceMsgHubLogIndex(_params);
     const result = res?.data;
     return {
       list: result?.list || [],

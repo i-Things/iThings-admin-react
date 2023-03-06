@@ -96,6 +96,26 @@ export default [
             component: './systemMangers/menu/index',
           },
           {
+            name: '接口管理',
+            path: '/systemMangers/api/index',
+            component: './systemMangers/api/index',
+          },
+          {
+            name: '日志管理',
+            routes: [
+              {
+                name: '登录日志',
+                path: '/systemMangers/log/loginLog/index',
+                component: './systemMangers/log/loginLog/index',
+              },
+              {
+                name: '操作日志',
+                path: '/systemMangers/log/operationLog/index',
+                component: './systemMangers/log/operationLog/index',
+              },
+            ],
+          },
+          {
             component: '404',
           },
         ],

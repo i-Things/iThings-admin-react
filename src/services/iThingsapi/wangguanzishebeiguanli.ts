@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 获取子设备列表 POST /api/v1/things/device/gateway/index */
-export async function postThingsDeviceGatewayIndex(
+export async function postApiV1ThingsDeviceGatewayIndex(
   body: {
     page?: { page?: number; size?: number };
     gateWayProductID: string;
@@ -25,7 +25,7 @@ export async function postThingsDeviceGatewayIndex(
 }
 
 /** 批量添加网关子设备 POST /api/v1/things/device/gateway/multi-create */
-export async function postThingsDeviceGatewayMultiCreate(
+export async function postApiV1ThingsDeviceGatewayMultiCreate(
   body: {
     list: API.deviceCore[];
     gateWayProductID: string;
@@ -44,7 +44,7 @@ export async function postThingsDeviceGatewayMultiCreate(
 }
 
 /** 批量解绑网关子设备 POST /api/v1/things/device/gateway/multi-delete */
-export async function postThingsDeviceGatewayMultiDelete(
+export async function postApiV1ThingsDeviceGatewayMultiDelete(
   body: {
     list: API.deviceCore[];
     gateWayProductID: string;

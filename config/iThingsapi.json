@@ -22,7 +22,7 @@
       "name": "iThings-apisvr/物联网相关接口/产品/物模型"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/产品/产品远程配置"
+      "name": "iThings-apisvr/物联网相关接口/产品/远程配置"
     },
     {
       "name": "iThings-apisvr/物联网相关接口/设备分组"
@@ -61,10 +61,19 @@
       "name": "iThings-apisvr/物联网相关接口/规则引擎"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/规则引擎/流"
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/场景联动"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/规则编排"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"
     },
     {
       "name": "iThings-apisvr/系统管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/日志管理"
     },
     {
       "name": "iThings-apisvr/系统管理/角色管理"
@@ -74,6 +83,12 @@
     },
     {
       "name": "iThings-apisvr/系统管理/用户管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/系统配置"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/接口管理"
     }
   ],
   "paths": {
@@ -3287,7 +3302,17 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "role",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5032,12 +5057,12 @@
                           }
                         },
                         "total": {
-                          "type": "string",
-                          "description": "总数"
+                          "description": "总数",
+                          "type": "integer"
                         }
                       },
                       "x-apifox-orders": ["list", "total"],
-                      "required": ["total"],
+                      "required": ["total", "list"],
                       "x-apifox-ignore-properties": []
                     }
                   },
@@ -5377,14 +5402,26 @@
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "district_id": {
+                  "groupName": {
+                    "type": "string",
+                    "description": "分组名称"
+                  },
+                  "parentID": {
+                    "description": "父组ID 1-根组 ，非根组，则传所选父分组的groupID 作为本组的parentID",
                     "type": "string"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "description": "分组描述"
                   }
-                }
+                },
+                "x-apifox-orders": ["groupName", "parentID", "desc"],
+                "required": ["groupName"],
+                "x-apifox-ignore-properties": []
               }
             }
           }
@@ -7372,11 +7409,11 @@
     "/api/v1/things/product/remote-config/create": {
       "post": {
         "summary": "创建配置",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "integrating",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7443,11 +7480,11 @@
     "/api/v1/things/product/remote-config/index": {
       "post": {
         "summary": "获取配置列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7566,11 +7603,11 @@
     "/api/v1/things/product/remote-config/push-all": {
       "post": {
         "summary": "推送配置",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7632,11 +7669,11 @@
     "/api/v1/things/product/remote-config/lastest-read": {
       "post": {
         "summary": "获取最新配置",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/产品远程配置",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/远程配置",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/产品远程配置"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8106,15 +8143,50 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-51344002-run"
       }
     },
-    "/api/v1/things/rule/flow/index": {
+    "/api/v1/things/rule/flow/info/index": {
       "post": {
         "summary": "获取流列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": ["01GNVS1YR0DT5VPJ0S4V8NE82M"],
+                "x-apifox-refs": {
+                  "01GNVS1YR0DT5VPJ0S4V8NE82M": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
@@ -8122,9 +8194,44 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {},
-                  "x-apifox-ignore-properties": [],
-                  "x-apifox-orders": []
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/flow"
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["list"],
+                      "required": ["list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GNVS5D2HKV9ZW0XC3P06DVX3", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GNVS5D2HKV9ZW0XC3P06DVX3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
                 }
               }
             }
@@ -8133,25 +8240,64 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291695-run"
       }
     },
-    "/api/v1/things/rule/flow/create": {
+    "/api/v1/things/rule/flow/info/create": {
       "post": {
         "summary": "创建流",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "x-apifox-overrides": {},
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GNVSG44NK5JPVNH5KWBQEZV3": {
+                    "$ref": "#/components/schemas/flow"
+                  }
+                },
+                "x-apifox-orders": ["01GNVSG44NK5JPVNH5KWBQEZV3"],
+                "properties": {
+                  "ruleID": {
+                    "title": "唯一id-雪花算法",
+                    "type": "string"
+                  },
+                  "ruleName": {
+                    "title": "流名称",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "isDisabled": {
+                    "title": "是否禁用",
+                    "description": "1:是 2:否",
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "desc": {
+                    "title": "描述",
+                    "description": "markdown格式",
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": ["ruleID"],
+                "x-apifox-ignore-properties": ["ruleID", "ruleName", "isDisabled", "desc"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "x-apifox-ignore-properties": [],
-                  "x-apifox-orders": []
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
                 }
               }
             }
@@ -8160,25 +8306,63 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291699-run"
       }
     },
-    "/api/v1/things/rule/flow/update": {
+    "/api/v1/things/rule/flow/info/update": {
       "post": {
         "summary": "修改流",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ruleID": {
+                    "title": "唯一id-雪花算法",
+                    "type": "string"
+                  },
+                  "ruleName": {
+                    "title": "流名称",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "isDisabled": {
+                    "title": "是否禁用",
+                    "description": "1:是 2:否",
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "desc": {
+                    "title": "描述",
+                    "description": "markdown格式",
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "x-apifox-orders": ["01GNVSRP7KAA5MQ4JWRXQXNKZY"],
+                "required": ["ruleID"],
+                "x-apifox-refs": {
+                  "01GNVSRP7KAA5MQ4JWRXQXNKZY": {
+                    "$ref": "#/components/schemas/flow"
+                  }
+                },
+                "x-apifox-ignore-properties": ["ruleID", "ruleName", "isDisabled", "desc"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "x-apifox-ignore-properties": [],
-                  "x-apifox-orders": []
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
                 }
               }
             }
@@ -8187,15 +8371,219 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291700-run"
       }
     },
-    "/api/v1/things/rule/flow/delete": {
+    "/api/v1/things/rule/flow/info/delete": {
       "post": {
         "summary": "删除流",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/流",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/流"],
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "x-apifox-overrides": {},
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GNVSSHND69A6H6Q897PW9ZZT": {
+                    "$ref": "#/components/schemas/flow"
+                  }
+                },
+                "x-apifox-orders": ["01GNVSSHND69A6H6Q897PW9ZZT"],
+                "properties": {
+                  "ruleID": {
+                    "title": "唯一id-雪花算法",
+                    "type": "string"
+                  }
+                },
+                "required": ["ruleID"],
+                "x-apifox-ignore-properties": ["ruleID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291715-run"
+      }
+    },
+    "/api/v1/system/common/config": {
+      "post": {
+        "summary": "获取系统配置",
+        "x-apifox-folder": "iThings-apisvr/系统管理/系统配置",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/系统配置"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "x-apifox-ignore-properties": [],
+                "x-apifox-orders": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "map": {
+                          "type": "object",
+                          "properties": {
+                            "mode": {
+                              "type": "string",
+                              "description": "坐标系 默认百度坐标系"
+                            },
+                            "accessKey": {
+                              "type": "string",
+                              "description": "设备地图key"
+                            }
+                          },
+                          "x-apifox-orders": ["mode", "accessKey"],
+                          "required": ["mode", "accessKey"],
+                          "x-apifox-ignore-properties": []
+                        }
+                      },
+                      "x-apifox-orders": ["map"],
+                      "required": ["map"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GNEDV5CP1YJPEWKNZK233K94", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GNEDV5CP1YJPEWKNZK233K94": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56532734-run"
+      }
+    },
+    "/ithings/25hcK5yzlbq/3file.zip": {
+      "put": {
+        "summary": "文件直传",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "地址由《获取升级包直传的signed url》接口返回",
+        "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
+        "parameters": [
+          {
+            "name": "X-Amz-Algorithm",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "AWS4-HMAC-SHA256",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Credential",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "root%2F20230112%2Fus-east-1%2Fs3%2Faws4_request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Date",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "20230112T060402Z",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Expires",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "86400",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-SignedHeaders",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "host",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Amz-Signature",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "9439ebca259ddc1cdb0062b296a4d734af949bb7159766a82f996246e77b2fda",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "成功",
@@ -8211,12 +8599,1275 @@
             }
           }
         },
-        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-56291715-run"
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-57036451-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/read": {
+      "post": {
+        "summary": "获取场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": ""
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/scene"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-60072267-run"
+      }
+    },
+    "/api/v1/system/log/login/index": {
+      "post": {
+        "summary": "获取登录日志列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/日志管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/日志管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "ipAddr": {
+                    "type": "string",
+                    "description": "按ip地址查找"
+                  },
+                  "loginLocation": {
+                    "type": "string",
+                    "description": "按登录地址查找"
+                  },
+                  "dateRange": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "description": "开始时间 格式：yyyy-mm-dd"
+                      },
+                      "end": {
+                        "type": "string",
+                        "description": "结束时间 格式：yyyy-mm-dd"
+                      }
+                    },
+                    "x-apifox-orders": ["start", "end"],
+                    "description": "按时间范围查找",
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GREFNDMF17M1C4MSGTQWCY6B",
+                  "ipAddr",
+                  "loginLocation",
+                  "dateRange"
+                ],
+                "x-apifox-refs": {
+                  "01GREFNDMF17M1C4MSGTQWCY6B": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "description": "登录日志列表总记录数",
+                          "type": "integer"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "description": "用户id",
+                                "type": "integer"
+                              },
+                              "userName": {
+                                "type": "string",
+                                "description": "登录账号"
+                              },
+                              "ipAddr": {
+                                "type": "string",
+                                "description": "登录IP地址"
+                              },
+                              "loginLocation": {
+                                "type": "string",
+                                "description": "登录地点"
+                              },
+                              "browser": {
+                                "type": "string",
+                                "description": "浏览器类型"
+                              },
+                              "os": {
+                                "type": "string",
+                                "description": "操作系统"
+                              },
+                              "code": {
+                                "description": "登录状态（200成功 其它失败）",
+                                "type": "string"
+                              },
+                              "msg": {
+                                "type": "string",
+                                "description": "提示消息"
+                              },
+                              "createdTime": {
+                                "type": "string",
+                                "description": "登录时间"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "uid",
+                              "userName",
+                              "ipAddr",
+                              "loginLocation",
+                              "browser",
+                              "os",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "required": [
+                              "uid",
+                              "userName",
+                              "ipAddr",
+                              "loginLocation",
+                              "browser",
+                              "os",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "x-apifox-ignore-properties": []
+                          },
+                          "description": "登录日志列表数据"
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GREFT08FYYWTAMPAXHQFWCHT", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GREFT08FYYWTAMPAXHQFWCHT": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-60352991-run"
+      }
+    },
+    "/api/v1/system/log/oper/index": {
+      "post": {
+        "summary": "获取操作日志列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/日志管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/日志管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "operName": {
+                    "type": "string",
+                    "description": "按操作名称查找"
+                  },
+                  "operUserName": {
+                    "type": "string",
+                    "description": "按操作人员名称查找"
+                  },
+                  "businessType": {
+                    "description": "按业务类型（1新增 2修改 3删除 4查询 5其它）查找",
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GREG3XZKQMBYAPBHV6Z1W7NY",
+                  "operName",
+                  "operUserName",
+                  "businessType"
+                ],
+                "x-apifox-refs": {
+                  "01GREG3XZKQMBYAPBHV6Z1W7NY": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "description": "用户id",
+                                "type": "integer"
+                              },
+                              "operUserName": {
+                                "type": "string",
+                                "description": "操作人员名称"
+                              },
+                              "operName": {
+                                "type": "string",
+                                "description": "操作名称"
+                              },
+                              "businessType": {
+                                "description": "业务类型（1新增 2修改 3删除 4查询 5其它）",
+                                "type": "string"
+                              },
+                              "uri": {
+                                "type": "string",
+                                "description": "请求地址"
+                              },
+                              "operIpAddr": {
+                                "type": "string",
+                                "description": "操作主机ip地址"
+                              },
+                              "operLocation": {
+                                "type": "string",
+                                "description": "操作地点"
+                              },
+                              "req": {
+                                "type": "string",
+                                "description": "请求参数"
+                              },
+                              "resp": {
+                                "type": "string",
+                                "description": "返回参数"
+                              },
+                              "code": {
+                                "description": "错误码（200成功 其它失败）",
+                                "type": "string"
+                              },
+                              "msg": {
+                                "type": "string",
+                                "description": "提示消息"
+                              },
+                              "createdTime": {
+                                "description": "操作时间",
+                                "type": "string"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "uid",
+                              "operUserName",
+                              "operName",
+                              "businessType",
+                              "uri",
+                              "operIpAddr",
+                              "operLocation",
+                              "req",
+                              "resp",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "required": [
+                              "uid",
+                              "operUserName",
+                              "operName",
+                              "businessType",
+                              "uri",
+                              "operIpAddr",
+                              "operLocation",
+                              "req",
+                              "resp",
+                              "code",
+                              "msg",
+                              "createdTime"
+                            ],
+                            "x-apifox-ignore-properties": []
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GREG5CC8M6ZSCDB6MDF28QY1", "data"],
+                  "x-apifox-refs": {
+                    "01GREG5CC8M6ZSCDB6MDF28QY1": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-60353029-run"
+      }
+    },
+    "/api/v1/system/api/create": {
+      "post": {
+        "summary": "添加接口",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "route": {
+                    "type": "string",
+                    "description": "接口路由"
+                  },
+                  "method": {
+                    "type": "integer",
+                    "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）"
+                  },
+                  "group": {
+                    "type": "string",
+                    "description": "接口分组"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "接口名称"
+                  },
+                  "businessType": {
+                    "description": "业务类型（1新增 2修改 3删除 4查询 5其它）",
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["route", "method", "group", "name", "businessType"],
+                "required": ["route", "group", "name", "businessType", "method"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR1EYRTV4VQQNNC33B0NAJ3"],
+                  "x-apifox-refs": {
+                    "01GRR1EYRTV4VQQNNC33B0NAJ3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例 ",
+                    "value": {
+                      "code": 0,
+                      "msg": "success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61124468-run"
+      }
+    },
+    "/api/v1/system/api/index": {
+      "post": {
+        "summary": "获取接口列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "route": {
+                    "type": "string",
+                    "description": "接口路由"
+                  },
+                  "method": {
+                    "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                    "type": "integer"
+                  },
+                  "group": {
+                    "type": "string",
+                    "description": "接口分组"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "接口名称"
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GRR1K6S155SFMBT6ZEK92JRE",
+                  "route",
+                  "method",
+                  "group",
+                  "name"
+                ],
+                "x-apifox-refs": {
+                  "01GRR1K6S155SFMBT6ZEK92JRE": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "接口列表总记录数"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "接口编号"
+                              },
+                              "route": {
+                                "type": "string",
+                                "description": "接口路由"
+                              },
+                              "method": {
+                                "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                                "type": "integer"
+                              },
+                              "group": {
+                                "type": "string",
+                                "description": "接口分组"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "接口名称"
+                              },
+                              "businessType": {
+                                "type": "integer",
+                                "description": "业务类型（1新增 2修改 3删除 4查询 5其它)"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "id",
+                              "route",
+                              "method",
+                              "group",
+                              "name",
+                              "businessType"
+                            ],
+                            "required": ["id", "route", "method", "group", "name", "businessType"],
+                            "x-apifox-ignore-properties": []
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR1NP4QRYCQ33HK8Q8S92N4", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GRR1NP4QRYCQ33HK8Q8S92N4": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61125728-run"
+      }
+    },
+    "/api/v1/system/api/update": {
+      "post": {
+        "summary": "更新接口",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "description": "接口编号",
+                    "type": "integer"
+                  },
+                  "route": {
+                    "type": "string",
+                    "description": "接口路由"
+                  },
+                  "method": {
+                    "description": "接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                    "type": "integer"
+                  },
+                  "group": {
+                    "type": "string",
+                    "description": "接口分组"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "接口名称"
+                  }
+                },
+                "x-apifox-orders": ["id", "route", "method", "group", "name"],
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR235ZFV9JFZTS586EVB7K7"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GRR235ZFV9JFZTS586EVB7K7": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61127399-run"
+      }
+    },
+    "/api/v1/system/api/delete": {
+      "post": {
+        "summary": "删除接口",
+        "x-apifox-folder": "iThings-apisvr/系统管理/接口管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/接口管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "description": "接口编号",
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GRR25JZ3XE5Q8MK7RCS9BNZ4"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GRR25JZ3XE5Q8MK7RCS9BNZ4": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-61128614-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/index": {
+      "post": {
+        "summary": "获取场景列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GS86J197SXSZ636KJSEFWHAP": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": ["01GS86J197SXSZ636KJSEFWHAP"],
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/scene"
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": ""
+                        }
+                      },
+                      "x-apifox-orders": ["list", "total"],
+                      "required": ["list", "total"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GS5NHWQPGP9HK9W69FXFDKV9", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GS5NHWQPGP9HK9W69FXFDKV9": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106160-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/create": {
+      "post": {
+        "summary": "创建场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GS5NQENQEZD06Z36ZRC0MZFW": {
+                    "$ref": "#/components/schemas/scene"
+                  }
+                },
+                "x-apifox-orders": ["01GS5NQENQEZD06Z36ZRC0MZFW"],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "场景名称"
+                  },
+                  "trigger": {
+                    "type": "string",
+                    "title": "触发器"
+                  },
+                  "when": {
+                    "type": "string",
+                    "description": "触发条件"
+                  },
+                  "then": {
+                    "type": "string",
+                    "title": "满足条件时执行的动作"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "title": "描述"
+                  }
+                },
+                "x-apifox-ignore-properties": ["id", "name", "trigger", "when", "then", "desc"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106162-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/update": {
+      "post": {
+        "summary": "更新场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GS5NQENQEZD06Z36ZRC0MZFW": {
+                    "$ref": "#/components/schemas/scene"
+                  }
+                },
+                "x-apifox-orders": ["01GS5NQENQEZD06Z36ZRC0MZFW"],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "场景名称"
+                  },
+                  "trigger": {
+                    "type": "string",
+                    "title": "触发器"
+                  },
+                  "when": {
+                    "type": "string",
+                    "description": "触发条件"
+                  },
+                  "then": {
+                    "type": "string",
+                    "title": "满足条件时执行的动作"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "title": "描述"
+                  }
+                },
+                "x-apifox-ignore-properties": ["id", "name", "trigger", "when", "then", "desc"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106293-run"
+      }
+    },
+    "/api/v1/things/rule/scene/info/delete": {
+      "post": {
+        "summary": "删除场景信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/场景联动",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-apifox-refs": {},
+                "x-apifox-orders": ["id"],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "场景id"
+                  }
+                },
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-refs": {
+                    "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-62106301-run"
       }
     }
   },
   "components": {
     "schemas": {
+      "scene": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string",
+            "title": "场景名称"
+          },
+          "trigger": {
+            "type": "string",
+            "title": "触发器"
+          },
+          "when": {
+            "type": "string",
+            "description": "触发条件"
+          },
+          "then": {
+            "type": "string",
+            "title": "满足条件时执行的动作"
+          },
+          "desc": {
+            "type": "string",
+            "title": "描述"
+          }
+        },
+        "x-apifox-orders": ["id", "name", "trigger", "when", "then", "desc"],
+        "title": "场景联动",
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "flow": {
+        "type": "object",
+        "properties": {
+          "ruleID": {
+            "title": "唯一id-雪花算法",
+            "type": "string"
+          },
+          "ruleName": {
+            "title": "流名称",
+            "type": "string",
+            "nullable": true
+          },
+          "isDisabled": {
+            "title": "是否禁用",
+            "description": "1:是 2:否",
+            "type": "number",
+            "nullable": true
+          },
+          "desc": {
+            "title": "描述",
+            "description": "markdown格式",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["ruleID"],
+        "x-apifox-orders": ["ruleID", "ruleName", "isDisabled", "desc"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine"
+      },
       "deviceCore": {
         "type": "object",
         "properties": {

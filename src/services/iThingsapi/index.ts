@@ -3,10 +3,12 @@
 // API 更新时间：
 // API 唯一标识：
 import * as caidanguanli from './caidanguanli';
+import * as changjingliandong from './changjingliandong';
 import * as chanpinguanli from './chanpinguanli';
-import * as chanpinyuanchengpeizhi from './chanpinyuanchengpeizhi';
 import * as jiaoseguanli from './jiaoseguanli';
+import * as jiekouguanli from './jiekouguanli';
 import * as liu from './liu';
+import * as rizhiguanli from './rizhiguanli';
 import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
 import * as shebeijianquan from './shebeijianquan';
@@ -16,7 +18,9 @@ import * as shengjibaoguanli from './shengjibaoguanli';
 import * as task from './task';
 import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
+import * as xitongpeizhi from './xitongpeizhi';
 import * as yonghuguanli from './yonghuguanli';
+import * as yuanchengpeizhi from './yuanchengpeizhi';
 export default {
   chanpinguanli,
   wumoxing,
@@ -30,7 +34,11 @@ export default {
   shebeifenzu,
   shengjibaoguanli,
   task,
-  chanpinyuanchengpeizhi,
+  yuanchengpeizhi,
   wangguanzishebeiguanli,
   liu,
+  xitongpeizhi,
+  changjingliandong,
+  rizhiguanli,
+  jiekouguanli,
 };

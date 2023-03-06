@@ -1,5 +1,5 @@
 import type { TagsInfo } from '@/pages/deviceMangers/product/data';
-import { postThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
+import { postApiV1ThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
 import { FlagStatus } from '@/utils/base';
 import type { PRODUCT_INFO } from '@/utils/const';
 import { DownOutlined, InfoCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
@@ -76,7 +76,7 @@ const ProductTagsModal: React.FC<ModalProps> = (props) => {
       ...value,
       productID: productInfo?.productID ?? '',
     };
-    return postThingsProductInfoUpdate(body)
+    return postApiV1ThingsProductInfoUpdate(body)
       .then((res) => {
         setVisible(false);
         if (res.code === 200) {

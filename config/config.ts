@@ -10,6 +10,7 @@ const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
   antd: {},
+  clientLoader: {},
   /*
     front/iThingsCore/    iThings核心前端路由
     front/iThingsCompany/  iThings企业版前端路由

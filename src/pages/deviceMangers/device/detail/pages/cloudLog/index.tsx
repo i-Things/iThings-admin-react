@@ -1,5 +1,5 @@
 import TimeFilter from '@/components/TimeFilter';
-import { postThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
+import { postApiV1ThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
 import { QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
@@ -82,7 +82,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       page,
     };
 
-    const res = await postThingsDeviceMsgHubLogIndex(_params);
+    const res = await postApiV1ThingsDeviceMsgHubLogIndex(_params);
     const result = res?.data;
     return {
       list: result?.list || [],

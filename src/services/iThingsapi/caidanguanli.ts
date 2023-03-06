@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 添加菜单 POST /api/v1/system/menu/create */
-export async function postSystemMenuCreate(
+export async function postApiV1SystemMenuCreate(
   body: {
     /** 菜单名称 */
     name: string;
@@ -37,7 +37,7 @@ export async function postSystemMenuCreate(
 }
 
 /** 删除菜单 POST /api/v1/system/menu/delete */
-export async function postSystemMenu__openAPI__delete(
+export async function postApiV1SystemMenu__openAPI__delete(
   body: {
     /** 菜单编号 */
     id: number;
@@ -55,7 +55,7 @@ export async function postSystemMenu__openAPI__delete(
 }
 
 /** 获取菜单列表 POST /api/v1/system/menu/index */
-export async function postSystemMenuIndex(
+export async function postApiV1SystemMenuIndex(
   body: {
     /** 按照菜单名筛选 （只有获取完整菜单时有效） */
     name?: string;
@@ -89,7 +89,7 @@ export async function postSystemMenuIndex(
 }
 
 /** 更新菜单 POST /api/v1/system/menu/update */
-export async function postSystemMenuUpdate(
+export async function postApiV1SystemMenuUpdate(
   body: {
     /** 编号 */
     id: number;

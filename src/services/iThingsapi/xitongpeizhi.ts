@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 获取系统配置 POST /api/v1/system/common/config */
-export async function postSystemCommonConfig(body: {}, options?: { [key: string]: any }) {
+export async function postApiV1SystemCommonConfig(body: {}, options?: { [key: string]: any }) {
   return request<{
     code: number;
     msg: string;

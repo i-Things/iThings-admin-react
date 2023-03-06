@@ -2,9 +2,9 @@ import useGetTableList from '@/hooks/useGetTableList';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import {
-  postThingsGroupInfoCreate,
-  postThingsGroupInfoIndex,
-  postThingsGroupInfoUpdate,
+  postApiV1ThingsGroupInfoCreate,
+  postApiV1ThingsGroupInfoIndex,
+  postApiV1ThingsGroupInfoUpdate,
 } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus, ResponseCode } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
@@ -36,9 +36,9 @@ const CreateOrUpdateGroup: React.FC<{
 
   const editFormRef = useRef<ProFormInstance>();
 
-  type QueryProp = typeof postThingsGroupInfoIndex;
-  type CreateProp = typeof postThingsGroupInfoCreate;
-  type UpdateProp = typeof postThingsGroupInfoUpdate;
+  type QueryProp = typeof postApiV1ThingsGroupInfoIndex;
+  type CreateProp = typeof postApiV1ThingsGroupInfoCreate;
+  type UpdateProp = typeof postApiV1ThingsGroupInfoUpdate;
 
   const onOpen = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -53,7 +53,7 @@ const CreateOrUpdateGroup: React.FC<{
     const body = { ...values };
     if (flag === FlagStatus.UPDATE) {
       await updateHandler<UpdateProp, GroupListItem>(
-        postThingsGroupInfoUpdate,
+        postApiV1ThingsGroupInfoUpdate,
         actionRef as React.MutableRefObject<ActionType | undefined>,
         {
           ...body,
@@ -66,14 +66,14 @@ const CreateOrUpdateGroup: React.FC<{
     } else {
       const parentID = values.parentID[values.parentID.length - 1];
       const jumpFlag = await createHandler<CreateProp, GroupListItem>(
-        postThingsGroupInfoCreate,
+        postApiV1ThingsGroupInfoCreate,
         actionRef as React.MutableRefObject<ActionType | undefined>,
         {
           ...body,
           parentID,
         },
       );
-      const queryList = await queryPage<QueryProp, GroupListItem>(postThingsGroupInfoIndex, {
+      const queryList = await queryPage<QueryProp, GroupListItem>(postApiV1ThingsGroupInfoIndex, {
         page: {
           page: 1,
           size: 10,

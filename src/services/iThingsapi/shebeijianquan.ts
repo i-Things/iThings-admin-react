@@ -3,7 +3,7 @@
 import request from '@/utils/request';
 
 /** 设备操作认证 POST /api/v1/things/device/auth/access */
-export async function postThingsDeviceAuthAccess(
+export async function postApiV1ThingsDeviceAuthAccess(
   body: {
     username: string;
     /** SUB:订阅,PUB:发布 */
@@ -25,7 +25,7 @@ export async function postThingsDeviceAuthAccess(
 }
 
 /** 设备登录认证 POST /api/v1/things/device/auth/login */
-export async function postThingsDeviceAuthLogin(
+export async function postApiV1ThingsDeviceAuthLogin(
   body: {
     username: string;
     password: string;
@@ -45,7 +45,7 @@ export async function postThingsDeviceAuthLogin(
 }
 
 /** 鉴定mqtt账号root权限 POST /api/v1/things/device/auth/root-check */
-export async function postThingsDeviceAuthRootCheck(
+export async function postApiV1ThingsDeviceAuthRootCheck(
   body: {
     username: string;
     password: string;

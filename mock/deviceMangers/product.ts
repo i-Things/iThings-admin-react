@@ -34,7 +34,8 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-async function postThingsProductInfoIndex(req: Request, res: Response) {
+
+async function postApiV1ThingsProductInfoIndex(req: Request, res: Response) {
   await waitTime(500);
   return res.json({
     code: 200,
@@ -46,5 +47,5 @@ async function postThingsProductInfoIndex(req: Request, res: Response) {
 }
 
 export default {
-  'POST /api/v1/things/product/info/index': postThingsProductInfoIndex,
+  'POST /api/v1/things/product/info/index': postApiV1ThingsProductInfoIndex,
 };
