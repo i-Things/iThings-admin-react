@@ -31,7 +31,7 @@ const localLogColumns = [
 ];
 
 const DevicePage: React.FC<DeviceInfo> = (props) => {
-  const { productID, deviceName } = props;
+  const { productID, deviceName, deviceIsChange } = props;
 
   const initialTime = getInitialTime();
 
@@ -65,8 +65,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   // 获取本地日志
   const { tableProps } = useAntdTable(localLogTable, {
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, logLevel, productID, deviceName],
-    ready: !!(productID && deviceName),
+    refreshDeps: [timeRange, logLevel, deviceIsChange],
+    ready: !!productID,
   });
 
   return (
