@@ -12,6 +12,7 @@ const { TabPane } = Tabs;
 
 const LogService = () => {
   const [params, setParams] = useState<ProductParams>(null!);
+  const [deviceIsChange, setDeviceIsChange] = useState(true);
 
   const changeParams = (value: ProductParams) => {
     setParams((val) => ({
@@ -20,27 +21,34 @@ const LogService = () => {
     }));
   };
 
+  const handleChangeDevice = () => {
+    setDeviceIsChange((val) => !val);
+  };
+
   return (
     <PageContainer>
-      <Filter params={params} changeParams={changeParams} />
+      <Filter params={params} changeParams={changeParams} changeDevice={handleChangeDevice} />
       <Card>
         <Tabs defaultActiveKey="1" destroyInactiveTabPane>
           <TabPane tab="云端诊断日志" key="1">
             <CloudLogPage
               productID={params?.productID || ''}
               deviceName={params?.deviceName || ''}
+              deviceIsChange={deviceIsChange}
             />
           </TabPane>
           <TabPane tab="设备云端日志" key="2">
             <DeviceCloudLogPage
               productID={params?.productID || ''}
               deviceName={params?.deviceName || ''}
+              deviceIsChange={deviceIsChange}
             />
           </TabPane>
           <TabPane tab="设备本地日志" key="3">
             <DeviceLocalLogPage
               productID={params?.productID || ''}
               deviceName={params?.deviceName || ''}
+              deviceIsChange={deviceIsChange}
             />
           </TabPane>
         </Tabs>

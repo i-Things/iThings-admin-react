@@ -57,7 +57,7 @@ const localLogColumns = [
 ];
 
 const DevicePage: React.FC<DeviceInfo> = (props) => {
-  const { productID, deviceName } = props;
+  const { productID, deviceName, deviceIsChange } = props;
 
   const initialTime = getInitialTime();
 
@@ -93,8 +93,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   // 获取云端诊断日志
   const { tableProps, refresh } = useAntdTable(cloudLogTable, {
     defaultPageSize: DefaultPage.size,
-    ready: !!(productID && deviceName),
-    refreshDeps: [timeRange, isRefresh, filterParams, productID, deviceName],
+    ready: !!productID,
+    refreshDeps: [timeRange, isRefresh, filterParams, deviceIsChange],
     pollingInterval: isRefresh ? 5000 : 0,
   });
 
