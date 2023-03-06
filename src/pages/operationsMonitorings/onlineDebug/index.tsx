@@ -6,6 +6,7 @@ import type { ProductParams } from '../data';
 
 const OnlineDebug = () => {
   const [params, setParams] = useState<ProductParams>(null!);
+  const [deviceIsChange, setDeviceIsChange] = useState(true);
 
   const changeParams = (value: ProductParams) => {
     setParams((val) => ({
@@ -14,10 +15,18 @@ const OnlineDebug = () => {
     }));
   };
 
+  const handleChangeDevice = () => {
+    setDeviceIsChange((val) => !val);
+  };
+
   return (
     <PageContainer>
-      <Filter params={params} changeParams={changeParams} />
-      <OnlineDebugPage productID={params?.productID || ''} deviceName={params?.deviceName || ''} />
+      <Filter params={params} changeParams={changeParams} changeDevice={handleChangeDevice} />
+      <OnlineDebugPage
+        productID={params?.productID || ''}
+        deviceName={params?.deviceName || ''}
+        deviceIsChange={deviceIsChange}
+      />
     </PageContainer>
   );
 };
