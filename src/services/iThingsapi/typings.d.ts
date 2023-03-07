@@ -1,12 +1,10 @@
 declare namespace API {
-  type action = {
-    /** 执行器类型 notify: 通知 delay:延迟  device:设备输出  alarm: 告警 */
-    executor: string;
-    /** 通知 */
-    notify?: Record<string, any>;
-    delay?: { time?: number; unit?: string };
-    alarm?: { mode?: string };
-    device?: { productID?: string; selectorValues?: string[] };
+  type createParams = {
+    'iThings-token'?: string;
+  };
+
+  type deleteUsingPOSTParams = {
+    'iThings-token'?: string;
   };
 
   type deviceCore = {
@@ -93,6 +91,10 @@ declare namespace API {
     createdTime: number;
     /** 签名方法 */
     signMethod: string;
+  };
+
+  type firmwareIndexParams = {
+    'iThings-token'?: string;
   };
 
   type FirmwareIndexReq = {
@@ -208,8 +210,129 @@ declare namespace API {
     size?: number;
   };
 
+  type postApiV1SystemApi_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemApiCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemApiIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemApiUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemCommonConfigParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemLogLoginIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemLogOperIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemMenu_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemMenuCreateParams = {
+    'iThings-token'?: string;
+  };
+
   type postApiV1SystemMenuIndexParams = {
     role: number;
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemMenuUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemRole_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemRoleCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemRoleIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemRoleRoleMenuUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemRoleUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUser_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserCaptchaParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserLoginParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserResourceReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1SystemUserUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceAuthAccessParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceAuthLoginParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceAuthRootCheckParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceGatewayIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceGatewayMultiCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceGatewayMultiDeleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
   };
 
   type postApiV1ThingsDeviceInfoCountParams = {
@@ -217,12 +340,187 @@ declare namespace API {
     startTime?: number;
     /** 查询统计的结束时间，非必填，秒 */
     endTime?: number;
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInfoCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInfoIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInfoReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInfoUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInteractSendActionParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInteractSendMsgParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceInteractSendPropertyParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceMsgEventLogIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceMsgHubLogIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceMsgPropertyLatestIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceMsgPropertyLogIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsDeviceMsgSdkLogIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupDeviceIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupDeviceMultiCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupDeviceMultiDeleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
   };
 
   type postApiV1ThingsGroupInfoCreateParams = {
-    district_id?: string;
-    data_type?: string;
-    ak?: string;
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupInfoIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupInfoReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsGroupInfoUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsOtaTaskDeviceRetryParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductInfoCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductInfoIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductInfoReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductInfoUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductRemoteConfigCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductRemoteConfigIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductRemoteConfigLastestReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductRemoteConfigPushAllParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductSchema_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductSchemaCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductSchemaIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductSchemaTslImportParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductSchemaTslReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsProductSchemaUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleFlowInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleFlowInfoCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleFlowInfoIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleFlowInfoUpdateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleSceneInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleSceneInfoCreateParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleSceneInfoIndexParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleSceneInfoReadParams = {
+    'iThings-token'?: string;
+  };
+
+  type postApiV1ThingsRuleSceneInfoUpdateParams = {
+    'iThings-token'?: string;
   };
 
   type ProductInfo = {
@@ -278,6 +576,11 @@ declare namespace API {
     'X-Amz-Expires'?: string;
     'X-Amz-SignedHeaders'?: string;
     'X-Amz-Signature'?: string;
+    'iThings-token'?: string;
+  };
+
+  type readParams = {
+    'iThings-token'?: string;
   };
 
   type scene = {
@@ -292,6 +595,12 @@ declare namespace API {
     then?: string;
     /** 描述 */
     desc?: string;
+    /** 状态 1启用 2禁用 */
+    state: number;
+  };
+
+  type signedurlParams = {
+    'iThings-token'?: string;
   };
 
   type SuccRet = {
@@ -303,6 +612,10 @@ declare namespace API {
 
   type tag = Record<string, any>;
 
+  type taskAnalysisParams = {
+    'iThings-token'?: string;
+  };
+
   type TaskAnalysisReq = {
     taskUid: string;
   };
@@ -312,8 +625,16 @@ declare namespace API {
     result: string;
   };
 
+  type taskCancelParams = {
+    'iThings-token'?: string;
+  };
+
   type TaskCancleReq = {
     taskUid: string;
+  };
+
+  type taskCreateParams = {
+    'iThings-token'?: string;
   };
 
   type TaskCreateReq = {
@@ -329,10 +650,18 @@ declare namespace API {
     versionList: string;
   };
 
+  type taskDeviceCancleParams = {
+    'iThings-token'?: string;
+  };
+
   type TaskDeviceCancleReq = {
     taskUid: string;
     /** 设备编号 */
     deviceName: string;
+  };
+
+  type taskDeviceIndexParams = {
+    'iThings-token'?: string;
   };
 
   type TaskDeviceIndexReq = {
@@ -362,6 +691,14 @@ declare namespace API {
     updatedTime: number;
   };
 
+  type taskListParams = {
+    'iThings-token'?: string;
+  };
+
+  type taskReadParams = {
+    'iThings-token'?: string;
+  };
+
   type TaskReadReq = {
     taskUid?: string;
   };
@@ -388,26 +725,7 @@ declare namespace API {
     createdTime: number;
   };
 
-  type term = {
-    /** 字段名 */
-    column: string;
-    /** 条件值 */
-    value: string;
-    /** 多个条件关联类型 or  and */
-    type: string;
-    /** 动态条件类型 eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间   */
-    termType: string;
-    /** 嵌套条件 */
-    terms?: term[];
-  };
-
-  type triggerDevice = {
-    /** 产品id */
-    productID: string;
-    /** 设备选择方式 all: 全部 fixed:指定的设备 */
-    selector: string;
-    /** 选择的列表 选择的列表, fixed类型是设备名列表 */
-    selectorValues: string[];
-    operation: { operator?: string };
+  type updateParams = {
+    'iThings-token'?: string;
   };
 }
