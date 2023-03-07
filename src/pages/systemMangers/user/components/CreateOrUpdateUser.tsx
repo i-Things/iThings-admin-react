@@ -1,28 +1,25 @@
-import useGetSelectOptions from '@/hooks/useGetSelectOption';
 import useTableCreate from '@/hooks/useTableCreate';
 import useTableUpdate from '@/hooks/useTableUpdate';
-import { postApiV1SystemRoleIndex } from '@/services/iThingsapi/jiaoseguanli';
 import {
   postApiV1SystemUserCreate,
   postApiV1SystemUserUpdate,
 } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { PlusOutlined } from '@ant-design/icons';
+import { ProFormSelect } from '@ant-design/pro-components';
 import type { ProFormInstance } from '@ant-design/pro-form';
-import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import type { UserListItem } from '../types';
 
-// const { Option } = Select;
 const CreateOrUpdateUser: React.FC<{
   flag: string;
   record?: UserListItem;
   actionRef: React.MutableRefObject<ActionType | undefined>;
-}> = ({ flag, record, actionRef }) => {
-  const { querySelectOptions, selectOptions } = useGetSelectOptions();
-
+  selectOptions: { value: string; label: string }[];
+}> = ({ flag, record, actionRef, selectOptions }) => {
   const { createHandler } = useTableCreate();
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
@@ -31,7 +28,6 @@ const CreateOrUpdateUser: React.FC<{
   const editFormRef = useRef<ProFormInstance>();
   type CreateProp = typeof postApiV1SystemUserCreate;
   type UpdateProp = typeof postApiV1SystemUserUpdate;
-  type QueryRoleProp = typeof postApiV1SystemRoleIndex;
 
   const ROLE_OPTION = selectOptions;
 
@@ -54,13 +50,6 @@ const CreateOrUpdateUser: React.FC<{
     editFormRef.current?.setFieldsValue(record);
   }, [editFlag, record]);
 
-  useEffect(() => {
-    querySelectOptions<QueryRoleProp>(postApiV1SystemRoleIndex, {
-      page: { page: 1, size: 99999 },
-      label: 'name',
-      value: 'id',
-    });
-  }, []);
   return (
     <ModalForm<UserListItem>
       width={550}
