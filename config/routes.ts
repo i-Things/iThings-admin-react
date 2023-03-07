@@ -29,6 +29,12 @@ export default [
         icon: 'icon_dosing',
       },
       {
+        path: '/deviceDemo',
+        name: '设备数据demo',
+        component: './deviceDemo/index',
+        icon: 'icon_dosing',
+      },
+      {
         path: '/deviceMangers',
         name: '设备管理',
         icon: 'icon_data_01',

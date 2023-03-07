@@ -100,7 +100,7 @@
     "lodash": "^4.17.21",
     "lodash-decorators": "^6.0.0",
     "moment": "^2.29.4",
-    "monaco-editor": "0.30.0",
+    "monaco-editor": "0.30.0", 
     "monaco-editor-webpack-plugin": "^6.0.0",
     "numeral": "^2.0.6",
     "nzh": "^1.0.3",
