@@ -1,9 +1,9 @@
 import { TIME_TYPE_DATA } from '@/utils/const';
 import type { RadioChangeEvent } from 'antd';
-import { DatePicker, Radio } from 'antd';
-import type { RangePickerProps } from 'antd/lib/date-picker';
+import { Radio } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
+import DatePicker from '../DatePicker';
 
 interface TimeFilterProps {
   onChange: (val: any) => void;
@@ -14,7 +14,7 @@ const { RangePicker }: any = DatePicker;
 const TimeFilter: React.FC<TimeFilterProps> = (props) => {
   const { onChange } = props;
   const [timeType, setTimeType] = useState(0);
-  const [timeRange, setTimeRange] = useState<RangePickerProps['value']>([
+  const [timeRange, setTimeRange] = useState([
     moment(moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm')),
     moment(),
   ]);
@@ -51,7 +51,7 @@ const TimeFilter: React.FC<TimeFilterProps> = (props) => {
     resetTimeRange(e.target.value);
   };
 
-  const timeRangeChange = (value: RangePickerProps['value']) => {
+  const timeRangeChange = (value: moment.Moment[]) => {
     setTimeType(-1);
     setTimeRange(value);
     onChange(value);

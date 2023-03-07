@@ -33,7 +33,7 @@ const layout = {
 };
 
 const DevicePage: React.FC<DeviceInfo> = (props) => {
-  const { productID, deviceName } = props;
+  const { productID, deviceName, deviceIsChange } = props;
 
   const initialTime = getInitialTime();
 
@@ -67,11 +67,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       return res.data;
     },
     {
-      ready:
-        logType === LogType.MODEL &&
-        modelTYpe === ModelType.PROPERTY &&
-        !!(productID && deviceName),
-      refreshDeps: [isRefresh, logType, modelTYpe],
+      ready: logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY && !!productID,
+      refreshDeps: [isRefresh, logType, modelTYpe, deviceIsChange],
       pollingInterval:
         isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 5000 : 0,
     },
@@ -87,10 +84,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       return res.data;
     },
     {
-      ready:
-        logType === LogType.MODEL &&
-        modelTYpe === ModelType.PROPERTY &&
-        !!(productID && deviceName),
+      ready: logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY && !!productID,
       refreshDeps: [isRefresh, logType, modelTYpe],
       pollingInterval:
         isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.PROPERTY ? 5000 : 0,
@@ -119,7 +113,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   // 根据属性标识符筛选
   useEffect(() => {
-    if (attrList.length > 0) {
+    if (attrList.length >= 0) {
       setModelData(
         () => (dataID ? attrList?.filter((item) => item.dataID?.includes(dataID)) : attrList) || [],
       );
@@ -153,10 +147,9 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   // 获取物模型日志 - 事件
   const { tableProps: eventTableProps, refresh: eventRun } = useAntdTable(eventTable, {
-    ready:
-      logType === LogType.MODEL && modelTYpe === ModelType.EVENT && !!(productID && deviceName),
+    ready: logType === LogType.MODEL && modelTYpe === ModelType.EVENT && !!productID,
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, eventType, isRefresh],
+    refreshDeps: [timeRange, eventType, isRefresh, deviceIsChange],
     pollingInterval:
       isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.EVENT ? 5000 : 0,
   });
@@ -188,9 +181,9 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   // 获取内容日志
   const { tableProps: contentTableProps, refresh: contentRun } = useAntdTable(contentTable, {
-    ready: logType === LogType.CONTENT && !!(productID && deviceName),
+    ready: logType === LogType.CONTENT && !!productID,
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, contentParams, isRefresh],
+    refreshDeps: [timeRange, contentParams, isRefresh, deviceIsChange],
     pollingInterval: isRefresh && logType === LogType.CONTENT ? 5000 : 0,
   });
 
@@ -220,9 +213,9 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   // 获取上下线日志
   const { tableProps: onOffTableProps, refresh: onOffRun } = useAntdTable(onOffTable, {
-    ready: logType === LogType.ONOFFLINE && !!(productID && deviceName),
+    ready: logType === LogType.ONOFFLINE && !!productID,
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, isRefresh],
+    refreshDeps: [timeRange, isRefresh, deviceIsChange],
     pollingInterval: isRefresh && logType === LogType.ONOFFLINE ? 5000 : 0,
   });
 
@@ -390,7 +383,13 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
         <Table size="middle" rowKey="tranceID" columns={onofflineColumns} {...onOffTableProps} />
       )}
       {visible && (
-        <ModelDetail visible={visible} dataID={historyDataID} handleClose={handleClose} />
+        <ModelDetail
+          visible={visible}
+          dataID={historyDataID}
+          handleClose={handleClose}
+          deviceName={deviceName}
+          productId={productID}
+        />
       )}
     </Space>
   );

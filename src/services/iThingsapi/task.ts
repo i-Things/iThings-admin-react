@@ -53,6 +53,21 @@ export async function taskDeviceCancle(
   });
 }
 
+/** 重试单个设备升级 POST /api/v1/things/ota/task/device-retry */
+export async function postApiV1ThingsOtaTaskDeviceRetry(
+  body: {},
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/api/v1/things/ota/task/device-retry', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 批次设备列表 POST /api/v1/things/ota/task/deviceIndex */
 export async function taskDeviceIndex(
   body: API.TaskDeviceIndexReq,

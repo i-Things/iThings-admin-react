@@ -81,8 +81,6 @@ export async function postApiV1ThingsGroupDeviceMultiDelete(
 
 /** 创建分组 POST /api/v1/things/group/info/create */
 export async function postApiV1ThingsGroupInfoCreate(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postApiV1ThingsGroupInfoCreateParams,
   body: {
     /** 分组名称 */
     groupName: string;
@@ -97,9 +95,6 @@ export async function postApiV1ThingsGroupInfoCreate(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-    },
-    params: {
-      ...params,
     },
     data: body,
     ...(options || {}),

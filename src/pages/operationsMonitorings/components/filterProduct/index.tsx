@@ -10,10 +10,11 @@ import styles from './index.less';
 interface FilterProps {
   params: ProductParams;
   changeParams: (val: ProductParams) => void;
+  changeDevice?: () => void;
 }
 
 const Filter: React.FC<FilterProps> = (props) => {
-  const { params, changeParams } = props;
+  const { params, changeParams, changeDevice } = props;
 
   const [form] = Form.useForm();
 
@@ -76,9 +77,10 @@ const Filter: React.FC<FilterProps> = (props) => {
         changeParams({
           deviceName: res?.list?.[0]?.deviceName || '',
         });
+        changeDevice?.();
       },
       onError: (error) => {
-        message.error('获取产品列表错误' + error.message);
+        message.error('获取设备列表错误' + error.message);
       },
     },
   );
@@ -89,6 +91,7 @@ const Filter: React.FC<FilterProps> = (props) => {
 
   const handleChangeDevice = (val: string) => {
     changeParams({ deviceName: val });
+    changeDevice?.();
   };
 
   const handleFilter = (val: string, options?: DefaultOptionType) => {

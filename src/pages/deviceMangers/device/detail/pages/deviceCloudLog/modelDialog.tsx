@@ -15,6 +15,8 @@ interface ModelProps {
   visible: boolean;
   dataID: string;
   handleClose: () => void;
+  deviceName?: string;
+  productId: string;
 }
 
 const historyColumns = [
@@ -33,7 +35,7 @@ const historyColumns = [
 ];
 
 const ModelDetail: React.FC<ModelProps> = (props) => {
-  const { visible, dataID, handleClose } = props;
+  const { visible, dataID, handleClose, deviceName, productId } = props;
 
   const params = useParams() as { id: string; name: string };
   const { id = '', name = '' } = params;
@@ -50,8 +52,8 @@ const ModelDetail: React.FC<ModelProps> = (props) => {
       size: pageSize,
     };
     const _params = {
-      productID: id,
-      deviceNames: [name],
+      productID: id || productId,
+      deviceNames: [deviceName || name],
       dataID,
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
