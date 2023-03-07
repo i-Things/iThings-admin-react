@@ -37,7 +37,7 @@ const useGetSelectOptions = () => {
     } catch (error) {
       message.error((error as Error)?.message);
     }
-    return selectOptions;
+    return res;
   };
   return {
     querySelectOptions,

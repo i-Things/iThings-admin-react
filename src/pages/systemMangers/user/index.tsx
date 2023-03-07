@@ -120,7 +120,12 @@ const UserList: React.FC = () => {
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         toolBarRender={() => [
-          <CreateOrUpdateUser flag="create" actionRef={actionRef} key="createUser" />,
+          <CreateOrUpdateUser
+            flag="create"
+            actionRef={actionRef}
+            key="createUser"
+            selectOptions={selectOptions}
+          />,
         ]}
         request={(params) =>
           queryPage<QueryProp, UserListItem>(postApiV1SystemUserIndex, { ...params })
