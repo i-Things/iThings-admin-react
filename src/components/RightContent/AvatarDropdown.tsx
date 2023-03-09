@@ -70,7 +70,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({}) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser?.userInfo?.userName) {
+  if (!currentUser || !currentUser?.userInfo?.nickName) {
     return loading;
   }
 
@@ -92,7 +92,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({}) => {
           src={defaultImgUrl}
           alt="avatar"
         />
-        <span className={`${styles.name} anticon`}>{currentUser?.userInfo?.userName}</span>
+        <span className={`${styles.name} anticon`}>{currentUser?.userInfo?.nickName}</span>
       </span>
     </HeaderDropdown>
   );

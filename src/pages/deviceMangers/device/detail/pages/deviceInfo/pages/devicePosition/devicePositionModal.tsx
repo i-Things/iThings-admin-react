@@ -1,5 +1,4 @@
 import { LAYOUT_TYPE_VERTICAL } from '@/utils/const';
-import { loadBMap } from '@/utils/map';
 import { SendOutlined } from '@ant-design/icons';
 import { ProList } from '@ant-design/pro-components';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -64,8 +63,7 @@ const DevicePositionModal: React.FC<{
     return true;
   };
 
-  const loadOption = async () => {
-    await loadBMap();
+  const loadOption = () => {
     const map = new window.BMap.Map('map');
     map.centerAndZoom(
       new window.BMap.Point(

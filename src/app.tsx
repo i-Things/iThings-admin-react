@@ -6,6 +6,7 @@ import {
   postApiV1SystemUserResourceRead,
 } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
+import { loadBMap } from './utils/map';
 import { getToken, getUID, setLocal, spanTree } from './utils/utils';
 
 const loginPath = '/user/login';
@@ -55,6 +56,7 @@ export async function getInitialState(): Promise<{
       const menuTree = await postApiV1SystemUserResourceRead({});
       const { data } = await postApiV1SystemCommonConfig({});
       setLocal(`mapData`, JSON.stringify(data));
+      loadBMap();
       const menuInfo = loopMenuItem(
         spanTree(
           menuTree?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number)),
