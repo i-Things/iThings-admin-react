@@ -6,7 +6,7 @@ import { TitleComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { history } from 'umi';
 
 import type { DeviceStatic } from '@/pages/home/data';
@@ -17,7 +17,6 @@ import type { TitleComponentOption, TooltipComponentOption } from 'echarts/compo
 import 'echarts/extension/bmap/bmap';
 
 import { timestampToDateStr } from '@/utils/date';
-import { loadBMap } from '@/utils/map';
 import { useRequest } from 'ahooks';
 import { message } from 'antd';
 import styles from './index.less';
@@ -339,10 +338,6 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
       );
     }
   };
-
-  useEffect(() => {
-    loadBMap();
-  }, []);
 
   return (
     <div id="map">

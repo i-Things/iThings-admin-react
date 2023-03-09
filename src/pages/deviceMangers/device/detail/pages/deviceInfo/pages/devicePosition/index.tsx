@@ -1,5 +1,4 @@
 import { postApiV1ThingsDeviceInfoUpdate } from '@/services/iThingsapi/shebeiguanli';
-import { loadBMap } from '@/utils/map';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { message, Tag } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
@@ -55,8 +54,7 @@ const DevicePositionPage: React.FC<InfoProps> = ({ deviceInfo, refresh }) => {
     });
   };
 
-  const getmap = async (info) => {
-    await loadBMap();
+  const getmap = (info) => {
     const map = new window.BMap.Map('map');
     const lng = info?.position?.longitude || info?.point?.lng;
     const lat = info?.position?.latitude || info?.point?.lat;
