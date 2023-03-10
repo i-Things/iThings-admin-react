@@ -4,9 +4,10 @@ import { Radio } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import DatePicker from '../DatePicker';
+import { resetTimeRange } from './utils';
 
 interface TimeFilterProps {
-  onChange: (val: any) => void;
+  onChange: (val: any, type: number) => void;
 }
 
 const { RangePicker }: any = DatePicker;
@@ -19,42 +20,16 @@ const TimeFilter: React.FC<TimeFilterProps> = (props) => {
     moment(),
   ]);
 
-  // 设置时间范围
-  const resetTimeRange = (value: number) => {
-    let startTime: string = '';
-    let endTime: string = moment().format('YYYY-MM-DD HH:mm');
-    switch (value) {
-      case 0:
-        startTime = moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm');
-        break;
-      case 1:
-        startTime = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm');
-        break;
-      case 2:
-        startTime = moment().format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().format('YYYY-MM-DD') + ' 23: 59';
-        break;
-      case 3:
-        startTime = moment().add(-1, 'd').format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().add(-1, 'd').format('YYYY-MM-DD') + ' 23: 59';
-        break;
-      case 4:
-        startTime = moment().add(-6, 'd').format('YYYY-MM-DD') + ' 00: 00';
-        endTime = moment().format('YYYY-MM-DD') + ' 23: 59';
-        break;
-    }
-    onChange([moment(startTime), moment(endTime)]);
-  };
-
   const timeTypeChange = (e: RadioChangeEvent) => {
     setTimeType(e.target.value);
-    resetTimeRange(e.target.value);
+    const { startTime, endTime } = resetTimeRange(e.target.value);
+    onChange([moment(startTime), e.target.value === 3 ? moment(endTime) : '0'], e.target.value);
   };
 
   const timeRangeChange = (value: moment.Moment[]) => {
-    setTimeType(-1);
+    setTimeType(6);
     setTimeRange(value);
-    onChange(value);
+    onChange(value, timeType);
   };
 
   const disabledRangeDate = (current: any) => {
@@ -76,7 +51,7 @@ const TimeFilter: React.FC<TimeFilterProps> = (props) => {
         disabledDate={disabledRangeDate}
         showTime
         onChange={timeRangeChange}
-        format="YYYY-MM-DD HH:mm"
+        format="YYYY-MM-DD HH:mm:ss"
       />
     </>
   );
