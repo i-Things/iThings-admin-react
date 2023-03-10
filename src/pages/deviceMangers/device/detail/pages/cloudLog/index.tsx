@@ -1,4 +1,5 @@
 import TimeFilter from '@/components/TimeFilter';
+import { resetTimeRange } from '@/components/TimeFilter/utils';
 import { postApiV1ThingsDeviceMsgHubLogIndex } from '@/services/iThingsapi/shebeixiaoxi';
 import { DefaultPage, getInitialTime } from '@/utils/base';
 import { timestampToDateStr } from '@/utils/date';
@@ -6,8 +7,8 @@ import { QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import Switch from '@ant-design/pro-form/lib/components/Switch';
 import { useAntdTable } from 'ahooks';
 import { Card, Col, Input, Row, Table, Tooltip } from 'antd';
-import type { RangePickerProps } from 'antd/lib/date-picker';
 import { debounce } from 'lodash';
+import moment from 'moment';
 import type { ChangeEventHandler } from 'react';
 import React, { useState } from 'react';
 import type { DeviceInfo, PageInfo } from '../../../data';
@@ -61,12 +62,22 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   const initialTime = getInitialTime();
 
-  const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
+  const [timeRangeInfo, setTimeRangeInfo] = useState({ timeRange: initialTime, type: 0 });
+
   const [isRefresh, setRefresh] = useState(false);
   const [filterParams, setFilterParams] = useState({ content: '', requestID: '' });
 
   /** 获取云端诊断日志 */
   const cloudLogTable = async ({ current, pageSize }: PageInfo) => {
+    let startTime, endTime;
+    if (isRefresh && timeRangeInfo.type <= 4) {
+      const { startTime: start, endTime: end } = resetTimeRange(timeRangeInfo.type);
+      startTime = moment(start);
+      endTime = timeRangeInfo.type === 3 ? moment(end) : '0';
+    } else {
+      startTime = timeRangeInfo.timeRange[0];
+      endTime = timeRangeInfo.timeRange[1];
+    }
     // 初始化参数
     const page = {
       page: current,
@@ -76,8 +87,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       actions: null!,
       deviceName,
       productID,
-      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
-      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      timeStart: startTime?.valueOf().toString() ?? '',
+      timeEnd: endTime?.valueOf().toString() ?? '',
       ...filterParams,
       page,
     };
@@ -94,7 +105,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const { tableProps, refresh } = useAntdTable(cloudLogTable, {
     defaultPageSize: DefaultPage.size,
     ready: !!productID,
-    refreshDeps: [timeRange, isRefresh, filterParams, deviceIsChange],
+    refreshDeps: [timeRangeInfo, isRefresh, filterParams, deviceIsChange],
     pollingInterval: isRefresh ? 5000 : 0,
   });
 
@@ -123,7 +134,11 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     <Card>
       <Row gutter={[24, 24]}>
         <Col>
-          <TimeFilter onChange={(val) => setTimeRange(val)} />
+          <TimeFilter
+            onChange={(val, type) => {
+              setTimeRangeInfo({ timeRange: val, type });
+            }}
+          />
         </Col>
         <Col>
           <div className={styles.refresh}>

@@ -1,4 +1,5 @@
 import TimeFilter from '@/components/TimeFilter';
+import { resetTimeRange } from '@/components/TimeFilter/utils';
 import {
   postApiV1ThingsDeviceMsgEventLogIndex,
   postApiV1ThingsDeviceMsgHubLogIndex,
@@ -12,8 +13,8 @@ import Switch from '@ant-design/pro-form/lib/components/Switch';
 import { useAntdTable, useRequest } from 'ahooks';
 import type { RadioChangeEvent } from 'antd';
 import { Form, Input, Radio, Select, Space, Table } from 'antd';
-import type { RangePickerProps } from 'antd/lib/date-picker';
 import { debounce } from 'lodash';
+import moment from 'moment';
 import 'moment/locale/zh-cn';
 import type { ChangeEventHandler } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -44,7 +45,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const [historyDataID, setHistoryDataID] = useState('');
   const [isRefresh, setRefresh] = useState(false);
   const [eventType, setEventType] = useState<string>(null!);
-  const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
+  const [timeRangeInfo, setTimeRangeInfo] = useState({ timeRange: initialTime, type: 0 });
   const [attrList, setAttrList] = useState<Partial<AttrData>[]>([]);
 
   const [visible, setVisible] = useState(false);
@@ -120,8 +121,22 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     }
   }, [dataID, attrList]);
 
+  const getTime = () => {
+    let startTime, endTime;
+    if (isRefresh && timeRangeInfo.type <= 4) {
+      const { startTime: start, endTime: end } = resetTimeRange(timeRangeInfo.type);
+      startTime = moment(start);
+      endTime = timeRangeInfo.type === 3 ? moment(end) : '0';
+    } else {
+      startTime = timeRangeInfo.timeRange[0];
+      endTime = timeRangeInfo.timeRange[1];
+    }
+    return { startTime, endTime };
+  };
+
   /** 获取物模型-事件 */
   const eventTable = async ({ current, pageSize }: PageInfo) => {
+    const { startTime, endTime } = getTime();
     // 初始化参数
     const page = {
       page: current,
@@ -132,8 +147,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       types: eventType === 'all' ? null! : [eventType],
       productID,
       dataID: '',
-      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
-      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      timeStart: startTime?.valueOf().toString() ?? '',
+      timeEnd: endTime?.valueOf().toString() ?? '',
       page,
     };
 
@@ -149,13 +164,14 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const { tableProps: eventTableProps, refresh: eventRun } = useAntdTable(eventTable, {
     ready: logType === LogType.MODEL && modelTYpe === ModelType.EVENT && !!productID,
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, eventType, isRefresh, deviceIsChange],
+    refreshDeps: [timeRangeInfo, eventType, isRefresh, deviceIsChange],
     pollingInterval:
       isRefresh && logType === LogType.MODEL && modelTYpe === ModelType.EVENT ? 5000 : 0,
   });
 
   /** 获取内容日志 */
   const contentTable = async ({ current, pageSize }: PageInfo) => {
+    const { startTime, endTime } = getTime();
     // 初始化参数
     const page = {
       page: current,
@@ -166,8 +182,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       topics: contentParams.topics ? [contentParams.topics] : null!,
       deviceName,
       productID,
-      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
-      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      timeStart: startTime?.valueOf().toString() ?? '',
+      timeEnd: endTime?.valueOf().toString() ?? '',
       page,
     };
 
@@ -183,12 +199,13 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const { tableProps: contentTableProps, refresh: contentRun } = useAntdTable(contentTable, {
     ready: logType === LogType.CONTENT && !!productID,
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, contentParams, isRefresh, deviceIsChange],
+    refreshDeps: [timeRangeInfo, contentParams, isRefresh, deviceIsChange],
     pollingInterval: isRefresh && logType === LogType.CONTENT ? 5000 : 0,
   });
 
   /** 获取上下线日志 */
   const onOffTable = async ({ current, pageSize }: PageInfo) => {
+    const { startTime, endTime } = getTime();
     // 初始化参数
     const page = {
       page: current,
@@ -198,8 +215,8 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
       actions: ['connected', 'disconnected'],
       deviceName,
       productID,
-      timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
-      timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
+      timeStart: startTime?.valueOf().toString() ?? '',
+      timeEnd: endTime?.valueOf().toString() ?? '',
       page,
     };
 
@@ -215,7 +232,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const { tableProps: onOffTableProps, refresh: onOffRun } = useAntdTable(onOffTable, {
     ready: logType === LogType.ONOFFLINE && !!productID,
     defaultPageSize: DefaultPage.size,
-    refreshDeps: [timeRange, isRefresh, deviceIsChange],
+    refreshDeps: [timeRangeInfo, isRefresh, deviceIsChange],
     pollingInterval: isRefresh && logType === LogType.ONOFFLINE ? 5000 : 0,
   });
 
@@ -232,7 +249,6 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     setLogType(e.target.value);
     /** 重置各个筛选条件 */
     setModelType('property');
-    setTimeRange(initialTime);
     setEventType(null!);
     setContentParams({
       actions: '',
@@ -244,6 +260,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
   const modelTypeLogChange = (e: RadioChangeEvent) => {
     setModelType(e.target.value);
     setEventType('all');
+    if (e.target.value === 'event') setTimeRangeInfo({ timeRange: initialTime, type: 0 });
   };
 
   /** 是否自动刷新 */
@@ -350,7 +367,11 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
         )}
         {(modelTYpe === ModelType.EVENT || logType !== LogType.MODEL) && (
           <div style={{ marginBottom: 20, marginTop: 20 }}>
-            <TimeFilter onChange={(val) => setTimeRange(val)} />
+            <TimeFilter
+              onChange={(val, type) => {
+                setTimeRangeInfo({ timeRange: val, type });
+              }}
+            />
           </div>
         )}
       </div>
