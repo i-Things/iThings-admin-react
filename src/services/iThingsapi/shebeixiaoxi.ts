@@ -103,6 +103,7 @@ export async function postApiV1ThingsDeviceMsgPropertyLogIndex(
     timeStart: string;
     timeEnd: string;
     page?: { page?: number; size?: number };
+    order: number;
   },
   options?: { [key: string]: any },
 ) {

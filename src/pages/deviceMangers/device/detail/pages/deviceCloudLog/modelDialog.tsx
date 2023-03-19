@@ -58,6 +58,7 @@ const ModelDetail: React.FC<ModelProps> = (props) => {
       timeStart: timeRange?.[0]?.valueOf().toString() ?? '',
       timeEnd: timeRange?.[1]?.valueOf().toString() ?? '',
       page,
+      order: 1,
     };
 
     const res = await postApiV1ThingsDeviceMsgPropertyLogIndex(_params);
