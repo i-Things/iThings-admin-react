@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   postApiV1ThingsProductSchemaCreate,
-  postApiV1ThingsProductSchemaUpdate,
+  postApiV1ThingsProductSchemaUpdate
 } from '@/services/iThingsapi/wumoxing';
 import {
   createAsyncFormActions,
@@ -11,7 +11,7 @@ import {
   FormMegaLayout,
   FormPath,
   FormSpy,
-  SchemaForm,
+  SchemaForm
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
@@ -20,7 +20,7 @@ import {
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
-  Switch as FSwitch,
+  Switch as FSwitch
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
@@ -34,7 +34,7 @@ import {
   typeBtnList,
   yuansuleixingList,
   _dataTypeList,
-  _yuansuleixingList,
+  _yuansuleixingList
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -207,7 +207,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       };
     });
 
-    const _max = max ?? numericalRange?.max;
+    const _max = max ?? numericalRange?.max + '';
 
     if (dataType === 'array') {
       arrayInfo = {
@@ -641,7 +641,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             renderMoveDown: () => null,
             renderMoveUp: () => null,
             renderRemove: (idx: number) => {
-              const mutators = ruleActions.current.createMutators('specs');
+              const mutators = ruleActions.current.createMutators(name);
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
                   {({}) => {
@@ -756,7 +756,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                     renderMoveDown: () => null,
                     renderMoveUp: () => null,
                     renderRemove: (idx: number) => {
-                      const mutators = ruleActions.current.createMutators('specs');
+                      const mutators = ruleActions.current.createMutators('shujudingyiForenum');
                       return (
                         <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
                           {({}) => {
@@ -860,7 +860,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           numericalRange: { min: 1, max: 100 },
           start: 0,
           step: 1,
-          max: 2048,
+          max: '2048',
           specs: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
           params: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
           input: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
