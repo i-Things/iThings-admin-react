@@ -207,7 +207,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       };
     });
 
-    const _max = max ?? numericalRange?.max + '';
+    const _max =  numericalRange?.max+ '' ?? max+ '';
 
     if (dataType === 'array') {
       arrayInfo = {
@@ -857,7 +857,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           mode: 'rw',
           eventType: 'alert',
           mapping: { '0': '关', '1': '开' },
-          numericalRange: { min: 1, max: 100 },
+          numericalRange: { min: '1', max: '100' },
           start: 0,
           step: 1,
           max: '2048',
