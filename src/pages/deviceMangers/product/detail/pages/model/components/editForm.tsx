@@ -311,20 +311,20 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.current.setFieldValue('desc', desc);
 
     const _affordance = JSON.parse(affordance);
-    const mode = _affordance.mode;
-    const specs = _affordance.define.specs;
-    const params = _affordance.params;
-    const input = _affordance.input;
-    const output = _affordance.output;
-    const dataType = _affordance.define.type;
-    const mapping = _affordance.define.mapping;
-    const max = _affordance.define.max;
-    const min = _affordance.define.min;
-    const start = _affordance.define.start;
-    const step = _affordance.define.step;
-    const unit = _affordance.define.unit;
-    const dataDefinitionForenum = _affordance.define.dataDefinitionForenum;
-    const numericalRange = _affordance.define.numericalRange;
+    const mode = _affordance?.mode;
+    const specs = _affordance?.define?.specs;
+    const params = _affordance?.params;
+    const input = _affordance?.input;
+    const output = _affordance?.output;
+    const dataType = _affordance?.define?.type;
+    const mapping = _affordance?.define?.mapping;
+    const max = _affordance?.define?.max;
+    const min = _affordance?.define?.min;
+    const start = _affordance?.define?.start;
+    const step = _affordance?.define?.step;
+    const unit = _affordance?.define?.unit;
+    const dataDefinitionForenum = _affordance?.define?.dataDefinitionForenum;
+    const numericalRange = _affordance?.define?.numericalRange;
 
     ruleActions.current.setFieldValue('mode', mode);
 
@@ -343,7 +343,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.current.setFieldValue('specs', specs);
     ruleActions.current.setFieldValue('input', input);
     ruleActions.current.setFieldValue('output', output);
-    ruleActions.current.setFieldValue('eventType', _affordance.type);
+    ruleActions.current.setFieldValue('eventType', _affordance?.type);
     props.setModalVisit(true);
   }
 
