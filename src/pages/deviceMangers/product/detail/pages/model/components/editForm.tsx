@@ -207,7 +207,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       };
     });
 
-    const _max = max ?? numericalRange?.max + '';
+    const _max =  numericalRange?.max+ '' ?? max+ '';
 
     if (dataType === 'array') {
       arrayInfo = {
@@ -324,6 +324,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const step = _affordance.define.step;
     const unit = _affordance.define.unit;
     const dataDefinitionForenum = _affordance.define.dataDefinitionForenum;
+    const numericalRange = _affordance.define.numericalRange;
 
     ruleActions.current.setFieldValue('mode', mode);
 
@@ -334,6 +335,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.current.setFieldValue('step', step);
     ruleActions.current.setFieldValue('unit', unit);
     ruleActions.current.setFieldValue('dataDefinitionForenum', dataDefinitionForenum);
+    ruleActions.current.setFieldValue('numericalRange', numericalRange);
 
     ruleActions.current.setFieldValue('dataType', dataType);
     ruleActions.current.setFieldValue('params', params);
@@ -857,7 +859,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           mode: 'rw',
           eventType: 'alert',
           mapping: { '0': '关', '1': '开' },
-          numericalRange: { min: 1, max: 100 },
+          numericalRange: { min: '1', max: '100' },
           start: 0,
           step: 1,
           max: '2048',
