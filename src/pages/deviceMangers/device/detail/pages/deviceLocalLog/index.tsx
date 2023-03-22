@@ -5,7 +5,6 @@ import { DEVICE_LOG_LEVEL_FORM, DEVICE_LOG_LEVEL_VALUE } from '@/utils/const';
 import { timestampToDateStr } from '@/utils/date';
 import { useAntdTable } from 'ahooks';
 import { Card, Col, Row, Select, Table } from 'antd';
-import type { RangePickerProps } from 'antd/lib/date-picker';
 import React, { useState } from 'react';
 import type { DeviceInfo, PageInfo } from '../../../data';
 
@@ -35,7 +34,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   const initialTime = getInitialTime();
 
-  const [timeRange, setTimeRange] = useState<RangePickerProps['value']>(initialTime);
+  const [timeRange, setTimeRange] = useState(initialTime);
   const [logLevel, setLogLevel] = useState<number>();
 
   /** 获取本地日志 */
