@@ -324,6 +324,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const step = _affordance.define.step;
     const unit = _affordance.define.unit;
     const dataDefinitionForenum = _affordance.define.dataDefinitionForenum;
+    const numericalRange = _affordance.define.numericalRange;
 
     ruleActions.current.setFieldValue('mode', mode);
 
@@ -334,6 +335,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.current.setFieldValue('step', step);
     ruleActions.current.setFieldValue('unit', unit);
     ruleActions.current.setFieldValue('dataDefinitionForenum', dataDefinitionForenum);
+    ruleActions.current.setFieldValue('numericalRange', numericalRange);
 
     ruleActions.current.setFieldValue('dataType', dataType);
     ruleActions.current.setFieldValue('params', params);
