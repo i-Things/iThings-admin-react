@@ -204,10 +204,11 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       item.define = {
         ...item.dataType,
         type: item.type,
+        max: item.dataType.max + '',
       };
     });
 
-    const _max =  numericalRange?.max+ '' ?? max+ '';
+    const _max = numericalRange?.max + '' ?? max + '';
 
     if (dataType === 'array') {
       arrayInfo = {
@@ -415,7 +416,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           isLayout={false}
         >
           <Field
-            type="number"
+            type="string"
             name="min"
             x-component="NumberPicker"
             required
@@ -425,7 +426,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           />
 
           <Field
-            type="number"
+            type="string"
             name="max"
             x-component="NumberPicker"
             required
@@ -476,7 +477,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   const stringTypeFormItem = (
     <>
       <Field
-        type="number"
+        type="string"
         name="max"
         title="数据定义"
         x-props={{
@@ -514,7 +515,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators('dataDefinitionForenum');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
+                  {({ }) => {
                     return (
                       <a
                         style={{
@@ -646,7 +647,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators(name);
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
+                  {({ }) => {
                     return (
                       <a
                         style={{
@@ -731,7 +732,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
                 {intTypeFormItem}
                 <Field
-                  type="number"
+                  type="string"
                   name="max"
                   title="数据定义"
                   x-props={{
@@ -761,7 +762,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                       const mutators = ruleActions.current.createMutators('shujudingyiForenum');
                       return (
                         <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                          {({}) => {
+                          {({ }) => {
                             return (
                               <a
                                 style={{
