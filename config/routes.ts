@@ -140,6 +140,23 @@ export default [
         ],
       },
       {
+        path: '/alarmMangers',
+        name: '告警管理',
+        icon: 'icon_system',
+        routes: [
+          {
+            name: '告警配置',
+            path: '/alarmMangers/alarmConfiguration/index',
+            component: './alarmMangers/alarmConfiguration/index',
+          },
+          {
+            name: '新增告警配置',
+            path: '/alarmMangers/alarmConfiguration/add',
+            component: './alarmMangers/alarmConfiguration/addAlarmConfig/index',
+          },
+        ],
+      },
+      {
         path: '/',
         redirect: '/deviceMangers/product/index',
       },
