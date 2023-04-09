@@ -100,10 +100,17 @@ export async function postApiV1ThingsDeviceMsgPropertyLogIndex(
     deviceNames: string[];
     productID: string;
     dataID: string;
-    timeStart: string;
-    timeEnd: string;
+    timeStart?: string;
+    timeEnd?: string;
+    /** avg:平均值 first:第一个参数 last:最后一个参数 count:总数 twa: 时间加权平均函数 参考:https://docs.taosdata.com/taos-sql/function */
+    argFunc?: string;
+    /** (单位毫秒) 如果这个值不为零值 则时间的开始和结束必须有效及聚合函数不应该为空 */
+    interval?: number;
+    /**   //  FILL 语句指定某一窗口区间数据缺失的情况下的填充模式。填充模式包括以下几种：   //    不进行填充：NONE（默认填充模式）。   //    VALUE 填充：固定值填充，此时需要指定填充的数值。例如：FILL(VALUE, 1.23)。   //    PREV 填充：使用前一个非 NULL 值填充数据。例如：FILL(PREV)。   //    NULL 填充：使用 NULL 填充数据。例如：FILL(NULL)。   //    LINEAR 填充：根据前后距离最近的非 NULL 值做线性插值填充。例如：FILL(LINEAR)。   //    NEXT 填充：使用下一个非 NULL 值填充数据。例如：FILL(NEXT)。 */
+    fill?: string;
+    /** 0:aes(默认,从久到近排序) 1:desc(时间从近到久排序) */
+    order?: number;
     page?: { page?: number; size?: number };
-    order: number;
   },
   options?: { [key: string]: any },
 ) {

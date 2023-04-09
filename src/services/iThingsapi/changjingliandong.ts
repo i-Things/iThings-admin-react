@@ -8,7 +8,6 @@ export async function postApiV1ThingsRuleSceneInfoCreate(
     id?: number;
     name?: string;
     trigger?: string;
-    /** 触发条件 */
     when?: string;
     then?: string;
     desc?: string;
@@ -17,14 +16,17 @@ export async function postApiV1ThingsRuleSceneInfoCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/things/rule/scene/info/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { id?: number } }>(
+    '/api/v1/things/rule/scene/info/create',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 删除场景信息 POST /api/v1/things/rule/scene/info/delete */
@@ -53,6 +55,7 @@ export async function postApiV1ThingsRuleSceneInfoIndex(
     state: number;
     /** device: 设备触发 timer: 定时触发 manual:手动触发 */
     triggerType: string;
+    alarmID?: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -95,7 +98,6 @@ export async function postApiV1ThingsRuleSceneInfoUpdate(
     id?: number;
     name?: string;
     trigger?: string;
-    /** 触发条件 */
     when?: string;
     then?: string;
     desc?: string;
