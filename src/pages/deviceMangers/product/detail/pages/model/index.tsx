@@ -3,7 +3,7 @@ import {
   postApiV1ThingsProductSchemaIndex,
   postApiV1ThingsProductSchemaTslImport,
   postApiV1ThingsProductSchemaTslRead,
-  postApiV1ThingsProductSchema__openAPI__delete,
+  postApiV1ThingsProductSchema__openAPI__delete
 } from '@/services/iThingsapi/wumoxing';
 import { downloadFunction, isJSON } from '@/utils/utils';
 import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
