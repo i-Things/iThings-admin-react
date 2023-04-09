@@ -1,10 +1,42 @@
 declare namespace API {
-  type createParams = {
-    'iThings-token'?: string;
+  type alarmDealRecord = {
+    id: number;
+    createdTime: number;
+    /** 告警记录ID */
+    alarmRecordID: number;
+    /** 告警处理结果 */
+    result: string;
+    /** 告警处理类型 1人工 2系统 */
+    type: number;
+    /** 最早告警时间 */
+    alarmTime: number;
   };
 
-  type deleteUsingPOSTParams = {
-    'iThings-token'?: string;
+  type alarmInfo = {
+    /** 名称 */
+    id?: number;
+    /** 状态 1启用 2禁用 */
+    name: string;
+    state: number;
+    desc: string;
+    createdTime?: number;
+    /** 告警配置级别 1提醒 2一般 3严重 4紧急 5超紧急 */
+    level: number;
+  };
+
+  type alarmLog = {
+    id: number;
+    /** 描述 */
+    desc: string;
+    createdTime: number;
+    /** 告警记录ID */
+    alarmRecordID: number;
+    /** 告警流水 */
+    serial: string;
+    /** 场景名称 */
+    sceneName: string;
+    /** 场景ID */
+    sceneID: number;
   };
 
   type deviceCore = {
@@ -91,10 +123,6 @@ declare namespace API {
     createdTime: number;
     /** 签名方法 */
     signMethod: string;
-  };
-
-  type firmwareIndexParams = {
-    'iThings-token'?: string;
   };
 
   type FirmwareIndexReq = {
@@ -210,129 +238,8 @@ declare namespace API {
     size?: number;
   };
 
-  type postApiV1SystemApi_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemApiCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemApiIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemApiUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemCommonConfigParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemLogLoginIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemLogOperIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemMenu_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemMenuCreateParams = {
-    'iThings-token'?: string;
-  };
-
   type postApiV1SystemMenuIndexParams = {
     role: number;
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemMenuUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemRole_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemRoleCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemRoleIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemRoleRoleMenuUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemRoleUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUser_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserCaptchaParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserLoginParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserResourceReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1SystemUserUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceAuthAccessParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceAuthLoginParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceAuthRootCheckParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceGatewayIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceGatewayMultiCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceGatewayMultiDeleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
   };
 
   type postApiV1ThingsDeviceInfoCountParams = {
@@ -340,187 +247,6 @@ declare namespace API {
     startTime?: number;
     /** 查询统计的结束时间，非必填，秒 */
     endTime?: number;
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInfoCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInfoIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInfoReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInfoUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInteractSendActionParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInteractSendMsgParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceInteractSendPropertyParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceMsgEventLogIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceMsgHubLogIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceMsgPropertyLatestIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceMsgPropertyLogIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsDeviceMsgSdkLogIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupDeviceIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupDeviceMultiCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupDeviceMultiDeleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupInfoCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupInfoIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupInfoReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsGroupInfoUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsOtaTaskDeviceRetryParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductInfoCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductInfoIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductInfoReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductInfoUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductRemoteConfigCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductRemoteConfigIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductRemoteConfigLastestReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductRemoteConfigPushAllParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductSchema_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductSchemaCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductSchemaIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductSchemaTslImportParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductSchemaTslReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsProductSchemaUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleFlowInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleFlowInfoCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleFlowInfoIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleFlowInfoUpdateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleSceneInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleSceneInfoCreateParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleSceneInfoIndexParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleSceneInfoReadParams = {
-    'iThings-token'?: string;
-  };
-
-  type postApiV1ThingsRuleSceneInfoUpdateParams = {
-    'iThings-token'?: string;
   };
 
   type ProductInfo = {
@@ -569,6 +295,15 @@ declare namespace API {
     affordance: string;
   };
 
+  type ProductScript = {
+    /** 产品id */
+    productID: string;
+    /** 脚本内容 */
+    script: string;
+    /** 脚本语言类型 1:JavaScript 2:lua 3:python */
+    lang: number;
+  };
+
   type putIthings25hcK5yzlbqZipParams = {
     'X-Amz-Algorithm'?: string;
     'X-Amz-Credential'?: string;
@@ -576,11 +311,6 @@ declare namespace API {
     'X-Amz-Expires'?: string;
     'X-Amz-SignedHeaders'?: string;
     'X-Amz-Signature'?: string;
-    'iThings-token'?: string;
-  };
-
-  type readParams = {
-    'iThings-token'?: string;
   };
 
   type scene = {
@@ -589,7 +319,7 @@ declare namespace API {
     name?: string;
     /** 触发器 */
     trigger?: string;
-    /** 触发条件 */
+    /** 触发条件列表 */
     when?: string;
     /** 满足条件时执行的动作 */
     then?: string;
@@ -597,10 +327,6 @@ declare namespace API {
     desc?: string;
     /** 状态 1启用 2禁用 */
     state: number;
-  };
-
-  type signedurlParams = {
-    'iThings-token'?: string;
   };
 
   type SuccRet = {
@@ -612,10 +338,6 @@ declare namespace API {
 
   type tag = Record<string, any>;
 
-  type taskAnalysisParams = {
-    'iThings-token'?: string;
-  };
-
   type TaskAnalysisReq = {
     taskUid: string;
   };
@@ -625,16 +347,8 @@ declare namespace API {
     result: string;
   };
 
-  type taskCancelParams = {
-    'iThings-token'?: string;
-  };
-
   type TaskCancleReq = {
     taskUid: string;
-  };
-
-  type taskCreateParams = {
-    'iThings-token'?: string;
   };
 
   type TaskCreateReq = {
@@ -650,18 +364,10 @@ declare namespace API {
     versionList: string;
   };
 
-  type taskDeviceCancleParams = {
-    'iThings-token'?: string;
-  };
-
   type TaskDeviceCancleReq = {
     taskUid: string;
     /** 设备编号 */
     deviceName: string;
-  };
-
-  type taskDeviceIndexParams = {
-    'iThings-token'?: string;
   };
 
   type TaskDeviceIndexReq = {
@@ -691,14 +397,6 @@ declare namespace API {
     updatedTime: number;
   };
 
-  type taskListParams = {
-    'iThings-token'?: string;
-  };
-
-  type taskReadParams = {
-    'iThings-token'?: string;
-  };
-
   type TaskReadReq = {
     taskUid?: string;
   };
@@ -725,7 +423,7 @@ declare namespace API {
     createdTime: number;
   };
 
-  type updateParams = {
-    'iThings-token'?: string;
+  type timeRange = {
+    timeRange?: { start?: number; end?: number };
   };
 }

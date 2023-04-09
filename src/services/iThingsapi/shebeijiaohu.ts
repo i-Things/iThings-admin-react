@@ -2,7 +2,51 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
-/** 同步调用设备行为 POST /api/v1/things/device/interact/send-action */
+/** 获取调用设备行为的结果 POST /api/v1/things/device/interact/action-read */
+export async function postApiV1ThingsDeviceInteractActionRead(
+  body: {
+    productID: string;
+    deviceName: string;
+    clientToken: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ clientToken: string; outputParams: string; status: string; code: string }>(
+    '/api/v1/things/device/interact/action-read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    },
+  );
+}
+
+/** 获取调用设备属性的结果 POST /api/v1/things/device/interact/property-read */
+export async function postApiV1ThingsDeviceInteractPropertyRead(
+  body: {
+    productID: string;
+    deviceName: string;
+    clientToken: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: string; status: string; clientToken: string; data: string }>(
+    '/api/v1/things/device/interact/property-read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    },
+  );
+}
+
+/** 调用设备行为 POST /api/v1/things/device/interact/send-action */
 export async function postApiV1ThingsDeviceInteractSendAction(
   body: {
     productID: string;
@@ -10,6 +54,8 @@ export async function postApiV1ThingsDeviceInteractSendAction(
     /** 由开发者自行根据设备的应用场景定义 */
     actionID: string;
     inputParams: string;
+    /** 异步情况通过获取接口来获取 */
+    isAsync?: boolean;
   },
   options?: { [key: string]: any },
 ) {
@@ -44,17 +90,15 @@ export async function postApiV1ThingsDeviceInteractSendMsg(
   });
 }
 
-/** 同步调用设备属性 POST /api/v1/things/device/interact/send-property */
+/** 调用设备属性 POST /api/v1/things/device/interact/send-property */
 export async function postApiV1ThingsDeviceInteractSendProperty(
   body: {
     productID: string;
     deviceName: string;
     /** JSON格式字符串, 注意字段需要在物模型属性里定义 */
     data: string;
-    /** 仅对Method:reported有效 */
-    dataTimestamp: string;
-    /** 不填该参数或者 desired 表示下发属性给设备, reported 表示模拟设备上报属性 */
-    method: string;
+    /** 异步情况通过获取接口来获取 */
+    isAsync?: boolean;
   },
   options?: { [key: string]: any },
 ) {
