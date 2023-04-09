@@ -6,7 +6,7 @@ import { downloadFile, getToken } from '@/utils/utils';
 import { ImportOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProFormRadio, ProFormUploadButton } from '@ant-design/pro-components';
-import { ModalForm, ProFormSelect } from '@ant-design/pro-form';
+import { ModalForm } from '@ant-design/pro-form';
 import { Badge, Button, Col, message, Row, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -34,31 +34,12 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
     fileType: 'csv',
   });
 
-  const [productForm, setProductForm] = useState<{ label: string; value: string }[]>();
-
   const [importLoading, setImportLoading] = useState(false);
   const [flag, setFlag] = useState<boolean>(true);
   const [count, setCount] = useState<number>(0);
   const [errMessage, setErrMessage] = useState<errMessageProps[] | null>([]);
 
   const formRef = useRef<ProFormInstance<DEVICE_INFO>>();
-
-  const initForm = () => {
-    if (productValues === undefined || productValues.length == 0) {
-      return;
-    }
-    const ret: { label: string; value: string }[] = [];
-    productValues?.map((item) => {
-      if (item.productID != undefined) {
-        ret.push({ label: item?.productName ?? '-', value: item?.productID ?? '-' });
-      }
-    });
-    setProductForm(ret);
-    formRef.current?.setFieldsValue({
-      productID: productValues[0].productID,
-      logLevel: 1,
-    });
-  };
 
   const submitData = async (fileUrl: ReturnFileData) => {
     setCount(0);
@@ -78,13 +59,10 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
     }
   };
   useEffect(() => {
-    initForm();
     setImportLoading(false);
   }, [productValues, importVisible]);
 
   useEffect(() => {
-    console.log(errMessage);
-
     if (errMessage === null) {
       setImportVisible(false);
       onCommit();
@@ -132,24 +110,6 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
           },
         }}
       >
-        <Row>
-          <Col push={2}>
-            <ProFormSelect
-              name="productID"
-              width="md"
-              label="产品名称"
-              disabled={productValues?.length == 1}
-              rules={[
-                {
-                  required: true,
-                  message: '必填项！',
-                },
-              ]}
-              request={async () => (productForm == undefined ? [] : productForm)}
-            />
-          </Col>
-        </Row>
-
         <Row>
           <Col span={16} push={2}>
             <ProFormRadio.Group
@@ -230,12 +190,13 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
                 beforeUpload: (file) => {
                   console.log('-----', file);
                   const fileType = fileTypeData?.fileType === 'csv' ? 'csv' : 'xlsx';
-                  const isCsv = file.type === 'text/csv';
+                  const isCsv =
+                    file.type === 'text/csv' || file.type === 'application/vnd.ms-excel';
                   const size = file.size;
                   if (size > 1024 * 700) {
                     message.warning({ content: '文件大小须小于700kb' });
                   }
-                  if (!isCsv) {
+                  if (!isCsv && file.name.split('.')[1] === 'csv') {
                     message.warning({ content: '请上传.csv格式文件' });
                   }
 
