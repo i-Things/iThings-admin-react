@@ -3,7 +3,7 @@ import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-l
 import { history } from '@umijs/max';
 import {
   postApiV1SystemUserRead,
-  postApiV1SystemUserResourceRead,
+  postApiV1SystemUserResourceRead
 } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
 import { loadBMap } from './utils/map';

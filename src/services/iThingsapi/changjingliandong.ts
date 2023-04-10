@@ -8,7 +8,6 @@ export async function postApiV1ThingsRuleSceneInfoCreate(
     id?: number;
     name?: string;
     trigger?: string;
-    /** 触发条件 */
     when?: string;
     then?: string;
     desc?: string;
@@ -53,6 +52,7 @@ export async function postApiV1ThingsRuleSceneInfoIndex(
     state: number;
     /** device: 设备触发 timer: 定时触发 manual:手动触发 */
     triggerType: string;
+    alarmID?: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -95,7 +95,6 @@ export async function postApiV1ThingsRuleSceneInfoUpdate(
     id?: number;
     name?: string;
     trigger?: string;
-    /** 触发条件 */
     when?: string;
     then?: string;
     desc?: string;

@@ -69,6 +69,23 @@ export default [
         ],
       },
       {
+        path: '/ruleEngine',
+        name: '规则引擎',
+        icon: 'icon_data_01',
+        routes: [
+          {
+            name: '场景联动',
+            path: '/ruleEngine/scene/index',
+            component: './ruleEngine/scene/index.tsx',
+          },
+          {
+            name: '详情',
+            path: '/ruleEngine/scene/detail',
+            component: './ruleEngine/scene/detail/index.tsx',
+          },
+        ],
+      },
+      {
         path: '/systemMangers',
         name: '系统管理',
         icon: 'icon_system',

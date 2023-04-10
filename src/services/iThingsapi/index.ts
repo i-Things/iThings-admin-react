@@ -4,7 +4,12 @@
 // API 唯一标识：
 import * as caidanguanli from './caidanguanli';
 import * as changjingliandong from './changjingliandong';
+import * as changjingliandongguanlian from './changjingliandongguanlian';
 import * as chanpinguanli from './chanpinguanli';
+import * as chulijilu from './chulijilu';
+import * as gaojingguanli from './gaojingguanli';
+import * as gaojingjilu from './gaojingjilu';
+import * as gaojingrizhi from './gaojingrizhi';
 import * as jiaoseguanli from './jiaoseguanli';
 import * as jiekouguanli from './jiekouguanli';
 import * as liu from './liu';
@@ -22,23 +27,28 @@ import * as xitongpeizhi from './xitongpeizhi';
 import * as yonghuguanli from './yonghuguanli';
 import * as yuanchengpeizhi from './yuanchengpeizhi';
 export default {
-  chanpinguanli,
-  wumoxing,
-  shebeiguanli,
-  shebeijianquan,
-  shebeixiaoxi,
-  shebeijiaohu,
-  caidanguanli,
-  jiaoseguanli,
-  yonghuguanli,
-  shebeifenzu,
-  shengjibaoguanli,
-  task,
-  yuanchengpeizhi,
-  wangguanzishebeiguanli,
-  liu,
-  xitongpeizhi,
-  changjingliandong,
-  rizhiguanli,
   jiekouguanli,
+  gaojingjilu,
+  wumoxing,
+  changjingliandong,
+  jiaoseguanli,
+  shengjibaoguanli,
+  caidanguanli,
+  task,
+  chulijilu,
+  shebeifenzu,
+  chanpinguanli,
+  shebeixiaoxi,
+  changjingliandongguanlian,
+  gaojingrizhi,
+  shebeijianquan,
+  shebeiguanli,
+  xitongpeizhi,
+  liu,
+  shebeijiaohu,
+  yonghuguanli,
+  gaojingguanli,
+  rizhiguanli,
+  wangguanzishebeiguanli,
+  yuanchengpeizhi,
 };
