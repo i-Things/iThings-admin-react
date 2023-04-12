@@ -249,6 +249,17 @@ declare namespace API {
     endTime?: number;
   };
 
+  type ProductCustom = {
+    /** 产品id */
+    productID: string;
+    /** 协议转换脚本 */
+    transformScript?: string;
+    /** 脚本语言类型 1:JavaScript 2:lua 3:python */
+    scriptLang?: number;
+    /** 自定义topic数组 */
+    customTopic?: string;
+  };
+
   type ProductInfo = {
     /** 产品id */
     productID: string;
@@ -293,15 +304,6 @@ declare namespace API {
     required: number;
     /** 各功能类型的详细参数定义 */
     affordance: string;
-  };
-
-  type ProductScript = {
-    /** 产品id */
-    productID: string;
-    /** 脚本内容 */
-    script: string;
-    /** 脚本语言类型 1:JavaScript 2:lua 3:python */
-    lang: number;
   };
 
   type putIthings25hcK5yzlbqZipParams = {

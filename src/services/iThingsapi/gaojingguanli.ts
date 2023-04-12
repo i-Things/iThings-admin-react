@@ -51,6 +51,7 @@ export async function postApiV1ThingsRuleAlarmInfoIndex(
     name?: string;
     /** 1启用 2禁用 */
     sceneID?: number;
+    alarmIDs: number[];
   },
   options?: { [key: string]: any },
 ) {
@@ -66,6 +67,26 @@ export async function postApiV1ThingsRuleAlarmInfoIndex(
     data: body,
     ...(options || {}),
   });
+}
+
+/** 获取告警详情 POST /api/v1/things/rule/alarm/info/read */
+export async function postApiV1ThingsRuleAlarmInfoRead(
+  body: {
+    id: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string; data: API.alarmInfo }>(
+    '/api/v1/things/rule/alarm/info/read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    },
+  );
 }
 
 /** 更新告警 POST /api/v1/things/rule/alarm/info/update */
