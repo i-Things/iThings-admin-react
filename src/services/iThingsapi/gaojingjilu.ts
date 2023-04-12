@@ -18,15 +18,15 @@ export async function postApiV1ThingsRuleAlarmRecordIndex(
       total?: number;
       num?: number;
       list?: {
-        id?: string;
+        id?: number;
         dealState?: number;
-        alarmID?: string;
-        triggerType?: string;
+        alarmID?: number;
+        triggerType?: number;
         productID?: string;
         deviceName?: string;
         sceneName?: string;
-        sceneID?: string;
-        level?: string;
+        sceneID?: number;
+        level?: number;
         lastAlarm?: string;
         createdTime?: string;
       }[];

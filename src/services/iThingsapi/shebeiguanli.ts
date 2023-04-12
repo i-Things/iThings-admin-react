@@ -155,7 +155,29 @@ export async function postApiV1ThingsDeviceInfoMultiImport(
   return request<{
     code: number;
     msg: string;
-    data: { total?: number; errdata?: { row?: number; msg?: string }[] };
+    data: {
+      total?: number;
+      errdata?: {
+        row?: number;
+        productName?: string;
+        deviceName?: string;
+        logLevel?: string;
+        tags?: string;
+        position?: string;
+        address?: string;
+        tips?: string;
+      }[];
+      headers: {
+        row?: number;
+        productName?: string;
+        deviceName?: string;
+        logLevel?: string;
+        tags?: string;
+        position?: string;
+        address?: string;
+        tips?: string;
+      };
+    };
   }>('/api/v1/things/device/info/multi-import', {
     method: 'POST',
     data: formData,

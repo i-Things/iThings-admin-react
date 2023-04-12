@@ -7,9 +7,10 @@ import { ImportOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProFormRadio, ProFormUploadButton } from '@ant-design/pro-components';
 import { ModalForm } from '@ant-design/pro-form';
-import { Badge, Button, Col, message, Row, Tooltip } from 'antd';
+import { Badge, Button, Col, message, Row, Tooltip, Typography } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
-
+import { CSVLink } from 'react-csv';
 interface Props {
   productValues?: PRODUCT_INFO[];
   onCommit: () => void;
@@ -17,12 +18,21 @@ interface Props {
 
 interface ReturnFileData {
   total: number;
-  errdata: errMessageProps[];
+  headers: csvDataProps;
+  errdata: csvDataProps[];
 }
-interface errMessageProps {
-  row: number;
-  msg: string;
+interface csvDataProps {
+  row?: number;
+  productName: string;
+  deviceName: string;
+  logLevel: string;
+  tags: string;
+  position: string;
+  address: string;
+  tips: string;
 }
+
+const { Text } = Typography;
 
 export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
   const [importVisible, setImportVisible] = useState<boolean>(false);
@@ -37,7 +47,8 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
   const [importLoading, setImportLoading] = useState(false);
   const [flag, setFlag] = useState<boolean>(true);
   const [count, setCount] = useState<number>(0);
-  const [errMessage, setErrMessage] = useState<errMessageProps[] | null>([]);
+  const [errMessage, setErrMessage] = useState<csvDataProps[]>([]);
+  const [headers, setHeaders] = useState<{ label: string; key: string }[]>([]);
 
   const formRef = useRef<ProFormInstance<DEVICE_INFO>>();
 
@@ -53,11 +64,24 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
       const temp = fileUrl.total;
       dt += temp;
       setCount(dt);
-      setErrMessage(fileUrl.errdata.sort((a, b) => a.row - b.row));
+      const headerArr: { label: string; key: string }[] = [];
+      for (const key in fileUrl.headers) {
+        if (key !== 'row') headerArr.push({ label: fileUrl.headers[key], key });
+      }
+      const errdata = fileUrl.errdata
+        .sort((a, b) => a?.row - b?.row)
+        .map((data) => {
+          delete data.row;
+          return data;
+        });
+
+      setHeaders(headerArr);
+      setErrMessage(errdata);
     } else {
       message.error({ content: '请先上传文件' });
     }
   };
+
   useEffect(() => {
     setImportLoading(false);
   }, [productValues, importVisible]);
@@ -137,32 +161,10 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
                     ...fileTypeData,
                     fileType: e.target.value,
                   });
-                  // props.onChange({
-                  //   ...data,
-                  //   fileType: e.target.value,
-                  // });
                 },
               }}
             />
           </Col>
-          {/* <Col pull={6}>
-            <ProFormCheckbox
-              fieldProps={{
-                onChange: (e) => {
-                  setFileTypeData({
-                    ...fileTypeData,
-                    fileType: e.target.value,
-                  });
-                  // props.onChange({
-                  //   ...data,
-                  //   autoDeploy: e.target.checked,
-                  // });
-                },
-              }}
-            >
-              自动启用
-            </ProFormCheckbox>
-          </Col> */}
         </Row>
         <Row>
           <Col push={2}>
@@ -170,7 +172,7 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
               name="upload"
               width="md"
               label={
-                <Tooltip title="单次最多添加10000台，文件大小小于700kb">
+                <Tooltip title="单次最多添加1000台，文件大小小于700kb">
                   <span style={{ marginRight: '5px' }}>批量文件上传</span>
                   <QuestionCircleOutlined />
                 </Tooltip>
@@ -226,23 +228,36 @@ export const MultiImport: React.FC<Props> = ({ onCommit, productValues }) => {
             </div>
           </Col>
         </Row>
-        <div>
-          {importLoading && (
-            <div style={{ marginLeft: 20 }}>
-              {flag ? (
-                <Badge status="processing" text="进行中" />
-              ) : (
-                <Badge status="success" text="已完成" />
+        <Row>
+          <Col push={2}>
+            <div>
+              {importLoading && (
+                <>
+                  <div style={{ display: 'flex', marginBottom: '15px' }}>
+                    {flag ? (
+                      <Badge status="processing" text="进行中" />
+                    ) : (
+                      <Badge status="success" text="已完成" />
+                    )}
+                    <div style={{ margin: '0 10px' }}>总数量：{count}</div>
+                    <div>
+                      (<Text type="success"> 成功：{count - errMessage?.length} </Text>
+                      <Text type="danger"> 失败：{errMessage?.length} </Text>)
+                    </div>
+                  </div>
+                  <CSVLink
+                    data={errMessage}
+                    headers={headers}
+                    style={{ marginLeft: '10px' }}
+                    filename={`iThings批量导入错误信息|${moment().format('YYYY-MM-DD HH:mm:ss')}`}
+                  >
+                    点击下载失败清单，修改后重新上传
+                  </CSVLink>
+                </>
               )}
-              <span style={{ marginLeft: 15 }}>总数量:{count}</span>
-              {errMessage?.length &&
-                Array.isArray(errMessage) &&
-                errMessage.map((item) => (
-                  <p style={{ color: 'red' }} key={item?.msg}>{`第${item?.row}行: ${item?.msg}`}</p>
-                ))}
             </div>
-          )}
-        </div>
+          </Col>
+        </Row>
       </ModalForm>
     </>
   );

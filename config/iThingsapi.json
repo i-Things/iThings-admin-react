@@ -25,7 +25,7 @@
       "name": "iThings-apisvr/物联网相关接口/产品/远程配置"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/产品/脚本"
+      "name": "iThings-apisvr/物联网相关接口/产品/自定义"
     },
     {
       "name": "iThings-apisvr/物联网相关接口/设备分组"
@@ -10436,15 +10436,23 @@
                     "title": "状态",
                     "description": "1启用 2禁用",
                     "nullable": true
+                  },
+                  "alarmIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "title": "告警id列表查询条件"
                   }
                 },
-                "x-apifox-orders": ["01GVZQJJFKB5NGR4RS7VMGE7TP", "name", "sceneID"],
+                "x-apifox-orders": ["01GVZQJJFKB5NGR4RS7VMGE7TP", "name", "sceneID", "alarmIDs"],
                 "x-apifox-refs": {
                   "01GVZQJJFKB5NGR4RS7VMGE7TP": {
                     "$ref": "#/components/schemas/page",
                     "x-apifox-overrides": {}
                   }
                 },
+                "required": ["alarmIDs"],
                 "x-apifox-ignore-properties": ["page"]
               }
             }
@@ -10906,8 +10914,8 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "type": "string",
-                                "title": "编号"
+                                "title": "编号",
+                                "type": "integer"
                               },
                               "dealState": {
                                 "type": "integer",
@@ -10915,13 +10923,13 @@
                                 "description": "1无告警 2告警中 3已处理"
                               },
                               "alarmID": {
-                                "type": "string",
-                                "title": "告警记录ID"
+                                "title": "告警记录ID",
+                                "type": "integer"
                               },
                               "triggerType": {
-                                "type": "string",
                                 "title": "触发类型",
-                                "description": "设备触发1,其他2"
+                                "description": "设备触发1,其他2",
+                                "type": "integer"
                               },
                               "productID": {
                                 "type": "string",
@@ -10936,13 +10944,13 @@
                                 "title": "场景名称"
                               },
                               "sceneID": {
-                                "type": "string",
-                                "title": "场景ID"
+                                "title": "场景ID",
+                                "type": "integer"
                               },
                               "level": {
-                                "type": "string",
                                 "title": "告警配置级别",
-                                "description": "1提醒 2一般 3严重 4紧急 5超紧急"
+                                "description": "1提醒 2一般 3严重 4紧急 5超紧急",
+                                "type": "integer"
                               },
                               "lastAlarm": {
                                 "type": "string",
@@ -11169,7 +11177,7 @@
                   "file": {
                     "type": "string",
                     "description": "csv文件",
-                    "example": "file://C:\\Users\\fumy01\\Documents\\Work\\Personal\\Avocation\\iThings\\Requirement\\230330 批量导入设备\\iThings-设别导入模板 3r.csv",
+                    "example": "file://C:\\Users\\robot\\Documents\\Work\\Personal\\Avocation\\iThings\\Requirement\\230330 批量导入设备\\iThings-设备导入模板5r.csv",
                     "format": "binary"
                   }
                 }
@@ -11207,26 +11215,165 @@
                                 "type": "integer",
                                 "title": "导入失败所在行"
                               },
-                              "msg": {
-                                "type": "string",
-                                "title": "导入失败原因"
+                              "productName": {
+                                "type": "string"
+                              },
+                              "deviceName": {
+                                "type": "string"
+                              },
+                              "logLevel": {
+                                "type": "string"
+                              },
+                              "tags": {
+                                "type": "string"
+                              },
+                              "position": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              },
+                              "tips": {
+                                "type": "string"
                               }
                             },
-                            "required": ["row", "msg"],
-                            "x-apifox-orders": ["row", "msg"],
-                            "x-apifox-ignore-properties": []
+                            "required": [
+                              "row",
+                              "productName",
+                              "deviceName",
+                              "logLevel",
+                              "tags",
+                              "position",
+                              "address",
+                              "tips"
+                            ],
+                            "x-apifox-ignore-properties": [],
+                            "x-apifox-orders": [
+                              "row",
+                              "productName",
+                              "deviceName",
+                              "logLevel",
+                              "tags",
+                              "position",
+                              "address",
+                              "tips"
+                            ]
                           },
                           "title": "导入失败清单"
+                        },
+                        "headers": {
+                          "type": "object",
+                          "properties": {
+                            "row": {
+                              "type": "integer"
+                            },
+                            "productName": {
+                              "type": "string"
+                            },
+                            "deviceName": {
+                              "type": "string"
+                            },
+                            "logLevel": {
+                              "type": "string"
+                            },
+                            "tags": {
+                              "type": "string"
+                            },
+                            "position": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            },
+                            "tips": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "row",
+                            "productName",
+                            "deviceName",
+                            "logLevel",
+                            "tags",
+                            "position",
+                            "address",
+                            "tips"
+                          ],
+                          "x-apifox-ignore-properties": [],
+                          "x-apifox-orders": [
+                            "row",
+                            "productName",
+                            "deviceName",
+                            "logLevel",
+                            "tags",
+                            "position",
+                            "address",
+                            "tips"
+                          ]
                         }
                       },
-                      "required": ["total", "errdata"],
-                      "x-apifox-orders": ["total", "errdata"],
-                      "x-apifox-ignore-properties": []
+                      "required": ["total", "headers", "errdata"],
+                      "x-apifox-ignore-properties": [],
+                      "x-apifox-orders": ["total", "errdata", "headers"]
                     }
                   },
                   "required": ["code", "msg", "data"],
-                  "x-apifox-orders": ["code", "msg", "data"],
-                  "x-apifox-ignore-properties": []
+                  "x-apifox-ignore-properties": [],
+                  "x-apifox-orders": ["code", "msg", "data"]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例-但部分失败",
+                    "value": {
+                      "code": 200,
+                      "msg": "success",
+                      "data": {
+                        "total": 5,
+                        "headers": {
+                          "row": 0,
+                          "productName": "【必填】产品名称",
+                          "deviceName": "【必填】设备名称",
+                          "logLevel": "【选填】日志级别\n（关闭/错误/告警/信息/调试）",
+                          "tags": "【选填】设备标签\n（格式k1:v1;k2:v2;...）",
+                          "position": "【选填】设备位置百度坐标\n（格式:经,纬）",
+                          "address": "【选填】详细地址",
+                          "tips": "【提示】模板使用提示"
+                        },
+                        "errdata": [
+                          {
+                            "row": 1,
+                            "productName": "iThingsDemoProduct111",
+                            "deviceName": "iThingsDemoDevice111",
+                            "logLevel": "关闭",
+                            "tags": "color:红色;size:大型",
+                            "position": "116.442501,40.03446",
+                            "address": "深圳华强北001档",
+                            "tips": "行数据解析出错:请勿上传模板Demo数据"
+                          },
+                          {
+                            "row": 2,
+                            "productName": "iThingsDemoProduct222",
+                            "deviceName": "iThingsDemoDevice222",
+                            "logLevel": "错误",
+                            "tags": "color:黑色;size:小型;shape:长方形",
+                            "position": "111.442501,55.03446",
+                            "address": "深圳世界之窗埃菲尔铁塔",
+                            "tips": "行数据解析出错:请勿上传模板Demo数据"
+                          },
+                          {
+                            "row": 3,
+                            "productName": "test5",
+                            "deviceName": "fmy测试0411-3-1",
+                            "logLevel": "关闭",
+                            "tags": "color:红色;size:大型",
+                            "position": "116.442501,40.03446",
+                            "address": "深圳华强北001档",
+                            "tips": "创建设备出错:系统错误"
+                          }
+                        ]
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -11248,15 +11395,6 @@
                   "required": ["code", "msg"],
                   "x-apifox-ignore-properties": [],
                   "x-apifox-orders": ["code", "msg"]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "异常示例-仅支持csv文件",
-                    "value": {
-                      "code": 100006,
-                      "msg": "仅支持csv文件"
-                    }
-                  }
                 }
               }
             }
@@ -11265,14 +11403,14 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-72761000-run"
       }
     },
-    "/api/v1/things/product/script/update": {
+    "/api/v1/things/product/custom/update": {
       "post": {
-        "summary": "更新脚本",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/脚本",
+        "summary": "更新自定义信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/自定义",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/脚本"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/自定义"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -11282,7 +11420,7 @@
                 "type": "object",
                 "x-apifox-refs": {
                   "01GXDDYZ04GQFFFEPB97SQBHBC": {
-                    "$ref": "#/components/schemas/ProductScript"
+                    "$ref": "#/components/schemas/ProductCustom"
                   }
                 },
                 "x-apifox-orders": ["01GXDDYZ04GQFFFEPB97SQBHBC"],
@@ -11291,18 +11429,30 @@
                     "type": "string",
                     "title": "产品id"
                   },
-                  "script": {
+                  "transformScript": {
                     "type": "string",
-                    "title": "脚本内容"
+                    "title": "协议转换脚本",
+                    "nullable": true
                   },
-                  "lang": {
+                  "scriptLang": {
                     "type": "integer",
                     "title": "脚本语言类型",
-                    "description": "1:JavaScript 2:lua 3:python"
+                    "description": "1:JavaScript 2:lua 3:python",
+                    "nullable": true
+                  },
+                  "customTopic": {
+                    "type": "string",
+                    "title": "自定义topic数组",
+                    "nullable": true
                   }
                 },
-                "required": ["productID", "script", "lang"],
-                "x-apifox-ignore-properties": ["productID", "script", "lang"]
+                "required": ["productID"],
+                "x-apifox-ignore-properties": [
+                  "productID",
+                  "transformScript",
+                  "scriptLang",
+                  "customTopic"
+                ]
               }
             }
           }
@@ -11323,14 +11473,14 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-73649457-run"
       }
     },
-    "/api/v1/things/product/script/read": {
+    "/api/v1/things/product/custom/read": {
       "post": {
-        "summary": "获取产品脚本",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/脚本",
+        "summary": "获取产品自定义信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/自定义",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language）",
-        "tags": ["iThings-apisvr/物联网相关接口/产品/脚本"],
+        "tags": ["iThings-apisvr/物联网相关接口/产品/自定义"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -11378,24 +11528,36 @@
                           "type": "string",
                           "title": "产品id"
                         },
-                        "script": {
+                        "transformScript": {
                           "type": "string",
-                          "title": "脚本内容"
+                          "title": "协议转换脚本",
+                          "nullable": true
                         },
-                        "lang": {
+                        "scriptLang": {
                           "type": "integer",
                           "title": "脚本语言类型",
-                          "description": "1:JavaScript 2:lua 3:python"
+                          "description": "1:JavaScript 2:lua 3:python",
+                          "nullable": true
+                        },
+                        "customTopic": {
+                          "type": "string",
+                          "title": "自定义topic数组",
+                          "nullable": true
                         }
                       },
                       "x-apifox-orders": ["01GXDE6Y14FNC0BCXJ5THCRCBM"],
-                      "required": ["productID", "script", "lang"],
+                      "required": ["productID"],
                       "x-apifox-refs": {
                         "01GXDE6Y14FNC0BCXJ5THCRCBM": {
-                          "$ref": "#/components/schemas/ProductScript"
+                          "$ref": "#/components/schemas/ProductCustom"
                         }
                       },
-                      "x-apifox-ignore-properties": ["productID", "script", "lang"]
+                      "x-apifox-ignore-properties": [
+                        "productID",
+                        "transformScript",
+                        "scriptLang",
+                        "customTopic"
+                      ]
                     }
                   },
                   "x-apifox-orders": ["01GXDE6EHMD736YYW3ZB01RAYN", "data"],
@@ -11414,30 +11576,112 @@
         },
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-73650824-run"
       }
+    },
+    "/api/v1/things/rule/alarm/info/read": {
+      "post": {
+        "summary": "获取告警详情",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "x-apifox-refs": {},
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/alarmInfo",
+                      "x-apifox-overrides": {
+                        "createdTime": null,
+                        "id": null,
+                        "dealState": null,
+                        "lastAlarm": null
+                      }
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ3HK10FYJ39NQSZZ8P3A3", "data"],
+                  "x-apifox-refs": {
+                    "01GVZQ3HK10FYJ39NQSZZ8P3A3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-73809379-run"
+      }
     }
   },
   "components": {
     "schemas": {
-      "ProductScript": {
+      "ProductCustom": {
         "type": "object",
         "properties": {
           "productID": {
             "type": "string",
             "title": "产品id"
           },
-          "script": {
+          "transformScript": {
             "type": "string",
-            "title": "脚本内容"
+            "title": "协议转换脚本",
+            "nullable": true
           },
-          "lang": {
+          "scriptLang": {
             "type": "integer",
             "title": "脚本语言类型",
-            "description": "1:JavaScript 2:lua 3:python"
+            "description": "1:JavaScript 2:lua 3:python",
+            "nullable": true
+          },
+          "customTopic": {
+            "type": "string",
+            "title": "自定义topic数组",
+            "nullable": true
           }
         },
-        "title": "产品脚本",
-        "x-apifox-orders": ["productID", "script", "lang"],
-        "required": ["productID", "script", "lang"],
+        "title": "产品自定义信息",
+        "x-apifox-orders": ["productID", "transformScript", "scriptLang", "customTopic"],
+        "required": ["productID"],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型"
       },
