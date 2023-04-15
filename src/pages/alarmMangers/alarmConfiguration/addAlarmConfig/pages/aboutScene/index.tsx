@@ -28,7 +28,11 @@ const AboutScene = () => {
   return (
     <div>
       <Button>新增</Button>
-      <CardItem toolRender={() => <div>解绑</div>} list={ruleSceneList?.data?.list} />
+      {ruleSceneList?.data?.list?.map((item) => (
+        <div key={item.id}>
+          <CardItem data={item} />
+        </div>
+      ))}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { postApiV1ThingsRuleSceneInfoIndex } from '@/services/iThingsapi/changjingliandong';
 import { PageContainer } from '@ant-design/pro-components';
 import { useRequest } from 'ahooks';
-import { Button, Card, message } from 'antd';
+import { Button, Card, Col, message, Row } from 'antd';
 import classNames from 'classnames';
 import CardItem from './components/CardItem';
 import './components/style.less';
@@ -28,7 +28,7 @@ const IndexPage = () => {
     },
   });
 
-  const Tools = (record: API.scene): React.ReactNode => {
+  const Tools: React.FC<{ record: API.scene }> = ({ record }) => {
     return (
       <div className="card-item-bottom-wrap">
         <div className="bottom-item-wrap">
@@ -53,7 +53,14 @@ const IndexPage = () => {
   return (
     <PageContainer>
       <Card>
-        <CardItem toolRender={(record) => Tools(record)} list={ruleSceneList?.data?.list} />
+        <Row gutter={[24, 24]}>
+          {ruleSceneList?.data?.list?.map((item) => (
+            <Col key={item.id} span={8}>
+              <CardItem data={item} />
+              <Tools record={item} />
+            </Col>
+          ))}
+        </Row>
       </Card>
     </PageContainer>
   );
