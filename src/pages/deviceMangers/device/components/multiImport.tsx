@@ -199,7 +199,7 @@ export const MultiImport: React.FC<Props> = ({ onCommit }) => {
                       file.type === 'text/csv' || file.type === 'application/vnd.ms-excel';
                     const size = file.size;
                     if (size > 1024 * 700) {
-                      message.warning({ content: '文件大小须小于700kb' });
+                      message.warning({ content: '文件大小须小于5MB' });
                     }
                     if (!isCsv && file.name.split('.')[1] === 'csv') {
                       message.warning({ content: '请上传.csv格式文件' });
