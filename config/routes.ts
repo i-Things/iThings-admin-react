@@ -151,8 +151,18 @@ export default [
           },
           {
             name: '新增告警配置',
-            path: '/alarmMangers/alarmConfiguration/add',
+            path: '/alarmMangers/alarmConfiguration/save',
             component: './alarmMangers/alarmConfiguration/addAlarmConfig/index',
+          },
+          {
+            name: '告警记录',
+            path: '/alarmMangers/alarmConfiguration/log',
+            component: './alarmMangers/alarmRecord/index',
+          },
+          {
+            name: '告警日志',
+            path: '/alarmMangers/alarmConfiguration/log/detail/:id/:level',
+            component: './alarmMangers/alarmLog/index',
           },
         ],
       },

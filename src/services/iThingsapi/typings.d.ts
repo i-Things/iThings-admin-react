@@ -31,7 +31,7 @@ declare namespace API {
 
   type alarmInfo = {
     /** 名称 */
-    id?: string;
+    id?: number;
     /** 状态 1启用 2禁用 */
     name: string;
     state: number;
@@ -281,6 +281,17 @@ declare namespace API {
     startTime?: number;
     /** 查询统计的结束时间，非必填，秒 */
     endTime?: number;
+  };
+
+  type ProductCustom = {
+    /** 产品id */
+    productID: string;
+    /** 协议转换脚本 */
+    transformScript?: string;
+    /** 脚本语言类型 1:JavaScript 2:lua 3:python */
+    scriptLang?: number;
+    /** 自定义topic数组 */
+    customTopic?: string;
   };
 
   type ProductInfo = {

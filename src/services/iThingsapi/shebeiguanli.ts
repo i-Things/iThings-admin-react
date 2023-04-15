@@ -126,6 +126,66 @@ export async function postApiV1ThingsDeviceInfoIndex(
   });
 }
 
+/** 批量导入设备 #### 前端处理逻辑建议：
+- UI text 显示 导入成功 设备数：total - len(errdata)
+- UI text 显示 导入失败 设备数：len(errdata)
+- UI table 显示 导入失败设备清单明细 POST /api/v1/things/device/info/multi-import */
+export async function postApiV1ThingsDeviceInfoMultiImport(
+  body: {},
+  file?: File,
+  options?: { [key: string]: any },
+) {
+  const formData = new FormData();
+
+  if (file) {
+    formData.append('file', file);
+  }
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele];
+
+    if (item !== undefined && item !== null) {
+      formData.append(
+        ele,
+        typeof item === 'object' && !(item instanceof File) ? JSON.stringify(item) : item,
+      );
+    }
+  });
+
+  return request<{
+    code: number;
+    msg: string;
+    data: {
+      total?: number;
+      errdata?: {
+        row?: number;
+        productName?: string;
+        deviceName?: string;
+        logLevel?: string;
+        tags?: string;
+        position?: string;
+        address?: string;
+        tips?: string;
+      }[];
+      headers: {
+        row?: number;
+        productName?: string;
+        deviceName?: string;
+        logLevel?: string;
+        tags?: string;
+        position?: string;
+        address?: string;
+        tips?: string;
+      };
+    };
+  }>('/api/v1/things/device/info/multi-import', {
+    method: 'POST',
+    data: formData,
+    requestType: 'form',
+    ...(options || {}),
+  });
+}
+
 /** 获取设备详情 POST /api/v1/things/device/info/read */
 export async function postApiV1ThingsDeviceInfoRead(
   body: {

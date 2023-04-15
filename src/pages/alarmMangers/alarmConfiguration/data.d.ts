@@ -1,5 +1,5 @@
 export interface AlarmItem {
-  id?: string;
+  id?: number;
   /** 名称 */
   name: string;
   /** 状态 1启用 2禁用 */

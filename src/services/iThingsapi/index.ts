@@ -26,6 +26,7 @@ import * as wumoxing from './wumoxing';
 import * as xitongpeizhi from './xitongpeizhi';
 import * as yonghuguanli from './yonghuguanli';
 import * as yuanchengpeizhi from './yuanchengpeizhi';
+import * as zidingyi from './zidingyi';
 export default {
   chanpinguanli,
   wumoxing,
@@ -51,4 +52,5 @@ export default {
   changjingliandongguanlian,
   gaojingrizhi,
   gaojingjilu,
+  zidingyi,
 };
