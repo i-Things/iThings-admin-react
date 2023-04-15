@@ -3,7 +3,6 @@ import styles from './style.less';
 const img = require('../img/scene-device.png');
 
 type ruleSceneProps = {
-  toolRender?: (data: API.scene) => JSX.Element | React.ReactNode;
   data: API.scene;
 };
 
