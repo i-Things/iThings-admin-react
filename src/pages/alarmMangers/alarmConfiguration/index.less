@@ -73,9 +73,17 @@
   background-color: #fff2f0;
   border-color: rgb(255 77 79 / 20%);
   border-radius: 0;
+
+  :global {
+    .ant-btn {
+      width: 100%;
+      background-color: #f5f5f5;
+      border-radius: 0;
+    }
+  }
 }
 
-.delete-btn:hover {
+.delete-btn:not(:disabled):hover {
   border-color: rgb(255 77 79) !important;
 }
 

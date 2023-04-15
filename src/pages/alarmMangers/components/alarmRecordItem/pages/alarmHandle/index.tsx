@@ -8,6 +8,7 @@ import styles from '../../index.less';
 interface AlarmHandleProps {
   id?: number;
   state?: number;
+  refresh: () => void;
 }
 
 interface AlarmHandleInfo {
@@ -15,7 +16,7 @@ interface AlarmHandleInfo {
 }
 
 /** 告警处理 */
-const AlarmHandle: React.FC<AlarmHandleProps> = ({ id, state }) => {
+const AlarmHandle: React.FC<AlarmHandleProps> = ({ id, state, refresh }) => {
   const handleFinish = async (val: AlarmHandleInfo) => {
     try {
       const { code } = await postApiV1ThingsRuleAlarmDealRecordCreate({
@@ -24,10 +25,12 @@ const AlarmHandle: React.FC<AlarmHandleProps> = ({ id, state }) => {
       });
       if (code === ResponseCode.SUCCESS) {
         message.success('处理成功');
+        refresh();
       }
     } catch (error) {
       message.error((error as Error).message);
     }
+    return true;
   };
 
   return (

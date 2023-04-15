@@ -14,7 +14,19 @@ import {
 import { PageContainer } from '@ant-design/pro-layout';
 import { useNavigate } from '@umijs/max';
 import { useRequest } from 'ahooks';
-import { Badge, Button, Card, Col, Empty, message, Modal, Pagination, Row, Spin } from 'antd';
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Empty,
+  message,
+  Modal,
+  Pagination,
+  Row,
+  Spin,
+  Tooltip,
+} from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -164,11 +176,18 @@ const IndexPage: React.FC = () => {
                       >
                         {item.state === 1 ? '禁用' : '启用'}
                       </Button>
-                      <Button
-                        className={styles['delete-btn']}
-                        icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
-                        onClick={() => handleDelete(item.id || 0)}
-                      />
+                      <Tooltip title={item.state === 1 && '请先禁用该警告，再删除'}>
+                        <Button
+                          disabled={item.state === 1}
+                          className={styles['delete-btn']}
+                          icon={
+                            <DeleteOutlined
+                              style={{ color: item.state === 1 ? 'rgba(0,0,0,.25)' : '#ff4d4f' }}
+                            />
+                          }
+                          onClick={() => handleDelete(item.id || 0)}
+                        />
+                      </Tooltip>
                     </div>
                   </div>
                 </Col>

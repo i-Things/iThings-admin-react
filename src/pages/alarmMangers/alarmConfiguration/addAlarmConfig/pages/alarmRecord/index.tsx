@@ -15,7 +15,7 @@ const AlarmRecord = () => {
   const [pageInfo, setPageInfo] = useState({ page: 1, size: 10 });
   const [recordData, setRecordData] = useState<Partial<RecordData>>();
 
-  const { loading } = useRequest(postApiV1ThingsRuleAlarmRecordIndex, {
+  const { loading, refresh } = useRequest(postApiV1ThingsRuleAlarmRecordIndex, {
     defaultParams: [{ page: pageInfo, alarmID: Number(id) }],
     refreshDeps: [pageInfo],
     onSuccess: (result) => {
@@ -32,7 +32,7 @@ const AlarmRecord = () => {
         <Row gutter={[24, 24]} style={{ minHeight: '200px' }}>
           {recordData?.list?.map((item) => (
             <Col key={item.id} xs={24} sm={24} md={24} lg={12} xl={12} xxl={8}>
-              <AlarmRecordItem recordData={item} alarmName={alarmName || ''} />
+              <AlarmRecordItem recordData={item} alarmName={alarmName || ''} refresh={refresh} />
             </Col>
           ))}
           {recordData?.list?.length === 0 && (

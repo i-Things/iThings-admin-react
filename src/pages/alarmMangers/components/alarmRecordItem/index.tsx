@@ -13,6 +13,7 @@ import HandleRecordModal from './pages/handleRecordModal';
 interface AlarmRecordItemProps {
   recordData: Partial<RecordList>;
   alarmName: string;
+  refresh: () => void;
 }
 
 const statusMap = new Map([
@@ -21,7 +22,7 @@ const statusMap = new Map([
   [3, { node: <Badge status="success" />, text: '已处理', color: '#52c41a' }],
 ]);
 
-const AlarmRecordItem: React.FC<AlarmRecordItemProps> = ({ recordData, alarmName }) => {
+const AlarmRecordItem: React.FC<AlarmRecordItemProps> = ({ recordData, alarmName, refresh }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -74,7 +75,7 @@ const AlarmRecordItem: React.FC<AlarmRecordItemProps> = ({ recordData, alarmName
           </Row>
         </div>
         <div className={styles.operation}>
-          <AlarmHandle id={recordData.id} state={recordData.dealState} />
+          <AlarmHandle id={recordData.id} state={recordData.dealState} refresh={refresh} />
           <Link
             style={{ flex: 1 }}
             to={`/alarmMangers/alarmConfiguration/log/detail/${recordData.id}/${recordData.level}?name=${alarmName}`}
