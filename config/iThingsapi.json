@@ -10452,7 +10452,6 @@
                     "x-apifox-overrides": {}
                   }
                 },
-                "required": ["alarmIDs"],
                 "x-apifox-ignore-properties": ["page"]
               }
             }
