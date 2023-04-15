@@ -162,11 +162,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const menu = (
     <Menu>
       <Menu.Item key="2">
-        <MultiImport
-          key="multiImport"
-          productValues={products}
-          onCommit={() => actionRef.current?.reload()}
-        />
+        <MultiImport key="multiImport" onCommit={() => actionRef.current?.reload()} />
       </Menu.Item>
     </Menu>
   );
