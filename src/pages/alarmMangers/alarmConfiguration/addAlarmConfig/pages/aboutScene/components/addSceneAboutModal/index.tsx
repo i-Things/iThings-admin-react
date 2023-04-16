@@ -91,10 +91,7 @@ const AddSceneAboutModal: React.FC<AddSceneAboutProps> = (props) => {
   } = useRequest(postApiV1ThingsRuleSceneInfoIndex, {
     defaultParams: [
       {
-        page: {
-          page: 1,
-          size: 20,
-        },
+        page: pageInfo,
         [searchType]: searchValue,
       },
     ],
@@ -226,7 +223,7 @@ const AddSceneAboutModal: React.FC<AddSceneAboutProps> = (props) => {
               onChange={(page, size) => setPageInfo({ page, size })}
               size="small"
               showSizeChanger
-              // hideOnSinglePage={true}
+              hideOnSinglePage={true}
             />
           </div>
         </div>

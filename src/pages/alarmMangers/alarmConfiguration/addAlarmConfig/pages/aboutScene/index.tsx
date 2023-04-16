@@ -24,10 +24,7 @@ const AboutScene = () => {
   } = useRequest(postApiV1ThingsRuleSceneInfoIndex, {
     defaultParams: [
       {
-        page: {
-          page: 1,
-          size: 20,
-        },
+        page: pageInfo,
         alarmID: Number(id),
       },
     ],

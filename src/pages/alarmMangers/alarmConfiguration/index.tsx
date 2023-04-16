@@ -55,7 +55,6 @@ const IndexPage: React.FC = () => {
   } = useRequest(postApiV1ThingsRuleAlarmInfoIndex, {
     defaultParams: [{ page: pageInfo }],
     refreshDeps: [pageInfo],
-
     onError: (error) => {
       message.error('获取告警信息列表错误:' + error.message);
     },
