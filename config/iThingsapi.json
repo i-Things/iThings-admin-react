@@ -9542,7 +9542,6 @@
                   "triggerType",
                   "alarmID"
                 ],
-                "required": ["name", "state", "triggerType"],
                 "x-apifox-ignore-properties": ["page"]
               }
             }
@@ -10452,7 +10451,6 @@
                     "x-apifox-overrides": {}
                   }
                 },
-                "required": ["alarmIDs"],
                 "x-apifox-ignore-properties": ["page"]
               }
             }
@@ -10525,9 +10523,9 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621017-run"
       }
     },
-    "/api/v1/things/rule/alarm/scene/multi-create": {
+    "/api/v1/things/rule/alarm/scene/multi-update": {
       "post": {
-        "summary": "新增告警和场景的关联",
+        "summary": "更新告警和场景的关联",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联",
         "x-apifox-status": "developing",
         "deprecated": false,
@@ -11737,39 +11735,6 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
       },
-      "alarmInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "名称"
-          },
-          "name": {
-            "type": "string",
-            "title": "状态",
-            "description": "1启用 2禁用"
-          },
-          "state": {
-            "type": "integer"
-          },
-          "desc": {
-            "type": "string"
-          },
-          "createdTime": {
-            "type": "integer"
-          },
-          "level": {
-            "type": "integer",
-            "title": "告警配置级别",
-            "description": "1提醒 2一般 3严重 4紧急 5超紧急"
-          }
-        },
-        "title": "告警信息",
-        "x-apifox-orders": ["id", "name", "state", "desc", "createdTime", "level"],
-        "required": ["desc", "state", "name", "level"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
-      },
       "alarmDealRecord": {
         "type": "object",
         "properties": {
@@ -11803,6 +11768,39 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
       },
+      "alarmInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "名称"
+          },
+          "name": {
+            "type": "string",
+            "title": "状态",
+            "description": "1启用 2禁用"
+          },
+          "state": {
+            "type": "integer"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "createdTime": {
+            "type": "integer"
+          },
+          "level": {
+            "type": "integer",
+            "title": "告警配置级别",
+            "description": "1提醒 2一般 3严重 4紧急 5超紧急"
+          }
+        },
+        "title": "告警信息",
+        "x-apifox-orders": ["id", "name", "state", "desc", "createdTime", "level"],
+        "required": ["desc", "state", "name", "level"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
+      },
       "timeRange": {
         "type": "object",
         "properties": {
@@ -11831,6 +11829,305 @@
         "x-apifox-ignore-properties": [],
         "nullable": true,
         "x-apifox-folder": "iThings数据模型"
+      },
+      "trigger": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/triggerDevice"
+            },
+            "title": "设备触发"
+          },
+          "timer": {
+            "$ref": "#/components/schemas/triggerTimer"
+          }
+        },
+        "title": "触发器",
+        "x-apifox-orders": ["device", "timer"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "triggerTimer": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "时间类型",
+            "description": "cron"
+          },
+          "cron": {
+            "type": "string",
+            "title": "cron表达式"
+          }
+        },
+        "title": "定时触发",
+        "x-apifox-orders": ["type", "cron"],
+        "required": ["type", "cron"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "action": {
+        "type": "object",
+        "properties": {
+          "executor": {
+            "type": "string",
+            "title": "执行器类型",
+            "description": "notify: 通知 delay:延迟  device:设备输出  alarm: 告警"
+          },
+          "notify": {
+            "type": "object",
+            "properties": {},
+            "x-apifox-orders": [],
+            "title": "通知",
+            "x-apifox-ignore-properties": []
+          },
+          "delay": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "integer",
+                "title": "延迟时间"
+              },
+              "unit": {
+                "type": "string",
+                "title": "时间单位",
+                "description": "seconds:秒  minutes:分钟  hours:小时"
+              }
+            },
+            "x-apifox-orders": ["time", "unit"],
+            "required": ["time", "unit"],
+            "x-apifox-ignore-properties": []
+          },
+          "alarm": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "title": "告警模式",
+                "description": "trigger: 触发告警  relieve: 解除告警"
+              }
+            },
+            "x-apifox-orders": ["mode"],
+            "required": ["mode"],
+            "x-apifox-ignore-properties": []
+          },
+          "device": {
+            "type": "object",
+            "properties": {
+              "productID": {
+                "type": "string",
+                "title": "产品id"
+              },
+              "selector": {
+                "type": "string",
+                "title": "设备选择方式",
+                "description": "fixed:指定的设备 all:全部"
+              },
+              "selectorValues": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "选择的列表",
+                "description": "fixed类型是设备名列表"
+              },
+              "type": {
+                "type": "string",
+                "title": "云端向设备发起属性控制",
+                "description": "propertyControl  应用调用设备行为:action "
+              },
+              "dataID": {
+                "type": "string",
+                "title": "事件的id",
+                "description": "属性可以传多个,直接value里json传即可"
+              },
+              "value": {
+                "type": "string",
+                "title": "传的值"
+              }
+            },
+            "x-apifox-orders": [
+              "productID",
+              "selector",
+              "selectorValues",
+              "type",
+              "dataID",
+              "value"
+            ],
+            "required": ["productID", "selectorValues", "selector", "type", "dataID", "value"],
+            "x-apifox-ignore-properties": []
+          }
+        },
+        "title": "执行动作",
+        "x-apifox-orders": ["executor", "notify", "delay", "alarm", "device"],
+        "required": ["executor"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "term": {
+        "type": "object",
+        "properties": {
+          "terms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/term"
+            },
+            "description": "嵌套条件",
+            "nullable": true
+          },
+          "columnType": {
+            "type": "string",
+            "title": "字段类型",
+            "description": "property:属性 sysTime:系统时间"
+          },
+          "columnSchema": {
+            "type": "object",
+            "properties": {
+              "productID": {
+                "type": "string",
+                "title": "产品id"
+              },
+              "deviceName": {
+                "type": "string",
+                "title": "设备名"
+              },
+              "dataID": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "属性的id",
+                "description": "如果是结构体类型,需要填写到结构体下具体的变量名"
+              },
+              "termType": {
+                "type": "string",
+                "title": "动态条件类型",
+                "description": " eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间"
+              },
+              "values": {
+                "type": "string",
+                "title": "条件值",
+                "description": "参数根据动态条件类型会有多个参数"
+              }
+            },
+            "title": "物模型类型配置",
+            "description": "属性需要填写",
+            "x-apifox-orders": ["productID", "deviceName", "dataID", "termType", "values"],
+            "required": ["productID", "deviceName", "dataID", "termType", "values"],
+            "x-apifox-ignore-properties": []
+          },
+          "columnTime": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "时间类型",
+                "description": "cron"
+              },
+              "cron": {
+                "type": "string",
+                "title": "cron表达式",
+                "description": "只支持后面几种特殊字符:*  - ,"
+              }
+            },
+            "x-apifox-orders": ["type", "cron"],
+            "title": "时间类型",
+            "required": ["type", "cron"],
+            "x-apifox-ignore-properties": []
+          },
+          "netCondition": {
+            "type": "string",
+            "title": "和下个条件的关联类型",
+            "description": " or  and"
+          },
+          "childrenCondition": {
+            "type": "string",
+            "title": "和嵌套条件的关联类型",
+            "description": "or  and"
+          }
+        },
+        "title": "触发条件",
+        "x-apifox-orders": [
+          "terms",
+          "columnType",
+          "columnSchema",
+          "columnTime",
+          "netCondition",
+          "childrenCondition"
+        ],
+        "required": ["columnType", "columnTime", "netCondition", "childrenCondition"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
+      },
+      "triggerDevice": {
+        "type": "object",
+        "properties": {
+          "productID": {
+            "type": "string",
+            "title": "产品id"
+          },
+          "selector": {
+            "type": "string",
+            "title": "设备选择方式",
+            "description": "all: 全部 fixed:指定的设备"
+          },
+          "selectorValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "选择的列表",
+            "description": "选择的列表, fixed类型是设备名列表"
+          },
+          "operator": {
+            "type": "string",
+            "title": "触发类型",
+            "description": "connected:上线 disConnected:下线 reportProperty:属性上报 reportEvent: 事件上报"
+          },
+          "operationSchema": {
+            "type": "object",
+            "properties": {
+              "dataID": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "选择为属性或事件时需要填该字段 ",
+                "title": "属性的id及事件的id aa.bb.cc"
+              },
+              "termType": {
+                "type": "string",
+                "title": "动态条件类型",
+                "description": "eq: 相等  not:不相等  btw:在xx之间  gt: 大于  gte:大于等于 lt:小于  lte:小于等于   in:在xx值之间"
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "比较条件列表"
+                }
+              }
+            },
+            "x-apifox-orders": ["dataID", "termType", "values"],
+            "required": ["dataID", "termType", "values"],
+            "title": "物模型操作",
+            "description": "reportProperty:属性上报 reportEvent: 事件上报 需要填写",
+            "x-apifox-ignore-properties": []
+          }
+        },
+        "x-apifox-orders": [
+          "productID",
+          "selector",
+          "selectorValues",
+          "operator",
+          "operationSchema"
+        ],
+        "required": ["productID", "selector", "selectorValues", "operator"],
+        "title": "设备触发",
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/scene"
       },
       "scene": {
         "type": "object",
@@ -11900,6 +12197,24 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型/ruleEngine"
       },
+      "tag": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "x-apifox-orders": ["key", "value"],
+          "required": ["key", "value"],
+          "x-apifox-ignore-properties": []
+        },
+        "x-apifox-folder": "iThings数据模型"
+      },
       "deviceCore": {
         "type": "object",
         "properties": {
@@ -11914,6 +12229,29 @@
         },
         "x-apifox-orders": ["productID", "deviceName"],
         "required": ["productID", "deviceName"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型"
+      },
+      "deviceMsgSdkIndex": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "title": "发生时间戳",
+            "description": "毫秒"
+          },
+          "loglevel": {
+            "type": "integer",
+            "title": "日志级别",
+            "description": "1)关闭 2)错误 3)告警 4)信息 5)调试"
+          },
+          "content": {
+            "type": "string",
+            "title": "具体内容"
+          }
+        },
+        "x-apifox-orders": ["timestamp", "loglevel", "content"],
+        "required": ["timestamp", "loglevel", "content"],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型"
       },
@@ -12005,121 +12343,6 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
-      "FirmwareTaskIndexResp": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "integer",
-            "format": "int64",
-            "description": "总数"
-          },
-          "list": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FirmwareTaskInfo"
-            }
-          }
-        },
-        "title": "FirmwareTaskIndexResp",
-        "required": ["total", "list"],
-        "x-apifox-orders": ["total", "list"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
-      },
-      "FirmwareTaskInfo": {
-        "type": "object",
-        "properties": {
-          "taskUid": {
-            "type": "string"
-          },
-          "type": {
-            "type": "integer",
-            "format": "int32",
-            "description": "升级范围1全部设备2定向升级"
-          },
-          "upgradeType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "升级策略:1静态升级2动态升级"
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "description": "升级状态:1未升级2升级中3完成"
-          },
-          "createdTime": {
-            "type": "integer",
-            "format": "int64",
-            "description": "创建时间 只读"
-          }
-        },
-        "title": "FirmwareTaskInfo",
-        "required": ["taskUid", "type", "upgradeType", "status", "createdTime"],
-        "x-apifox-orders": ["taskUid", "type", "upgradeType", "status", "createdTime"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
-      },
-      "FirmwareTaskIndexReq": {
-        "type": "object",
-        "properties": {
-          "firmwareID": {
-            "type": "integer",
-            "format": "int64",
-            "description": "固件升级包编号"
-          },
-          "taskUid": {
-            "type": "string"
-          },
-          "page": {
-            "$ref": "#/components/schemas/PageInfo"
-          }
-        },
-        "title": "FirmwareTaskIndexReq",
-        "required": ["firmwareID"],
-        "x-apifox-orders": ["firmwareID", "taskUid", "page"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
-      },
-      "PageInfo": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "format": "int64",
-            "description": " 页码"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int64",
-            "description": " 每页大小"
-          }
-        },
-        "title": "PageInfo",
-        "x-apifox-orders": ["page", "size"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
-      },
-      "TaskDeviceIndexResp": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TaskDeviceInfo"
-            }
-          },
-          "total": {
-            "type": "integer",
-            "format": "int64",
-            "description": "总数"
-          }
-        },
-        "title": "TaskDeviceIndexResp",
-        "required": ["list", "total"],
-        "x-apifox-orders": ["list", "total"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
-      },
       "TaskDeviceInfo": {
         "type": "object",
         "properties": {
@@ -12147,6 +12370,27 @@
         "title": "TaskDeviceInfo",
         "required": ["taskUid", "deviceName", "version", "status", "updatedTime"],
         "x-apifox-orders": ["taskUid", "deviceName", "version", "status", "updatedTime"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "TaskDeviceIndexResp": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDeviceInfo"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "总数"
+          }
+        },
+        "title": "TaskDeviceIndexResp",
+        "required": ["list", "total"],
+        "x-apifox-orders": ["list", "total"],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
@@ -12264,6 +12508,151 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
+      "PageInfo": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64",
+            "description": " 页码"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "description": " 每页大小"
+          }
+        },
+        "title": "PageInfo",
+        "x-apifox-orders": ["page", "size"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "FirmwareTaskInfo": {
+        "type": "object",
+        "properties": {
+          "taskUid": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer",
+            "format": "int32",
+            "description": "升级范围1全部设备2定向升级"
+          },
+          "upgradeType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "升级策略:1静态升级2动态升级"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "升级状态:1未升级2升级中3完成"
+          },
+          "createdTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间 只读"
+          }
+        },
+        "title": "FirmwareTaskInfo",
+        "required": ["taskUid", "type", "upgradeType", "status", "createdTime"],
+        "x-apifox-orders": ["taskUid", "type", "upgradeType", "status", "createdTime"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "FirmwareTaskIndexResp": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "总数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FirmwareTaskInfo"
+            }
+          }
+        },
+        "title": "FirmwareTaskIndexResp",
+        "required": ["total", "list"],
+        "x-apifox-orders": ["total", "list"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "FirmwareTaskIndexReq": {
+        "type": "object",
+        "properties": {
+          "firmwareID": {
+            "type": "integer",
+            "format": "int64",
+            "description": "固件升级包编号"
+          },
+          "taskUid": {
+            "type": "string"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        },
+        "title": "FirmwareTaskIndexReq",
+        "required": ["firmwareID"],
+        "x-apifox-orders": ["firmwareID", "taskUid", "page"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "FirmwareSignedUrlResp": {
+        "type": "object",
+        "properties": {
+          "dir": {
+            "type": "string",
+            "description": "附件path"
+          },
+          "signedUrl": {
+            "type": "string",
+            "description": "附件直传地址"
+          }
+        },
+        "title": "FirmwareSignedUrlResp",
+        "required": ["dir", "signedUrl"],
+        "x-apifox-orders": ["dir", "signedUrl"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "FirmwareSignedUrlReq": {
+        "type": "object",
+        "properties": {
+          "productID": {
+            "type": "string",
+            "description": "产品id"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "文件名"
+          }
+        },
+        "title": "FirmwareSignedUrlReq",
+        "required": ["productID", "fileName"],
+        "x-apifox-orders": ["productID", "fileName"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "FirmwareReadReq": {
+        "type": "object",
+        "properties": {
+          "firmwareID": {
+            "type": "integer",
+            "format": "int64",
+            "description": "固件升级包编号"
+          }
+        },
+        "title": "FirmwareReadReq",
+        "required": ["firmwareID"],
+        "x-apifox-orders": ["firmwareID"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
       "FirmwareInfoUpdateReq": {
         "type": "object",
         "properties": {
@@ -12295,18 +12684,82 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
-      "FirmwareDelReq": {
+      "FirmwareInfo": {
         "type": "object",
         "properties": {
           "firmwareID": {
             "type": "integer",
             "format": "int64",
             "description": "固件升级包编号"
+          },
+          "name": {
+            "type": "string",
+            "description": "升级包名称"
+          },
+          "version": {
+            "type": "string",
+            "description": "升级包版本"
+          },
+          "productID": {
+            "type": "string",
+            "description": "产品id"
+          },
+          "productName": {
+            "type": "string",
+            "description": "产品名称"
+          },
+          "isDiff": {
+            "type": "integer",
+            "format": "int32",
+            "description": "是否差分包,1:整包,2:差分"
+          },
+          "createdTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间 只读"
+          },
+          "signMethod": {
+            "type": "string",
+            "description": "签名方法"
+          },
+          "description": {
+            "type": "object",
+            "properties": {},
+            "x-apifox-ignore-properties": [],
+            "x-apifox-orders": []
+          },
+          "extData": {
+            "type": "object",
+            "properties": {},
+            "x-apifox-ignore-properties": [],
+            "x-apifox-orders": []
           }
         },
-        "title": "FirmwareDelReq",
-        "required": ["firmwareID"],
-        "x-apifox-orders": ["firmwareID"],
+        "title": "FirmwareInfo",
+        "required": [
+          "firmwareID",
+          "name",
+          "version",
+          "productID",
+          "productName",
+          "isDiff",
+          "createdTime",
+          "signMethod",
+          "description",
+          "extData"
+        ],
+        "x-apifox-orders": [
+          "firmwareID",
+          "name",
+          "version",
+          "productID",
+          "productName",
+          "isDiff",
+          "createdTime",
+          "signMethod",
+          "description",
+          "extData"
+        ],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
@@ -12415,39 +12868,36 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
-      "FirmwareSignedUrlResp": {
+      "FirmwareFile": {
         "type": "object",
         "properties": {
-          "dir": {
+          "url": {
             "type": "string",
-            "description": "附件path"
+            "description": "附件地址，上传附件后接口应该返回"
           },
-          "signedUrl": {
+          "name": {
             "type": "string",
-            "description": "附件直传地址"
+            "description": "附件原名，上传附件后接口应该返回"
           }
         },
-        "title": "FirmwareSignedUrlResp",
-        "required": ["dir", "signedUrl"],
-        "x-apifox-orders": ["dir", "signedUrl"],
+        "title": "FirmwareFile",
+        "required": ["url", "name"],
+        "x-apifox-orders": ["url", "name"],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
-      "FirmwareSignedUrlReq": {
+      "FirmwareDelReq": {
         "type": "object",
         "properties": {
-          "productID": {
-            "type": "string",
-            "description": "产品id"
-          },
-          "fileName": {
-            "type": "string",
-            "description": "文件名"
+          "firmwareID": {
+            "type": "integer",
+            "format": "int64",
+            "description": "固件升级包编号"
           }
         },
-        "title": "FirmwareSignedUrlReq",
-        "required": ["productID", "fileName"],
-        "x-apifox-orders": ["productID", "fileName"],
+        "title": "FirmwareDelReq",
+        "required": ["firmwareID"],
+        "x-apifox-orders": ["firmwareID"],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
@@ -12520,138 +12970,385 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "Schemas"
       },
-      "FirmwareFile": {
+      "SchemaProperty": {
         "type": "object",
         "properties": {
-          "url": {
+          "mode": {
             "type": "string",
-            "description": "附件地址，上传附件后接口应该返回"
+            "title": "读写类型",
+            "description": "r(只读) rw(可读可写)"
           },
-          "name": {
-            "type": "string",
-            "description": "附件原名，上传附件后接口应该返回"
+          "define": {
+            "$ref": "#/components/schemas/SchemaDefine",
+            "title": "参数定义"
           }
         },
-        "title": "FirmwareFile",
-        "required": ["url", "name"],
-        "x-apifox-orders": ["url", "name"],
+        "x-apifox-orders": ["mode", "define"],
+        "required": ["mode", "define"],
         "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
+        "x-apifox-folder": "iThings数据模型/物模型"
       },
-      "FirmwareInfo": {
+      "SchemaEvent": {
         "type": "object",
         "properties": {
-          "firmwareID": {
-            "type": "integer",
-            "format": "int64",
-            "description": "固件升级包编号"
-          },
-          "name": {
+          "type": {
             "type": "string",
-            "description": "升级包名称"
+            "title": "事件类型",
+            "description": "信息:info  告警alert  故障:fault"
           },
-          "version": {
-            "type": "string",
-            "description": "升级包版本"
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaParam"
+            },
+            "description": "事件参数"
+          }
+        },
+        "x-apifox-orders": ["type", "params"],
+        "required": ["type", "params"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/物模型"
+      },
+      "SchemaAction": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaParam"
+            },
+            "title": "调用参数"
           },
+          "output": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaParam"
+            },
+            "title": "返回参数"
+          }
+        },
+        "x-apifox-orders": ["input", "output"],
+        "required": ["input", "output"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/物模型"
+      },
+      "ProductSchemaInfo": {
+        "type": "object",
+        "properties": {
           "productID": {
             "type": "string",
-            "description": "产品id"
+            "title": "产品id"
           },
-          "productName": {
-            "type": "string",
-            "description": "产品名称"
+          "type": {
+            "title": "物模型类型",
+            "description": "1:property属性 2:event事件 3:action行为",
+            "type": "integer"
           },
-          "isDiff": {
+          "tag": {
+            "title": "物模型标签",
+            "description": "1:自定义 2:可选 3:必选  必选不可删除",
             "type": "integer",
-            "format": "int32",
-            "description": "是否差分包,1:整包,2:差分"
+            "nullable": true
           },
-          "createdTime": {
-            "type": "integer",
-            "format": "int64",
-            "description": "创建时间 只读"
-          },
-          "signMethod": {
+          "identifier": {
             "type": "string",
-            "description": "签名方法"
+            "title": "标识符"
           },
-          "description": {
-            "type": "object",
-            "properties": {},
-            "x-apifox-ignore-properties": [],
-            "x-apifox-orders": []
+          "name": {
+            "title": "功能名称",
+            "type": "string",
+            "nullable": true
           },
-          "extData": {
-            "type": "object",
-            "properties": {},
-            "x-apifox-ignore-properties": [],
-            "x-apifox-orders": []
+          "desc": {
+            "type": "string",
+            "title": "描述",
+            "nullable": true
+          },
+          "required": {
+            "title": "是否必须",
+            "description": "1:是 2:否",
+            "type": "integer",
+            "nullable": true
+          },
+          "affordance": {
+            "type": "string",
+            "title": "各功能类型的详细参数定义"
           }
         },
-        "title": "FirmwareInfo",
-        "required": [
-          "firmwareID",
-          "name",
-          "version",
-          "productID",
-          "productName",
-          "isDiff",
-          "createdTime",
-          "signMethod",
-          "description",
-          "extData"
-        ],
         "x-apifox-orders": [
-          "firmwareID",
-          "name",
-          "version",
           "productID",
-          "productName",
-          "isDiff",
-          "createdTime",
-          "signMethod",
-          "description",
-          "extData"
+          "type",
+          "tag",
+          "identifier",
+          "name",
+          "desc",
+          "required",
+          "affordance"
         ],
+        "required": ["productID", "type", "identifier", "affordance", "required"],
         "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
+        "x-apifox-folder": "iThings数据模型"
       },
-      "FirmwareReadReq": {
+      "SchemaParam": {
         "type": "object",
         "properties": {
-          "firmwareID": {
-            "type": "integer",
-            "format": "int64",
-            "description": "固件升级包编号"
+          "identifier": {
+            "type": "string",
+            "title": "参数标识符"
+          },
+          "name": {
+            "type": "string",
+            "title": "参数名称"
+          },
+          "define": {
+            "$ref": "#/components/schemas/SchemaDefine",
+            "title": "参数定义"
           }
         },
-        "title": "FirmwareReadReq",
-        "required": ["firmwareID"],
-        "x-apifox-orders": ["firmwareID"],
+        "x-apifox-orders": ["identifier", "name", "define"],
+        "required": ["identifier", "name", "define"],
         "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "Schemas"
+        "x-apifox-folder": "iThings数据模型/物模型"
       },
-      "deviceMsgSdkIndex": {
+      "SchemaSpec": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "title": "参数标识符"
+          },
+          "name": {
+            "type": "string",
+            "title": "参数名称"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/SchemaDefine",
+            "title": "参数定义"
+          }
+        },
+        "required": ["identifier", "name", "dataType"],
+        "x-apifox-orders": ["identifier", "name", "dataType"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/物模型"
+      },
+      "SchemaDefine": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "参数类型",
+            "description": "bool int string struct float timestamp array enum"
+          },
+          "specs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaDefine",
+              "title": "参数定义"
+            },
+            "title": "结构体",
+            "description": "struct",
+            "nullable": true
+          },
+          "mapping": {
+            "title": "枚举及bool类型",
+            "description": "bool enum",
+            "type": "string",
+            "nullable": true
+          },
+          "min": {
+            "title": "数值最小值",
+            "description": "int  float",
+            "type": "string",
+            "nullable": true
+          },
+          "max": {
+            "title": "数值最大值",
+            "description": "int string float",
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "title": "初始值",
+            "description": "int float",
+            "type": "string",
+            "nullable": true
+          },
+          "step": {
+            "title": "步长",
+            "description": "float",
+            "type": "string",
+            "nullable": true
+          },
+          "unit": {
+            "title": "单位",
+            "description": "int float",
+            "type": "string",
+            "nullable": true
+          },
+          "arrayInfo": {
+            "title": "数组",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SchemaDefine",
+                "title": "参数定义"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "specs",
+          "mapping",
+          "min",
+          "max",
+          "start",
+          "step",
+          "unit",
+          "arrayInfo"
+        ],
+        "x-apifox-orders": [
+          "type",
+          "specs",
+          "mapping",
+          "min",
+          "max",
+          "start",
+          "step",
+          "unit",
+          "arrayInfo"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/物模型"
+      },
+      "CloudeLogDebug": {
         "type": "object",
         "properties": {
           "timestamp": {
             "type": "string",
-            "title": "发生时间戳",
-            "description": "毫秒"
+            "title": "发生时间戳"
           },
-          "loglevel": {
-            "type": "integer",
-            "title": "日志级别",
-            "description": "1)关闭 2)错误 3)告警 4)信息 5)调试"
+          "action": {
+            "type": "string",
+            "title": "操作类型",
+            "description": "显示相应的操作名称、API名称、服务的method"
+          },
+          "requestID": {
+            "type": "string",
+            "title": "请求ID"
+          },
+          "tranceID": {
+            "type": "string",
+            "title": "服务器端事务id"
+          },
+          "topic": {
+            "type": "string",
+            "title": "主题"
           },
           "content": {
             "type": "string",
             "title": "具体内容"
+          },
+          "resultType": {
+            "type": "string",
+            "title": "请求结果状态"
           }
         },
-        "x-apifox-orders": ["timestamp", "loglevel", "content"],
-        "required": ["timestamp", "loglevel", "content"],
+        "required": [
+          "timestamp",
+          "action",
+          "requestID",
+          "tranceID",
+          "topic",
+          "content",
+          "resultType"
+        ],
+        "x-apifox-orders": [
+          "timestamp",
+          "action",
+          "requestID",
+          "tranceID",
+          "topic",
+          "content",
+          "resultType"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型"
+      },
+      "ProductInfo": {
+        "type": "object",
+        "properties": {
+          "productID": {
+            "type": "string",
+            "title": "产品id"
+          },
+          "productName": {
+            "type": "string",
+            "title": "产品名称"
+          },
+          "netType": {
+            "title": "通讯方式",
+            "description": "1:其他,2:wi-fi,3:2G/3G/4G,4:5G,5:BLE,6:LoRaWAN",
+            "type": "integer"
+          },
+          "dataProto": {
+            "title": "数据协议",
+            "description": "1:自定义,2:数据模板",
+            "type": "integer"
+          },
+          "deviceType": {
+            "title": "设备类型",
+            "description": "1:设备,2:网关,3:子设备",
+            "type": "integer"
+          },
+          "authMode": {
+            "title": "认证方式",
+            "description": "1:账密认证,2:秘钥认证",
+            "type": "integer"
+          },
+          "autoRegister": {
+            "title": "动态注册",
+            "description": "1:关闭,2:打开,3:打开并自动创建设备",
+            "type": "integer"
+          },
+          "categoryID": {
+            "title": "产品品类",
+            "type": "integer"
+          },
+          "desc": {
+            "type": "string",
+            "title": "描述"
+          },
+          "createdTime": {
+            "type": "string",
+            "title": "创建时间"
+          },
+          "devStatus": {
+            "type": "integer",
+            "title": "产品状态"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/tag",
+            "title": "产品标签"
+          }
+        },
+        "required": ["productID", "tags"],
+        "x-apifox-orders": [
+          "productID",
+          "productName",
+          "netType",
+          "dataProto",
+          "deviceType",
+          "authMode",
+          "autoRegister",
+          "categoryID",
+          "desc",
+          "createdTime",
+          "devStatus",
+          "tags"
+        ],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型"
       },
@@ -12734,63 +13431,6 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型"
       },
-      "ProductSchemaInfo": {
-        "type": "object",
-        "properties": {
-          "productID": {
-            "type": "string",
-            "title": "产品id"
-          },
-          "type": {
-            "title": "物模型类型",
-            "description": "1:property属性 2:event事件 3:action行为",
-            "type": "integer"
-          },
-          "tag": {
-            "title": "物模型标签",
-            "description": "1:自定义 2:可选 3:必选  必选不可删除",
-            "type": "integer",
-            "nullable": true
-          },
-          "identifier": {
-            "type": "string",
-            "title": "标识符"
-          },
-          "name": {
-            "title": "功能名称",
-            "type": "string",
-            "nullable": true
-          },
-          "desc": {
-            "type": "string",
-            "title": "描述",
-            "nullable": true
-          },
-          "required": {
-            "title": "是否必须",
-            "description": "1:是 2:否",
-            "type": "integer",
-            "nullable": true
-          },
-          "affordance": {
-            "type": "string",
-            "title": "各功能类型的详细参数定义"
-          }
-        },
-        "x-apifox-orders": [
-          "productID",
-          "type",
-          "tag",
-          "identifier",
-          "name",
-          "desc",
-          "required",
-          "affordance"
-        ],
-        "required": ["productID", "type", "identifier", "affordance", "required"],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型"
-      },
       "page": {
         "type": "object",
         "properties": {
@@ -12836,101 +13476,7 @@
         "x-apifox-orders": ["code", "msg"],
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型"
-      },
-      "ProductInfo": {
-        "type": "object",
-        "properties": {
-          "productID": {
-            "type": "string",
-            "title": "产品id"
-          },
-          "productName": {
-            "type": "string",
-            "title": "产品名称"
-          },
-          "netType": {
-            "title": "通讯方式",
-            "description": "1:其他,2:wi-fi,3:2G/3G/4G,4:5G,5:BLE,6:LoRaWAN",
-            "type": "integer"
-          },
-          "dataProto": {
-            "title": "数据协议",
-            "description": "1:自定义,2:数据模板",
-            "type": "integer"
-          },
-          "deviceType": {
-            "title": "设备类型",
-            "description": "1:设备,2:网关,3:子设备",
-            "type": "integer"
-          },
-          "authMode": {
-            "title": "认证方式",
-            "description": "1:账密认证,2:秘钥认证",
-            "type": "integer"
-          },
-          "autoRegister": {
-            "title": "动态注册",
-            "description": "1:关闭,2:打开,3:打开并自动创建设备",
-            "type": "integer"
-          },
-          "categoryID": {
-            "title": "产品品类",
-            "type": "integer"
-          },
-          "desc": {
-            "type": "string",
-            "title": "描述"
-          },
-          "createdTime": {
-            "type": "string",
-            "title": "创建时间"
-          },
-          "devStatus": {
-            "type": "integer",
-            "title": "产品状态"
-          },
-          "tags": {
-            "$ref": "#/components/schemas/tag",
-            "title": "产品标签"
-          }
-        },
-        "required": ["productID", "tags"],
-        "x-apifox-orders": [
-          "productID",
-          "productName",
-          "netType",
-          "dataProto",
-          "deviceType",
-          "authMode",
-          "autoRegister",
-          "categoryID",
-          "desc",
-          "createdTime",
-          "devStatus",
-          "tags"
-        ],
-        "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型"
-      },
-      "tag": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "key": {
-              "type": "string"
-            },
-            "value": {
-              "type": "string"
-            }
-          },
-          "x-apifox-orders": ["key", "value"],
-          "required": ["key", "value"],
-          "x-apifox-ignore-properties": []
-        },
-        "x-apifox-folder": "iThings数据模型"
       }
     }
-  },
-  "servers": []
+  }
 }

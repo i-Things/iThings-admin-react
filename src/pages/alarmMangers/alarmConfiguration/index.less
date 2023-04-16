@@ -1,0 +1,90 @@
+.card {
+  margin-top: 16px;
+}
+
+.container {
+  min-height: 200px;
+  margin-top: 12px;
+}
+
+.alarm-item {
+  transition: all 0.3s;
+}
+
+.alarm-item.hover {
+  box-shadow: 0 0 24px rgb(0 0 0 / 10%);
+}
+
+.alarm-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid #e1e6e6;
+}
+
+.alarm-title {
+  font-weight: bold;
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  height: 26px;
+  margin-right: -36px;
+  padding: 2px 0;
+  background-color: rgb(229 0 18 / 10%);
+  transform: skewX(45deg);
+}
+
+.start-use {
+  background-color: #f6ffed;
+}
+
+.alarm-info {
+  margin-top: 12px;
+}
+
+.alarm-label {
+  color: #889191;
+}
+
+.operation {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.btn {
+  flex: 1;
+  color: #1d39c4;
+  background-color: #f6f6f6;
+  border-radius: 0;
+}
+
+.delete-btn {
+  width: 60px !important;
+  background-color: #fff2f0;
+  border-color: rgb(255 77 79 / 20%);
+  border-radius: 0;
+
+  :global {
+    .ant-btn {
+      width: 100%;
+      background-color: #f5f5f5;
+      border-radius: 0;
+    }
+  }
+}
+
+.delete-btn:not(:disabled):hover {
+  border-color: rgb(255 77 79) !important;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}

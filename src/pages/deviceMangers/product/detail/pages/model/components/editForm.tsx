@@ -2,25 +2,25 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   postApiV1ThingsProductSchemaCreate,
-  postApiV1ThingsProductSchemaUpdate
+  postApiV1ThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
 import {
+  createAsyncFormActions,
   Field,
   FormEffectHooks,
   FormMegaLayout,
   FormPath,
   FormSpy,
   SchemaForm,
-  createAsyncFormActions
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
+  FormItemGrid,
+  FormLayout,
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
   Switch as FSwitch,
-  FormItemGrid,
-  FormLayout
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
@@ -28,13 +28,13 @@ import { AutoComplete, Modal, Radio } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import type { EditFormType } from './const';
 import {
-  _dataTypeList,
-  _yuansuleixingList,
   dataTypeList,
   eventTypeList,
   rwTypeList,
   typeBtnList,
-  yuansuleixingList
+  yuansuleixingList,
+  _dataTypeList,
+  _yuansuleixingList,
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -315,13 +315,13 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const mode = _affordance?.mode;
     const specs = _affordance?.define?.specs;
     specs.map((item) => {
-      item.type = item.dataType.type
+      item.type = item.dataType.type;
       const numericalRange = {
         max: item.dataType.max,
         min: item.dataType.min,
-      }
-      item.dataType.numericalRange = numericalRange
-    })
+      };
+      item.dataType.numericalRange = numericalRange;
+    });
 
     const params = _affordance?.params;
     const input = _affordance?.input;
@@ -526,7 +526,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators('dataDefinitionForenum');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({ }) => {
+                  {({}) => {
                     return (
                       <a
                         style={{
@@ -658,7 +658,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               const mutators = ruleActions.current.createMutators(name);
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({ }) => {
+                  {({}) => {
                     return (
                       <a
                         style={{
@@ -773,7 +773,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                       const mutators = ruleActions.current.createMutators('shujudingyiForenum');
                       return (
                         <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                          {({ }) => {
+                          {({}) => {
                             return (
                               <a
                                 style={{

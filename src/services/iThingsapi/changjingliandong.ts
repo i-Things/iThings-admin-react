@@ -50,11 +50,11 @@ export async function postApiV1ThingsRuleSceneInfo__openAPI__delete(
 export async function postApiV1ThingsRuleSceneInfoIndex(
   body: {
     page?: { page?: number; size?: number };
-    name: string;
+    name?: string;
     /** 1启用 2禁用 */
-    state: number;
+    state?: number;
     /** device: 设备触发 timer: 定时触发 manual:手动触发 */
-    triggerType: string;
+    triggerType?: string;
     alarmID?: number;
   },
   options?: { [key: string]: any },
