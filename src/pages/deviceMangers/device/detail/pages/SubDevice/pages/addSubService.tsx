@@ -119,7 +119,7 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
       title: '所属产品名称',
       dataIndex: 'productID',
       renderText: (text: string) =>
-        produceListOption?.filter((item) => item.value === text)[0].label,
+        produceListOption?.filter((item) => item.value === text)?.[0]?.label,
       copyable: true,
     },
     {
@@ -166,8 +166,8 @@ const AddSubServiceModal: React.FC<ModalProps> = (props) => {
   return (
     <DrawerForm
       title="添加子设备"
-      visible={visible}
-      onVisibleChange={setVisible}
+      open={visible}
+      onOpenChange={setVisible}
       width={1000}
       onFinish={onFinish}
     >
