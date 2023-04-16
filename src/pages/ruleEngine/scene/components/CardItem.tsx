@@ -4,6 +4,8 @@ const img = require('../img/scene-device.png');
 
 type ruleSceneProps = {
   data: API.scene;
+  /** 是否需要跳转到详情页 */
+  isJump?: boolean;
 };
 
 export enum TriggerWayType {
@@ -13,13 +15,13 @@ export enum TriggerWayType {
 }
 
 const CardItem: React.FC<ruleSceneProps> = (props) => {
-  const { data } = props;
+  const { data, isJump = true } = props;
   return (
     <div className={styles['box-wrap']}>
       <div
         className={styles['top-wrap']}
         onClick={() => {
-          history.push('/ruleEngine/scene/detail');
+          if (isJump) history.push('/ruleEngine/scene/detail');
         }}
       >
         <div className={styles['top-icon-wrap']}>
