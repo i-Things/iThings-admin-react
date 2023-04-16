@@ -1,16 +1,30 @@
 import CardItem from '@/pages/ruleEngine/scene/components/CardItem';
 import { postApiV1ThingsRuleSceneInfoIndex } from '@/services/iThingsapi/changjingliandong';
-import { useSearchParams } from '@umijs/max';
 import { useRequest } from 'ahooks';
-import { Button, Empty, message, Spin } from 'antd';
-import { useState } from 'react';
-import AddSceneAboutModal from './components/addSceneAboutModal';
-import styles from './index.less';
+import { Col, Empty, message, Modal, Row, Select, Spin } from 'antd';
+import styles from '../../index.less';
 
-const AboutScene = () => {
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get('id');
-  const [open, setOpen] = useState(false);
+interface AddSceneAboutProps {
+  open: boolean;
+}
+
+const searchTypeOptions = [
+  {
+    label: '名称',
+    value: 'name',
+  },
+  {
+    label: '触发方式',
+    value: 'triggerType',
+  },
+  {
+    label: '状态',
+    value: 'state',
+  },
+];
+
+const AddSceneAboutModal: React.FC<AddSceneAboutProps> = (props) => {
+  const { open } = props;
 
   const { data: ruleSceneList, loading } = useRequest(postApiV1ThingsRuleSceneInfoIndex, {
     defaultParams: [
@@ -22,18 +36,23 @@ const AboutScene = () => {
         name: '',
         state: 1,
         triggerType: '',
-        alarmID: Number(id),
       },
     ],
     onError: (error) => {
       message.error('获取场景规则错误:' + error.message);
     },
   });
+
   return (
-    <div>
-      <Button type="primary" onClick={() => setOpen(true)}>
-        新增
-      </Button>
+    <Modal title="新增场景联动关联" open={open} width={900}>
+      <Row gutter={24}>
+        <Col span={4}>
+          <Select style={{ width: '100%' }} options={searchTypeOptions} defaultValue="name" />
+        </Col>
+        <Col span={8}>
+          <Select style={{ width: '100%' }} options={searchTypeOptions} />
+        </Col>
+      </Row>
       <Spin spinning={loading}>
         <div className={styles['scene-container']}>
           {ruleSceneList?.data?.list?.map((item) => (
@@ -44,9 +63,8 @@ const AboutScene = () => {
           {ruleSceneList?.data?.list?.length === 0 && <Empty />}
         </div>
       </Spin>
-      <AddSceneAboutModal open={open} />
-    </div>
+    </Modal>
   );
 };
 
-export default AboutScene;
+export default AddSceneAboutModal;
