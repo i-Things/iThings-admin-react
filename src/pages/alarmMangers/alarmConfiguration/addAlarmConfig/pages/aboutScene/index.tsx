@@ -19,9 +19,6 @@ const AboutScene = () => {
           page: 1,
           size: 20,
         },
-        name: '',
-        state: 1,
-        triggerType: '',
         alarmID: Number(id),
       },
     ],
@@ -29,6 +26,7 @@ const AboutScene = () => {
       message.error('获取场景规则错误:' + error.message);
     },
   });
+
   return (
     <div>
       <Button type="primary" onClick={() => setOpen(true)}>

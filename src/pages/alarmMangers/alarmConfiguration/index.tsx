@@ -5,6 +5,7 @@ import {
 } from '@/services/iThingsapi/gaojingguanli';
 import { ResponseCode } from '@/utils/base';
 import {
+  CloseCircleOutlined,
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
@@ -171,7 +172,7 @@ const IndexPage: React.FC = () => {
                       </Button>
                       <Button
                         className={styles.btn}
-                        icon={<PlayCircleOutlined />}
+                        icon={item.state === 1 ? <CloseCircleOutlined /> : <PlayCircleOutlined />}
                         onClick={() => handleStartUse(item)}
                       >
                         {item.state === 1 ? '禁用' : '启用'}
