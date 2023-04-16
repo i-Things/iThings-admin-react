@@ -363,8 +363,6 @@ declare namespace API {
     desc?: string;
     /** 状态 1启用 2禁用 */
     state: number;
-    /** 触发类型 */
-    triggerType: string;
   };
 
   type SchemaAction = {

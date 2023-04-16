@@ -20,7 +20,7 @@ export async function postApiV1ThingsRuleAlarmScene__openAPI__delete(
   });
 }
 
-/** 新增告警和场景的关联 POST /api/v1/things/rule/alarm/scene/multi-update */
+/** 更新告警和场景的关联 POST /api/v1/things/rule/alarm/scene/multi-update */
 export async function postApiV1ThingsRuleAlarmSceneMultiUpdate(
   body: {
     alarmID: number;
