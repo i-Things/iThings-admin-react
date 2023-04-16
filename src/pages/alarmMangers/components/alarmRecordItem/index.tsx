@@ -1,10 +1,11 @@
-import { FileOutlined, FileTextOutlined, WarningOutlined } from '@ant-design/icons';
+import { FileOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Link } from '@umijs/max';
-import { Badge, Button, Col, Row } from 'antd';
+import { Badge, Button, Col, Row, Tooltip } from 'antd';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useState } from 'react';
 import { levelMap } from '../../alarmConfiguration';
+import recordImg from '../../img/alarm-record.png';
 import type { RecordList } from './data';
 import styles from './index.less';
 import AlarmHandle from './pages/alarmHandle';
@@ -30,10 +31,7 @@ const AlarmRecordItem: React.FC<AlarmRecordItemProps> = ({ recordData, alarmName
       <div className={styles['alarm-item']}>
         <div className={styles['alarm-content']}>
           <div className={styles['alarm-head']}>
-            <div className={styles['alarm-title']}>
-              {alarmName}
-              <WarningOutlined style={{ color: '#ffb700', marginLeft: '4px' }} />
-            </div>
+            <div className={styles['alarm-title']}>{alarmName}</div>
             <div
               className={classNames(styles.status)}
               style={{ backgroundColor: levelMap.get(recordData.level || 0)?.bgColor }}
@@ -44,21 +42,28 @@ const AlarmRecordItem: React.FC<AlarmRecordItemProps> = ({ recordData, alarmName
             </div>
           </div>
           <Row className={styles['alarm-info']} gutter={12}>
-            <Col className={styles['alarm-type']} span={8}>
-              <div>
-                {Number(recordData.triggerType) === 1
-                  ? `设备触发(${recordData.deviceName})`
-                  : '其他'}
+            <Col className={styles['alarm-type']} span={11}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img src={recordImg} width={70} height={70} />
+                <div style={{ flex: 1, overflow: 'hidden', marginLeft: '12px' }}>
+                  <Tooltip title={recordData.deviceName}>
+                    <div className={styles['device-name']}>
+                      {Number(recordData.triggerType) === 1
+                        ? `设备触发(${recordData.deviceName})`
+                        : '其他'}
+                    </div>
+                  </Tooltip>
+                  <div className={styles['scene-name']}>{recordData.sceneName}</div>
+                </div>
               </div>
-              <div style={{ color: '#889191', marginTop: '4px' }}>{recordData.sceneName}</div>
             </Col>
-            <Col span={10} style={{ paddingLeft: '20px' }}>
+            <Col span={9} style={{ paddingLeft: '20px' }}>
               <div className={styles['alarm-text']}>最近告警时间</div>
               <div style={{ marginTop: '4px' }}>
                 {moment(recordData.lastAlarm).format('YYYY-MM-DD HH:mm:ss')}
               </div>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <div className={styles['alarm-text']}>状态</div>
               <div style={{ marginTop: '4px' }}>
                 {statusMap.get(recordData.dealState || 0)?.node}

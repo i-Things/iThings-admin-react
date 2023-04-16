@@ -10524,7 +10524,7 @@
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621017-run"
       }
     },
-    "/api/v1/things/rule/alarm/scene/multi-create": {
+    "/api/v1/things/rule/alarm/scene/multi-update": {
       "post": {
         "summary": "新增告警和场景的关联",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联",

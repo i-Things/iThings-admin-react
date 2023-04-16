@@ -8,9 +8,7 @@ import {
   CloseCircleOutlined,
   DeleteOutlined,
   EditOutlined,
-  ExclamationCircleOutlined,
   PlayCircleOutlined,
-  WarningOutlined,
 } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useNavigate } from '@umijs/max';
@@ -22,8 +20,8 @@ import {
   Col,
   Empty,
   message,
-  Modal,
   Pagination,
+  Popconfirm,
   Row,
   Spin,
   Tooltip,
@@ -31,7 +29,8 @@ import {
 import classNames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { AlarmInfo, AlarmItem } from './data';
+import alarmImg from '../img/alarm.png';
+import type { AlarmItem } from './data';
 import styles from './index.less';
 
 export const levelMap = new Map([
@@ -42,21 +41,21 @@ export const levelMap = new Map([
   [1, { text: '提醒', bgColor: '#bfbfbf' }],
 ]);
 
-const { confirm } = Modal;
-
 const IndexPage: React.FC = () => {
-  const [alarmData, setAlarmData] = useState<Partial<AlarmInfo>>();
   const [hoverKey, setHoverKey] = useState<number>();
   const [pageInfo, setPageInfo] = useState({ page: 1, size: 10 });
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const { loading, refresh } = useRequest(postApiV1ThingsRuleAlarmInfoIndex, {
+  const {
+    loading,
+    refresh,
+    data: alarmData,
+  } = useRequest(postApiV1ThingsRuleAlarmInfoIndex, {
     defaultParams: [{ page: pageInfo }],
     refreshDeps: [pageInfo],
-    onSuccess: (result) => {
-      setAlarmData(result.data);
-    },
+
     onError: (error) => {
       message.error('获取告警信息列表错误:' + error.message);
     },
@@ -64,49 +63,42 @@ const IndexPage: React.FC = () => {
 
   /** 启用告警 */
   const handleStartUse = (value: AlarmItem) => {
-    confirm({
-      title: `你确定要${value.state === 1 ? '禁用' : '启用'}该告警配置吗?`,
-      icon: <ExclamationCircleOutlined />,
-      content: '',
-      onOk() {
-        return postApiV1ThingsRuleAlarmInfoUpdate({ ...value, state: value.state === 1 ? 2 : 1 })
-          .then((res) => {
-            if (res.code === ResponseCode.SUCCESS) {
-              message.success(`${value.state === 1 ? '禁用' : '启用'}成功`);
-              refresh();
-            }
-          })
-          .catch((error) => {
-            message.error(error.msg);
-          });
-      },
-    });
+    setConfirmLoading(true);
+    postApiV1ThingsRuleAlarmInfoUpdate({ ...value, state: value.state === 1 ? 2 : 1 })
+      .then((res) => {
+        if (res.code === ResponseCode.SUCCESS) {
+          message.success(`${value.state === 1 ? '禁用' : '启用'}成功`);
+          refresh();
+        }
+      })
+      .catch((error) => {
+        message.error(error.msg);
+      })
+      .finally(() => {
+        setConfirmLoading(false);
+      });
   };
 
   /** 删除告警 */
   const handleDelete = async (id: number) => {
-    confirm({
-      title: '你确定要删除该告警配置吗?',
-      icon: <ExclamationCircleOutlined />,
-      content: `该告警删除后无法恢复`,
-      onOk() {
-        return postApiV1ThingsRuleAlarmInfo__openAPI__delete({ id })
-          .then((res) => {
-            if (res.code === ResponseCode.SUCCESS) {
-              message.success('删除成功');
-              refresh();
-            }
-          })
-          .catch((error) => {
-            message.error(error.msg);
-          });
-      },
-    });
+    setConfirmLoading(true);
+    postApiV1ThingsRuleAlarmInfo__openAPI__delete({ id })
+      .then((res) => {
+        if (res.code === ResponseCode.SUCCESS) {
+          message.success('删除成功');
+          refresh();
+        }
+      })
+      .catch((error) => {
+        message.error(error.msg);
+      })
+      .finally(() => {
+        setConfirmLoading(false);
+      });
   };
 
   return (
     <PageContainer>
-      {/* <Card bordered={false}>筛选</Card> */}
       <Card bordered={false} className={styles.card}>
         <Link to="/alarmMangers/alarmConfiguration/save">
           <Button type="primary">新增</Button>
@@ -114,8 +106,8 @@ const IndexPage: React.FC = () => {
         <Spin spinning={loading}>
           <div className={styles.container}>
             <Row gutter={[24, 24]}>
-              {alarmData?.list?.map((item) => (
-                <Col key={item.id} sm={24} md={12} xl={8} xxl={6}>
+              {alarmData?.data?.list?.map((item) => (
+                <Col key={item.id} sm={24} md={12} xl={12} xxl={6}>
                   <div
                     className={classNames(styles['alarm-item'], {
                       [styles.hover]: hoverKey === item.id,
@@ -126,33 +118,29 @@ const IndexPage: React.FC = () => {
                       onMouseEnter={() => setHoverKey(item.id)}
                       onMouseLeave={() => setHoverKey(undefined)}
                     >
-                      <div className={styles['alarm-head']}>
-                        <div className={styles['alarm-title']}>
-                          {item.name}
-                          <WarningOutlined style={{ color: '#ffb700', marginLeft: '4px' }} />
-                        </div>
-                        <div
-                          className={classNames(styles.status, {
-                            [styles['start-use']]: item.state === 1,
-                          })}
-                        >
-                          <div style={{ transform: 'skewX(-45deg)' }}>
-                            {item.state === 1 ? (
-                              <Badge status="success" text="正常" />
-                            ) : (
-                              <Badge status="error" text="禁用" />
-                            )}
+                      <Row gutter={24}>
+                        <Col>
+                          <img src={alarmImg} width={88} height={88} />
+                        </Col>
+                        <Col>
+                          <div className={styles['alarm-title']}>{item.name}</div>
+                          <div className={styles['alarm-info']}>
+                            <div className={styles['alarm-label']}>告警级别</div>
+                            <div>{levelMap.get(item.level)?.text}</div>
                           </div>
-                        </div>
-                      </div>
-                      <div className={styles['alarm-info']}>
-                        <div>
-                          <div className={styles['alarm-label']}>关联场景联动</div>
-                          <div>关联1,关联2</div>
-                        </div>
-                        <div>
-                          <div className={styles['alarm-label']}>告警级别</div>
-                          <div>{levelMap.get(item.level)?.text}</div>
+                        </Col>
+                      </Row>
+                      <div
+                        className={classNames(styles.status, {
+                          [styles['start-use']]: item.state === 1,
+                        })}
+                      >
+                        <div style={{ transform: 'skewX(-45deg)' }}>
+                          {item.state === 1 ? (
+                            <Badge status="success" text="正常" />
+                          ) : (
+                            <Badge status="error" text="禁用" />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -170,35 +158,45 @@ const IndexPage: React.FC = () => {
                       >
                         编辑
                       </Button>
-                      <Button
-                        className={styles.btn}
-                        icon={item.state === 1 ? <CloseCircleOutlined /> : <PlayCircleOutlined />}
-                        onClick={() => handleStartUse(item)}
+                      <Popconfirm
+                        title={`确定${item.state === 1 ? '禁用' : '启用'}?`}
+                        onConfirm={() => handleStartUse(item)}
+                        okButtonProps={{ loading: confirmLoading }}
                       >
-                        {item.state === 1 ? '禁用' : '启用'}
-                      </Button>
-                      <Tooltip title={item.state === 1 && '请先禁用该警告，再删除'}>
                         <Button
-                          disabled={item.state === 1}
-                          className={styles['delete-btn']}
-                          icon={
-                            <DeleteOutlined
-                              style={{ color: item.state === 1 ? 'rgba(0,0,0,.25)' : '#ff4d4f' }}
-                            />
-                          }
-                          onClick={() => handleDelete(item.id || 0)}
-                        />
-                      </Tooltip>
+                          className={styles.btn}
+                          icon={item.state === 1 ? <CloseCircleOutlined /> : <PlayCircleOutlined />}
+                        >
+                          {item.state === 1 ? '禁用' : '启用'}
+                        </Button>
+                      </Popconfirm>
+                      <Popconfirm
+                        title="确认删除?"
+                        onConfirm={() => handleDelete(item.id || 0)}
+                        okButtonProps={{ loading: confirmLoading }}
+                      >
+                        <Tooltip title={item.state === 1 && '请先禁用该警告，再删除'}>
+                          <Button
+                            disabled={item.state === 1}
+                            className={styles['delete-btn']}
+                            icon={
+                              <DeleteOutlined
+                                style={{ color: item.state === 1 ? 'rgba(0,0,0,.25)' : '#ff4d4f' }}
+                              />
+                            }
+                          />
+                        </Tooltip>
+                      </Popconfirm>
                     </div>
                   </div>
                 </Col>
               ))}
             </Row>
-            {alarmData?.list?.length === 0 && <Empty />}
+            {alarmData?.data?.list?.length === 0 && <Empty />}
           </div>
           <div className={styles.pagination}>
             <Pagination
-              total={alarmData?.total}
+              total={alarmData?.data?.total}
               showTotal={(total, range) => `第${range[0]}-${range[1]} 条/总共 ${total} 条`}
               pageSize={pageInfo.size}
               current={pageInfo.page}
