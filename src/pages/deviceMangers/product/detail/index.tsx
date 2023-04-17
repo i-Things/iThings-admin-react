@@ -48,7 +48,7 @@ const IndexPage: React.FC = () => {
             <TopicPage />
           </TabPane>
           <TabPane tab="消息解析" key="3">
-            <MessageAnalysisPage />
+            <MessageAnalysisPage productID={productID} />
           </TabPane>
           <TabPane tab="物模型" key="4">
             <ModelPage />

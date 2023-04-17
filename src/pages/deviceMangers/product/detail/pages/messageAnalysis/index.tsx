@@ -4,6 +4,7 @@ import {
   PlayCircleOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
+import { useRequest } from 'ahooks';
 import {
   Button,
   Cascader,
@@ -12,6 +13,7 @@ import {
   message,
   Row,
   Select,
+  Skeleton,
   Space,
   Tabs,
   Tooltip,
@@ -22,6 +24,10 @@ import type { TabsProps } from 'antd';
 import type { editor } from 'monaco-editor';
 import type { ChangeHandler, MonacoEditorProps } from 'react-monaco-editor';
 
+import {
+  postApiV1ThingsProductCustomRead,
+  postApiV1ThingsProductCustomUpdate,
+} from '@/services/iThingsapi/zidingyi';
 import { capitalizeFirstLetter } from '@/utils/utils';
 import './index.less';
 
@@ -31,7 +37,7 @@ interface Option {
   children?: Option[];
 }
 
-const MessageAnalysisPage: React.FC = () => {
+const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => {
   const [scriptMonacoData, setScriptMonacoData] = useState('');
 
   const [triggerMode, setTriggerMode] = useState('up');
@@ -45,6 +51,27 @@ const MessageAnalysisPage: React.FC = () => {
   const runResRef = useRef('');
   const monacoRef = useRef<MonacoEditorProps>();
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
+
+  const { data: scriptData } = useRequest(postApiV1ThingsProductCustomRead, {
+    defaultParams: [
+      {
+        productID,
+      },
+    ],
+    onError: (error) => {
+      message.error(error.message);
+    },
+  });
+
+  const { run } = useRequest(postApiV1ThingsProductCustomUpdate, {
+    manual: true,
+    onSuccess: () => {
+      message.success('保存成功');
+    },
+    onError: (error) => {
+      message.error(error.message);
+    },
+  });
 
   const selectWidth = { width: 200 };
 
@@ -249,10 +276,15 @@ const MessageAnalysisPage: React.FC = () => {
 
   const onTabsChange = (k: string) => setActiveKey(k);
 
-  const editorChange = () => {};
+  const editorChange = (v: string) => setScriptMonacoData(v);
 
   const runScriptEditorChange: ChangeHandler = (value) => {
     runScriptMonacoDataRef.current = value;
+  };
+
+  // 保存代码片段
+  const saveCode = () => {
+    run({ productID, transformScript: scriptMonacoData });
   };
 
   // 左侧标题
@@ -376,12 +408,12 @@ const MessageAnalysisPage: React.FC = () => {
 
   // 编辑脚本
   useEffect(() => {
-    setScriptMonacoData(SCRIPT_DEMO);
-  }, [SCRIPT_DEMO, actiontype]);
+    setScriptMonacoData(scriptData?.data?.transformScript || SCRIPT_DEMO);
+  }, [SCRIPT_DEMO, actiontype, scriptData?.data?.transformScript]);
 
   // 拿到 上下行函数
   useEffect(() => {
-    if (scriptMonacoData.length) {
+    if (scriptMonacoData?.length) {
       try {
         setCode(scriptMonacoData);
       } catch (error) {
@@ -391,35 +423,37 @@ const MessageAnalysisPage: React.FC = () => {
   }, [triggerMode, actiontype, scriptMonacoData]);
 
   return (
-    <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-      <Row justify="space-between">
-        <Col>
-          <CardTitle />
-        </Col>
-        <Col>
-          <CardExtra />
-        </Col>
-      </Row>
+    <Skeleton loading={!scriptData?.data?.transformScript} active>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Editor
-          height={'45vh'}
-          value={scriptMonacoData}
-          onChange={editorChange}
-          language={'javascript'}
-          monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
-          editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
-        />
-        <Tabs activeKey={activeKey} items={items} onChange={onTabsChange} />
-        <Space>
-          <Button icon={<PlayCircleOutlined />} onClick={runSimulation}>
-            执行
-          </Button>
-          <Button type="primary" icon={<DeliveredProcedureOutlined />}>
-            保存
-          </Button>
+        <Row justify="space-between">
+          <Col>
+            <CardTitle />
+          </Col>
+          <Col>
+            <CardExtra />
+          </Col>
+        </Row>
+        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+          <Editor
+            height={'45vh'}
+            value={scriptMonacoData}
+            onChange={editorChange}
+            language={'javascript'}
+            monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
+            editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
+          />
+          <Tabs activeKey={activeKey} items={items} onChange={onTabsChange} />
+          <Space>
+            <Button icon={<PlayCircleOutlined />} onClick={runSimulation}>
+              执行
+            </Button>
+            <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={saveCode}>
+              保存
+            </Button>
+          </Space>
         </Space>
       </Space>
-    </Space>
+    </Skeleton>
   );
 };
 
