@@ -226,3 +226,7 @@ export const downloadFile = (url: string, params?: Record<string, any>) => {
   formElement.submit();
   document.body.removeChild(formElement);
 };
+
+// 第一个首字母大写
+
+export const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
