@@ -4,7 +4,18 @@ import {
   PlayCircleOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Cascader, Col, Descriptions, Row, Select, Space, Tabs, Tooltip } from 'antd';
+import {
+  Button,
+  Cascader,
+  Col,
+  Descriptions,
+  message,
+  Row,
+  Select,
+  Space,
+  Tabs,
+  Tooltip,
+} from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 import type { TabsProps } from 'antd';
@@ -27,15 +38,29 @@ const MessageAnalysisPage: React.FC = () => {
   // const [triggerFormat, setTriggerFormat] = useState('hex');
   const [actiontype, setActionType] = useState<string[]>(['thing', 'property']);
 
-  const [key, setKey] = useState('1');
+  const [code, setCode] = useState('');
+  const [activeKey, setActiveKey] = useState('1');
 
   const runScriptMonacoDataRef = useRef('// 二进制数据以0x开头的十六进制表示');
+  const runResRef = useRef('');
   const monacoRef = useRef<MonacoEditorProps>();
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
 
   const selectWidth = { width: 200 };
 
   const SCRIPT_DEMO = `
+  var COMMAND_REPORT = 0x00; //属性上报。
+  var COMMAND_SET = 0x01; //属性设置。
+  var COMMAND_REPORT_REPLY = 0x02; //上报数据返回结果。
+  var COMMAND_SET_REPLY = 0x03; //属性设置设备返回结果。
+  var COMMAD_UNKOWN = 0xff;    //未知的命令。
+  var iThings_PROP_REPORT_METHOD = 'report'; //物联网平台Topic，设备上传属性数据到云端。
+  var iThings_PROP_REPORT_REPLY_METHOD = 'reportReply'; //物联网平台Topic，设备上传属性数据到云端回复。
+
+  var iThings_PROP_SET_METHOD = 'control'; //物联网平台Topic，云端下发属性控制指令到设备端。
+  var iThings_PROP_SET_REPLY_METHOD = 'controlReply'; //物联网平台Topic，设备上报属性设置的结果到云端。
+
+
   /*
   示例数据：
   设备上报属性数据：
@@ -199,19 +224,30 @@ const MessageAnalysisPage: React.FC = () => {
     ],
   ]);
 
+  // 执行脚本
+  const runSimulation = () => {
+    try {
+      const upCode = `${code}
+      return ${actiontype?.[0]}${capitalizeFirstLetter(actiontype?.[1])}${capitalizeFirstLetter(
+        triggerMode,
+      )}('${runScriptMonacoDataRef.current}')
+    `;
+      const fn = new Function(upCode);
+      runResRef.current = JSON.stringify(fn(), null, 2);
+      message.success('运行脚本成功');
+    } catch (error) {
+      message.error('请输入正确的格式');
+      runResRef.current = '{}';
+    }
+    setActiveKey('2');
+  };
+
   const jumpToDocument = () =>
     window.open(
       'https://ithings.net.cn/iThings/%E4%BA%91%E7%AB%AF%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/%E6%B6%88%E6%81%AF%E8%A7%A3%E6%9E%90.html#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E8%A7%A3%E6%9E%90',
     );
 
-  const onTabsChange = (k: string) => {
-    setKey(k);
-    if (k === '1') {
-      runScriptMonacoDataRef.current = '// 二进制数据以0x开头的十六进制表示';
-    } else if (k === '2') {
-      runScriptMonacoDataRef.current = '';
-    }
-  };
+  const onTabsChange = (k: string) => setActiveKey(k);
 
   const editorChange = () => {};
 
@@ -311,15 +347,15 @@ const MessageAnalysisPage: React.FC = () => {
   const AnalogEdit: React.FC = () => (
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        {key === '1' ? <SelectGroup /> : <Descript />}
+        {activeKey === '1' ? <SelectGroup /> : <Descript />}
         <Editor
           height={'30vh'}
-          value={runScriptMonacoDataRef.current}
+          value={activeKey === '1' ? runScriptMonacoDataRef.current : runResRef.current}
           onChange={runScriptEditorChange}
           language={'javascript'}
           monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
           editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
-          readOnly={key === '2'}
+          readOnly={activeKey === '2'}
         />
       </Space>
     </>
@@ -343,6 +379,17 @@ const MessageAnalysisPage: React.FC = () => {
     setScriptMonacoData(SCRIPT_DEMO);
   }, [SCRIPT_DEMO, actiontype]);
 
+  // 拿到 上下行函数
+  useEffect(() => {
+    if (scriptMonacoData.length) {
+      try {
+        setCode(scriptMonacoData);
+      } catch (error) {
+        message.error('请检查编辑脚本是否完整且上下行函数名不可自定义');
+      }
+    }
+  }, [triggerMode, actiontype, scriptMonacoData]);
+
   return (
     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
       <Row justify="space-between">
@@ -362,9 +409,11 @@ const MessageAnalysisPage: React.FC = () => {
           monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
           editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
         />
-        <Tabs defaultActiveKey="1" items={items} onChange={onTabsChange} />
+        <Tabs activeKey={activeKey} items={items} onChange={onTabsChange} />
         <Space>
-          <Button icon={<PlayCircleOutlined />}>执行</Button>
+          <Button icon={<PlayCircleOutlined />} onClick={runSimulation}>
+            执行
+          </Button>
           <Button type="primary" icon={<DeliveredProcedureOutlined />}>
             保存
           </Button>
