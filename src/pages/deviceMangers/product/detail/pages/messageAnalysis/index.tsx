@@ -1,6 +1,7 @@
 import Editor from '@/components/MonacoEditor';
 import {
   DeliveredProcedureOutlined,
+  ExclamationCircleTwoTone,
   PlayCircleOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
@@ -18,10 +19,10 @@ import {
   Tabs,
   Tooltip,
 } from 'antd';
+import debounce from 'lodash/debounce';
 import { useEffect, useRef, useState } from 'react';
 
 import type { TabsProps } from 'antd';
-import type { editor } from 'monaco-editor';
 import type { ChangeHandler, MonacoEditorProps } from 'react-monaco-editor';
 
 import {
@@ -29,6 +30,7 @@ import {
   postApiV1ThingsProductCustomUpdate,
 } from '@/services/iThingsapi/zidingyi';
 import { capitalizeFirstLetter } from '@/utils/utils';
+import { editor } from 'monaco-editor';
 import './index.less';
 
 interface Option {
@@ -44,10 +46,12 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
   // const [triggerFormat, setTriggerFormat] = useState('hex');
   const [actiontype, setActionType] = useState<string[]>(['thing', 'property']);
 
-  const [code, setCode] = useState('');
   const [activeKey, setActiveKey] = useState('1');
+  const [lang, setLang] = useState('');
+  const [err, setErr] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const runScriptMonacoDataRef = useRef('// 二进制数据以0x开头的十六进制表示');
+  const runScriptMonacoDataRef = useRef('');
   const runResRef = useRef('');
   const monacoRef = useRef<MonacoEditorProps>();
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
@@ -253,8 +257,9 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
 
   // 执行脚本
   const runSimulation = () => {
+    setLoading(true);
     try {
-      const upCode = `${code}
+      const upCode = `${scriptMonacoData}
       return ${actiontype?.[0]}${capitalizeFirstLetter(actiontype?.[1])}${capitalizeFirstLetter(
         triggerMode,
       )}('${runScriptMonacoDataRef.current}')
@@ -263,9 +268,10 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
       runResRef.current = JSON.stringify(fn(), null, 2);
       message.success('运行脚本成功');
     } catch (error) {
-      message.error('请输入正确的格式');
+      message.error('请检查代码格式是否正确');
       runResRef.current = '{}';
     }
+    setLoading(false);
     setActiveKey('2');
   };
 
@@ -276,10 +282,28 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
 
   const onTabsChange = (k: string) => setActiveKey(k);
 
-  const editorChange = (v: string) => setScriptMonacoData(v);
+  // 底部编辑器捕获错误
+  const onChangeError = debounce((value: string) => {
+    const error = monacoRef?.current?.editor.getModelMarkers(value);
+    if (/^0x[0-9a-fA-F]+$/.test(value) && lang === 'javascript') return;
+    if (error.length && lang === 'javascript') {
+      setErr(true);
+      return message.error('请检查模拟类型或代码格式是否正确');
+    }
+    if (error.length) {
+      setErr(true);
+      return message.error('请检查代码格式是否正确');
+    }
+  }, 600);
+
+  const editorChange = (value: string) => {
+    setScriptMonacoData(value);
+  };
 
   const runScriptEditorChange: ChangeHandler = (value) => {
+    onChangeError(value);
     runScriptMonacoDataRef.current = value;
+    if (lang === 'json') editorRef?.current?.getAction('editor.action.formatDocument').run();
   };
 
   // 保存代码片段
@@ -380,11 +404,15 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         {activeKey === '1' ? <SelectGroup /> : <Descript />}
+        <section style={{ backgroundColor: '#fff5ed' }}>
+          <ExclamationCircleTwoTone style={{ marginRight: '10px' }} twoToneColor="#ed6a0c" />
+          二进制数据以0x开头的十六进制表示
+        </section>
         <Editor
           height={'30vh'}
           value={activeKey === '1' ? runScriptMonacoDataRef.current : runResRef.current}
           onChange={runScriptEditorChange}
-          language={'javascript'}
+          language={lang}
           monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
           editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
           readOnly={activeKey === '2'}
@@ -409,18 +437,13 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
   // 编辑脚本
   useEffect(() => {
     setScriptMonacoData(scriptData?.data?.transformScript || SCRIPT_DEMO);
-  }, [SCRIPT_DEMO, actiontype, scriptData?.data?.transformScript]);
+  }, [SCRIPT_DEMO, actiontype, triggerMode, scriptData?.data?.transformScript]);
 
-  // 拿到 上下行函数
+  // 语言切换
   useEffect(() => {
-    if (scriptMonacoData?.length) {
-      try {
-        setCode(scriptMonacoData);
-      } catch (error) {
-        message.error('请检查编辑脚本是否完整且上下行函数名不可自定义');
-      }
-    }
-  }, [triggerMode, actiontype, scriptMonacoData]);
+    setLang('javascript');
+    if (triggerMode === 'down') setLang('json');
+  }, [triggerMode]);
 
   return (
     <Skeleton loading={!scriptData?.data?.transformScript} active>
@@ -439,12 +462,15 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
             value={scriptMonacoData}
             onChange={editorChange}
             language={'javascript'}
-            monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
-            editorRef={editorRef as React.MutableRefObject<editor.IStandaloneCodeEditor>}
           />
           <Tabs activeKey={activeKey} items={items} onChange={onTabsChange} />
           <Space>
-            <Button icon={<PlayCircleOutlined />} onClick={runSimulation}>
+            <Button
+              icon={<PlayCircleOutlined />}
+              onClick={runSimulation}
+              disabled={err}
+              loading={loading}
+            >
               执行
             </Button>
             <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={saveCode}>
