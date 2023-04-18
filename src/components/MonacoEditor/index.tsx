@@ -1,5 +1,6 @@
 import { MONACO_OPTIONS } from '@/utils/const';
 import type { editor } from 'monaco-editor';
+import React from 'react';
 import type { ChangeHandler, EditorDidMount, MonacoEditorProps } from 'react-monaco-editor';
 import MonacoEditor from 'react-monaco-editor';
 
