@@ -51,7 +51,7 @@ export async function postApiV1ThingsRuleAlarmInfoIndex(
     name?: string;
     /** 1启用 2禁用 */
     sceneID?: number;
-    alarmIDs: number[];
+    alarmIDs?: number[];
   },
   options?: { [key: string]: any },
 ) {

@@ -18,6 +18,9 @@ declare module 'crypto-js/md5';
 declare module 'mockjs';
 declare module 'react-fittext';
 declare module 'bizcharts-plugin-slider';
+declare module 'react-json-view';
+declare module 'file-saver';
+declare module 'papaparse';
 
 // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design Dedicated environment variable, please do not use it in your project.
