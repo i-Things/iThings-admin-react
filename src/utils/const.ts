@@ -182,4 +182,6 @@ export const MONACO_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
   folding: true, // 是否启用代码折叠
   renderLineHighlight: 'all', // 当前行突出显示方式
   readOnly: false,
+  scrollBeyondLastLine: false,
+  scrollBeyondLastColumn: 0,
 };

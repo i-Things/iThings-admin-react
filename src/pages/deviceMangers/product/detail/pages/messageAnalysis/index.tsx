@@ -1,6 +1,12 @@
 import Editor from '@/components/MonacoEditor';
 import {
+  postApiV1ThingsProductCustomRead,
+  postApiV1ThingsProductCustomUpdate,
+} from '@/services/iThingsapi/zidingyi';
+import { capitalizeFirstLetter } from '@/utils/utils';
+import {
   DeliveredProcedureOutlined,
+  ExclamationCircleFilled,
   ExclamationCircleTwoTone,
   PlayCircleOutlined,
   QuestionCircleOutlined,
@@ -12,6 +18,7 @@ import {
   Col,
   Descriptions,
   message,
+  Modal,
   Row,
   Select,
   Skeleton,
@@ -23,14 +30,9 @@ import debounce from 'lodash/debounce';
 import { useEffect, useRef, useState } from 'react';
 
 import type { TabsProps } from 'antd';
+import type { editor } from 'monaco-editor';
 import type { ChangeHandler, MonacoEditorProps } from 'react-monaco-editor';
 
-import {
-  postApiV1ThingsProductCustomRead,
-  postApiV1ThingsProductCustomUpdate,
-} from '@/services/iThingsapi/zidingyi';
-import { capitalizeFirstLetter } from '@/utils/utils';
-import { editor } from 'monaco-editor';
 import './index.less';
 
 interface Option {
@@ -41,6 +43,8 @@ interface Option {
 
 const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => {
   const [scriptMonacoData, setScriptMonacoData] = useState('');
+  const [runScriptMonacoData, setRunScriptMonacoData] = useState('');
+  const [runRes, setRunRes] = useState('');
 
   const [triggerMode, setTriggerMode] = useState('up');
   // const [triggerFormat, setTriggerFormat] = useState('hex');
@@ -48,11 +52,9 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
 
   const [activeKey, setActiveKey] = useState('1');
   const [lang, setLang] = useState('');
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const runScriptMonacoDataRef = useRef('');
-  const runResRef = useRef('');
   const monacoRef = useRef<MonacoEditorProps>();
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
 
@@ -78,129 +80,6 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
   });
 
   const selectWidth = { width: 200 };
-
-  const SCRIPT_DEMO = `
-  var COMMAND_REPORT = 0x00; //属性上报。
-  var COMMAND_SET = 0x01; //属性设置。
-  var COMMAND_REPORT_REPLY = 0x02; //上报数据返回结果。
-  var COMMAND_SET_REPLY = 0x03; //属性设置设备返回结果。
-  var COMMAD_UNKOWN = 0xff;    //未知的命令。
-  var iThings_PROP_REPORT_METHOD = 'report'; //物联网平台Topic，设备上传属性数据到云端。
-  var iThings_PROP_REPORT_REPLY_METHOD = 'reportReply'; //物联网平台Topic，设备上传属性数据到云端回复。
-
-  var iThings_PROP_SET_METHOD = 'control'; //物联网平台Topic，云端下发属性控制指令到设备端。
-  var iThings_PROP_SET_REPLY_METHOD = 'controlReply'; //物联网平台Topic，设备上报属性设置的结果到云端。
-
-
-  /*
-  示例数据：
-  设备上报属性数据：
-  传入参数：
-      0x000000000100320100000000
-  输出结果：
-      {"method":"report","clientToken":"1","params":{"prop_int16":50,"prop_bool":1,"prop_float":0}}
-
-  属性设置的返回结果：
-  传入参数：
-      0x0300223344c8
-  输出结果：
-      {"code":0,"data":{},"id":"2241348"}
-  */
-  function ${actiontype?.[0]}${capitalizeFirstLetter(actiontype?.[1])}Up(bytes) {
-      var uint8Array = new Uint8Array(bytes.length);
-      for (var i = 0; i < bytes.length; i++) {
-          uint8Array[i] = bytes[i] & 0xff;
-      }
-      var dataView = new DataView(uint8Array.buffer, 0);
-      var jsonMap = new Object();
-      var fHead = uint8Array[0]; // command
-      if (fHead == COMMAND_REPORT) {
-          jsonMap['method'] = iThings_PROP_REPORT_METHOD; //iThings JSON格式，属性上报topic。
-          jsonMap['clientToken'] = '' + dataView.getInt32(1); //iThings JSON格式，标示该次请求id值。
-          var params = {};
-          params['prop_int16'] = dataView.getInt16(5); //对应产品属性中prop_int16。
-          params['prop_bool'] = uint8Array[7]; //对应产品属性中prop_bool。
-          params['prop_float'] = dataView.getFloat32(8); //对应产品属性中prop_float。
-          jsonMap['params'] = params; //iThings JSON格式，params标准字段。
-      } else if(fHead == COMMAND_SET_REPLY) {
-          jsonMap['version'] = '1.0'; //iThings JSON格式，协议版本号固定字段。
-          jsonMap['clientToken'] = '' + dataView.getInt32(1); //iThings JSON格式，标示该次请求id值。
-          jsonMap['code'] = ''+ dataView.getUint8(5);
-      }
-
-      return jsonMap;
-  }
-  /*
-  示例数据：
-  云端下发属性设置指令：
-  传入参数：
-      {"method":"control","clientToken":"12345","version":"1.0","params":{"prop_float":123.452, "prop_int16":333, "prop_bool":1}}
-  输出结果：
-      0x0100003039014d0142f6e76d
-
-  设备上报的返回结果：
-  传入数据：
-      {"method":"reportReply","clientToken":"12345","code":0,"data":{}}
-  输出结果：
-      0x0200003039c8
-  */
-  function ${actiontype?.[0]}${capitalizeFirstLetter(actiontype?.[1])}Down(json) {
-      var method = json['method'];
-      var id = json['clientToken'];
-      var payloadArray = [];
-      if (method == iThings_PROP_SET_METHOD) //属性设置。
-      {
-          var params = json['params'];
-          var prop_float = params['prop_float'];
-          var prop_int16 = params['prop_int16'];
-          var prop_bool = params['prop_bool'];
-          //按照自定义协议格式拼接 rawData。
-          payloadArray = payloadArray.concat(buffer_uint8(COMMAND_SET)); //command字段。
-          payloadArray = payloadArray.concat(buffer_int32(parseInt(id))); //iThings JSON格式 'id'。
-          payloadArray = payloadArray.concat(buffer_int16(prop_int16)); //属性'prop_int16'的值。
-          payloadArray = payloadArray.concat(buffer_uint8(prop_bool)); //属性'prop_bool'的值。
-          payloadArray = payloadArray.concat(buffer_float32(prop_float)); //属性'prop_float'的值。
-      } else if (method ==  iThings_PROP_REPORT_REPLY_METHOD) { //设备上报数据返回结果。
-          var code = json['code'];
-          payloadArray = payloadArray.concat(buffer_uint8(COMMAND_REPORT_REPLY)); //command字段。
-          payloadArray = payloadArray.concat(buffer_int32(parseInt(id))); //iThings JSON格式'id'。
-          payloadArray = payloadArray.concat(buffer_uint8(code));
-      } else { //未知命令，对于这些命令不做处理。
-          var code = json['code'];
-          payloadArray = payloadArray.concat(buffer_uint8(COMMAD_UNKOWN)); //command字段。
-          payloadArray = payloadArray.concat(buffer_int32(parseInt(id))); //iThings JSON格式'id'。
-          payloadArray = payloadArray.concat(buffer_uint8(code));
-      }
-      return payloadArray;
-  }
-
-
-  //以下是部分辅助函数。
-  function buffer_uint8(value) {
-      var uint8Array = new Uint8Array(1);
-      var dv = new DataView(uint8Array.buffer, 0);
-      dv.setUint8(0, value);
-      return [].slice.call(uint8Array);
-  }
-  function buffer_int16(value) {
-      var uint8Array = new Uint8Array(2);
-      var dv = new DataView(uint8Array.buffer, 0);
-      dv.setInt16(0, value);
-      return [].slice.call(uint8Array);
-  }
-  function buffer_int32(value) {
-      var uint8Array = new Uint8Array(4);
-      var dv = new DataView(uint8Array.buffer, 0);
-      dv.setInt32(0, value);
-      return [].slice.call(uint8Array);
-  }
-  function buffer_float32(value) {
-      var uint8Array = new Uint8Array(4);
-      var dv = new DataView(uint8Array.buffer, 0);
-      dv.setFloat32(0, value);
-      return [].slice.call(uint8Array);
-  }
-`;
 
   // up | down
   const triggerModeOptions = [
@@ -259,17 +138,20 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
   const runSimulation = () => {
     setLoading(true);
     try {
+      const params = lang === 'javascript' ? `'${runScriptMonacoData}'` : runScriptMonacoData;
       const upCode = `${scriptMonacoData}
       return ${actiontype?.[0]}${capitalizeFirstLetter(actiontype?.[1])}${capitalizeFirstLetter(
         triggerMode,
-      )}('${runScriptMonacoDataRef.current}')
+      )}(${params})
     `;
       const fn = new Function(upCode);
-      runResRef.current = JSON.stringify(fn(), null, 2);
+      setRunRes(JSON.stringify(fn(), null, 2));
+      // runResRef.current = JSON.stringify(fn(), null, 2);
       message.success('运行脚本成功');
     } catch (error) {
-      message.error('请检查代码格式是否正确');
-      runResRef.current = '{}';
+      message.error('请检查是否有脚本或脚本代码格式是否正确');
+      setRunRes('{}');
+      // runResRef.current = '{}';
     }
     setLoading(false);
     setActiveKey('2');
@@ -284,16 +166,20 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
 
   // 底部编辑器捕获错误
   const onChangeError = debounce((value: string) => {
-    const error = monacoRef?.current?.editor.getModelMarkers(value);
-    if (/^0x[0-9a-fA-F]+$/.test(value) && lang === 'javascript') return;
-    if (error.length && lang === 'javascript') {
-      setErr(true);
-      return message.error('请检查模拟类型或代码格式是否正确');
+    const er = monacoRef?.current?.editor.getModelMarkers(value);
+    const error = er.filter((r) => r.owner === 'javascript' || r.owner === 'json');
+
+    if (!value) {
+      return setErr(true);
     }
-    if (error.length) {
-      setErr(true);
-      return message.error('请检查代码格式是否正确');
-    }
+    if (/^0x[0-9a-fA-F]+$/.test(value) && lang === 'javascript') return setErr(false);
+    else if (error.length && lang === 'javascript') {
+      message.error('请检查模拟类型或代码格式是否正确');
+      return setErr(true);
+    } else if (error.length) {
+      message.error('请检查代码格式是否正确');
+      return setErr(true);
+    } else return setErr(false);
   }, 600);
 
   const editorChange = (value: string) => {
@@ -302,23 +188,29 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
 
   const runScriptEditorChange: ChangeHandler = (value) => {
     onChangeError(value);
-    runScriptMonacoDataRef.current = value;
-    if (lang === 'json') editorRef?.current?.getAction('editor.action.formatDocument').run();
+    setRunScriptMonacoData(value);
   };
 
   // 保存代码片段
   const saveCode = () => {
-    run({ productID, transformScript: scriptMonacoData });
+    Modal.confirm({
+      title: '确认启用',
+      icon: <ExclamationCircleFilled />,
+      content: '保存后将会自动启用消息解析,请确认是否保存启用',
+      onOk() {
+        run({ productID, transformScript: scriptMonacoData });
+      },
+    });
   };
 
-  // 左侧标题
+  // 顶部左侧标题
   const CardTitle: React.FC = () => (
     <>
       编辑脚本
       <Tooltip
         title={
           <>
-            编写数据解析脚本，透传类设备上报数据时会自动调用脚本将数据解析为 Alink JSON
+            编写数据解析脚本，透传类设备上报数据时会自动调用脚本将数据解析为 ithings
             格式，您可以对脚本进行模拟和运行调试，运行正常后点击“提交”，发布该脚本，脚本文件大小上限是
             128KB，详细说明请参考 <a onClick={jumpToDocument}>文档</a>
           </>
@@ -329,7 +221,7 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
     </>
   );
 
-  // 右侧
+  // 顶部右侧
   const CardExtra: React.FC = () => (
     <>
       脚本语言：<span> Javascript( ECMAScript 5 ) </span>
@@ -400,17 +292,17 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
   );
 
   // 模拟输入运行
-  const AnalogEdit: React.FC = () => (
+  const analogEdit = () => (
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         {activeKey === '1' ? <SelectGroup /> : <Descript />}
         <section style={{ backgroundColor: '#fff5ed' }}>
           <ExclamationCircleTwoTone style={{ marginRight: '10px' }} twoToneColor="#ed6a0c" />
-          二进制数据以0x开头的十六进制表示
+          {triggerMode === 'up' ? '二进制数据以0x开头的十六进制表示' : '输入为 json 格式'}
         </section>
         <Editor
           height={'30vh'}
-          value={activeKey === '1' ? runScriptMonacoDataRef.current : runResRef.current}
+          value={activeKey === '1' ? runScriptMonacoData : runRes}
           onChange={runScriptEditorChange}
           language={lang}
           monacoRef={monacoRef as React.MutableRefObject<MonacoEditorProps>}
@@ -425,28 +317,30 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
     {
       key: '1',
       label: '模拟输入',
-      children: <AnalogEdit />,
+      children: analogEdit(),
     },
     {
       key: '2',
       label: '运行结果',
-      children: <AnalogEdit />,
+      children: analogEdit(),
     },
   ];
 
   // 编辑脚本
   useEffect(() => {
-    setScriptMonacoData(scriptData?.data?.transformScript || SCRIPT_DEMO);
-  }, [SCRIPT_DEMO, actiontype, triggerMode, scriptData?.data?.transformScript]);
+    setScriptMonacoData(scriptData?.data?.transformScript || '');
+  }, [scriptData?.data?.transformScript]);
 
-  // 语言切换
+  // 语言切换,上下行切换
   useEffect(() => {
     setLang('javascript');
     if (triggerMode === 'down') setLang('json');
+    setRunScriptMonacoData('');
+    setRunRes('');
   }, [triggerMode]);
 
   return (
-    <Skeleton loading={!scriptData?.data?.transformScript} active>
+    <Skeleton loading={!scriptData?.data} active>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <Row justify="space-between">
           <Col>
@@ -461,7 +355,7 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
             height={'45vh'}
             value={scriptMonacoData}
             onChange={editorChange}
-            language={'javascript'}
+            language={'typescript'}
           />
           <Tabs activeKey={activeKey} items={items} onChange={onTabsChange} />
           <Space>
