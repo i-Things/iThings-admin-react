@@ -17,7 +17,7 @@ const Editor: React.FC<{
   const editorDidMountHandle: EditorDidMount = (editor, monaco) => {
     editor.getAction('editor.action.formatDocument').run(); // 格式化
     editor.setValue(editor.getValue()); // 再次设置
-    editor.focus();
+    // editor.focus();
     if (monacoRef) monacoRef.current = monaco;
     if (editorRef) editorRef.current = editor;
   };
