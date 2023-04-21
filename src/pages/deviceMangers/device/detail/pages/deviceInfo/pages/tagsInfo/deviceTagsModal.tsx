@@ -9,7 +9,7 @@ import type { DeviceInfo, TagsInfo } from '../../data';
 import styles from '../../index.less';
 
 interface ModalProps {
-  deviceInfo?: DeviceInfo;
+  deviceInfo?: Partial<DeviceInfo>;
   refresh?: () => void;
   flag: FlagStatus;
   changeTags?: (val: TagsInfo[]) => void;

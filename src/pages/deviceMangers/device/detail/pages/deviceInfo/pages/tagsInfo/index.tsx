@@ -6,11 +6,11 @@ import styles from '../../index.less';
 import DeviceTagsModal from './deviceTagsModal';
 
 interface InfoProps {
-  deviceInfo: DeviceInfo;
+  deviceInfo: Partial<DeviceInfo>;
   refresh: () => void;
 }
 
-const useColumns = (deviceInfo: DeviceInfo, refresh: () => void) => {
+const useColumns = (deviceInfo: Partial<DeviceInfo>, refresh: () => void) => {
   return [
     {
       title: '设备标签',
@@ -35,7 +35,7 @@ const useColumns = (deviceInfo: DeviceInfo, refresh: () => void) => {
         />,
       ],
     },
-  ] as ProColumns<DeviceInfo>[];
+  ] as ProColumns<Partial<DeviceInfo>>[];
 };
 
 const TagsInfoPage: React.FC<InfoProps> = (props) => {
