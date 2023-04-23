@@ -11,7 +11,7 @@ import styles from '@/pages/home/pages/deviceMap/index.less';
 import { getLocal, setLocal } from '@/utils/utils';
 
 interface InfoProps {
-  deviceInfo: DeviceInfo;
+  deviceInfo: Partial<DeviceInfo>;
   refresh: () => void;
 }
 

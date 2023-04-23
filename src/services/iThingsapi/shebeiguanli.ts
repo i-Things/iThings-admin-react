@@ -207,6 +207,10 @@ export async function postApiV1ThingsDeviceInfoRead(
       lastLogin?: string;
       version?: string;
       logLevel?: number;
+      imei?: string;
+      mac?: string;
+      hardInfo?: string;
+      softInfo?: string;
       tags?: { key?: string; value?: string }[];
       isOnline?: number;
       address?: string;
