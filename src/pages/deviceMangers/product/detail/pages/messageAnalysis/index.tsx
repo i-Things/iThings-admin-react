@@ -134,6 +134,30 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
     ],
   ]);
 
+  // 数组转hex
+
+  const arrayToHex = (arr: number[]) => {
+    if (arr.length) {
+      // 创建一个 ArrayBuffer
+      const buffer = new ArrayBuffer(arr.length);
+      // 创建一个类型化数组对象，将数据写入 ArrayBuffer 中
+      const view = new DataView(buffer);
+      arr.forEach((value, index) => view.setUint8(index, value));
+
+      // 创建一个 Uint8Array 来获取大端字节序的二进制数据
+      const uint8Arr = new Uint8Array(buffer);
+      // 将 Uint8Array 转换为十六进制字符串
+      const hexStr =
+        '0x' +
+        Array.from(uint8Arr)
+          .map((b) => b.toString(16).padStart(2, '0'))
+          .join('');
+
+      return hexStr;
+    }
+    return '{}';
+  };
+
   // 执行脚本
   const runSimulation = () => {
     setLoading(true);
@@ -145,14 +169,18 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
       )}(${params})
     `;
       const fn = new Function(upCode);
-      setRunRes(JSON.stringify(fn(), null, 2));
-      // runResRef.current = JSON.stringify(fn(), null, 2);
+      setRunRes(
+        triggerMode === 'down' && Array.isArray(fn())
+          ? (arrayToHex(fn()) as string)
+          : JSON.stringify(fn(), null, 2),
+      );
+
       message.success('运行脚本成功');
     } catch (error) {
       message.error('请检查是否有脚本或脚本代码格式是否正确');
       setRunRes('{}');
-      // runResRef.current = '{}';
     }
+
     setLoading(false);
     setActiveKey('2');
   };
@@ -162,7 +190,7 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
       'https://ithings.net.cn/iThings/%E4%BA%91%E7%AB%AF%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/%E6%B6%88%E6%81%AF%E8%A7%A3%E6%9E%90.html#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E8%A7%A3%E6%9E%90',
     );
 
-  const onTabsChange = (k: string) => setActiveKey(k);
+  const onTabsChange = async (k: string) => setActiveKey(k);
 
   // 底部编辑器捕获错误
   const onChangeError = debounce((value: string) => {
@@ -296,10 +324,12 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         {activeKey === '1' ? <SelectGroup /> : <Descript />}
-        <section style={{ backgroundColor: '#fff5ed' }}>
-          <ExclamationCircleTwoTone style={{ marginRight: '10px' }} twoToneColor="#ed6a0c" />
-          {triggerMode === 'up' ? '二进制数据以0x开头的十六进制表示' : '输入为 json 格式'}
-        </section>
+        {activeKey === '1' && (
+          <section style={{ backgroundColor: '#fff5ed' }}>
+            <ExclamationCircleTwoTone style={{ marginRight: '10px' }} twoToneColor="#ed6a0c" />
+            {triggerMode === 'up' ? '二进制数据以0x开头的十六进制表示' : '输入为 json 格式'}
+          </section>
+        )}
         <Editor
           height={'30vh'}
           value={activeKey === '1' ? runScriptMonacoData : runRes}
@@ -333,7 +363,7 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
 
   // 语言切换,上下行切换
   useEffect(() => {
-    setLang('javascript');
+    if (triggerMode === 'up') setLang('javascript');
     if (triggerMode === 'down') setLang('json');
     setRunScriptMonacoData('');
     setRunRes('');
@@ -351,12 +381,7 @@ const MessageAnalysisPage: React.FC<{ productID: string }> = ({ productID }) => 
           </Col>
         </Row>
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-          <Editor
-            height={'45vh'}
-            value={scriptMonacoData}
-            onChange={editorChange}
-            language={'typescript'}
-          />
+          <Editor height={'45vh'} value={scriptMonacoData} onChange={editorChange} />
           <Tabs activeKey={activeKey} items={items} onChange={onTabsChange} />
           <Space>
             <Button

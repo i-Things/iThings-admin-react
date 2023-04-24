@@ -48,7 +48,9 @@ const MenuForm: React.FC<{
     }
   }, [drawerVisible]);
 
-  const onCheck = (checked: React.Key[]) => {
+  const onCheck = (checked: React.Key[], info) => {
+    console.log(info);
+
     setCheckedKeys(checked);
     setSelectedKey(checked.map((i) => Number(i)));
   };

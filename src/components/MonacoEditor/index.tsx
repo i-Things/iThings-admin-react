@@ -8,7 +8,7 @@ const Editor: React.FC<{
   width?: string;
   height: string;
   value: string;
-  language: string;
+  language?: string;
   editorRef?: React.MutableRefObject<editor.IStandaloneCodeEditor>;
   monacoRef?: React.MutableRefObject<MonacoEditorProps>;
   onChange: ChangeHandler;
@@ -27,7 +27,7 @@ const Editor: React.FC<{
       height={height}
       theme="vs-dark"
       value={value}
-      language={language}
+      language={language || 'javascript'}
       options={{ ...MONACO_OPTIONS, readOnly }}
       editorDidMount={editorDidMountHandle}
       onChange={onChange}
