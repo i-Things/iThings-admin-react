@@ -230,3 +230,7 @@ export const downloadFile = (url: string, params?: Record<string, any>) => {
 // 第一个首字母大写
 
 export const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+// 睡眠
+
+export const sleep = (timeout: number) => new Promise((resolve) => setTimeout(resolve, timeout));
