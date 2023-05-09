@@ -3,7 +3,6 @@ import useTableDelete from '@/hooks/useTableDelete';
 import useTableUpdate from '@/hooks/useTableUpdate';
 import {
   postApiV1SystemRoleIndex,
-  postApiV1SystemRoleRoleMenuUpdate,
   postApiV1SystemRole__openAPI__delete,
 } from '@/services/iThingsapi/jiaoseguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
@@ -13,9 +12,10 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Divider, Drawer, Tabs } from 'antd';
 import React, { useRef, useState } from 'react';
+import ApiForm from './components/ApiForm';
 import CreateOrUpdateRole from './components/CreateOrUpdateRole';
 import MenuForm from './components/MenuForm';
-import type { FormSubmitValueProp, RoleListItem } from './types';
+import type { RoleListItem } from './types';
 
 const { TabPane } = Tabs;
 
@@ -26,8 +26,8 @@ const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [currentData, setCurrentData] = useState<RoleListItem>();
+  const [roleID, setroleID] = useState(0);
   type QueryProp = typeof postApiV1SystemRoleIndex;
-  type UpdateProp = typeof postApiV1SystemRoleRoleMenuUpdate;
 
   // 删除操作
   const showDeleteConfirm = (record: { id: string; name: string }) => {
@@ -41,12 +41,8 @@ const RoleList: React.FC = () => {
     });
   };
 
-  const formSubmit = async (values: FormSubmitValueProp) => {
-    await updateHandler<UpdateProp, FormSubmitValueProp>(
-      postApiV1SystemRoleRoleMenuUpdate,
-      actionRef,
-      values,
-    );
+  const formSubmit = async <T extends Function, K>(api: T, body: K) => {
+    await updateHandler(api, actionRef, { ...body, roleID });
     setDrawerVisible(false);
   };
 
@@ -92,6 +88,7 @@ const RoleList: React.FC = () => {
             onClick={() => {
               setDrawerVisible(true);
               setCurrentData(record);
+              setroleID(Number(record?.id));
             }}
           >
             设置权限
@@ -144,10 +141,10 @@ const RoleList: React.FC = () => {
               onSubmit={formSubmit}
             />
           </TabPane>
-          {/* <TabPane tab="角色api" key="2">
-            Content of Tab Pane 2
+          <TabPane tab="角色api" key="2">
+            <ApiForm drawerVisible={drawerVisible} onSubmit={formSubmit} roleID={roleID} />
           </TabPane>
-          <TabPane tab="资源权限" key="3">
+          {/* <TabPane tab="资源权限" key="3">
             Content of Tab Pane 3
           </TabPane> */}
         </Tabs>

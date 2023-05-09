@@ -4,6 +4,7 @@ import { useRequest } from 'ahooks';
 import { Button, Form, Input, message, Spin, Tree } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { postApiV1SystemRoleRoleMenuUpdate } from '@/services/iThingsapi/jiaoseguanli';
 import type { DataNode, TreeProps } from 'antd/lib/tree';
 import type { RoleListItem } from '../types';
 
@@ -12,7 +13,7 @@ const FormItem = Form.Item;
 const MenuForm: React.FC<{
   drawerVisible: boolean;
   currentData: Partial<RoleListItem>;
-  onSubmit: (values: { id: number; menuID: number[] }) => void;
+  onSubmit: <T extends Function, K>(api: T, body: K) => void;
 }> = ({ drawerVisible, currentData, onSubmit }) => {
   const [form] = Form.useForm();
 
@@ -20,6 +21,8 @@ const MenuForm: React.FC<{
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [halfCheckedKeys, setHalfCheckedKeys] = useState<React.Key[]>([]);
+
+  type UpdateProp = typeof postApiV1SystemRoleRoleMenuUpdate;
 
   useRequest(postApiV1SystemMenuIndex, {
     defaultParams: [{}],
@@ -54,6 +57,8 @@ const MenuForm: React.FC<{
   }, []);
 
   const onCheck: TreeProps['onCheck'] = useCallback((checked, info) => {
+    console.log(checked, info);
+
     const { halfCheckedKeys: half } = info;
     if (Array.isArray(checked) && 'halfCheckedKeys' in info) {
       setCheckedKeys(checked.concat());
@@ -61,17 +66,16 @@ const MenuForm: React.FC<{
     }
   }, []);
 
-  const handleFinish = (submit: (values: { id: number; menuID: number[] }) => void) => {
-    const body = {
-      id: Number(currentData.id) || 0,
-      menuID: checkedKeys.concat(halfCheckedKeys).map((i) => Number(i)),
-    };
-    submit(body);
-  };
-
   const handleSubmit = () => {
     form.validateFields().then(() => {
-      handleFinish(onSubmit);
+      const body = {
+        id: Number(currentData.id) || 0,
+        menuID: checkedKeys.concat(halfCheckedKeys).map((i) => Number(i)),
+      };
+      onSubmit<UpdateProp, { id: number; menuID: number[] }>(
+        postApiV1SystemRoleRoleMenuUpdate,
+        body,
+      );
     });
   };
 

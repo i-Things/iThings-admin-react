@@ -1,21 +1,4 @@
 declare namespace API {
-  type action = {
-    /** 执行器类型 notify: 通知 delay:延迟  device:设备输出  alarm: 告警 */
-    executor: string;
-    /** 通知 */
-    notify?: Record<string, any>;
-    delay?: { time?: number; unit?: string };
-    alarm?: { mode?: string };
-    device?: {
-      productID?: string;
-      selector?: string;
-      selectorValues?: string[];
-      type?: string;
-      dataID?: string;
-      value?: string;
-    };
-  };
-
   type alarmDealRecord = {
     id: number;
     createdTime: number;
@@ -56,23 +39,6 @@ declare namespace API {
     sceneID: number;
   };
 
-  type CloudeLogDebug = {
-    /** 发生时间戳 */
-    timestamp: string;
-    /** 操作类型 显示相应的操作名称、API名称、服务的method */
-    action: string;
-    /** 请求ID */
-    requestID: string;
-    /** 服务器端事务id */
-    tranceID: string;
-    /** 主题 */
-    topic: string;
-    /** 具体内容 */
-    content: string;
-    /** 请求结果状态 */
-    resultType: string;
-  };
-
   type deviceCore = {
     /** 产品id */
     productID: string;
@@ -85,22 +51,36 @@ declare namespace API {
     productID: string;
     /** 设备名称 不可修改 */
     deviceName: string;
-    /** 创建时间 */
-    createdTime?: string;
     /** 设备秘钥 */
-    secret?: string;
-    /** 激活时间 */
-    firstLogin?: string;
-    /** 最后上线时间 */
-    lastLogin?: string;
+    secret: string;
+    /** 设备证书 */
+    cert: string;
+    /** IMEI信息 */
+    imei: string;
+    /** MAC信息 */
+    mac: string;
     /** 固件版本 */
-    version?: string;
-    /** 日志级别 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel?: number;
+    version: string;
+    /** 模组硬件型号 */
+    hardInfo: string;
+    /** 模组软件版本 */
+    softInfo: string;
+    /** 定位（百度坐标） */
+    position: { longitude?: number; latitude?: number };
+    /** 详细地址 */
+    address: string;
     /** 标签 */
-    tags?: { key?: string; value?: string }[];
+    tags: { key?: string; value?: string }[];
     /** 在线状态 1离线 2在线 只读 */
-    isOnline?: number;
+    isOnline: number;
+    /** 激活时间 */
+    firstLogin: string;
+    /** 最后上线时间 */
+    lastLogin: string;
+    /** 日志级别 1)关闭 2)错误 3)告警 4)信息 5)调试  */
+    logLevel: number;
+    /** 创建时间 */
+    createdTime: string;
   };
 
   type deviceMsgSdkIndex = {
@@ -365,66 +345,6 @@ declare namespace API {
     state: number;
   };
 
-  type SchemaAction = {
-    /** 调用参数 */
-    input: SchemaParam[];
-    /** 返回参数 */
-    output: SchemaParam[];
-  };
-
-  type SchemaDefine = {
-    /** 参数类型 bool int string struct float timestamp array enum */
-    type: string;
-    /** 结构体 struct */
-    specs: SchemaDefine[];
-    /** 枚举及bool类型 bool enum */
-    mapping: string;
-    /** 数值最小值 int  float */
-    min: string;
-    /** 数值最大值 int string float */
-    max: string;
-    /** 初始值 int float */
-    start: string;
-    /** 步长 float */
-    step: string;
-    /** 单位 int float */
-    unit: string;
-    /** 数组 */
-    arrayInfo: SchemaDefine | any;
-  };
-
-  type SchemaEvent = {
-    /** 事件类型 信息:info  告警alert  故障:fault */
-    type: string;
-    /** 事件参数 */
-    params: SchemaParam[];
-  };
-
-  type SchemaParam = {
-    /** 参数标识符 */
-    identifier: string;
-    /** 参数名称 */
-    name: string;
-    /** 参数定义 */
-    define: SchemaDefine;
-  };
-
-  type SchemaProperty = {
-    /** 读写类型 r(只读) rw(可读可写) */
-    mode: string;
-    /** 参数定义 */
-    define: SchemaDefine;
-  };
-
-  type SchemaSpec = {
-    /** 参数标识符 */
-    identifier: string;
-    /** 参数名称 */
-    name: string;
-    /** 参数定义 */
-    dataType: SchemaDefine;
-  };
-
   type SuccRet = {
     /** 返回code */
     code: number;
@@ -519,54 +439,7 @@ declare namespace API {
     createdTime: number;
   };
 
-  type term = {
-    /** 嵌套条件 */
-    terms?: term[];
-    /** 字段类型 property:属性 sysTime:系统时间 */
-    columnType: string;
-    /** 物模型类型配置 属性需要填写 */
-    columnSchema?: {
-      productID?: string;
-      deviceName?: string;
-      dataID?: string[];
-      termType?: string;
-      values?: string;
-    };
-    /** 时间类型 */
-    columnTime: { type?: string; cron?: string };
-    /** 和下个条件的关联类型  or  and */
-    netCondition: string;
-    /** 和嵌套条件的关联类型 or  and */
-    childrenCondition: string;
-  };
-
   type timeRange = {
     timeRange?: { start?: number; end?: number };
-  };
-
-  type trigger = {
-    /** 设备触发 */
-    device?: triggerDevice[];
-    timer?: triggerTimer;
-  };
-
-  type triggerDevice = {
-    /** 产品id */
-    productID: string;
-    /** 设备选择方式 all: 全部 fixed:指定的设备 */
-    selector: string;
-    /** 选择的列表 选择的列表, fixed类型是设备名列表 */
-    selectorValues: string[];
-    /** 触发类型 connected:上线 disConnected:下线 reportProperty:属性上报 reportEvent: 事件上报 */
-    operator: string;
-    /** 物模型操作 reportProperty:属性上报 reportEvent: 事件上报 需要填写 */
-    operationSchema?: { dataID?: string[]; termType?: string; values?: string[] };
-  };
-
-  type triggerTimer = {
-    /** 时间类型 cron */
-    type: string;
-    /** cron表达式 */
-    cron: string;
   };
 }
