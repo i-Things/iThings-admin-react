@@ -19,6 +19,7 @@ export interface TreeListItem extends MenuListItem {
 export interface FormSubmitValueProp {
   id: number;
   menuID: number[];
+  roleID?: number;
 }
 
 export interface RoleListPagination {

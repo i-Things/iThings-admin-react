@@ -39,9 +39,14 @@ export async function postApiV1ThingsDeviceInfoCreate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    cert: string;
+    imei: string;
+    mac: string;
+    hardInfo: string;
+    softInfo: string;
+    tags: { key?: string; value?: string }[];
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel?: number;
-    tags?: { key?: string; value?: string }[];
+    logLevel: number;
     /** 设备所在地址 */
     address?: string;
     /** 设备点坐标，,默认百度坐标系 */
@@ -66,6 +71,13 @@ export async function postApiV1ThingsDeviceInfo__openAPI__delete(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    cert: string;
+    imei: string;
+    mac: string;
+    hardInfo: string;
+    softInfo: string;
+    position: { longitude?: number; latitude?: number };
+    address: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -195,35 +207,17 @@ export async function postApiV1ThingsDeviceInfoRead(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: {
-      productID?: string;
-      deviceName?: string;
-      createdTime?: string;
-      secret?: string;
-      firstLogin?: string;
-      lastLogin?: string;
-      version?: string;
-      logLevel?: number;
-      imei?: string;
-      mac?: string;
-      hardInfo?: string;
-      softInfo?: string;
-      tags?: { key?: string; value?: string }[];
-      isOnline?: number;
-      address?: string;
-      position: { longitude?: number; latitude?: number };
-    };
-  }>('/api/v1/things/device/info/read', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: API.DeviceInfo }>(
+    '/api/v1/things/device/info/read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 更新设备 POST /api/v1/things/device/info/update */
@@ -233,9 +227,14 @@ export async function postApiV1ThingsDeviceInfoUpdate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    cert: string;
+    imei: string;
+    mac: string;
+    hardInfo: string;
+    softInfo: string;
+    tags: { key?: string; value?: string }[];
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel?: number;
-    tags?: { key?: string; value?: string }[];
+    logLevel: number;
     /** 设备所在地址 */
     address?: string;
     /** 设备坐标点,默认百度坐标系 */

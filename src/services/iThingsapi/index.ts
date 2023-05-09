@@ -13,6 +13,7 @@ import * as gaojingrizhi from './gaojingrizhi';
 import * as jiaoseguanli from './jiaoseguanli';
 import * as jiekouguanli from './jiekouguanli';
 import * as liu from './liu';
+import * as quanxianguanli from './quanxianguanli';
 import * as rizhiguanli from './rizhiguanli';
 import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
@@ -53,4 +54,5 @@ export default {
   gaojingrizhi,
   gaojingjilu,
   zidingyi,
+  quanxianguanli,
 };
