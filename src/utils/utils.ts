@@ -197,3 +197,40 @@ export function downloadFunction(content: string, filename = 'tsl.json') {
   eleLink.click();
   document.body.removeChild(eleLink);
 }
+
+/**
+ * 下载文件
+ * @param url 下载链接
+ * @param params 参数
+ */
+export const downloadFile = (url: string, params?: Record<string, any>) => {
+  const formElement = document.createElement('form');
+  formElement.style.display = 'display:none;';
+  formElement.method = 'GET';
+  formElement.action = url;
+  // 添加参数
+  if (params) {
+    Object.keys(params).forEach((key: string) => {
+      const inputElement = document.createElement('input');
+      inputElement.type = 'hidden';
+      inputElement.name = key;
+      inputElement.value = params[key];
+      formElement.appendChild(inputElement);
+    });
+  }
+  const inputElement = document.createElement('input');
+  inputElement.type = 'hidden';
+  inputElement.value = getToken();
+  formElement.appendChild(inputElement);
+  document.body.appendChild(formElement);
+  formElement.submit();
+  document.body.removeChild(formElement);
+};
+
+// 第一个首字母大写
+
+export const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+// 睡眠
+
+export const sleep = (timeout: number) => new Promise((resolve) => setTimeout(resolve, timeout));

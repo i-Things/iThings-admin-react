@@ -5,11 +5,11 @@ import styles from '../../index.less';
 import EditForm from './editForm';
 
 interface InfoProps {
-  deviceInfo: DeviceInfo;
+  deviceInfo: Partial<DeviceInfo>;
   refresh: () => void;
 }
 
-const useColumns = (deviceInfo: DeviceInfo, refresh: () => void) => {
+const useColumns = (deviceInfo: Partial<DeviceInfo>, refresh: () => void) => {
   return [
     {
       title: '调试日志',
@@ -42,7 +42,7 @@ const useColumns = (deviceInfo: DeviceInfo, refresh: () => void) => {
       valueType: 'option',
       render: () => [<EditForm refresh={refresh} key="link" deviceInfo={deviceInfo} />],
     },
-  ] as ProColumns<DeviceInfo>[];
+  ] as ProColumns<Partial<DeviceInfo>>[];
 };
 
 const LocalLogPage: React.FC<InfoProps> = (props) => {

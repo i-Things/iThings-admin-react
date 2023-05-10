@@ -7,6 +7,7 @@ import { useRequest } from 'ahooks';
 import { Card, Descriptions, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import DevicePage from './pages/device/index';
+import MessageAnalysisPage from './pages/messageAnalysis/index';
 import ModelPage from './pages/model/index';
 import ProductInfoPage from './pages/productInfo/index';
 import TopicPage from './pages/topic/index';
@@ -46,10 +47,13 @@ const IndexPage: React.FC = () => {
           <TabPane tab="Topic 类列表" key="2">
             <TopicPage />
           </TabPane>
-          <TabPane tab="物模型" key="3">
+          <TabPane tab="消息解析" key="3">
+            <MessageAnalysisPage productID={productID} />
+          </TabPane>
+          <TabPane tab="物模型" key="4">
             <ModelPage />
           </TabPane>
-          <TabPane tab="设备列表" key="4">
+          <TabPane tab="设备列表" key="5">
             <DevicePage productInfo={productInfo} />
           </TabPane>
         </Tabs>

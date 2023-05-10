@@ -43,7 +43,7 @@ export default defineConfig({
   requestRecord: {},
   openAPI: [
     {
-      requestLibPath: "import { request } from '@umijs/max'",
+      requestLibPath: "import request from '@/utils/request'",
       schemaPath: join(__dirname, 'iThingsapi.json'),
       mock: false,
       projectName: 'iThingsapi',

@@ -69,52 +69,54 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productValues }) => {
     width: 480,
   };
   return (
-    <ModalForm<DEVICE_INFO>
-      {...formItemLayout}
-      title="创建设备"
-      layout="horizontal"
-      modalProps={{
-        onCancel: () => setCreateVisible(false),
-      }}
-      trigger={
-        <Button type="primary" onClick={openCreateModal}>
-          新增
-        </Button>
-      }
-      submitTimeout={2000}
-      onFinish={formCommit}
-    >
-      <ProFormSelect
-        name="productID"
-        width="md"
-        label="产品名称"
-        disabled={productValues?.length == 1}
-        rules={[
-          {
-            required: true,
-            message: '必填项！',
-          },
-        ]}
-        request={async () => (productForm == undefined ? [] : productForm)}
-      />
-      <ProFormText
-        width="md"
-        name="deviceName"
-        label="设备名"
-        placeholder="请选择输入设备名"
-        rules={[
-          {
-            required: true,
-            message: '必填项！',
-          },
-        ]}
-      />
-      <ProFormSelect
-        width="md"
-        name="logLevel"
-        label="日志级别"
-        request={async () => DEVICE_LOG_LEVEL_FORM}
-      />
-    </ModalForm>
+    <>
+      <ModalForm<DEVICE_INFO>
+        {...formItemLayout}
+        title="创建设备"
+        layout="horizontal"
+        modalProps={{
+          onCancel: () => setCreateVisible(false),
+        }}
+        trigger={
+          <Button type="primary" onClick={openCreateModal}>
+            新增
+          </Button>
+        }
+        submitTimeout={2000}
+        onFinish={formCommit}
+      >
+        <ProFormSelect
+          name="productID"
+          width="md"
+          label="产品名称"
+          disabled={productValues?.length == 1}
+          rules={[
+            {
+              required: true,
+              message: '必填项！',
+            },
+          ]}
+          request={async () => (productForm == undefined ? [] : productForm)}
+        />
+        <ProFormText
+          width="md"
+          name="deviceName"
+          label="设备名"
+          placeholder="请选择输入设备名"
+          rules={[
+            {
+              required: true,
+              message: '必填项！',
+            },
+          ]}
+        />
+        <ProFormSelect
+          width="md"
+          name="logLevel"
+          label="日志级别"
+          request={async () => DEVICE_LOG_LEVEL_FORM}
+        />
+      </ModalForm>
+    </>
   );
 };

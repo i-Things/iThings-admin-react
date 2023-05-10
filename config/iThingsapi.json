@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "iThings",
-    "description": "",
+    "description": "iThings物联网平台接口定义,官网是:https://ithings.net.cn/",
     "version": "1.0.0"
   },
   "tags": [
@@ -23,6 +23,9 @@
     },
     {
       "name": "iThings-apisvr/物联网相关接口/产品/远程配置"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/产品/自定义"
     },
     {
       "name": "iThings-apisvr/物联网相关接口/设备分组"
@@ -70,6 +73,24 @@
       "name": "iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"
     },
     {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/告警中心"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/处理记录"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警日志"
+    },
+    {
+      "name": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警记录"
+    },
+    {
       "name": "iThings-apisvr/系统管理"
     },
     {
@@ -89,6 +110,9 @@
     },
     {
       "name": "iThings-apisvr/系统管理/接口管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/权限管理"
     }
   ],
   "paths": {
@@ -100,17 +124,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -250,17 +264,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -394,17 +398,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -589,17 +583,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -664,17 +648,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/产品管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -897,17 +871,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1120,17 +1084,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1218,6 +1172,9 @@
                   }
                 },
                 "x-apifox-ignore-properties": ["page"]
+              },
+              "example": {
+                "deviceName": "fmy测试0415-1-1"
               }
             }
           }
@@ -1626,17 +1583,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1656,6 +1603,10 @@
                 "x-apifox-refs": {},
                 "required": ["productID", "deviceName"],
                 "x-apifox-ignore-properties": []
+              },
+              "example": {
+                "deviceName": "fmy测试0415-1-1",
+                "productID": "254pwnKQsvK"
               }
             }
           }
@@ -1675,105 +1626,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "productID": {
-                          "title": "产品id",
-                          "type": "string",
-                          "description": "不可修改"
-                        },
-                        "deviceName": {
-                          "title": "设备名称",
-                          "type": "string",
-                          "description": "不可修改"
-                        },
-                        "createdTime": {
-                          "title": "创建时间",
-                          "type": "string"
-                        },
-                        "secret": {
-                          "title": "设备秘钥",
-                          "type": "string"
-                        },
-                        "firstLogin": {
-                          "title": "激活时间",
-                          "type": "string"
-                        },
-                        "lastLogin": {
-                          "title": "最后上线时间",
-                          "type": "string"
-                        },
-                        "version": {
-                          "title": "固件版本",
-                          "type": "string"
-                        },
-                        "logLevel": {
-                          "title": "日志级别",
-                          "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 ",
-                          "type": "integer"
-                        },
-                        "tags": {
-                          "title": "标签",
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "key": {
-                                "type": "string"
-                              },
-                              "value": {
-                                "type": "string"
-                              }
-                            },
-                            "x-apifox-orders": ["key", "value"],
-                            "required": ["key", "value"],
-                            "x-apifox-ignore-properties": []
-                          },
-                          "nullable": true
-                        },
-                        "isOnline": {
-                          "title": "在线状态",
-                          "description": "1离线 2在线 只读",
-                          "type": "integer"
-                        },
-                        "address": {
-                          "type": "string",
-                          "description": "设备地址"
-                        },
-                        "position": {
-                          "type": "object",
-                          "properties": {
-                            "longitude": {
-                              "type": "number",
-                              "description": "经度"
-                            },
-                            "latitude": {
-                              "type": "number",
-                              "description": "纬度"
-                            }
-                          },
-                          "x-apifox-orders": ["longitude", "latitude"],
-                          "required": ["longitude", "latitude"],
-                          "x-apifox-ignore-properties": []
-                        }
-                      },
-                      "x-apifox-orders": [
-                        "productID",
-                        "deviceName",
-                        "createdTime",
-                        "secret",
-                        "firstLogin",
-                        "lastLogin",
-                        "version",
-                        "logLevel",
-                        "tags",
-                        "isOnline",
-                        "address",
-                        "position"
-                      ],
-                      "x-apifox-refs": {},
-                      "required": ["productID", "deviceName"],
-                      "x-apifox-ignore-properties": []
+                      "$ref": "#/components/schemas/DeviceInfo"
                     }
                   },
                   "required": ["code", "msg", "data"],
@@ -1826,17 +1679,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1844,22 +1687,36 @@
                 "type": "object",
                 "properties": {
                   "productID": {
-                    "title": "产品id",
                     "type": "string",
+                    "title": "产品id",
                     "description": "不可修改"
                   },
                   "deviceName": {
-                    "title": "设备名称",
                     "type": "string",
+                    "title": "设备名称",
                     "description": "不可修改"
                   },
-                  "logLevel": {
-                    "title": "日志级别",
-                    "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 ",
-                    "type": "integer"
+                  "cert": {
+                    "type": "string",
+                    "title": "设备证书"
+                  },
+                  "imei": {
+                    "type": "string",
+                    "title": "IMEI信息"
+                  },
+                  "mac": {
+                    "type": "string",
+                    "title": "MAC信息"
+                  },
+                  "hardInfo": {
+                    "type": "string",
+                    "title": "模组硬件型号"
+                  },
+                  "softInfo": {
+                    "type": "string",
+                    "title": "模组软件版本"
                   },
                   "tags": {
-                    "title": "标签",
                     "type": "array",
                     "items": {
                       "type": "object",
@@ -1871,11 +1728,16 @@
                           "type": "string"
                         }
                       },
-                      "x-apifox-orders": ["key", "value"],
                       "required": ["key", "value"],
+                      "x-apifox-orders": ["key", "value"],
                       "x-apifox-ignore-properties": []
                     },
-                    "nullable": true
+                    "title": "标签"
+                  },
+                  "logLevel": {
+                    "type": "integer",
+                    "title": "日志级别",
+                    "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 "
                   },
                   "address": {
                     "type": "string",
@@ -1902,25 +1764,33 @@
                 "x-apifox-orders": ["01G638HNFZXMAC3HARAS53D1ZZ", "address", "position"],
                 "x-apifox-refs": {
                   "01G638HNFZXMAC3HARAS53D1ZZ": {
-                    "$ref": "#/components/schemas/DeviceInfo",
-                    "x-apifox-overrides": {
-                      "firstLogin": null,
-                      "lastLogin": null,
-                      "version": null,
-                      "createdTime": null,
-                      "secret": null,
-                      "isOnline": null
-                    }
+                    "$ref": "#/components/schemas/DeviceInfo"
                   }
                 },
-                "required": ["productID", "deviceName"],
-                "x-apifox-ignore-properties": ["productID", "deviceName", "logLevel", "tags"]
+                "required": [
+                  "productID",
+                  "deviceName",
+                  "cert",
+                  "imei",
+                  "mac",
+                  "hardInfo",
+                  "softInfo",
+                  "tags",
+                  "logLevel"
+                ],
+                "x-apifox-ignore-properties": [
+                  "productID",
+                  "deviceName",
+                  "cert",
+                  "imei",
+                  "mac",
+                  "hardInfo",
+                  "softInfo",
+                  "tags",
+                  "logLevel"
+                ]
               },
-              "example": {
-                "productID": "23z3l66VkFG",
-                "deviceName": "test5",
-                "version": "1238"
-              }
+              "example": "{\r\n    \"productID\": \"265ngeRHyrS\",\r\n    \"deviceName\": \"{% mock 'string' , 'lower' , 15 , 15 %}\",\r\n    \"imei\": \"{% mock 'natural' , 100000000000000 , 999999999999999 %}\",\r\n    \"mac\": \"{% mock 'string' , 'upper' , 17 , 17 %}\",\r\n    \"version\": \"{% mock 'natural' , 1000 , 9999|lconcat('V1.2.3-') %}\",\r\n    \"hardInfo\": \"{% mock 'string' , 'lower' , 5 , 5|lconcat('hardinfo-') %}\",\r\n    \"softInfo\": \"{% mock 'string' , 'lower' , 5 , 5|lconcat('hardinfo-') %}\",\r\n    \"position\": {\r\n        \"longitude\": {% mock 'float' , min=116 , max=116 , dmin=5 , dmax=5 %},\r\n        \"latitude\": {% mock 'float' , min=40 , max=40 , dmin=5 , dmax=5 %}\r\n    },\r\n    \"address\": \"{% mock 'ctitle' , 15 , 15 %}\",\r\n    \"tags\": null,\r\n    \"logLevel\": {% mock 'natural' , 1 , 3 %}\r\n}"
             }
           }
         },
@@ -1971,17 +1841,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1989,32 +1849,83 @@
                 "type": "object",
                 "properties": {
                   "productID": {
-                    "title": "产品id",
                     "type": "string",
+                    "title": "产品id",
                     "description": "不可修改"
                   },
                   "deviceName": {
-                    "title": "设备名称",
                     "type": "string",
+                    "title": "设备名称",
                     "description": "不可修改"
+                  },
+                  "cert": {
+                    "type": "string",
+                    "title": "设备证书"
+                  },
+                  "imei": {
+                    "type": "string",
+                    "title": "IMEI信息"
+                  },
+                  "mac": {
+                    "type": "string",
+                    "title": "MAC信息"
+                  },
+                  "hardInfo": {
+                    "type": "string",
+                    "title": "模组硬件型号"
+                  },
+                  "softInfo": {
+                    "type": "string",
+                    "title": "模组软件版本"
+                  },
+                  "position": {
+                    "type": "object",
+                    "properties": {
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "latitude": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["longitude", "latitude"],
+                    "x-apifox-orders": ["longitude", "latitude"],
+                    "title": "定位（百度坐标）",
+                    "x-apifox-ignore-properties": []
+                  },
+                  "address": {
+                    "type": "string",
+                    "title": "详细地址"
                   }
                 },
                 "x-apifox-orders": ["01G638PN0Z686DFXVDR2GG4XC8"],
                 "x-apifox-refs": {
                   "01G638PN0Z686DFXVDR2GG4XC8": {
-                    "$ref": "#/components/schemas/DeviceInfo",
-                    "x-apifox-overrides": {
-                      "firstLogin": null,
-                      "lastLogin": null,
-                      "version": null,
-                      "createdTime": null,
-                      "secret": null,
-                      "isOnline": null
-                    }
+                    "$ref": "#/components/schemas/DeviceInfo"
                   }
                 },
-                "required": ["productID", "deviceName"],
-                "x-apifox-ignore-properties": ["productID", "deviceName"]
+                "required": [
+                  "productID",
+                  "deviceName",
+                  "cert",
+                  "imei",
+                  "mac",
+                  "hardInfo",
+                  "softInfo",
+                  "position",
+                  "address"
+                ],
+                "x-apifox-ignore-properties": [
+                  "productID",
+                  "deviceName",
+                  "cert",
+                  "imei",
+                  "mac",
+                  "hardInfo",
+                  "softInfo",
+                  "position",
+                  "address"
+                ]
               },
               "example": {
                 "opt": 2,
@@ -2074,17 +1985,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2092,22 +1993,36 @@
                 "type": "object",
                 "properties": {
                   "productID": {
-                    "title": "产品id",
                     "type": "string",
+                    "title": "产品id",
                     "description": "不可修改"
                   },
                   "deviceName": {
-                    "title": "设备名称",
                     "type": "string",
+                    "title": "设备名称",
                     "description": "不可修改"
                   },
-                  "logLevel": {
-                    "title": "日志级别",
-                    "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 ",
-                    "type": "integer"
+                  "cert": {
+                    "type": "string",
+                    "title": "设备证书"
+                  },
+                  "imei": {
+                    "type": "string",
+                    "title": "IMEI信息"
+                  },
+                  "mac": {
+                    "type": "string",
+                    "title": "MAC信息"
+                  },
+                  "hardInfo": {
+                    "type": "string",
+                    "title": "模组硬件型号"
+                  },
+                  "softInfo": {
+                    "type": "string",
+                    "title": "模组软件版本"
                   },
                   "tags": {
-                    "title": "标签",
                     "type": "array",
                     "items": {
                       "type": "object",
@@ -2119,11 +2034,16 @@
                           "type": "string"
                         }
                       },
-                      "x-apifox-orders": ["key", "value"],
                       "required": ["key", "value"],
+                      "x-apifox-orders": ["key", "value"],
                       "x-apifox-ignore-properties": []
                     },
-                    "nullable": true
+                    "title": "标签"
+                  },
+                  "logLevel": {
+                    "type": "integer",
+                    "title": "日志级别",
+                    "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 "
                   },
                   "address": {
                     "type": "string",
@@ -2150,19 +2070,31 @@
                 "x-apifox-orders": ["01G638KA93YBR1XSZ5SX6JHPW0", "address", "position"],
                 "x-apifox-refs": {
                   "01G638KA93YBR1XSZ5SX6JHPW0": {
-                    "$ref": "#/components/schemas/DeviceInfo",
-                    "x-apifox-overrides": {
-                      "firstLogin": null,
-                      "lastLogin": null,
-                      "version": null,
-                      "createdTime": null,
-                      "secret": null,
-                      "isOnline": null
-                    }
+                    "$ref": "#/components/schemas/DeviceInfo"
                   }
                 },
-                "required": ["productID", "deviceName"],
-                "x-apifox-ignore-properties": ["productID", "deviceName", "logLevel", "tags"]
+                "required": [
+                  "productID",
+                  "deviceName",
+                  "cert",
+                  "imei",
+                  "mac",
+                  "hardInfo",
+                  "softInfo",
+                  "tags",
+                  "logLevel"
+                ],
+                "x-apifox-ignore-properties": [
+                  "productID",
+                  "deviceName",
+                  "cert",
+                  "imei",
+                  "mac",
+                  "hardInfo",
+                  "softInfo",
+                  "tags",
+                  "logLevel"
+                ]
               },
               "example": {
                 "productID": "23z3l66VkFG",
@@ -2219,17 +2151,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备鉴权"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2305,17 +2227,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备鉴权"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2391,17 +2303,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备鉴权"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2463,17 +2365,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2504,6 +2396,27 @@
                     "type": "string",
                     "title": "时间的结束"
                   },
+                  "argFunc": {
+                    "type": "string",
+                    "title": "聚合函数",
+                    "description": "avg:平均值 first:第一个参数 last:最后一个参数 count:总数 twa: 时间加权平均函数 参考:https://docs.taosdata.com/taos-sql/function"
+                  },
+                  "interval": {
+                    "type": "integer",
+                    "title": "间隔",
+                    "description": "(单位毫秒) 如果这个值不为零值 则时间的开始和结束必须有效及聚合函数不应该为空"
+                  },
+                  "fill": {
+                    "type": "string",
+                    "title": "填充模式",
+                    "description": "  //  FILL 语句指定某一窗口区间数据缺失的情况下的填充模式。填充模式包括以下几种：   //    不进行填充：NONE（默认填充模式）。   //    VALUE 填充：固定值填充，此时需要指定填充的数值。例如：FILL(VALUE, 1.23)。   //    PREV 填充：使用前一个非 NULL 值填充数据。例如：FILL(PREV)。   //    NULL 填充：使用 NULL 填充数据。例如：FILL(NULL)。   //    LINEAR 填充：根据前后距离最近的非 NULL 值做线性插值填充。例如：FILL(LINEAR)。   //    NEXT 填充：使用下一个非 NULL 值填充数据。例如：FILL(NEXT)。"
+                  },
+                  "order": {
+                    "type": "integer",
+                    "title": "时间排序",
+                    "description": "0:aes(默认,从久到近排序) 1:desc(时间从近到久排序)",
+                    "nullable": true
+                  },
                   "page": {
                     "type": "object",
                     "properties": {
@@ -2521,13 +2434,17 @@
                     "x-apifox-ignore-properties": []
                   }
                 },
-                "required": ["deviceNames", "productID", "dataID", "timeEnd", "timeStart"],
+                "required": ["deviceNames", "productID", "dataID"],
                 "x-apifox-orders": [
                   "deviceNames",
                   "productID",
                   "dataID",
                   "timeStart",
                   "timeEnd",
+                  "argFunc",
+                  "interval",
+                  "fill",
+                  "order",
                   "01G6JKJY3PY5JEZJM8GY1RBWG5"
                 ],
                 "x-apifox-refs": {
@@ -2642,17 +2559,7 @@
         "deprecated": false,
         "description": "获取设备主动上传的sdk日志",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2773,17 +2680,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3010,17 +2907,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3198,23 +3085,13 @@
     },
     "/api/v1/things/device/interact/send-action": {
       "post": {
-        "summary": "同步调用设备行为",
+        "summary": "调用设备行为",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3237,10 +3114,21 @@
                   "inputParams": {
                     "type": "string",
                     "title": "输入参数"
+                  },
+                  "isAsync": {
+                    "type": "boolean",
+                    "title": "是否异步操作 ",
+                    "description": "异步情况通过获取接口来获取"
                   }
                 },
                 "required": ["productID", "deviceName", "actionID", "inputParams"],
-                "x-apifox-orders": ["productID", "deviceName", "actionID", "inputParams"],
+                "x-apifox-orders": [
+                  "productID",
+                  "deviceName",
+                  "actionID",
+                  "inputParams",
+                  "isAsync"
+                ],
                 "title": "",
                 "x-apifox-ignore-properties": []
               }
@@ -3287,23 +3175,13 @@
     },
     "/api/v1/things/device/interact/send-property": {
       "post": {
-        "summary": "同步调用设备属性",
+        "summary": "调用设备属性",
         "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3323,19 +3201,14 @@
                     "title": "属性数据",
                     "description": "JSON格式字符串, 注意字段需要在物模型属性里定义"
                   },
-                  "dataTimestamp": {
-                    "type": "string",
-                    "title": "上报数据UNIX时间戳",
-                    "description": "仅对Method:reported有效"
-                  },
-                  "method": {
-                    "type": "string",
-                    "title": "请求类型",
-                    "description": "不填该参数或者 desired 表示下发属性给设备, reported 表示模拟设备上报属性"
+                  "isAsync": {
+                    "type": "boolean",
+                    "title": "是否异步操作",
+                    "description": "异步情况通过获取接口来获取"
                   }
                 },
-                "x-apifox-orders": ["productID", "deviceName", "data", "dataTimestamp", "method"],
-                "required": ["productID", "deviceName", "data", "dataTimestamp", "method"],
+                "x-apifox-orders": ["productID", "deviceName", "data", "isAsync"],
+                "required": ["productID", "deviceName", "data"],
                 "x-apifox-ignore-properties": []
               }
             }
@@ -3385,17 +3258,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3520,15 +3383,6 @@
             "required": true,
             "schema": {
               "type": "integer"
-            }
-          },
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -3699,17 +3553,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3831,17 +3675,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/菜单管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3916,17 +3750,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4009,17 +3833,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4167,17 +3981,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4264,17 +4068,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4349,17 +4143,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/角色管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4441,17 +4225,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4608,17 +4382,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4701,17 +4465,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4893,17 +4647,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4969,17 +4713,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5122,17 +4856,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5252,17 +4976,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5444,17 +5158,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/用户管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5669,17 +5373,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5747,17 +5441,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5840,17 +5524,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6102,17 +5776,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6252,17 +5916,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6359,17 +6013,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6444,17 +6088,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6719,17 +6353,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6823,17 +6447,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备分组"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6927,17 +6541,7 @@
         "deprecated": false,
         "description": "物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language）",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6986,17 +6590,7 @@
         "deprecated": false,
         "description": "物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language）",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7046,17 +6640,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7091,17 +6675,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7188,17 +6762,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/物模型"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7252,17 +6816,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/设备消息"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7461,17 +7015,7 @@
         "description": "",
         "operationId": "read",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7505,17 +7049,7 @@
         "description": "",
         "operationId": "create",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7549,17 +7083,7 @@
         "description": "",
         "operationId": "signedurl",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7593,17 +7117,7 @@
         "description": "",
         "operationId": "firmwareIndex",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7637,17 +7151,7 @@
         "description": "",
         "operationId": "delete",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7681,17 +7185,7 @@
         "description": "",
         "operationId": "update",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7725,17 +7219,7 @@
         "description": "",
         "operationId": "taskAnalysis",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7769,17 +7253,7 @@
         "description": "",
         "operationId": "taskCancel",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7813,17 +7287,7 @@
         "description": "",
         "operationId": "taskCreate",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7857,17 +7321,7 @@
         "description": "",
         "operationId": "taskDeviceCancle",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7901,17 +7355,7 @@
         "description": "",
         "operationId": "taskDeviceIndex",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7945,17 +7389,7 @@
         "description": "",
         "operationId": "taskList",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7989,17 +7423,7 @@
         "description": "",
         "operationId": "taskRead",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8032,17 +7456,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8113,17 +7527,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8246,17 +7650,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8322,17 +7716,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/产品/远程配置"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8418,17 +7802,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/网关子设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8485,17 +7859,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/网关子设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8552,17 +7916,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/设备/网关子设备管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8638,15 +7992,7 @@
                         "list": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/DeviceInfo",
-                            "x-apifox-overrides": {
-                              "firstLogin": null,
-                              "lastLogin": null,
-                              "version": null,
-                              "createdTime": null,
-                              "secret": null,
-                              "isOnline": null
-                            }
+                            "$ref": "#/components/schemas/DeviceInfo"
                           }
                         },
                         "total": {
@@ -8702,15 +8048,6 @@
             "required": false,
             "schema": {
               "type": "number"
-            }
-          },
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -8848,17 +8185,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8955,17 +8282,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9031,17 +8348,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9106,17 +8413,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/规则编排/流"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9165,17 +8462,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/系统配置"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9319,15 +8606,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -9366,17 +8644,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9445,17 +8713,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/日志管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9647,17 +8905,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/日志管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9853,17 +9101,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/接口管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9954,17 +9192,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/接口管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10123,17 +9351,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/接口管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10215,17 +9433,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/系统管理/接口管理"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10291,17 +9499,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10343,10 +9541,20 @@
                     "type": "string",
                     "title": "触发类型",
                     "description": "device: 设备触发 timer: 定时触发 manual:手动触发"
+                  },
+                  "alarmID": {
+                    "type": "integer",
+                    "title": "告警id过滤",
+                    "nullable": true
                   }
                 },
-                "x-apifox-orders": ["01GS86J197SXSZ636KJSEFWHAP", "name", "state", "triggerType"],
-                "required": ["name", "state", "triggerType"],
+                "x-apifox-orders": [
+                  "01GS86J197SXSZ636KJSEFWHAP",
+                  "name",
+                  "state",
+                  "triggerType",
+                  "alarmID"
+                ],
                 "x-apifox-ignore-properties": ["page"]
               }
             }
@@ -10417,17 +9625,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10453,7 +9651,7 @@
                   },
                   "when": {
                     "type": "string",
-                    "description": "触发条件"
+                    "title": "触发条件列表"
                   },
                   "then": {
                     "type": "string",
@@ -10503,16 +9701,28 @@
                       "type": "string",
                       "title": "返回消息",
                       "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "title": "场景id"
+                        }
+                      },
+                      "x-apifox-orders": ["id"],
+                      "required": ["id"],
+                      "x-apifox-ignore-properties": []
                     }
                   },
-                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G"],
+                  "x-apifox-orders": ["01GS2VSNVBVAGQ1J2MPBX4KJ6G", "data"],
                   "x-apifox-refs": {
                     "01GS2VSNVBVAGQ1J2MPBX4KJ6G": {
                       "$ref": "#/components/schemas/SuccRet",
                       "x-apifox-overrides": {}
                     }
                   },
-                  "required": ["code", "msg"],
+                  "required": ["data", "code", "msg"],
                   "x-apifox-ignore-properties": ["code", "msg"]
                 }
               }
@@ -10530,17 +9740,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10566,7 +9766,7 @@
                   },
                   "when": {
                     "type": "string",
-                    "description": "触发条件"
+                    "title": "触发条件列表"
                   },
                   "then": {
                     "type": "string",
@@ -10643,17 +9843,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/规则引擎/场景联动"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10720,17 +9910,7 @@
         "deprecated": false,
         "description": "",
         "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/task"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjc3NTA0MDAwLCJpYXQiOjE2Nzc1MDA0MDAsIlJvbGUiOjF9.tUicwFx5LWf8TYLk7WOE-g9KFRF7BvHLE-aAibGjuLA",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10760,10 +9940,2071 @@
         },
         "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-66362418-run"
       }
+    },
+    "/api/v1/things/rule/alarm/deal-record/create": {
+      "post": {
+        "summary": "新增告警处理记录",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/处理记录",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/处理记录"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alarmRecordID": {
+                    "type": "integer",
+                    "title": "告警记录ID"
+                  },
+                  "result": {
+                    "type": "string",
+                    "title": "告警处理结果"
+                  }
+                },
+                "x-apifox-orders": ["alarmRecordID", "result"],
+                "required": ["alarmRecordID", "result"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ4C31YXMZQZE2GV445GV8"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GVZQ4C31YXMZQZE2GV445GV8": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69618483-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/deal-record/index": {
+      "post": {
+        "summary": "获取告警处理记录列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/处理记录",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/处理记录"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "timeRange": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "integer",
+                        "title": "开始时间",
+                        "description": "unix时间戳",
+                        "nullable": true
+                      },
+                      "end": {
+                        "type": "integer",
+                        "title": "结束时间",
+                        "description": "unix时间戳",
+                        "nullable": true
+                      }
+                    },
+                    "x-apifox-orders": ["start", "end"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "alarmRecordID": {
+                    "type": "integer",
+                    "title": "告警配置id",
+                    "nullable": true
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GVZPEY508BB0N00QHNE5HE91",
+                  "01GVZPPY94B505QPTE68H812D1",
+                  "alarmRecordID"
+                ],
+                "x-apifox-refs": {
+                  "01GVZPEY508BB0N00QHNE5HE91": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  },
+                  "01GVZPPY94B505QPTE68H812D1": {
+                    "$ref": "#/components/schemas/timeRange"
+                  }
+                },
+                "x-apifox-ignore-properties": ["page", "timeRange"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "title": "总数"
+                        },
+                        "num": {
+                          "type": "integer",
+                          "title": "返回的数量"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/alarmDealRecord"
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["total", "num", "list"],
+                      "required": ["total", "num", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ4YVB7XYVTTWD9MS45FFC", "data"],
+                  "x-apifox-refs": {
+                    "01GVZQ4YVB7XYVTTWD9MS45FFC": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69619065-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/info/create": {
+      "post": {
+        "summary": "新增告警",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "状态",
+                    "description": "1启用 2禁用"
+                  },
+                  "state": {
+                    "type": "integer"
+                  },
+                  "desc": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "type": "integer",
+                    "title": "告警配置级别",
+                    "description": "1提醒 2一般 3严重 4紧急 5超紧急"
+                  }
+                },
+                "x-apifox-orders": ["01GVZQ1CAB5P27VRT1BY1CFXD3"],
+                "x-apifox-refs": {
+                  "01GVZQ1CAB5P27VRT1BY1CFXD3": {
+                    "$ref": "#/components/schemas/alarmInfo",
+                    "x-apifox-overrides": {
+                      "createdTime": null,
+                      "id": null,
+                      "dealState": null,
+                      "lastAlarm": null
+                    }
+                  }
+                },
+                "required": ["name", "state", "desc", "level"],
+                "x-apifox-ignore-properties": ["name", "state", "desc", "level"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "title": "新增的告警id"
+                        }
+                      },
+                      "x-apifox-orders": ["id"],
+                      "required": ["id"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ3HK10FYJ39NQSZZ8P3A3", "data"],
+                  "x-apifox-refs": {
+                    "01GVZQ3HK10FYJ39NQSZZ8P3A3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69619608-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/info/update": {
+      "post": {
+        "summary": "更新告警",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "名称"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "状态",
+                    "description": "1启用 2禁用"
+                  },
+                  "state": {
+                    "type": "integer"
+                  },
+                  "desc": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "type": "integer",
+                    "title": "告警配置级别",
+                    "description": "1提醒 2一般 3严重 4紧急 5超紧急"
+                  }
+                },
+                "x-apifox-orders": ["01GVZQ1CAB5P27VRT1BY1CFXD3"],
+                "x-apifox-refs": {
+                  "01GVZQ1CAB5P27VRT1BY1CFXD3": {
+                    "$ref": "#/components/schemas/alarmInfo",
+                    "x-apifox-overrides": {
+                      "createdTime": null,
+                      "id": null,
+                      "dealState": null,
+                      "lastAlarm": null
+                    }
+                  }
+                },
+                "required": ["name", "state", "desc", "level"],
+                "x-apifox-ignore-properties": ["id", "name", "state", "desc", "level"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ3HK10FYJ39NQSZZ8P3A3"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GVZQ3HK10FYJ39NQSZZ8P3A3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69620997-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/info/delete": {
+      "post": {
+        "summary": "删除告警",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "x-apifox-refs": {},
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ3HK10FYJ39NQSZZ8P3A3"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GVZQ3HK10FYJ39NQSZZ8P3A3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621007-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/info/index": {
+      "post": {
+        "summary": "获取告警信息列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "告警名模糊查询",
+                    "nullable": true
+                  },
+                  "sceneID": {
+                    "type": "integer",
+                    "title": "状态",
+                    "description": "1启用 2禁用",
+                    "nullable": true
+                  },
+                  "alarmIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "title": "告警id列表查询条件"
+                  }
+                },
+                "x-apifox-orders": ["01GVZQJJFKB5NGR4RS7VMGE7TP", "name", "sceneID", "alarmIDs"],
+                "x-apifox-refs": {
+                  "01GVZQJJFKB5NGR4RS7VMGE7TP": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  }
+                },
+                "x-apifox-ignore-properties": ["page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "title": "总数"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/alarmInfo",
+                            "x-apifox-overrides": {
+                              "createdTime": null,
+                              "id": null,
+                              "dealState": null,
+                              "lastAlarm": null
+                            }
+                          }
+                        },
+                        "num": {
+                          "type": "integer",
+                          "title": "返回的数量"
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list", "num"],
+                      "required": ["total", "num", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ3HK10FYJ39NQSZZ8P3A3", "data"],
+                  "x-apifox-refs": {
+                    "01GVZQ3HK10FYJ39NQSZZ8P3A3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621017-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/scene/multi-update": {
+      "post": {
+        "summary": "更新告警和场景的关联",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alarmID": {
+                    "type": "integer",
+                    "title": "告警配置ID"
+                  },
+                  "sceneIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "title": "场景id列表"
+                  }
+                },
+                "x-apifox-orders": ["alarmID", "sceneIDs"],
+                "required": ["alarmID", "sceneIDs"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQT7NY6SMJ4W7Y09JA18FM"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GVZQT7NY6SMJ4W7Y09JA18FM": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621054-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/scene/delete": {
+      "post": {
+        "summary": "删除告警和场景的关联",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/场景联动关联"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alarmID": {
+                    "type": "integer",
+                    "title": "告警配置ID"
+                  },
+                  "sceneID": {
+                    "type": "integer",
+                    "title": "场景id"
+                  }
+                },
+                "x-apifox-orders": ["alarmID", "sceneID"],
+                "required": ["alarmID", "sceneID"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQT7NY6SMJ4W7Y09JA18FM"],
+                  "required": ["code", "msg"],
+                  "x-apifox-refs": {
+                    "01GVZQT7NY6SMJ4W7Y09JA18FM": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621075-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/log/index": {
+      "post": {
+        "summary": "获取告警流水日志记录列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警日志",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警日志"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "timeRange": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "integer",
+                        "title": "开始时间",
+                        "description": "unix时间戳",
+                        "nullable": true
+                      },
+                      "end": {
+                        "type": "integer",
+                        "title": "结束时间",
+                        "description": "unix时间戳",
+                        "nullable": true
+                      }
+                    },
+                    "x-apifox-orders": ["start", "end"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "alarmRecordID": {
+                    "type": "integer",
+                    "title": "告警记录ID"
+                  }
+                },
+                "x-apifox-orders": [
+                  "01GW10ZJNHEN9J4JCFQDBES06V",
+                  "01GW10ZRC02V54VCY98AFEH0WZ",
+                  "alarmRecordID"
+                ],
+                "x-apifox-refs": {
+                  "01GW10ZJNHEN9J4JCFQDBES06V": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  },
+                  "01GW10ZRC02V54VCY98AFEH0WZ": {
+                    "$ref": "#/components/schemas/timeRange"
+                  }
+                },
+                "required": ["alarmRecordID"],
+                "x-apifox-ignore-properties": ["page", "timeRange"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "num": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/alarmLog"
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["num", "total", "list"],
+                      "required": ["num", "list", "total"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GW110FMSME8RWXN1C29B1SZY", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GW110FMSME8RWXN1C29B1SZY": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-69621590-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/record/index": {
+      "post": {
+        "summary": "获取告警记录列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警记录",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警记录"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alarmID": {
+                    "type": "integer",
+                    "title": "告警配置ID"
+                  },
+                  "timeRange": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "integer",
+                        "title": "开始时间",
+                        "description": "unix时间戳",
+                        "nullable": true
+                      },
+                      "end": {
+                        "type": "integer",
+                        "title": "结束时间",
+                        "description": "unix时间戳",
+                        "nullable": true
+                      }
+                    },
+                    "x-apifox-orders": ["start", "end"],
+                    "x-apifox-ignore-properties": []
+                  },
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "title": "页码",
+                        "type": "integer"
+                      },
+                      "size": {
+                        "title": "每页大小",
+                        "type": "integer"
+                      }
+                    },
+                    "x-apifox-orders": ["page", "size"],
+                    "required": ["page", "size"],
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": [
+                  "alarmID",
+                  "01GWH873VQJ6AMC0Z2Q21ZMS1D",
+                  "01GWH86WZA5T3XZAFS4RWRS1SA"
+                ],
+                "x-apifox-refs": {
+                  "01GWH86WZA5T3XZAFS4RWRS1SA": {
+                    "$ref": "#/components/schemas/page",
+                    "x-apifox-overrides": {}
+                  },
+                  "01GWH873VQJ6AMC0Z2Q21ZMS1D": {
+                    "$ref": "#/components/schemas/timeRange"
+                  }
+                },
+                "x-apifox-ignore-properties": ["timeRange", "page"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "title": "总数"
+                        },
+                        "num": {
+                          "type": "integer",
+                          "title": "返回的数量"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "title": "编号",
+                                "type": "integer"
+                              },
+                              "dealState": {
+                                "type": "integer",
+                                "title": "告警记录状态",
+                                "description": "1无告警 2告警中 3已处理"
+                              },
+                              "alarmID": {
+                                "title": "告警记录ID",
+                                "type": "integer"
+                              },
+                              "triggerType": {
+                                "title": "触发类型",
+                                "description": "设备触发1,其他2",
+                                "type": "integer"
+                              },
+                              "productID": {
+                                "type": "string",
+                                "title": "触发产品id"
+                              },
+                              "deviceName": {
+                                "type": "string",
+                                "title": "触发设备名称"
+                              },
+                              "sceneName": {
+                                "type": "string",
+                                "title": "场景名称"
+                              },
+                              "sceneID": {
+                                "title": "场景ID",
+                                "type": "integer"
+                              },
+                              "level": {
+                                "title": "告警配置级别",
+                                "description": "1提醒 2一般 3严重 4紧急 5超紧急",
+                                "type": "integer"
+                              },
+                              "lastAlarm": {
+                                "type": "string",
+                                "title": "最新告警时间"
+                              },
+                              "createdTime": {
+                                "type": "string",
+                                "title": "创建时间"
+                              }
+                            },
+                            "x-apifox-orders": [
+                              "id",
+                              "dealState",
+                              "alarmID",
+                              "triggerType",
+                              "productID",
+                              "deviceName",
+                              "sceneName",
+                              "sceneID",
+                              "level",
+                              "lastAlarm",
+                              "createdTime"
+                            ],
+                            "required": [
+                              "id",
+                              "sceneName",
+                              "deviceName",
+                              "productID",
+                              "triggerType",
+                              "alarmID",
+                              "lastAlarm",
+                              "level",
+                              "sceneID",
+                              "createdTime",
+                              "dealState"
+                            ],
+                            "x-apifox-ignore-properties": []
+                          },
+                          "title": "告警信息"
+                        }
+                      },
+                      "x-apifox-orders": ["total", "num", "list"],
+                      "required": ["total", "num", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GWH87ESTRRGAB0B8FAWJAC54", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GWH87ESTRRGAB0B8FAWJAC54": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-71152210-run"
+      }
+    },
+    "/api/v1/things/device/interact/action-read": {
+      "post": {
+        "summary": "获取调用设备行为的结果",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productID": {
+                    "type": "string",
+                    "title": "产品id"
+                  },
+                  "deviceName": {
+                    "type": "string",
+                    "title": "设备名"
+                  },
+                  "clientToken": {
+                    "type": "string",
+                    "title": "调用id"
+                  }
+                },
+                "required": ["productID", "deviceName", "clientToken"],
+                "x-apifox-orders": ["productID", "deviceName", "clientToken"],
+                "title": "",
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientToken": {
+                      "type": "string"
+                    },
+                    "outputParams": {
+                      "title": "输出参数",
+                      "description": "注意：此字段可能返回 null，表示取不到有效值。",
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "title": "返回状态"
+                    },
+                    "code": {
+                      "type": "string",
+                      "title": "设备返回状态码"
+                    }
+                  },
+                  "x-apifox-orders": ["clientToken", "outputParams", "status", "code"],
+                  "required": ["clientToken", "outputParams", "status", "code"],
+                  "title": "调用id",
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-71681738-run"
+      }
+    },
+    "/api/v1/things/device/interact/property-read": {
+      "post": {
+        "summary": "获取调用设备属性的结果",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备交互",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/设备/设备交互"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productID": {
+                    "type": "string",
+                    "title": "产品id"
+                  },
+                  "deviceName": {
+                    "type": "string",
+                    "title": "设备名"
+                  },
+                  "clientToken": {
+                    "type": "string",
+                    "title": "调用id"
+                  }
+                },
+                "x-apifox-orders": ["productID", "deviceName", "clientToken"],
+                "required": ["productID", "deviceName", "clientToken"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "title": "设备返回状态码"
+                    },
+                    "status": {
+                      "type": "string",
+                      "title": "返回状态"
+                    },
+                    "clientToken": {
+                      "type": "string",
+                      "title": "调用id"
+                    },
+                    "data": {
+                      "type": "string",
+                      "title": "返回信息"
+                    }
+                  },
+                  "x-apifox-orders": ["code", "status", "clientToken", "data"],
+                  "required": ["code", "status", "clientToken", "data"],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-71681913-run"
+      }
+    },
+    "/api/v1/things/device/info/multi-import": {
+      "post": {
+        "summary": "批量导入设备",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备管理",
+        "x-apifox-status": "tested",
+        "deprecated": false,
+        "description": "#### 前端处理逻辑建议：\n- UI text 显示 导入成功 设备数：total - len(errdata)\n- UI text 显示 导入失败 设备数：len(errdata)\n- UI table 显示 导入失败设备清单明细",
+        "tags": ["iThings-apisvr/物联网相关接口/设备/设备管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "csv文件",
+                    "example": "file://C:\\Users\\robot\\Documents\\Work\\Personal\\Avocation\\iThings\\Requirement\\230330 批量导入设备\\iThings-设备导入模板5r.csv",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "msg": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "title": "表格数据总行数"
+                        },
+                        "errdata": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "row": {
+                                "type": "integer",
+                                "title": "导入失败所在行"
+                              },
+                              "productName": {
+                                "type": "string"
+                              },
+                              "deviceName": {
+                                "type": "string"
+                              },
+                              "logLevel": {
+                                "type": "string"
+                              },
+                              "tags": {
+                                "type": "string"
+                              },
+                              "position": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              },
+                              "tips": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "row",
+                              "productName",
+                              "deviceName",
+                              "logLevel",
+                              "tags",
+                              "position",
+                              "address",
+                              "tips"
+                            ],
+                            "x-apifox-ignore-properties": [],
+                            "x-apifox-orders": [
+                              "row",
+                              "productName",
+                              "deviceName",
+                              "logLevel",
+                              "tags",
+                              "position",
+                              "address",
+                              "tips"
+                            ]
+                          },
+                          "title": "导入失败清单"
+                        },
+                        "headers": {
+                          "type": "object",
+                          "properties": {
+                            "row": {
+                              "type": "integer"
+                            },
+                            "productName": {
+                              "type": "string"
+                            },
+                            "deviceName": {
+                              "type": "string"
+                            },
+                            "logLevel": {
+                              "type": "string"
+                            },
+                            "tags": {
+                              "type": "string"
+                            },
+                            "position": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            },
+                            "tips": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "row",
+                            "productName",
+                            "deviceName",
+                            "logLevel",
+                            "tags",
+                            "position",
+                            "address",
+                            "tips"
+                          ],
+                          "x-apifox-ignore-properties": [],
+                          "x-apifox-orders": [
+                            "row",
+                            "productName",
+                            "deviceName",
+                            "logLevel",
+                            "tags",
+                            "position",
+                            "address",
+                            "tips"
+                          ]
+                        }
+                      },
+                      "required": ["total", "headers", "errdata"],
+                      "x-apifox-ignore-properties": [],
+                      "x-apifox-orders": ["total", "errdata", "headers"]
+                    }
+                  },
+                  "required": ["code", "msg", "data"],
+                  "x-apifox-ignore-properties": [],
+                  "x-apifox-orders": ["code", "msg", "data"]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例-但部分失败",
+                    "value": {
+                      "code": 200,
+                      "msg": "success",
+                      "data": {
+                        "total": 5,
+                        "headers": {
+                          "row": 0,
+                          "productName": "【必填】产品名称",
+                          "deviceName": "【必填】设备名称",
+                          "logLevel": "【选填】日志级别\n（关闭/错误/告警/信息/调试）",
+                          "tags": "【选填】设备标签\n（格式k1:v1;k2:v2;...）",
+                          "position": "【选填】设备位置百度坐标\n（格式:经,纬）",
+                          "address": "【选填】详细地址",
+                          "tips": "【提示】模板使用提示"
+                        },
+                        "errdata": [
+                          {
+                            "row": 1,
+                            "productName": "iThingsDemoProduct111",
+                            "deviceName": "iThingsDemoDevice111",
+                            "logLevel": "关闭",
+                            "tags": "color:红色;size:大型",
+                            "position": "116.442501,40.03446",
+                            "address": "深圳华强北001档",
+                            "tips": "行数据解析出错:请勿上传模板Demo数据"
+                          },
+                          {
+                            "row": 2,
+                            "productName": "iThingsDemoProduct222",
+                            "deviceName": "iThingsDemoDevice222",
+                            "logLevel": "错误",
+                            "tags": "color:黑色;size:小型;shape:长方形",
+                            "position": "111.442501,55.03446",
+                            "address": "深圳世界之窗埃菲尔铁塔",
+                            "tips": "行数据解析出错:请勿上传模板Demo数据"
+                          },
+                          {
+                            "row": 3,
+                            "productName": "test5",
+                            "deviceName": "fmy测试0411-3-1",
+                            "logLevel": "关闭",
+                            "tags": "color:红色;size:大型",
+                            "position": "116.442501,40.03446",
+                            "address": "深圳华强北001档",
+                            "tips": "创建设备出错:系统错误"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "异常",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "msg": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": [],
+                  "x-apifox-orders": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-72761000-run"
+      }
+    },
+    "/api/v1/things/product/custom/update": {
+      "post": {
+        "summary": "更新自定义信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/自定义",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/产品/自定义"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "x-apifox-overrides": {},
+                "type": "object",
+                "x-apifox-refs": {
+                  "01GXDDYZ04GQFFFEPB97SQBHBC": {
+                    "$ref": "#/components/schemas/ProductCustom"
+                  }
+                },
+                "x-apifox-orders": ["01GXDDYZ04GQFFFEPB97SQBHBC"],
+                "properties": {
+                  "productID": {
+                    "type": "string",
+                    "title": "产品id"
+                  },
+                  "transformScript": {
+                    "type": "string",
+                    "title": "协议转换脚本",
+                    "nullable": true
+                  },
+                  "scriptLang": {
+                    "type": "integer",
+                    "title": "脚本语言类型",
+                    "description": "1:JavaScript 2:lua 3:python",
+                    "nullable": true
+                  },
+                  "customTopic": {
+                    "type": "string",
+                    "title": "自定义topic数组",
+                    "nullable": true
+                  }
+                },
+                "required": ["productID"],
+                "x-apifox-ignore-properties": [
+                  "productID",
+                  "transformScript",
+                  "scriptLang",
+                  "customTopic"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccRet",
+                  "x-apifox-overrides": {}
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-73649457-run"
+      }
+    },
+    "/api/v1/things/product/custom/read": {
+      "post": {
+        "summary": "获取产品自定义信息",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/产品/自定义",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "物联网平台通过定义一种物的描述语言来描述物模型模块和功能，称为TSL（Thing Specification Language）",
+        "tags": ["iThings-apisvr/物联网相关接口/产品/自定义"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productID": {
+                    "type": "string",
+                    "title": "产品id"
+                  }
+                },
+                "x-apifox-orders": ["productID"],
+                "required": ["productID"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "productID": {
+                          "type": "string",
+                          "title": "产品id"
+                        },
+                        "transformScript": {
+                          "type": "string",
+                          "title": "协议转换脚本",
+                          "nullable": true
+                        },
+                        "scriptLang": {
+                          "type": "integer",
+                          "title": "脚本语言类型",
+                          "description": "1:JavaScript 2:lua 3:python",
+                          "nullable": true
+                        },
+                        "customTopic": {
+                          "type": "string",
+                          "title": "自定义topic数组",
+                          "nullable": true
+                        }
+                      },
+                      "x-apifox-orders": ["01GXDE6Y14FNC0BCXJ5THCRCBM"],
+                      "required": ["productID"],
+                      "x-apifox-refs": {
+                        "01GXDE6Y14FNC0BCXJ5THCRCBM": {
+                          "$ref": "#/components/schemas/ProductCustom"
+                        }
+                      },
+                      "x-apifox-ignore-properties": [
+                        "productID",
+                        "transformScript",
+                        "scriptLang",
+                        "customTopic"
+                      ]
+                    }
+                  },
+                  "x-apifox-orders": ["01GXDE6EHMD736YYW3ZB01RAYN", "data"],
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-refs": {
+                    "01GXDE6EHMD736YYW3ZB01RAYN": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-73650824-run"
+      }
+    },
+    "/api/v1/things/rule/alarm/info/read": {
+      "post": {
+        "summary": "获取告警详情",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/规则引擎/告警中心/告警管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                },
+                "x-apifox-orders": ["id"],
+                "x-apifox-refs": {},
+                "required": ["id"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/alarmInfo",
+                      "x-apifox-overrides": {
+                        "createdTime": null,
+                        "id": null,
+                        "dealState": null,
+                        "lastAlarm": null
+                      }
+                    }
+                  },
+                  "x-apifox-orders": ["01GVZQ3HK10FYJ39NQSZZ8P3A3", "data"],
+                  "x-apifox-refs": {
+                    "01GVZQ3HK10FYJ39NQSZZ8P3A3": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["data", "code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-73809379-run"
+      }
+    },
+    "/api/v1/system/auth/api/multiUpdate": {
+      "post": {
+        "summary": "更新API权限",
+        "x-apifox-folder": "iThings-apisvr/系统管理/权限管理",
+        "x-apifox-status": "integrating",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/权限管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleID": {
+                    "type": "integer",
+                    "description": "角色ID"
+                  },
+                  "list": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "string",
+                          "description": "接口路由"
+                        },
+                        "method": {
+                          "description": "接口请求方式（1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                          "type": "integer"
+                        }
+                      },
+                      "x-apifox-orders": ["route", "method"],
+                      "required": ["route", "method"],
+                      "x-apifox-ignore-properties": []
+                    },
+                    "description": "API列表数据"
+                  }
+                },
+                "x-apifox-orders": ["roleID", "list"],
+                "required": ["list", "roleID"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-ignore-properties": [],
+                  "x-apifox-orders": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-79314409-run"
+      }
+    },
+    "/api/v1/system/auth/api/index": {
+      "post": {
+        "summary": "获取API权限列表",
+        "x-apifox-folder": "iThings-apisvr/系统管理/权限管理",
+        "x-apifox-status": "integrating",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/系统管理/权限管理"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleID": {
+                    "type": "integer",
+                    "description": "角色ID"
+                  }
+                },
+                "x-apifox-orders": ["roleID"],
+                "required": ["roleID"],
+                "x-apifox-ignore-properties": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "title": "返回code",
+                      "type": "integer",
+                      "default": 200,
+                      "minimum": 200,
+                      "maximum": 100000,
+                      "nullable": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "title": "返回消息",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "API列表总数"
+                        },
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "route": {
+                                "type": "string",
+                                "description": "接口路由"
+                              },
+                              "method": {
+                                "description": "接口请求方式（1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）",
+                                "type": "integer"
+                              }
+                            },
+                            "x-apifox-orders": ["route", "method"],
+                            "required": ["route", "method"],
+                            "x-apifox-ignore-properties": []
+                          }
+                        }
+                      },
+                      "x-apifox-orders": ["total", "list"],
+                      "required": ["total", "list"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "x-apifox-orders": ["01GZK8H8EAZ84V1X0BJZX62CRW", "data"],
+                  "x-apifox-refs": {
+                    "01GZK8H8EAZ84V1X0BJZX62CRW": {
+                      "$ref": "#/components/schemas/SuccRet",
+                      "x-apifox-overrides": {}
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-ignore-properties": ["code", "msg"]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://www.apifox.cn/web/project/1449066/apis/api-79314629-run"
+      }
     }
   },
   "components": {
     "schemas": {
+      "ProductCustom": {
+        "type": "object",
+        "properties": {
+          "productID": {
+            "type": "string",
+            "title": "产品id"
+          },
+          "transformScript": {
+            "type": "string",
+            "title": "协议转换脚本",
+            "nullable": true
+          },
+          "scriptLang": {
+            "type": "integer",
+            "title": "脚本语言类型",
+            "description": "1:JavaScript 2:lua 3:python",
+            "nullable": true
+          },
+          "customTopic": {
+            "type": "string",
+            "title": "自定义topic数组",
+            "nullable": true
+          }
+        },
+        "title": "产品自定义信息",
+        "x-apifox-orders": ["productID", "transformScript", "scriptLang", "customTopic"],
+        "required": ["productID"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型"
+      },
+      "alarmLog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "desc": {
+            "type": "string",
+            "description": "描述"
+          },
+          "createdTime": {
+            "type": "integer"
+          },
+          "alarmRecordID": {
+            "type": "integer",
+            "description": "告警记录ID"
+          },
+          "serial": {
+            "type": "string",
+            "description": "告警流水"
+          },
+          "sceneName": {
+            "type": "string",
+            "description": "场景名称"
+          },
+          "sceneID": {
+            "type": "integer",
+            "description": "场景ID"
+          }
+        },
+        "title": "告警日志",
+        "x-apifox-orders": [
+          "id",
+          "desc",
+          "createdTime",
+          "alarmRecordID",
+          "serial",
+          "sceneName",
+          "sceneID"
+        ],
+        "required": [
+          "id",
+          "sceneName",
+          "serial",
+          "alarmRecordID",
+          "createdTime",
+          "desc",
+          "sceneID"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
+      },
+      "alarmInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "名称"
+          },
+          "name": {
+            "type": "string",
+            "title": "状态",
+            "description": "1启用 2禁用"
+          },
+          "state": {
+            "type": "integer"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "createdTime": {
+            "type": "integer"
+          },
+          "level": {
+            "type": "integer",
+            "title": "告警配置级别",
+            "description": "1提醒 2一般 3严重 4紧急 5超紧急"
+          }
+        },
+        "title": "告警信息",
+        "x-apifox-orders": ["id", "name", "state", "desc", "createdTime", "level"],
+        "required": ["desc", "state", "name", "level"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
+      },
+      "alarmDealRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "createdTime": {
+            "type": "integer"
+          },
+          "alarmRecordID": {
+            "type": "integer",
+            "title": "告警记录ID"
+          },
+          "result": {
+            "type": "string",
+            "title": "告警处理结果"
+          },
+          "type": {
+            "type": "integer",
+            "title": "告警处理类型",
+            "description": "1人工 2系统"
+          },
+          "alarmTime": {
+            "type": "integer",
+            "title": "最早告警时间"
+          }
+        },
+        "title": "告警处理记录",
+        "x-apifox-orders": ["id", "createdTime", "alarmRecordID", "result", "type", "alarmTime"],
+        "required": ["id", "createdTime", "alarmRecordID", "result", "type", "alarmTime"],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "iThings数据模型/ruleEngine/alarm"
+      },
+      "timeRange": {
+        "type": "object",
+        "properties": {
+          "timeRange": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "title": "开始时间",
+                "description": "unix时间戳",
+                "nullable": true
+              },
+              "end": {
+                "type": "integer",
+                "title": "结束时间",
+                "description": "unix时间戳",
+                "nullable": true
+              }
+            },
+            "x-apifox-orders": ["start", "end"],
+            "x-apifox-ignore-properties": []
+          }
+        },
+        "title": "时间范围",
+        "x-apifox-orders": ["timeRange"],
+        "x-apifox-ignore-properties": [],
+        "nullable": true,
+        "x-apifox-folder": "iThings数据模型"
+      },
       "scene": {
         "type": "object",
         "properties": {
@@ -10780,7 +12021,7 @@
           },
           "when": {
             "type": "string",
-            "description": "触发条件"
+            "title": "触发条件列表"
           },
           "then": {
             "type": "string",
@@ -11591,42 +12832,63 @@
         "type": "object",
         "properties": {
           "productID": {
-            "title": "产品id",
             "type": "string",
+            "title": "产品id",
             "description": "不可修改"
           },
           "deviceName": {
-            "title": "设备名称",
             "type": "string",
+            "title": "设备名称",
             "description": "不可修改"
           },
-          "createdTime": {
-            "title": "创建时间",
-            "type": "string"
-          },
           "secret": {
-            "title": "设备秘钥",
-            "type": "string"
+            "type": "string",
+            "title": "设备秘钥"
           },
-          "firstLogin": {
-            "title": "激活时间",
-            "type": "string"
+          "cert": {
+            "type": "string",
+            "title": "设备证书"
           },
-          "lastLogin": {
-            "title": "最后上线时间",
-            "type": "string"
+          "imei": {
+            "type": "string",
+            "title": "IMEI信息"
+          },
+          "mac": {
+            "type": "string",
+            "title": "MAC信息"
           },
           "version": {
-            "title": "固件版本",
-            "type": "string"
+            "type": "string",
+            "title": "固件版本"
           },
-          "logLevel": {
-            "title": "日志级别",
-            "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 ",
-            "type": "integer"
+          "hardInfo": {
+            "type": "string",
+            "title": "模组硬件型号"
+          },
+          "softInfo": {
+            "type": "string",
+            "title": "模组软件版本"
+          },
+          "position": {
+            "type": "object",
+            "properties": {
+              "longitude": {
+                "type": "number"
+              },
+              "latitude": {
+                "type": "number"
+              }
+            },
+            "required": ["longitude", "latitude"],
+            "x-apifox-orders": ["longitude", "latitude"],
+            "title": "定位（百度坐标）",
+            "x-apifox-ignore-properties": []
+          },
+          "address": {
+            "type": "string",
+            "title": "详细地址"
           },
           "tags": {
-            "title": "标签",
             "type": "array",
             "items": {
               "type": "object",
@@ -11638,20 +12900,36 @@
                   "type": "string"
                 }
               },
-              "x-apifox-orders": ["key", "value"],
               "required": ["key", "value"],
+              "x-apifox-orders": ["key", "value"],
               "x-apifox-ignore-properties": []
             },
-            "nullable": true
+            "title": "标签"
           },
           "isOnline": {
+            "type": "integer",
             "title": "在线状态",
-            "description": "1离线 2在线 只读",
-            "type": "integer"
+            "description": "1离线 2在线 只读"
+          },
+          "firstLogin": {
+            "type": "string",
+            "title": "激活时间"
+          },
+          "lastLogin": {
+            "type": "string",
+            "title": "最后上线时间"
+          },
+          "logLevel": {
+            "type": "integer",
+            "title": "日志级别",
+            "description": "1)关闭 2)错误 3)告警 4)信息 5)调试 "
+          },
+          "createdTime": {
+            "type": "string",
+            "title": "创建时间"
           }
         },
-        "required": ["productID", "deviceName"],
-        "x-apifox-orders": [
+        "required": [
           "productID",
           "deviceName",
           "createdTime",
@@ -11660,11 +12938,37 @@
           "lastLogin",
           "version",
           "logLevel",
+          "cert",
           "tags",
-          "isOnline"
+          "isOnline",
+          "address",
+          "position",
+          "imei",
+          "mac",
+          "hardInfo",
+          "softInfo"
+        ],
+        "x-apifox-orders": [
+          "productID",
+          "deviceName",
+          "secret",
+          "cert",
+          "imei",
+          "mac",
+          "version",
+          "hardInfo",
+          "softInfo",
+          "position",
+          "address",
+          "tags",
+          "isOnline",
+          "firstLogin",
+          "lastLogin",
+          "logLevel",
+          "createdTime"
         ],
         "x-apifox-ignore-properties": [],
-        "x-apifox-folder": "iThings数据模型"
+        "x-apifox-folder": "iThings数据模型/设备"
       },
       "ProductSchemaInfo": {
         "type": "object",
@@ -11863,5 +13167,6 @@
         "x-apifox-folder": "iThings数据模型"
       }
     }
-  }
+  },
+  "servers": []
 }
