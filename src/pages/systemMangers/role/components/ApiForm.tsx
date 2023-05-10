@@ -15,20 +15,22 @@ import type { ApiListType } from '../../api';
 const FormItem = Form.Item;
 
 export type UpdateListType = {
-  list: { route: string; method: number; onlyId?: string }[];
+  list: { route?: string; method?: number; onlyId?: string };
 };
 
 const ApiForm: React.FC<{
   drawerVisible: boolean;
-  roleID: string;
+  roleID: number;
   onSubmit: <T extends Function, K>(api: T, body: K) => void;
 }> = ({ drawerVisible, roleID, onSubmit }) => {
+  console.log(roleID);
+
   const [form] = Form.useForm();
 
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
-  const [checkedNodes, setCheckedNodes] = useState<ApiListType[]>();
+  const [checkedNodes, setCheckedNodes] = useState<UpdateListType['list'][]>();
 
   type UpdateProp = typeof postApiV1SystemAuthApiMultiUpdate;
 
@@ -65,13 +67,13 @@ const ApiForm: React.FC<{
     return apiTree;
   };
 
-  useRequest(postApiV1SystemAuthApiIndex, {
-    defaultParams: [{ roleID: Number(roleID) }],
-    refreshDeps: [drawerVisible],
+  useRequest(() => postApiV1SystemAuthApiIndex({ roleID }), {
+    refreshDeps: [drawerVisible, roleID],
     onSuccess: (res) => {
       const keyList = res?.data?.list;
       const checked: React.Key[] = [];
       if (keyList?.length) {
+        setCheckedNodes(keyList);
         keyList.forEach((item) => {
           checked.push(
             'p:' + item.route + 'm:' + METHOD_VALUE[item?.method as number]?.text || 'POST',
@@ -87,7 +89,7 @@ const ApiForm: React.FC<{
 
   useRequest(postApiV1SystemApiIndex, {
     defaultParams: [{}],
-    refreshDeps: [drawerVisible],
+    refreshDeps: [drawerVisible, roleID],
     onSuccess: (res) => {
       const flatTree = buildApiTree(
         (res?.data?.list as ApiListType[])?.map((list) => ({
@@ -110,23 +112,25 @@ const ApiForm: React.FC<{
   const onCheck: TreeProps['onCheck'] = useCallback((checked, info) => {
     const { checkedNodes: nodes } = info;
     setCheckedKeys(checked);
-    setCheckedNodes(nodes.filter((node: ApiListType) => node.route));
-  }, []);
-
-  const handleSubmit = () => {
-    form.validateFields().then(() => {
-      const casbinInfos: UpdateListType['list'] = [];
-      if (checkedNodes?.length) {
-        checkedNodes.forEach((item) => {
+    const casbinInfos: UpdateListType['list'][] = [];
+    if (nodes?.length) {
+      nodes
+        .filter((node: ApiListType) => node.route)
+        .forEach((item: any) => {
           const casbinInfo = {
             route: item?.path || item?.route,
             method: item?.method,
           };
           casbinInfos.push(casbinInfo);
         });
-      }
-      const body = { list: casbinInfos };
-      onSubmit<UpdateProp, UpdateListType>(postApiV1SystemAuthApiMultiUpdate, body);
+    }
+    setCheckedNodes(casbinInfos);
+  }, []);
+
+  const handleSubmit = () => {
+    form.validateFields().then(() => {
+      const body = { list: checkedNodes };
+      onSubmit<UpdateProp, typeof body>(postApiV1SystemAuthApiMultiUpdate, body);
     });
   };
 
