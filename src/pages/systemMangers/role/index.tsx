@@ -26,7 +26,7 @@ const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [currentData, setCurrentData] = useState<RoleListItem>();
-  const [roleID, setroleID] = useState(0);
+  const [roleID, setRoleID] = useState(0);
   type QueryProp = typeof postApiV1SystemRoleIndex;
 
   // 删除操作
@@ -88,7 +88,7 @@ const RoleList: React.FC = () => {
             onClick={() => {
               setDrawerVisible(true);
               setCurrentData(record);
-              setroleID(Number(record?.id));
+              setRoleID(Number(record?.id));
             }}
           >
             设置权限

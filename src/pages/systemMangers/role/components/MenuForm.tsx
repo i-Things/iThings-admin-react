@@ -57,8 +57,6 @@ const MenuForm: React.FC<{
   }, []);
 
   const onCheck: TreeProps['onCheck'] = useCallback((checked, info) => {
-    console.log(checked, info);
-
     const { halfCheckedKeys: half } = info;
     if (Array.isArray(checked) && 'halfCheckedKeys' in info) {
       setCheckedKeys(checked.concat());
