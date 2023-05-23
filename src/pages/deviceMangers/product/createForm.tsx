@@ -15,7 +15,7 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { Button, message } from 'antd';
+import { Button, message, Switch } from 'antd';
 import React, { useState } from 'react';
 
 interface Props {
@@ -24,6 +24,7 @@ interface Props {
 
 export const CreateForm: React.FC<Props> = ({ onCommit }) => {
   const [createVisible, setCreateVisible] = useState(false);
+  const [inputProductID, setInputProductID] = useState(false);
   const openCreateModal = async () => {
     setCreateVisible(true);
   };
@@ -84,6 +85,43 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
           },
         ]}
       />
+      <Switch
+        checked={inputProductID}
+        checkedChildren="产品id自动生成"
+        unCheckedChildren="自定义产品id"
+        onChange={() => {
+          setInputProductID(!inputProductID);
+        }}
+      />
+      {inputProductID ? (
+        ''
+      ) : (
+        <ProFormText
+          name="productID"
+          width="md"
+          label="产品id"
+          placeholder="请输入产品id"
+          rules={[
+            {
+              required: true,
+              message: '必填项！',
+            },
+            {
+              min: 11,
+              message: '不能少于11个字符',
+            },
+            {
+              max: 11,
+              message: '不能超过11个字符',
+            },
+            {
+              pattern: /^[a-zA-Z0-9]+$/,
+              message: '只能有数字和字母',
+            },
+          ]}
+        />
+      )}
+
       <ProFormRadio.Group
         width="md"
         name="deviceType"
