@@ -25,7 +25,7 @@ const CardItem: React.FC<ruleSceneProps> = (props) => {
         }}
       >
         <div className={styles['top-icon-wrap']}>
-          <div className={styles['top-icon']}>{TriggerWayType[data.triggerType]}</div>
+          <div className={styles['top-icon']}>{TriggerWayType[data.trigger]}</div>
         </div>
 
         <div className={styles['box-content']}>

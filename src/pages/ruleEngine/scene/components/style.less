@@ -91,3 +91,54 @@
     }
   }
 }
+
+.trigger-type-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  width: 100%;
+
+
+  .active {
+    border-color: #10239e !important;
+  }
+
+  .trigger-type-item-wrap {
+    display: flex;
+    width: 204px;
+    padding: 16px;
+    border: 1px solid #e0e4e8;
+
+    &:hover {
+      .trigger-type-item-img {
+        opacity: 1;
+      }
+    }
+
+    .trigger-type-item-content {
+      display: flex;
+      flex-direction: column;
+
+      .trigger-type-item-title {
+        margin-bottom: 8px;
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      .trigger-type-item-desc {
+        color: rgb(0 0 0 / 35%);
+        font-size: 12px;
+      }
+    }
+
+    .trigger-type-item-img {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      margin: 0 !important;
+      opacity: .6;
+
+
+    }
+  }
+}

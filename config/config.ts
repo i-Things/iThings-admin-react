@@ -47,7 +47,7 @@ export default defineConfig({
       schemaPath: join(__dirname, 'iThingsapi.json'),
       mock: false,
       projectName: 'iThingsapi',
-    },
+    }
   ],
   mfsu: {},
   chainWebpack: (config: any, { env }) => {
