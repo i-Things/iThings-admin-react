@@ -5,22 +5,22 @@ import {
   postApiV1ThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
 import {
-  createAsyncFormActions,
   Field,
   FormEffectHooks,
   FormMegaLayout,
   FormPath,
   FormSpy,
   SchemaForm,
+  createAsyncFormActions,
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
-  FormItemGrid,
-  FormLayout,
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
   Switch as FSwitch,
+  FormItemGrid,
+  FormLayout,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
@@ -28,13 +28,13 @@ import { AutoComplete, Modal, Radio } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import type { EditFormType } from './const';
 import {
+  _dataTypeList,
+  _yuansuleixingList,
   dataTypeList,
   eventTypeList,
   rwTypeList,
   typeBtnList,
   yuansuleixingList,
-  _dataTypeList,
-  _yuansuleixingList,
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -90,6 +90,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         item.dataType.step = item.dataType.step + '';
         item.dataType.unit = item.dataType.unit + '';
       }
+
+      item.dataType.max = item.dataType.max + '';
+      item.dataType.min = item.dataType.min + '';
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
