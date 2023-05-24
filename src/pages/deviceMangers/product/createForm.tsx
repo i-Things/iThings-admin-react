@@ -87,19 +87,18 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
       />
       <Switch
         checked={inputProductID}
-        checkedChildren="产品id自动生成"
-        unCheckedChildren="自定义产品id"
+        checkedChildren="自定义产品id"
+        unCheckedChildren="产品id自动生成"
         onChange={() => {
           setInputProductID(!inputProductID);
         }}
       />
       {inputProductID ? (
-        ''
-      ) : (
         <ProFormText
           name="productID"
           width="md"
           label="产品id"
+          tooltip="长度必须为11个字符,且只能包含数字及大小写字母"
           placeholder="请输入产品id"
           rules={[
             {
@@ -120,6 +119,8 @@ export const CreateForm: React.FC<Props> = ({ onCommit }) => {
             },
           ]}
         />
+      ) : (
+        ''
       )}
 
       <ProFormRadio.Group
