@@ -6,6 +6,7 @@ import request from '@/utils/request';
 export async function postApiV1ThingsProductInfoCreate(
   body: {
     productName?: string;
+    productID?: string;
     /** 1:其他,2:wi-fi,3:2G/3G/4G,4:5G,5:BLE,6:LoRaWAN */
     netType?: number;
     /** 1:自定义,2:数据模板 */
