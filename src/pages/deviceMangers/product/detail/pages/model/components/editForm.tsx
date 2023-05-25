@@ -96,7 +96,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum??.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -125,7 +125,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum??.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -157,7 +157,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum??.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -188,7 +188,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum??.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map((item: any) => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -224,7 +224,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     }
 
     const _mapping = {};
-    dataDefinitionForenum??.map((item: any) => {
+    dataDefinitionForenum?.map((item: any) => {
       const key = item.label;
       const value = item.value;
       _mapping[key] = value;
@@ -317,7 +317,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const _affordance = JSON.parse(affordance);
     const mode = _affordance?.mode;
     const specs = _affordance?.define?.specs;
-    specs??.map((item) => {
+    specs?.map((item) => {
       item.type = item.dataType.type;
       const numericalRange = {
         max: item.dataType.max,
