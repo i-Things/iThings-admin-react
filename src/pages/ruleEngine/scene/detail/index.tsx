@@ -1,7 +1,7 @@
+import { isCorn } from '@/utils/utils';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Collapse, Form, Input, InputNumber, Modal, Select, Space } from 'antd';
-import { isValidCron } from 'cron-validator';
 import { useCallback, useRef, useState } from 'react';
 import ActionCard from '../components/ActionCard';
 import ActionType, { ActionWayType } from '../components/ActionType';
@@ -83,22 +83,7 @@ const DetailPage = () => {
                 rules={[{
                     validateTrigger: 'onBlur',
                     validator: (rule, value) => {
-                        if (!value) return Promise.reject('请输入 cron 表达式');
-                        console.log('value', value);
-
-                        const v0 = (value).replace(/(^\s*)|(\s*$)/g, "").split(" ")
-                        const v = v0.filter(function (e: any) {
-                            return e && e.trim();
-                        });
-                        if (v.length !== 6) return Promise.reject('无效 Cron 表达式');
-                        return isValidCron(value, {
-                            alias: true,
-                            seconds: true,
-                            allowBlankDay: true,
-                            allowSevenAsSunday: true,
-                        })
-                            ? Promise.resolve('有效 Cron 表达式')
-                            : Promise.reject('无效 Cron 表达式');
+                        return isCorn(value)
                     },
                 }]}
             >
@@ -292,58 +277,58 @@ const DetailPage = () => {
                         </div>
                         <div className={style['actions-terms-options-wrap']}>
 
-                        <div className={style['actions-terms-options']}>
-                            <WhenItem />
-                        </div>
+                            <div className={style['actions-terms-options']}>
+                                <WhenItem />
+                            </div>
 
-                        <div className={style['actions-terms-options']}>
-                            <Collapse defaultActiveKey={['1']} onChange={onChange} style={{ width: '100%' }}>
-                                <Panel header="串行(按顺序依次执行动作，适用于基于动作输出参数，判断是否执行后续动作的场景)" key="1">
-                                    <Form
-                                        name="dynamic_form_nest_item"
-                                        onFinish={(values) => {
-                                            console.log('values', values);
-                                        }}
-                                        form={actionForm}
-                                        style={{ maxWidth: 600 }}
-                                        autoComplete="off"
-                                    >
-                                        <Form.List name="users">
-                                            {(fields, { add, remove }) => (
-                                                <>
-                                                    {fields.map((item: any, index: number, ...restField) => (
-                                                        <Space key={item.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                                            <Form.Item
-                                                                {...restField}
-                                                                name={[item.name, `first`]}
-                                                                rules={[{ required: true, message: 'Missing first name' }]}
-                                                            >
-                                                                <ActionCard key={item.name} handleActionCardCallBack={handleActionCardCallBack} index={index} />
-                                                            </Form.Item>
-                                                            <MinusCircleOutlined onClick={() => remove(item.name)} />
-                                                        </Space>
-                                                    ))}
-                                                    <Form.Item>
-                                                        <Button type="dashed" onClick={() => {
-                                                            handleOpenAddTypeModal()
-                                                            // add()
-                                                        }
-                                                        } block icon={<PlusOutlined />}>
-                                                            Add field
-                                                        </Button>
-                                                    </Form.Item>
-                                                </>
-                                            )}
-                                        </Form.List>
-                                        <Form.Item>
-                                            <Button type="primary" htmlType="submit">
-                                                Submit
-                                            </Button>
-                                        </Form.Item>
-                                    </Form>
-                                </Panel>
-                            </Collapse>
-                        </div>
+                            <div className={style['actions-terms-options']}>
+                                <Collapse defaultActiveKey={['1']} onChange={onChange} style={{ width: '100%' }}>
+                                    <Panel header="串行(按顺序依次执行动作，适用于基于动作输出参数，判断是否执行后续动作的场景)" key="1">
+                                        <Form
+                                            name="dynamic_form_nest_item"
+                                            onFinish={(values) => {
+                                                console.log('values', values);
+                                            }}
+                                            form={actionForm}
+                                            style={{ maxWidth: 600 }}
+                                            autoComplete="off"
+                                        >
+                                            <Form.List name="users">
+                                                {(fields, { add, remove }) => (
+                                                    <>
+                                                        {fields.map((item: any, index: number, ...restField) => (
+                                                            <Space key={item.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                                                <Form.Item
+                                                                    {...restField}
+                                                                    name={[item.name, `first`]}
+                                                                    rules={[{ required: true, message: 'Missing first name' }]}
+                                                                >
+                                                                    <ActionCard key={item.name} handleActionCardCallBack={handleActionCardCallBack} index={index} />
+                                                                </Form.Item>
+                                                                <MinusCircleOutlined onClick={() => remove(item.name)} />
+                                                            </Space>
+                                                        ))}
+                                                        <Form.Item>
+                                                            <Button type="dashed" onClick={() => {
+                                                                handleOpenAddTypeModal()
+                                                                // add()
+                                                            }
+                                                            } block icon={<PlusOutlined />}>
+                                                                Add field
+                                                            </Button>
+                                                        </Form.Item>
+                                                    </>
+                                                )}
+                                            </Form.List>
+                                            <Form.Item>
+                                                <Button type="primary" htmlType="submit">
+                                                    Submit
+                                                </Button>
+                                            </Form.Item>
+                                        </Form>
+                                    </Panel>
+                                </Collapse>
+                            </div>
                         </div>
                     </div>
                 </div>

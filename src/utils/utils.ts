@@ -3,6 +3,7 @@ import type {
   GroupDeviceItem,
 } from '@/pages/deviceMangers/group/types';
 import type { MenuListItem } from '@/pages/systemMangers/menu/types';
+import { isValidCron } from 'cron-validator';
 import type { DEVICE_INFO } from './const';
 import { GUIDKEY, TOKENKEY } from './const';
 
@@ -196,4 +197,28 @@ export function downloadFunction(content: string, filename = 'tsl.json') {
   document.body.appendChild(eleLink);
   eleLink.click();
   document.body.removeChild(eleLink);
+}
+/**
+ * 判断是否为合法的 corn 表达式
+ *
+ * @param {string} value
+ * @return {*} 
+ */
+export const isCorn = (value: string) => {
+  if (!value) return Promise.reject('请输入 cron 表达式');
+  console.log('value', value);
+
+  const v0 = (value).replace(/(^\s*)|(\s*$)/g, "").split(" ")
+  const v = v0.filter(function (e: any) {
+      return e && e.trim();
+  });
+  if (v.length !== 6) return Promise.reject('无效 Cron 表达式');
+  return isValidCron(value, {
+      alias: true,
+      seconds: true,
+      allowBlankDay: true,
+      allowSevenAsSunday: true,
+  })
+      ? Promise.resolve('有效 Cron 表达式')
+      : Promise.reject('无效 Cron 表达式');
 }
