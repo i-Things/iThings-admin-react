@@ -31,6 +31,7 @@ type queryParam = {
   current: number;
   productID?: string;
   deviceName?: string;
+  deviceAlias?: string;
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: Tags[];
 };
@@ -103,6 +104,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       },
       productID: productID,
       deviceName: params.deviceName,
+      deviceAlias: params.deviceAlias,
       tags: tags,
     };
     const res = await postApiV1ThingsDeviceInfoIndex(body);
@@ -203,6 +205,10 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           {text}
         </a>,
       ],
+    },
+    {
+      title: '设备别名',
+      dataIndex: 'deviceAlias',
     },
     {
       title: '所属产品名称',
