@@ -39,6 +39,7 @@ export async function postApiV1ThingsDeviceInfoCreate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    deviceAlias: string;
     cert: string;
     imei: string;
     mac: string;
@@ -98,6 +99,7 @@ export async function postApiV1ThingsDeviceInfoIndex(
     /** 为空时获取所有产品 */
     productID?: string;
     deviceName?: string;
+    deviceAlias?: string;
     /** 非模糊查询 为tag的名,value为tag对应的值 */
     tags?: { key?: string; value?: string }[];
     /** 过滤条件:距离坐标点固定范围内的设备 单位：米 */
@@ -114,6 +116,7 @@ export async function postApiV1ThingsDeviceInfoIndex(
       list?: {
         productID?: string;
         deviceName?: string;
+        deviceAlias?: string;
         createdTime?: string;
         secret?: string;
         firstLogin?: string;
@@ -227,6 +230,7 @@ export async function postApiV1ThingsDeviceInfoUpdate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    deviceAlias: string;
     cert: string;
     imei: string;
     mac: string;

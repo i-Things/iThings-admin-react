@@ -6,6 +6,7 @@ export interface TagsInfo {
 export interface DeviceInfo {
   productID: string;
   deviceName: string;
+  deviceAlias: string;
   createdTime: string;
   secret: string;
   imei: string;
