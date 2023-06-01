@@ -160,7 +160,7 @@ const ApiForm: React.FC<{
 
   return (
     <Form form={form} onFinish={handleSubmit}>
-      <Spin spinning={!checkedKeys.length}>
+      <Spin spinning={!treeData.length}>
         <Form.Item wrapperCol={{ offset: 20, span: 10 }}>
           <Button type="primary" htmlType="submit">
             保存
