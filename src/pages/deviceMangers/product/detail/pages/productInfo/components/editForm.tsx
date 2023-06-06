@@ -1,3 +1,4 @@
+import UploadFile from '@/components/UploadFile';
 import { postApiV1ThingsProductInfoUpdate } from '@/services/iThingsapi/chanpinguanli';
 import type { PRODUCT_INFO } from '@/utils/const';
 import {
@@ -25,6 +26,7 @@ interface Props {
 }
 
 export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
+  console.log('EditForm:', productInfo);
   const [createVisible, setCreateVisible] = useState(false);
   const formRef = useRef<ProFormInstance<PRODUCT_INFO>>();
   const openCreateModal = async () => {
@@ -33,11 +35,23 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
   useEffect(() => {
     formRef.current?.setFieldsValue(productInfo);
   }, [productInfo, createVisible]);
+
+  const uploadFileDataRef = useRef({
+    productImg: '',
+    isUpdateProductImg: false,
+  });
+  const getUploadFileData = (path: string) => {
+    uploadFileDataRef.current.productImg = path;
+    uploadFileDataRef.current.isUpdateProductImg = true;
+  };
+
   const formCommit = async (value: PRODUCT_INFO) => {
     const body = {
+      ...uploadFileDataRef.current,
       ...value,
       productID: productInfo?.productID ?? '',
     };
+    console.log('formCommit:', body);
     return postApiV1ThingsProductInfoUpdate(body)
       .then((res) => {
         setCreateVisible(false);
@@ -55,6 +69,7 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
     labelCol: { span: 7 },
     wrapperCol: { span: 32 },
   };
+
   return (
     <ModalForm<PRODUCT_INFO>
       {...formItemLayout}
@@ -93,6 +108,14 @@ export const EditForm: React.FC<Props> = ({ productInfo, onChange }) => {
           },
         ]}
       />
+      <UploadFile
+        label="产品图片"
+        accept="image/*"
+        filePathPrefix="123"
+        scene="productImg"
+        business="productManage"
+        getUploadFileData={getUploadFileData}
+      ></UploadFile>
       <ProFormRadio.Group
         width="md"
         name="deviceType"

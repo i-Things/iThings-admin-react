@@ -5,8 +5,10 @@ import request from '@/utils/request';
 /** 新增产品 POST /api/v1/things/product/info/create */
 export async function postApiV1ThingsProductInfoCreate(
   body: {
+    productID: string;
     productName?: string;
-    productID?: string;
+    /** 只有这个参数为true的时候才会更新产品图片,传参为产品图片的file path */
+    isUpdateProductImg?: boolean;
     /** 1:其他,2:wi-fi,3:2G/3G/4G,4:5G,5:BLE,6:LoRaWAN */
     netType?: number;
     /** 1:自定义,2:数据模板 */
@@ -19,7 +21,11 @@ export async function postApiV1ThingsProductInfoCreate(
     autoRegister?: number;
     categoryID?: number;
     desc?: string;
+    createdTime?: string;
+    devStatus?: number;
     tags?: { key?: string; value?: string }[];
+    /** 文件上传接口返回的dir */
+    productImg?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -67,6 +73,8 @@ export async function postApiV1ThingsProductInfoIndex(
       list?: {
         productID?: string;
         productName?: string;
+        productImg?: string;
+        isUpdateProductImg?: boolean;
         netType?: number;
         dataProto?: number;
         deviceType?: number;
@@ -76,7 +84,7 @@ export async function postApiV1ThingsProductInfoIndex(
         desc?: string;
         createdTime?: string;
         devStatus?: number;
-        tags?: API.tag;
+        tags?: API.tagList;
       }[];
       total?: number;
       num?: number;
@@ -104,6 +112,8 @@ export async function postApiV1ThingsProductInfoRead(
     data: {
       productID?: string;
       productName?: string;
+      productImg?: string;
+      isUpdateProductImg?: boolean;
       netType?: number;
       dataProto?: number;
       deviceType?: number;
@@ -132,6 +142,9 @@ export async function postApiV1ThingsProductInfoUpdate(
   body: {
     productID: string;
     productName?: string;
+    productImg?: string;
+    /** 只有这个参数为true的时候才会更新产品图片,传参为产品图片的file path */
+    isUpdateProductImg?: boolean;
     /** 1:其他,2:wi-fi,3:2G/3G/4G,4:5G,5:BLE,6:LoRaWAN */
     netType?: number;
     /** 1:自定义,2:数据模板 */
@@ -144,6 +157,8 @@ export async function postApiV1ThingsProductInfoUpdate(
     autoRegister?: number;
     categoryID?: number;
     desc?: string;
+    createdTime?: string;
+    devStatus?: number;
     tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },
