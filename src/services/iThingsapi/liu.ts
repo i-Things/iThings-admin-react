@@ -28,6 +28,11 @@ export async function postApiV1ThingsRuleFlowInfoCreate(
 export async function postApiV1ThingsRuleFlowInfo__openAPI__delete(
   body: {
     ruleID: string;
+    ruleName?: string;
+    /** 1:是 2:否 */
+    isDisabled?: number;
+    /** markdown格式 */
+    desc?: string;
   },
   options?: { [key: string]: any },
 ) {

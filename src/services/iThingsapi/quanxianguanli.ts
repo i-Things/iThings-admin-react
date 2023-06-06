@@ -29,7 +29,6 @@ export async function postApiV1SystemAuthApiMultiUpdate(
   body: {
     /** 角色ID */
     roleID: number;
-    /** API列表数据 */
     list: { route?: string; method?: number }[];
   },
   options?: { [key: string]: any },

@@ -1,4 +1,4 @@
-import { postApiV1SystemCommonConfig } from '@/services/iThingsapi/xitongpeizhi';
+import { postApiV1SystemCommonConfig } from '@/services/iThingsapi/tongyonggongneng';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { history } from '@umijs/max';
 import {
