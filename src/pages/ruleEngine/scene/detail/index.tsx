@@ -1,12 +1,17 @@
-import { isCorn } from '@/utils/utils';
+/* eslint-disable @typescript-eslint/no-shadow */
+import { postApiV1ThingsRuleSceneInfoCreate, postApiV1ThingsRuleSceneInfoRead, postApiV1ThingsRuleSceneInfoUpdate } from '@/services/iThingsapi/changjingliandong';
+import { getLocalStoragByKey, isCorn, setLocalStorage } from '@/utils/utils';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
-import { Button, Card, Collapse, Form, Input, InputNumber, Modal, Select, Space } from 'antd';
+import { Button, Card, Collapse, Form, Input, InputNumber, Modal, Select, Space, message } from 'antd';
 import { useCallback, useRef, useState } from 'react';
 import ActionCard from '../components/ActionCard';
 import ActionType, { ActionWayType } from '../components/ActionType';
 import WhenItem from '../components/WhenItem';
-import './style.less';
+// import './style.less';
+import { useSearchParams } from '@umijs/max';
+import { useMount, useRequest } from 'ahooks';
+import { history } from 'umi';
 import style from './style.less';
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -17,8 +22,19 @@ export type BoxItemType = {
 const DetailPage = () => {
     const [timeTrigetModalOpen, setTimeTrigetModalOpen] = useState(false)
     const [actionModalOpen, setActionModalOpen] = useState(false)
-    const [cron, setCron] = useState('')
+    const [cron, setCron] = useState<string | undefined>(undefined)
+    const [desc, setDesc] = useState<string | undefined>(undefined)
     const [form] = Form.useForm()
+    const [searchParams] = useSearchParams();
+
+    const currentId = useRef<number | null>(null)
+    const WhenItemRef = useRef()
+
+    // then 组件的 state 
+    const [then, setThen] = useState()
+
+    // when 组件的 state 
+    const [when, setWhten] = useState()
     // 消息延迟
     const [delayForm] = Form.useForm()
     const [delayModalOpen, setDelayModalOpen] = useState(false)
@@ -26,7 +42,7 @@ const DetailPage = () => {
     // 类型弹窗
     const [typeForm] = Form.useForm()
 
-    const [actionForm] = Form.useForm();
+    const [thenForm] = Form.useForm();
 
     // 打开弹窗
     const handleTimeClick = () => {
@@ -108,11 +124,34 @@ const DetailPage = () => {
         }
     }, [currentRecord?.current?.index])
 
+    const setStateFormValue = (values: any) => {
+        console.log('设置state', values)
+        setThen(values)
+    }
+
+    const convertedFormValue = (values: any) => {
+        console.log('values', values)
+        const params: any[] = []
+        values?.then?.map((item) => {
+            params.push({ executor: values?.executor, delay: item?.thenInfo?.property?.delay })
+        })
+
+        return params
+    }
+    const getFormValue = () => {
+        const formValue = thenForm.getFieldsValue()
+        console.log('formValue', formValue);
+        const values = convertedFormValue(formValue)
+        setStateFormValue(values)
+    }
 
     const handleOnClose = () => {
+        delayForm.resetFields()
         // 关闭弹窗
         setActionModalOpen(false)
         setDelayModalOpen(false)
+        // 获取数据
+        getFormValue()
     }
 
     const handleDelayOK = () => {
@@ -121,9 +160,9 @@ const DetailPage = () => {
             .then((values) => {
                 const value = typeForm.getFieldsValue()
                 // 取出原来的 
-                const originFieldValue = actionForm.getFieldValue('users') ?? []
+                const originFieldValue = thenForm.getFieldValue('then') ?? []
                 const info = {
-                    type: value.actionType ?? currentRecord?.current?.type,
+                    type: value.actionType ?? currentRecord?.current?.type ?? '延迟执行',
                     property: {
                         delay: values.delay
                     }
@@ -136,12 +175,12 @@ const DetailPage = () => {
                 // 修改
                 if (currentRecord?.current?.index || currentRecord?.current?.index === 0) {
 
-                    originFieldValue[currentRecord?.current?.index] = { first: info }
+                    originFieldValue[currentRecord?.current?.index] = { thenInfo: info }
                 } else {
                     // TODO：新增一条数据
-                    originFieldValue.push({ first: info })
+                    originFieldValue.push({ thenInfo: info })
                 }
-                actionForm.setFieldValue('users', [...originFieldValue])
+                thenForm.setFieldValue('then', [...originFieldValue])
 
                 console.log('originFieldValue', originFieldValue);
 
@@ -151,6 +190,89 @@ const DetailPage = () => {
                 console.log('Validate Failed:', info);
             });
     }
+
+    // const setWhen = (values) => {
+    // when: [{
+    //     columnTime: {
+    //         corn: '',
+    //         type: cron
+    //     },
+    //     columnType: 'sysTime',
+    //     netCondition: 'and'
+    // }]
+
+    // }
+
+    const covertThen = (values) => {
+        const _then = JSON.parse(values)
+
+        console.log('_then11', _then)
+
+        const newThen = []
+
+        _then.map((item, index) => {
+            newThen.push({
+                thenInfo: { type: '延迟执行', property: item }
+            })
+            currentRecord.current = {
+                index: index,
+                type: '延迟执行'
+            }
+        })
+
+        console.log('newThen', newThen);
+
+        thenForm.setFieldValue('executor', 'delay')
+        thenForm.setFieldValue('then', newThen)
+    }
+
+    const { data: sceneRecord, loading, run } = useRequest(
+        async () => {
+            const res = await postApiV1ThingsRuleSceneInfoRead({
+                id: currentId?.current
+            });
+            return res.data;
+        },
+        {
+            manual: true,
+            refreshDeps: [currentId?.current],
+            onSuccess: (value) => {
+                console.log('value', value);
+
+                const { desc, name, id, status, then, when, trigger, triggerType } = value
+
+                setLocalStorage('createScene', {
+                    name, id, status, triggerType
+                })
+
+
+                // 
+                const _cron = JSON.parse(trigger)?.timer?.cron
+                console.log('when执行完毕')
+
+                // 转化 when 
+                WhenItemRef.current.setFormValue(JSON.parse(when))
+                // 转化 then 
+                covertThen(then)
+                setCron(_cron)
+                setDesc(desc)
+            },
+            onError: (error) => {
+                message.error('获取规则错误:' + error.message);
+            }
+        }
+    )
+
+    // 初始化时
+    useMount(() => {
+        const id = searchParams.get('id')
+        if (id) {
+            currentId.current = Number(id)
+            run()
+        }
+
+        console.log('id', id);
+    })
 
     // 添加执行动作-弹窗
     const actionConditionModal = <Modal
@@ -168,6 +290,10 @@ const DetailPage = () => {
                 .validateFields()
                 .then((values) => {
                     console.log('values11', values);
+                    if (values.actionType !== ActionWayType.DEFERRED_EXECUTION) {
+                        message.info('当前只支持延迟执行，其他的正在开发')
+                        return
+                    }
                     if (values.actionType === ActionWayType.DEFERRED_EXECUTION) {
                         setDelayModalOpen(true)
                     }
@@ -212,7 +338,7 @@ const DetailPage = () => {
             initialValues={{
                 delay: {
                     time: 0.00,
-                    unit: 's'
+                    unit: 'seconds'
                 }
             }}
         >
@@ -230,9 +356,9 @@ const DetailPage = () => {
                         noStyle
                     >
                         <Select style={{ width: 80 }} defaultValue={'s'}>
-                            <Option value="s">秒</Option>
-                            <Option value="m">分</Option>
-                            <Option value="h">小时</Option>
+                            <Option value="seconds">秒</Option>
+                            <Option value="minutes">分</Option>
+                            <Option value="hours">小时</Option>
                         </Select>
                     </Form.Item>
                 </Space.Compact>
@@ -247,6 +373,69 @@ const DetailPage = () => {
     const handleOpenAddTypeModal = () => {
         currentRecord.current = null
         setActionModalOpen(true)
+    }
+
+    const handleSubmit = async () => {
+        // 获取本地缓存中的数据
+        const storage = getLocalStoragByKey('createScene')
+        if (storage.triggerType !== 'timer') {
+            message.error('目前只支持定时触发')
+        }
+        let res = null
+
+        // 执行定时触发的逻辑
+        if (storage && storage.triggerType && storage.triggerType === 'timer') {
+            // 更新
+            if (currentId.current) {
+                const params = {
+                    triggerType: 'timer',
+                    trigger: JSON.stringify({
+                        timer: {
+                            type: 'cron',
+                            cron: cron
+                        },
+                    }),
+                    when: JSON.stringify(when),
+                    then: JSON.stringify(then),
+                    desc: desc,
+                    ...storage
+                }
+                res = await postApiV1ThingsRuleSceneInfoUpdate(params)
+                console.log('res', res);
+                console.log('params', params);
+            } else {
+                // 新增
+                const params = {
+                    name: storage.name,
+                    triggerType: 'timer',
+                    trigger: JSON.stringify({
+                        timer: {
+                            type: 'cron',
+                            cron: cron
+                        },
+                    }),
+                    when: JSON.stringify(when),
+                    then: JSON.stringify(then),
+                    desc: desc,
+                    status: 2
+                }
+                res = await postApiV1ThingsRuleSceneInfoCreate(params)
+                console.log('res', res);
+
+                console.log('params', params);
+            }
+
+            if (res instanceof Response) {
+                return
+            }
+            message.success('操作成功')
+            history.push('/ruleEngine/scene/index')
+        }
+    }
+
+    const getFormValueFn = (values: any) => {
+        console.log('得到WhenItem组件数据', values);
+        setWhten(values.when)
     }
 
     return (
@@ -278,7 +467,7 @@ const DetailPage = () => {
                         <div className={style['actions-terms-options-wrap']}>
 
                             <div className={style['actions-terms-options']}>
-                                <WhenItem />
+                                <WhenItem getFormValueFn={getFormValueFn} ref={WhenItemRef} />
                             </div>
 
                             <div className={style['actions-terms-options']}>
@@ -289,19 +478,28 @@ const DetailPage = () => {
                                             onFinish={(values) => {
                                                 console.log('values', values);
                                             }}
-                                            form={actionForm}
-                                            style={{ maxWidth: 600 }}
+                                            form={thenForm}
+                                            initialValues={{
+                                                executor: 'delay'
+                                            }}
                                             autoComplete="off"
+                                            onFieldsChange={(filed) => {
+                                                console.log('filed', filed);
+                                                // 获取数据
+                                                getFormValue()
+                                            }}
                                         >
-                                            <Form.List name="users">
+                                            {/* executor */}
+                                            <Form.Item name="executor" label="executor" noStyle />
+                                            <Form.List name="then">
                                                 {(fields, { add, remove }) => (
                                                     <>
                                                         {fields.map((item: any, index: number, ...restField) => (
                                                             <Space key={item.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                                                                 <Form.Item
                                                                     {...restField}
-                                                                    name={[item.name, `first`]}
-                                                                    rules={[{ required: true, message: 'Missing first name' }]}
+                                                                    name={[item.name, `thenInfo`]}
+                                                                    rules={[{ required: true, message: 'Missing thenInfo name' }]}
                                                                 >
                                                                     <ActionCard key={item.name} handleActionCardCallBack={handleActionCardCallBack} index={index} />
                                                                 </Form.Item>
@@ -314,17 +512,12 @@ const DetailPage = () => {
                                                                 // add()
                                                             }
                                                             } block icon={<PlusOutlined />}>
-                                                                Add field
+                                                                新增执行动作
                                                             </Button>
                                                         </Form.Item>
                                                     </>
                                                 )}
                                             </Form.List>
-                                            <Form.Item>
-                                                <Button type="primary" htmlType="submit">
-                                                    Submit
-                                                </Button>
-                                            </Form.Item>
                                         </Form>
                                     </Panel>
                                 </Collapse>
@@ -336,11 +529,13 @@ const DetailPage = () => {
 
                 <div className={style['title-content']}>说明</div>
                 <div className={style['content-wrap']}>
-                    <Input.TextArea />
+                    <Input.TextArea value={desc} onChange={(event) => {
+                        setDesc(event.target.value)
+                    }} />
                 </div>
 
                 <div>
-                    <Button type='primary'>
+                    <Button type='primary' onClick={handleSubmit}>
                         保存
                     </Button>
                 </div>

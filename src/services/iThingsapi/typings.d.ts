@@ -339,11 +339,12 @@ declare namespace API {
   };
 
   type scene = {
-    id?: number;
+    id: number;
     /** 场景名称 */
     name?: string;
     /** 触发器 */
-    trigger?: string;
+    trigger: string;
+    triggerType: string;
     /** 触发条件列表 */
     when?: string;
     /** 满足条件时执行的动作 */
@@ -351,7 +352,7 @@ declare namespace API {
     /** 描述 */
     desc?: string;
     /** 状态 1启用 2禁用 */
-    state: number;
+    status: number;
   };
 
   type SchemaAction = {

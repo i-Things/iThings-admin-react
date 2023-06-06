@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActionWayType } from "./ActionType";
 
 type ActionCardProps = {
@@ -15,6 +15,9 @@ function ActionCard(props: ActionCardProps) {
     const { value, index } = props
     const { onChange, handleActionCardCallBack } = props;
     const { type, property } = value
+
+    console.log('!!!value', value);
+    
 
     const [content, setContent] = useState<React.ReactNode>()
 
@@ -81,8 +84,8 @@ function ActionCard(props: ActionCardProps) {
     // }
 
     return <div>
-        <label htmlFor=""> {index} </label>
-        <Button onClick={() => {
+        {/* <label htmlFor=""> {index + 1} </label> */}
+        <Button style={{ minWidth: 200}} onClick={() => {
             // onChange({ type: 'sss', name: '2222' })
             handleActionCardCallBack({
                 type,
@@ -95,4 +98,4 @@ function ActionCard(props: ActionCardProps) {
     </div>
 }
 
-export default ActionCard
+export default React.memo(ActionCard)

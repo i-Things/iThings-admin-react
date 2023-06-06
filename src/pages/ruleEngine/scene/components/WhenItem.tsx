@@ -5,25 +5,9 @@ import { isCorn } from '@/utils/utils';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { Button, Cascader, Form, Input, Select, Space, message } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
-const onFinish = (values: any) => {
-  // 如果是 属性
-  const when = values.when
-  when.map((item) => {
-    if (item.term.columnType === 'property') {
-      item.term.columnSchema = {
-        ...item.term.columnSchema,
-        productID: item.term.columnSchema.productIDAnddeviceName[0],
-        deviceName: item.term.columnSchema.productIDAnddeviceName[1],
-        dataID: [].concat(item.term.columnSchema.dataID[1])
-      }
-      delete item.term.columnTime
-      delete item.term.columnSchema.productIDAnddeviceName
-    }
-  })
-  console.log('Received values of form:', values);
-};
+
 
 interface OptionType {
   value?: string | null | undefined | number;
@@ -91,7 +75,12 @@ const termTypeOptions: OptionType[] = [
   }
 ]
 
-const WhenItem: React.FC = () => {
+type WhenItemProps = {
+  getFormValueFn: (values: any) => void;
+}
+
+const WhenItem: React.FC<WhenItemProps> = forwardRef((props: WhenItemProps, ref) => {
+  const { getFormValueFn } = props
   const [form] = Form.useForm()
   const currentProductID = useRef<number | string>('')
   const [firstOptions, setFirstOptions] = useState<OptionType[]>([])
@@ -177,18 +166,86 @@ const WhenItem: React.FC = () => {
       setSeconedOptions([...seconedOptions]);
     }
   }
+
+
+  const convertFormValue = (values: any) => {
+    // 如果是 属性
+    const when = values.when
+    when.map((item) => {
+      if (item.columnType === 'property') {
+        item.columnSchema = {
+          ...item.columnSchema,
+          productID: item?.columnSchema?.productIDAnddeviceName?.[0],
+          deviceName: item?.columnSchema?.productIDAnddeviceName?.[1],
+          dataID: [].concat(item?.columnSchema?.dataID?.[1])
+        }
+        delete item.columnTime
+        delete item.columnSchema.productIDAnddeviceName
+      }
+    })
+    return values
+  }
+
+  const onFinish = (values: any) => {
+    // 如果是 属性
+    convertFormValue(values)
+  };
+  // 回显
+  useImperativeHandle(ref, () => ({
+    setFormValue(values){
+      console.log('values', values);
+
+      // 兼容indexToFieldTypeMap
+      values.map((item, index) => {
+        if (item.columnType === 'sysTime')  {
+          indexToFieldTypeMap[index] = true
+        }
+      })
+
+      // 兼容数据结构
+      values.map((item) => {
+        if (item.columnType === 'property') {
+          // 反向操作，恢复原始数据
+          item.columnSchema.productIDAnddeviceName = [
+            item.columnSchema.productID, 
+            item.columnSchema.deviceName
+          ]
+          item.columnSchema.dataID = [item.columnSchema.dataID[0]]
+          item.columnTime = undefined
+    
+          // 删除新的字段
+          delete item.columnSchema.productID
+          delete item.columnSchema.deviceName
+          delete item.columnSchema.dataID
+        }
+      })
+
+      setIndexToFieldTypeMap([...indexToFieldTypeMap])
+
+      form.setFieldValue('when', values)
+    }
+  }));
+
   return <Form
     name="dynamic_form_nest_item"
     onFinish={onFinish}
     autoComplete="off"
     form={form}
     onFieldsChange={(filed) => {
+      const formValues = form.getFieldsValue()
+      console.log('触发了whenItem', formValues);
+      const convertedFormValue = convertFormValue(formValues)
+      getFormValueFn(convertedFormValue)
+
+      console.log('?filed', filed)
+
+
       // 当监听到 columnType 字段改变的时候 动态改变 setIndexToFieldTypeMap
       if (filed.length === 0) {
         return
       }
       const index = filed?.[0].name?.[1]
-      const type = filed?.[0].name?.[3]
+      const type = filed?.[0].name?.[2]
       if (!type) {
         return
       }
@@ -202,6 +259,7 @@ const WhenItem: React.FC = () => {
 
       setIndexToFieldTypeMap([...indexToFieldTypeMap])
 
+
     }}
   >
     <Form.List name="when">
@@ -214,7 +272,7 @@ const WhenItem: React.FC = () => {
                   {/* 选字段类型 */}
                   <Form.Item
                     {...restField}
-                    name={[name, 'term', 'columnType']}
+                    name={[name, 'columnType']}
                     noStyle
                     rules={[{ required: true, message: '字段类型必填' }]}
                     shouldUpdate={true}
@@ -226,7 +284,7 @@ const WhenItem: React.FC = () => {
                   {
                     indexToFieldTypeMap[name] ? <Form.Item
                       {...restField}
-                      name={[name, 'term', 'columnTime', 'type']}
+                      name={[name, 'columnTime', 'type']}
                       style={{ display: 'none' }}
                     >
                       <Input defaultValue={'cron'} value={'cron'} />
@@ -236,7 +294,7 @@ const WhenItem: React.FC = () => {
                   {
                     indexToFieldTypeMap[name] ? <Form.Item
                       {...restField}
-                      name={[name, 'term', 'columnTime', 'corn']}
+                      name={[name, 'columnTime', 'cron']}
                       noStyle
                       validateTrigger={['onBlur']}
                       rules={[{
@@ -256,7 +314,7 @@ const WhenItem: React.FC = () => {
                   {
                     !indexToFieldTypeMap[name] ? <Form.Item
                       {...restField}
-                      name={[name, 'term', 'columnSchema', 'productIDAnddeviceName']}
+                      name={[name, 'columnSchema', 'productIDAnddeviceName']}
                       noStyle
                       rules={[{ required: true, message: '物模型类型配置' }]}
                     >
@@ -267,7 +325,7 @@ const WhenItem: React.FC = () => {
                   {
                     !indexToFieldTypeMap[name] ? <Form.Item
                       {...restField}
-                      name={[name, 'term', 'columnSchema', 'dataID']}
+                      name={[name, 'columnSchema', 'dataID']}
                       noStyle
                       rules={[{ required: true, message: '属性是必填的' }]}
                     >
@@ -278,7 +336,7 @@ const WhenItem: React.FC = () => {
                     !indexToFieldTypeMap[name] ?
                       <Form.Item
                         {...restField}
-                        name={[name, 'term', 'columnSchema', 'termType']}
+                        name={[name, 'columnSchema', 'termType']}
                         noStyle
                         rules={[{ required: true, message: '动态条件类型是必填的' }]}
                       >
@@ -289,7 +347,7 @@ const WhenItem: React.FC = () => {
                   {
                     !indexToFieldTypeMap[name] ? <Form.Item
                       {...restField}
-                      name={[name, 'term', 'columnSchema', 'values']}
+                      name={[name, 'columnSchema', 'values']}
                       noStyle
                       rules={[{ required: true, message: '值是必填的' }]}
                     >
@@ -304,7 +362,7 @@ const WhenItem: React.FC = () => {
                   <Form.Item key={key}>
                     <Form.Item
                       {...restField}
-                      name={[name, 'term', 'netCondition']}
+                      name={[name, 'netCondition']}
                       noStyle
                       rules={[{ required: true, message: '和下个条件的关联类型' }]}
                     >
@@ -321,20 +379,20 @@ const WhenItem: React.FC = () => {
             <Button type="dashed" onClick={() => {
               indexToFieldTypeMap.push(true)
               setIndexToFieldTypeMap([...indexToFieldTypeMap])
-              add({ term: { columnType: 'sysTime', columnTime: { type: 'cron' }, netCondition: 'and' } })
+              add({ columnType: 'sysTime', columnTime: { type: 'cron' }, netCondition: 'and' })
             }} block icon={<PlusOutlined />}>
-              Add field
+              新增触发条件
             </Button>
           </Form.Item>
         </>
       )}
     </Form.List>
-    <Form.Item>
+    {/* <Form.Item>
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
-    </Form.Item>
+    </Form.Item> */}
   </Form>
-};
+});
 
 export default WhenItem;
