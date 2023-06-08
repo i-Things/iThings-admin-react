@@ -1,14 +1,18 @@
-import { postApiV1ThingsRuleSceneInfoIndex, postApiV1ThingsRuleSceneInfoUpdate, postApiV1ThingsRuleSceneInfo__openAPI__delete } from '@/services/iThingsapi/changjingliandong';
+import {
+  postApiV1ThingsRuleSceneInfoIndex,
+  postApiV1ThingsRuleSceneInfoUpdate,
+  postApiV1ThingsRuleSceneInfo__openAPI__delete,
+} from '@/services/iThingsapi/changjingliandong';
 import { setLocalStorage } from '@/utils/utils';
 import { PageContainer, ProFormSelect, ProFormText, QueryFilter } from '@ant-design/pro-components';
 import { useRequest } from 'ahooks';
-import { Button, Card, Col, Form, Input, Modal, Popconfirm, Row, Spin, message } from 'antd';
+import { Button, Card, Col, Form, Input, message, Modal, Popconfirm, Row, Spin } from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { history } from 'umi';
 import CardItem from './components/CardItem';
-import TriggerType from './components/TriggerType';
 import './components/style.less';
+import TriggerType from './components/TriggerType';
 import styles from './style.less';
 
 export type CardItemType = {
@@ -16,15 +20,15 @@ export type CardItemType = {
 };
 
 export const MESSAGE_TIP_INFO = () => {
-  message.info('目前只支持定时触发，其他模式开发中，敬请期待')
-}
+  message.info('目前只支持定时触发，其他模式开发中，敬请期待');
+};
 
 const defaultPageParams = {
   page: {
     page: 1,
     size: 9999,
-  }
-}
+  },
+};
 
 type queryParamsType = {
   page?: { page?: number; size?: number };
@@ -34,21 +38,22 @@ type queryParamsType = {
   /** device: 设备触发 timer: 定时触发 manual:手动触发 */
   triggerType?: string;
   alarmID?: number;
-}
-
-
+};
 
 const IndexPage = () => {
-
   const [queryParams, setQueryParams] = useState<queryParamsType>({
-    ...defaultPageParams
-  })
+    ...defaultPageParams,
+  });
 
-  const { data: ruleSceneList, loading, run } = useRequest(
+  const {
+    data: ruleSceneList,
+    loading,
+    run,
+  } = useRequest(
     async () => {
       const res = await postApiV1ThingsRuleSceneInfoIndex({
         page: { page: 1, size: 9999 },
-        ...queryParams
+        ...queryParams,
       });
       return res;
     },
@@ -56,37 +61,35 @@ const IndexPage = () => {
       refreshDeps: [queryParams],
       onError: (error) => {
         message.error('获取规则错误:' + error.message);
-      }
-    }
-  )
+      },
+    },
+  );
 
   const [form] = Form.useForm();
-  const [open, setModalOpen] = useState(false)
+  const [open, setModalOpen] = useState(false);
 
   const handleStatus = async (record: API.scene) => {
     const res = await postApiV1ThingsRuleSceneInfoUpdate({
       ...record,
-      status: record.status === 1 ? 2 : 1
-    })
+      status: record.status === 1 ? 2 : 1,
+    });
 
     if (res instanceof Response) {
-      return
+      return;
     }
-    run()
-  }
+    run();
+  };
 
   const deleteConfirm = async (record: API.scene) => {
-    console.log('record', record);
     const res = await postApiV1ThingsRuleSceneInfo__openAPI__delete({
-      id: record.id
-    })
+      id: record.id,
+    });
 
     if (res instanceof Response) {
-      return
+      return;
     }
-    run()
-  }
-
+    run();
+  };
 
   const Tools: React.FC<{ record: API.scene }> = ({ record }) => {
     return (
@@ -99,16 +102,18 @@ const IndexPage = () => {
           >
             编辑
           </Button>
-          <Button className={classNames('btn-flex', 'btn', 'mr-8')} type="link" onClick={() => handleStatus(record)}>
-            {
-              record.status === 1 ? '禁用' : '启用'
-            }
+          <Button
+            className={classNames('btn-flex', 'btn', 'mr-8')}
+            type="link"
+            onClick={() => handleStatus(record)}
+          >
+            {record.status === 1 ? '禁用' : '启用'}
           </Button>
 
           <Popconfirm
             placement="top"
             title="你确定要删除吗？"
-            description={"删除这条场景联动记录"}
+            description={'删除这条场景联动记录'}
             onConfirm={() => deleteConfirm(record)}
             okText="确定"
             cancelText="取消"
@@ -125,70 +130,66 @@ const IndexPage = () => {
   const onCreate = (values: any) => {
     console.log('Received values of form: ', values);
     if (values.trigetType !== 'timer') {
-      MESSAGE_TIP_INFO()
-      return
+      MESSAGE_TIP_INFO();
+      return;
     }
     setModalOpen(false);
-    setLocalStorage('createScene', values)
-    history.push('/ruleEngine/scene/detail')
+    setLocalStorage('createScene', values);
+    history.push('/ruleEngine/scene/detail');
   };
 
   const onCancel = () => {
     form.resetFields();
     setModalOpen(false);
-  }
+  };
 
-  const addModal = <Modal
-    open={open}
-    title="新增"
-    okText="确定"
-    width={888}
-    cancelText="取消"
-    onCancel={onCancel}
-    onOk={() => {
-      form
-        .validateFields()
-        .then((values) => {
-          form.resetFields();
-          onCreate(values);
-        })
-        .catch((info) => {
-          console.log('Validate Failed:', info);
-        });
-    }}
-  >
-    <Form
-      form={form}
-      layout="vertical"
-      name="addModal"
-      initialValues={{ modifier: 'public' }}
+  const addModal = (
+    <Modal
+      open={open}
+      title="新增"
+      okText="确定"
+      width={888}
+      cancelText="取消"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCreate(values);
+          })
+          .catch((info) => {
+            console.log('Validate Failed:', info);
+          });
+      }}
     >
-      <Form.Item
-        name="name"
-        label="名称"
-        rules={[{ required: true, message: '请输入名称' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="trigetType"
-        label="触发方式"
-        rules={[{ required: true, message: '请选择触发模式' }]}
-      >
-        <TriggerType />
-      </Form.Item>
-    </Form>
-  </Modal>
+      <Form form={form} layout="vertical" name="addModal" initialValues={{ modifier: 'public' }}>
+        <Form.Item name="name" label="名称" rules={[{ required: true, message: '请输入名称' }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="trigetType"
+          label="触发方式"
+          rules={[{ required: true, message: '请选择触发模式' }]}
+        >
+          <TriggerType />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
 
   return (
     <PageContainer>
       <div className={styles['search-wrap']}>
         <Card>
-          <QueryFilter defaultCollapsed split
+          <QueryFilter
+            defaultCollapsed
+            split
             onFinish={async (value) => {
               console.log('value', value);
-              setQueryParams(value)
-            }}>
+              setQueryParams(value);
+            }}
+          >
             <ProFormText
               colProps={{ xl: 8, md: 12 }}
               name="name"
@@ -226,11 +227,15 @@ const IndexPage = () => {
 
       <Card>
         <div style={{ textAlign: 'right' }}>
-        <Button type="primary" style={{ marginTop: 5, marginBottom: 5, marginRight: 10}} onClick={() => {
-          setModalOpen(true)
-        }}>
-          新增
-        </Button>
+          <Button
+            type="primary"
+            style={{ marginTop: 5, marginBottom: 5, marginRight: 10 }}
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
+            新增
+          </Button>
         </div>
         <Spin spinning={loading}>
           <Row>
