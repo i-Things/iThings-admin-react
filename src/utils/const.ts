@@ -2,6 +2,8 @@ import type { editor } from 'monaco-editor';
 
 export const TOKENKEY = 'iThings-token';
 
+export const KEYPREFIX = 'iThings-'
+
 export const GUIDKEY = 'iThings-guid';
 
 export const SETTOKENKEY = 'iThings-set-token';

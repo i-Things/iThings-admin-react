@@ -54,7 +54,7 @@ export async function postApiV1ThingsRuleSceneInfoIndex(
     page?: { page?: number; size?: number };
     name?: string;
     /** 1启用 2禁用 */
-    state?: number;
+    status?: number;
     /** device: 设备触发 timer: 定时触发 manual:手动触发 */
     triggerType?: string;
     alarmID?: number;

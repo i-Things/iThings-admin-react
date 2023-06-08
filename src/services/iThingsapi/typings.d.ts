@@ -782,13 +782,14 @@ declare namespace API {
   };
 
   type scene = {
-    id?: number;
+    id: number;
     /** 场景名称 */
     name?: string;
     /** 触发类型 device: 设备触发 timer: 定时触发 manual:手动触发 */
     triggerType: string;
     /** 触发器 */
-    trigger?: string;
+    trigger: string;
+    triggerType: string;
     /** 触发条件列表 */
     when?: string;
     /** 满足条件时执行的动作 */
