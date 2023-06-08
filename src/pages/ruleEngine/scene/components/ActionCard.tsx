@@ -16,9 +16,6 @@ function ActionCard(props: ActionCardProps) {
     const { onChange, handleActionCardCallBack } = props;
     const { type, property } = value
 
-    console.log('!!!value', value);
-    
-
     const [content, setContent] = useState<React.ReactNode>()
 
     // 设备输出
@@ -28,6 +25,10 @@ function ActionCard(props: ActionCardProps) {
     // 延迟执行
     const handleDeferredExecution = () => {
         const { delay } = property
+        if (!delay) {
+            setContent('暂不支持的类型')
+            return
+        }
         const _content = `${delay.time}${delay.unit}后，执行后续动作`
         setContent(_content)
     }
@@ -85,7 +86,7 @@ function ActionCard(props: ActionCardProps) {
 
     return <div>
         {/* <label htmlFor=""> {index + 1} </label> */}
-        <Button style={{ minWidth: 200}} onClick={() => {
+        <Button style={{ minWidth: 200 }} onClick={() => {
             // onChange({ type: 'sss', name: '2222' })
             handleActionCardCallBack({
                 type,
