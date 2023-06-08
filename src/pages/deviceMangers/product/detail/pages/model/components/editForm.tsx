@@ -5,22 +5,22 @@ import {
   postApiV1ThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
 import {
-  createAsyncFormActions,
   Field,
   FormEffectHooks,
   FormMegaLayout,
   FormPath,
   FormSpy,
   SchemaForm,
+  createAsyncFormActions,
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
-  FormItemGrid,
-  FormLayout,
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
   Switch as FSwitch,
+  FormItemGrid,
+  FormLayout,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
@@ -28,13 +28,13 @@ import { AutoComplete, Modal, Radio } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import type { EditFormType } from './const';
 import {
+  _dataTypeList,
+  _yuansuleixingList,
   dataTypeList,
   eventTypeList,
   rwTypeList,
   typeBtnList,
   yuansuleixingList,
-  _dataTypeList,
-  _yuansuleixingList,
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -81,7 +81,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
     let arrayInfo = {};
     //
-    specs.map((item: any) => {
+    specs?.map((item: any) => {
       item.dataType.type = item.type;
       if (item?.dataType?.numericalRange) {
         item.dataType.max = item.dataType.numericalRange.max + '';
@@ -90,6 +90,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         item.dataType.step = item.dataType.step + '';
         item.dataType.unit = item.dataType.unit + '';
       }
+
+      item.dataType.max = item.dataType.max + '';
+      item.dataType.min = item.dataType.min + '';
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
@@ -110,7 +113,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       }
     });
 
-    input.map((item: any) => {
+    input?.map((item: any) => {
       item.dataType.type = item.type;
       if (item?.dataType?.numericalRange) {
         item.dataType.max = item.dataType.numericalRange.max + '';
@@ -142,7 +145,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       };
     });
 
-    output.map((item: any) => {
+    output?.map((item: any) => {
       item.dataType.type = item.type;
       if (item?.dataType?.numericalRange) {
         item.dataType.max = item.dataType.numericalRange.max + '';
@@ -174,7 +177,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       };
     });
 
-    params.map((item: any) => {
+    params?.map((item: any) => {
       if (item?.dataType?.numericalRange) {
         item.dataType.max = item.dataType.numericalRange.max + '';
         item.dataType.min = item.dataType.numericalRange.min + '';
@@ -314,7 +317,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const _affordance = JSON.parse(affordance);
     const mode = _affordance?.mode;
     const specs = _affordance?.define?.specs;
-    specs.map((item) => {
+    specs?.map((item) => {
       item.type = item.dataType.type;
       const numericalRange = {
         max: item.dataType.max,
@@ -830,7 +833,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     if (formItems.length === 0) {
       return;
     }
-    formItems.map((item: string) => {
+    formItems?.map((item: string) => {
       ruleActions.current.setFieldState(item, (sta) => {
         sta.visible = flag;
       });
@@ -889,11 +892,11 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
             currentFunctionType.current = value;
 
-            Object.keys(formItemMapping).map((item) => {
+            Object.keys(formItemMapping)?.map((item) => {
               allFormItem = allFormItem.concat(formItemMapping[item]);
             });
 
-            Object.keys(dataTypeMapping).map((item) => {
+            Object.keys(dataTypeMapping)?.map((item) => {
               allFormItem = allFormItem.concat(dataTypeMapping[item]);
             });
 
@@ -913,7 +916,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
             let allFormItem: string[] = [];
 
-            Object.keys(dataTypeMapping).map((item) => {
+            Object.keys(dataTypeMapping)?.map((item) => {
               allFormItem = allFormItem.concat(dataTypeMapping[item]);
             });
 
@@ -935,7 +938,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
             let allFormItem: string[] = [];
 
-            Object.keys(elementTypeMapping).map((item) => {
+            Object.keys(elementTypeMapping)?.map((item) => {
               allFormItem = allFormItem.concat(elementTypeMapping[item]);
             });
 
@@ -948,7 +951,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
           const array = ['specs', 'params', 'input', 'output'];
 
-          array.map((scope) => {
+          array?.map((scope) => {
             onFieldValueChange$(`${scope}.*.type`).subscribe((fieldState) => {
               const value = fieldState.value;
 
@@ -967,12 +970,12 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
               let allFormItem: string[] = [];
 
-              Object.keys(mapper).map((item) => {
+              Object.keys(mapper)?.map((item) => {
                 allFormItem = allFormItem.concat(mapper[item]);
               });
 
               // 先把所有的 设置为 false
-              allFormItem.map((item: string) => {
+              allFormItem?.map((item: string) => {
                 ruleActions.current.setFieldState(
                   FormPath.transform(
                     fieldState.name,
@@ -987,7 +990,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
               const arr = mapper[value];
 
-              arr.map((item: string) => {
+              arr?.map((item: string) => {
                 ruleActions.current.setFieldState(
                   FormPath.transform(
                     fieldState.name,
@@ -1011,12 +1014,12 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
               let allFormItem: string[] = [];
 
-              Object.keys(mapper).map((item) => {
+              Object.keys(mapper)?.map((item) => {
                 allFormItem = allFormItem.concat(mapper[item]);
               });
 
               // 先把所有的 设置为 false
-              allFormItem.map((item: string) => {
+              allFormItem?.map((item: string) => {
                 ruleActions.current.setFieldState(
                   FormPath.transform(
                     fieldState.name,
@@ -1034,7 +1037,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                 return;
               }
 
-              arr.map((item: string) => {
+              arr?.map((item: string) => {
                 ruleActions.current.setFieldState(
                   FormPath.transform(
                     fieldState.name,

@@ -14,31 +14,17 @@ export async function postApiV1ThingsGroupDeviceIndex(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: {
-      list?: {
-        productID?: string;
-        deviceName?: string;
-        createdTime?: string;
-        secret?: string;
-        firstLogin?: string;
-        lastLogin?: string;
-        version?: string;
-        logLevel?: string;
-        cert?: string;
-        isOnline?: string;
-      }[];
-    };
-  }>('/api/v1/things/group/device/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { list?: API.DeviceInfo[] } }>(
+    '/api/v1/things/group/device/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 添加分组设备(支持批量) POST /api/v1/things/group/device/multi-create */
@@ -86,6 +72,8 @@ export async function postApiV1ThingsGroupInfoCreate(
     groupName: string;
     /** 父组ID 1-根组 ，非根组，则传所选父分组的groupID 作为本组的parentID */
     parentID?: string;
+    /** 绑定的productID */
+    productID?: string;
     /** 分组描述 */
     desc?: string;
   },
@@ -137,6 +125,8 @@ export async function postApiV1ThingsGroupInfoIndex(
         groupName?: string;
         parentID?: number;
         groupID?: number;
+        productID?: string;
+        productName?: string;
         desc?: string;
         createdTime?: string;
         tags?: { key?: string; value?: string }[];

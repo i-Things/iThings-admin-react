@@ -7,26 +7,14 @@ import { useMemo } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import type { DeviceInfo } from '../../data';
 import styles from '../../index.less';
-
+import EditForm from './editForm';
 interface InfoProps {
   deviceInfo: Partial<DeviceInfo>;
+  refresh: () => void;
 }
 
-const BasicInfoPage: React.FC<InfoProps> = (props) => {
-  const { deviceInfo } = props;
-
-  /** 要复制的内容 */
-  const copyText = useMemo(() => {
-    return deviceInfo
-      ? JSON.stringify({
-          设备名称: deviceInfo.deviceName,
-          产品ID: deviceInfo.productID,
-          密钥: deviceInfo.secret,
-        })
-      : '';
-  }, [deviceInfo]);
-
-  const columns: ProColumns<Partial<DeviceInfo>>[] = [
+const useColumns = (deviceInfo: Partial<DeviceInfo>, refresh: () => void) => {
+  return [
     {
       title: '设备名称',
       key: 'deviceName',
@@ -44,6 +32,12 @@ const BasicInfoPage: React.FC<InfoProps> = (props) => {
       title: '设备密钥',
       key: 'secret',
       dataIndex: 'secret',
+      copyable: true,
+    },
+    {
+      title: '设备别名',
+      key: 'deviceAlias',
+      dataIndex: 'deviceAlias',
       copyable: true,
     },
     {
@@ -96,7 +90,30 @@ const BasicInfoPage: React.FC<InfoProps> = (props) => {
       valueType: 'select',
       valueEnum: isOnlineEnum(deviceInfo),
     },
-  ];
+    {
+      title: '操作',
+      valueType: 'option',
+      render: () => [<EditForm refresh={refresh} key="link" deviceInfo={deviceInfo} />],
+    },
+  ] as ProColumns<Partial<DeviceInfo>>[];
+};
+
+const BasicInfoPage: React.FC<InfoProps> = (props) => {
+  const { deviceInfo, refresh } = props;
+
+  /** 要复制的内容 */
+  const copyText = useMemo(() => {
+    return deviceInfo
+      ? JSON.stringify({
+          设备名称: deviceInfo.deviceName,
+          产品ID: deviceInfo.productID,
+          密钥: deviceInfo.secret,
+        })
+      : '';
+  }, [deviceInfo]);
+
+  const columns = useColumns(deviceInfo, refresh);
+
   return (
     <ProDescriptions
       className={styles.descriptions}

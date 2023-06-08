@@ -15,6 +15,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import { useRequest } from 'ahooks';
 import type { DeviceInfo } from '../data';
 import styles from './index.less';
+import CreateSecretKey from './pages/createSecretKey';
 import OnlineDebugPage from './pages/onlineDebug';
 
 const { TabPane } = Tabs;
@@ -80,6 +81,9 @@ const IndexPage: React.FC = () => {
         >
           <TabPane tab="设备信息" key="1">
             <DeviceInfoPage />
+          </TabPane>
+          <TabPane tab="设备密钥生成" key="8">
+            <CreateSecretKey />
           </TabPane>
           <TabPane tab="云端诊断日志" key="2">
             <CloudLogPage productID={id} deviceName={name} />

@@ -109,27 +109,7 @@ export async function postApiV1SystemUserIndex(
   return request<{
     code: number;
     msg: string;
-    data: {
-      list?: {
-        uid?: string;
-        userName?: string;
-        email?: string;
-        phone?: string;
-        wechat?: string;
-        lastIP?: string;
-        regIP?: string;
-        role?: string;
-        nickName?: string;
-        sex?: string;
-        citty?: string;
-        country?: string;
-        province?: string;
-        language?: string;
-        headImgUrl?: string;
-        createdTime?: string;
-      }[];
-      total?: number;
-    };
+    data: { total?: number; list?: API.E794A8E688B7E4BFA1E681AF[] };
   }>('/api/v1/system/user/index', {
     method: 'POST',
     headers: {
@@ -200,35 +180,17 @@ export async function postApiV1SystemUserRead(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: {
-      uid?: string;
-      userName?: string;
-      nickName?: string;
-      sex?: number;
-      city?: string;
-      country?: string;
-      province?: string;
-      language?: string;
-      headImgUrl?: string;
-      createTime?: string;
-      email?: string;
-      phone?: string;
-      wechat?: string;
-      lastIP?: string;
-      regIP?: string;
-      role?: string;
-    };
-  }>('/api/v1/system/user/read', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: API.E794A8E688B7E4BFA1E681AF }>(
+    '/api/v1/system/user/read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 获取用户资源 POST /api/v1/system/user/resource-read */
@@ -262,30 +224,7 @@ export async function postApiV1SystemUserResourceRead(body: {}, options?: { [key
 
 /** 更新用户基本数据 POST /api/v1/system/user/update */
 export async function postApiV1SystemUserUpdate(
-  body: {
-    /** 用户id */
-    uid: string;
-    /** 用户账号 */
-    userName?: string;
-    /** 邮箱 */
-    email?: string;
-    /** 用户的昵称 */
-    nickName?: string;
-    /** 用户所在城市 */
-    city?: string;
-    /** 用户所在国家 */
-    country?: string;
-    /** 用户所在省份 */
-    province?: string;
-    /** 用户的语言，简体中文为zh_CN */
-    language?: string;
-    /** 用户头像 */
-    headImgUrl?: string;
-    /** 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知 */
-    sex?: number;
-    /** 角色 */
-    role?: number;
-  },
+  body: API.E794A8E688B7E4BFA1E681AF,
   options?: { [key: string]: any },
 ) {
   return request<{ code: number; msg: string; data?: Record<string, any> }>(
