@@ -20,15 +20,15 @@ export async function postApiV1ThingsRuleAlarmScene__openAPI__delete(
   });
 }
 
-/** 新增告警和场景的关联 POST /api/v1/things/rule/alarm/scene/multi-create */
-export async function postApiV1ThingsRuleAlarmSceneMultiCreate(
+/** 更新告警和场景的关联 POST /api/v1/things/rule/alarm/scene/multi-update */
+export async function postApiV1ThingsRuleAlarmSceneMultiUpdate(
   body: {
     alarmID: number;
     sceneIDs: number[];
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/things/rule/alarm/scene/multi-create', {
+  return request<{ code: number; msg: string }>('/api/v1/things/rule/alarm/scene/multi-update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

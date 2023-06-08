@@ -25,6 +25,10 @@ export type ApiListType = {
   businessType: number;
   group: string;
   name: string;
+  path?: string;
+  key?: string | number;
+  title?: string;
+  onlyId?: string;
 };
 
 const { confirm } = Modal;

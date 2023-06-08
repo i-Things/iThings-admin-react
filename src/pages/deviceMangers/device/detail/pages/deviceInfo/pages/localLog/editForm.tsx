@@ -7,7 +7,7 @@ import type { DeviceInfo } from '../../data';
 import styles from '../../index.less';
 
 interface ModalProps {
-  deviceInfo: DeviceInfo;
+  deviceInfo: Partial<DeviceInfo>;
   refresh: () => void;
 }
 

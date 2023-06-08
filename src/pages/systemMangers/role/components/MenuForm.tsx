@@ -1,10 +1,11 @@
-import useGetTableList from '@/hooks/useGetTableList';
 import { postApiV1SystemMenuIndex } from '@/services/iThingsapi/caidanguanli';
 import { recursionTree, spanTree } from '@/utils/utils';
-import { Button, Form, Input, Tree } from 'antd';
-import type { DataNode } from 'antd/lib/tree';
-import React, { useEffect, useState } from 'react';
-import type { MenuListItem } from '../../menu/types';
+import { useRequest } from 'ahooks';
+import { Button, Form, Input, message, Spin, Tree } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { postApiV1SystemRoleRoleMenuUpdate } from '@/services/iThingsapi/jiaoseguanli';
+import type { DataNode, TreeProps } from 'antd/lib/tree';
 import type { RoleListItem } from '../types';
 
 const FormItem = Form.Item;
@@ -12,46 +13,76 @@ const FormItem = Form.Item;
 const MenuForm: React.FC<{
   drawerVisible: boolean;
   currentData: Partial<RoleListItem>;
-  onSubmit: (values: { id: number; menuID: number[] }) => void;
-}> = (props) => {
-  const { drawerVisible, currentData, onSubmit } = props;
-  const { queryPage } = useGetTableList();
+  onSubmit: <T extends Function, K>(api: T, body: K) => void;
+}> = ({ drawerVisible, currentData, onSubmit }) => {
   const [form] = Form.useForm();
+
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedKey, setSelectedKey] = useState<string[] | number[]>([]);
-  type QueryProp = typeof postApiV1SystemMenuIndex;
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [halfCheckedKeys, setHalfCheckedKeys] = useState<React.Key[]>([]);
 
-  const handleFinish = () => {
-    const body = {
-      id: Number(currentData.id) || 0,
-      menuID: selectedKey as number[],
-    };
-    onSubmit(body);
+  type UpdateProp = typeof postApiV1SystemRoleRoleMenuUpdate;
+
+  useRequest(postApiV1SystemMenuIndex, {
+    defaultParams: [{}],
+    refreshDeps: [drawerVisible],
+    onSuccess: (res) => {
+      const flatTree = res.data.list;
+      let map: number[] = [];
+      const arr: number[] = [];
+      if (currentData?.roleMenuID) {
+        map = currentData?.roleMenuID;
+        setExpandedKeys(map.map((r) => r.toString()));
+      }
+      const menus = flatTree.filter((t) => map.includes(t.id as number));
+      menus.forEach((item) => {
+        // 防止直接选中父级造成全选
+        if (!menus.some((same) => same.parentID === item.id)) {
+          arr.push(item.id as number);
+        }
+      });
+
+      const tree = spanTree(recursionTree(flatTree as any), 1, 'parentID');
+      setTreeData(tree);
+      setCheckedKeys(arr.map((r) => r.toString()));
+    },
+    onError: (error) => {
+      message.error('获取角色信息错误:' + error.message);
+    },
+  });
+
+  const handleExpand: TreeProps['onExpand'] = useCallback((expandedKey) => {
+    setExpandedKeys(expandedKey);
+  }, []);
+
+  const onCheck: TreeProps['onCheck'] = useCallback((checked, info) => {
+    const { halfCheckedKeys: half } = info;
+    if (Array.isArray(checked) && 'halfCheckedKeys' in info) {
+      setCheckedKeys(checked.concat());
+      setHalfCheckedKeys(half as React.Key[]);
+    }
+  }, []);
+
+  const handleSubmit = () => {
+    form.validateFields().then(() => {
+      const body = {
+        id: Number(currentData.id) || 0,
+        menuID: checkedKeys.concat(halfCheckedKeys).map((i) => Number(i)),
+      };
+      onSubmit<UpdateProp, { id: number; menuID: number[] }>(
+        postApiV1SystemRoleRoleMenuUpdate,
+        body,
+      );
+    });
   };
 
   useEffect(() => {
     if (drawerVisible) {
-      setSelectedKey([]);
       setCheckedKeys([]);
-      queryPage<QueryProp, MenuListItem>(postApiV1SystemMenuIndex, {}).then((res) => {
-        if (res.data.length === 0) return;
-        const tree = spanTree(recursionTree(res.data), 1, 'parentID');
-        setTreeData(tree);
-        if (currentData?.roleMenuID) {
-          const map = currentData?.roleMenuID.map((r) => r + '');
-          setSelectedKey(map);
-          setCheckedKeys(map);
-        }
-      });
     }
   }, [drawerVisible]);
 
-  const onCheck = (checked: React.Key[]) => {
-    setCheckedKeys(checked);
-    setSelectedKey(checked.map((i) => Number(i)));
-  };
   const renderContent = () => {
     return (
       <>
@@ -60,10 +91,10 @@ const MenuForm: React.FC<{
         </FormItem>
         <Tree
           checkable
-          autoExpandParent
-          defaultExpandAll={true}
+          expandedKeys={expandedKeys}
           onCheck={onCheck}
           checkedKeys={checkedKeys}
+          onExpand={handleExpand}
           treeData={treeData}
         />
       </>
@@ -71,15 +102,17 @@ const MenuForm: React.FC<{
   };
 
   return (
-    <Form form={form} onFinish={handleFinish}>
-      <Form.Item wrapperCol={{ offset: 20, span: 10 }}>
-        <Button type="primary" htmlType="submit">
-          保存
-        </Button>
-      </Form.Item>
-      {renderContent()}
+    <Form form={form} onFinish={handleSubmit}>
+      <Spin spinning={!treeData?.length}>
+        <Form.Item wrapperCol={{ offset: 20, span: 10 }}>
+          <Button type="primary" htmlType="submit">
+            保存
+          </Button>
+        </Form.Item>
+        {renderContent()}
+      </Spin>
     </Form>
   );
 };
 
-export default MenuForm;
+export default React.memo(MenuForm);

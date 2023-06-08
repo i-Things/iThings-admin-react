@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
-  postApiV1ThingsRuleSceneInfoCreate,
-  postApiV1ThingsRuleSceneInfoRead,
-  postApiV1ThingsRuleSceneInfoUpdate,
+    postApiV1ThingsRuleSceneInfoCreate,
+    postApiV1ThingsRuleSceneInfoRead,
+    postApiV1ThingsRuleSceneInfoUpdate,
 } from '@/services/iThingsapi/changjingliandong';
 import { getLocalStoragByKey, isCorn, setLocalStorage } from '@/utils/utils';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -10,16 +10,16 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useSearchParams } from '@umijs/max';
 import { useMount, useRequest } from 'ahooks';
 import {
-  Button,
-  Card,
-  Collapse,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Modal,
-  Select,
-  Space,
+    Button,
+    Card,
+    Collapse,
+    Form,
+    Input,
+    InputNumber,
+    Modal,
+    Select,
+    Space,
+    message,
 } from 'antd';
 import { useCallback, useRef, useState } from 'react';
 import { history } from 'umi';

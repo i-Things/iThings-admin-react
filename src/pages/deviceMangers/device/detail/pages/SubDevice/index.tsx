@@ -51,7 +51,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
     defaultPageSize: DefaultPage.size,
   });
 
-  /** 获取网关产品列表 */
+  /** 获取子设备产品列表 */
   useRequest(postApiV1ThingsProductInfoIndex, {
     defaultParams: [
       {
@@ -59,7 +59,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
           size: 9999999,
           page: 1,
         },
-        deviceType: 2,
+        deviceType: 3,
       },
     ],
     onSuccess: (res) => {

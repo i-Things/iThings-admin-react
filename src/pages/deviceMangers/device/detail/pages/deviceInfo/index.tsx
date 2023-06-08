@@ -13,7 +13,7 @@ const DeviceInfoPage: React.FC = () => {
   const params = useParams() as { id: string; name: string };
   const { id = '', name = '' } = params;
 
-  const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>(null!);
+  const [deviceInfo, setDeviceInfo] = useState<Partial<DeviceInfo>>(null!);
 
   const { refresh } = useRequest(postApiV1ThingsDeviceInfoRead, {
     defaultParams: [
@@ -32,7 +32,7 @@ const DeviceInfoPage: React.FC = () => {
 
   return (
     <Card>
-      <BasicInfoPage deviceInfo={deviceInfo} />
+      <BasicInfoPage deviceInfo={deviceInfo} refresh={refresh} />
       <TagsInfoPage deviceInfo={deviceInfo} refresh={refresh} />
       <LocalLogPage deviceInfo={deviceInfo} refresh={refresh} />
       <DevicePositionPage deviceInfo={deviceInfo} refresh={refresh} />

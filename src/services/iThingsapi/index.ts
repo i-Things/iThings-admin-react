@@ -13,6 +13,7 @@ import * as gaojingrizhi from './gaojingrizhi';
 import * as jiaoseguanli from './jiaoseguanli';
 import * as jiekouguanli from './jiekouguanli';
 import * as liu from './liu';
+import * as quanxianguanli from './quanxianguanli';
 import * as rizhiguanli from './rizhiguanli';
 import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
@@ -21,34 +22,37 @@ import * as shebeijiaohu from './shebeijiaohu';
 import * as shebeixiaoxi from './shebeixiaoxi';
 import * as shengjibaoguanli from './shengjibaoguanli';
 import * as task from './task';
+import * as tongyonggongneng from './tongyonggongneng';
 import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
-import * as xitongpeizhi from './xitongpeizhi';
 import * as yonghuguanli from './yonghuguanli';
 import * as yuanchengpeizhi from './yuanchengpeizhi';
+import * as zidingyi from './zidingyi';
 export default {
-  jiekouguanli,
-  gaojingjilu,
-  wumoxing,
-  changjingliandong,
-  jiaoseguanli,
-  shengjibaoguanli,
-  caidanguanli,
-  task,
-  chulijilu,
   shebeifenzu,
+  rizhiguanli,
+  jiaoseguanli,
+  caidanguanli,
+  yonghuguanli,
+  tongyonggongneng,
+  jiekouguanli,
+  quanxianguanli,
   chanpinguanli,
+  wumoxing,
+  yuanchengpeizhi,
+  zidingyi,
+  shebeiguanli,
+  shebeijianquan,
   shebeixiaoxi,
+  shebeijiaohu,
+  wangguanzishebeiguanli,
+  changjingliandong,
+  liu,
+  chulijilu,
+  gaojingguanli,
   changjingliandongguanlian,
   gaojingrizhi,
-  shebeijianquan,
-  shebeiguanli,
-  xitongpeizhi,
-  liu,
-  shebeijiaohu,
-  yonghuguanli,
-  gaojingguanli,
-  rizhiguanli,
-  wangguanzishebeiguanli,
-  yuanchengpeizhi,
+  gaojingjilu,
+  shengjibaoguanli,
+  task,
 };

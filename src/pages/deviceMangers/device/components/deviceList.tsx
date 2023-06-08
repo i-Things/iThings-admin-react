@@ -14,9 +14,10 @@ import type { ActionType } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { history } from '@umijs/max';
-import { Button, message, Modal } from 'antd';
+import { Button, Dropdown, Menu, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import DeviceTagsModal from '../detail/pages/deviceInfo/pages/tagsInfo/deviceTagsModal';
+import { MultiImport } from './multiImport';
 
 const { confirm } = Modal;
 
@@ -30,6 +31,7 @@ type queryParam = {
   current: number;
   productID?: string;
   deviceName?: string;
+  deviceAlias?: string;
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: Tags[];
 };
@@ -50,6 +52,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
   const [deviceType, setDeviceType] = useState({});
   const [products, setProducts] = useState<PRODUCT_INFO[]>();
   const [tags, setTags] = useState<Tags[]>();
+
   const getProductName = (productID: string) => {
     const info = productsValue[productID];
     if (info != undefined) {
@@ -101,6 +104,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       },
       productID: productID,
       deviceName: params.deviceName,
+      deviceAlias: params.deviceAlias,
       tags: tags,
     };
     const res = await postApiV1ThingsDeviceInfoIndex(body);
@@ -157,6 +161,14 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
     setDeviceType(deviceTypeObj);
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item key="2">
+        <MultiImport key="multiImport" onCommit={() => actionRef.current?.reload()} />
+      </Menu.Item>
+    </Menu>
+  );
+
   /**
    * 监听
    * */
@@ -193,6 +205,10 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           {text}
         </a>,
       ],
+    },
+    {
+      title: '设备别名',
+      dataIndex: 'deviceAlias',
     },
     {
       title: '所属产品名称',
@@ -351,6 +367,9 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           productValues={products}
           onCommit={() => actionRef.current?.reload()}
         />,
+        <Dropdown key="more" overlay={menu} placement="bottom">
+          <Button>批量操作</Button>
+        </Dropdown>,
       ]}
     />
   );

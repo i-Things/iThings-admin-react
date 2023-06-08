@@ -7,6 +7,8 @@ export async function postApiV1ThingsRuleSceneInfoCreate(
   body: {
     id?: number;
     name?: string;
+    /** device: 设备触发 timer: 定时触发 manual:手动触发 */
+    triggerType: string;
     trigger?: string;
     when?: string;
     then?: string;
@@ -16,14 +18,17 @@ export async function postApiV1ThingsRuleSceneInfoCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/things/rule/scene/info/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { id?: number } }>(
+    '/api/v1/things/rule/scene/info/create',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 删除场景信息 POST /api/v1/things/rule/scene/info/delete */
@@ -69,6 +74,23 @@ export async function postApiV1ThingsRuleSceneInfoIndex(
   );
 }
 
+/** 手动触发场景联动 POST /api/v1/things/rule/scene/info/manually-trigger */
+export async function postApiV1ThingsRuleSceneInfoManuallyTrigger(
+  body: {
+    id: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string }>('/api/v1/things/rule/scene/info/manually-trigger', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 获取场景信息 POST /api/v1/things/rule/scene/info/read */
 export async function postApiV1ThingsRuleSceneInfoRead(
   body: {
@@ -94,6 +116,8 @@ export async function postApiV1ThingsRuleSceneInfoUpdate(
   body: {
     id?: number;
     name?: string;
+    /** device: 设备触发 timer: 定时触发 manual:手动触发 */
+    triggerType: string;
     trigger?: string;
     when?: string;
     then?: string;

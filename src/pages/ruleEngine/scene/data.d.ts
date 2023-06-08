@@ -1,4 +1,4 @@
 export type ruleSceneList = {
- list?: API.scene[]; 
- total?: number 
-}
+  list?: API.scene[];
+  total?: number;
+};

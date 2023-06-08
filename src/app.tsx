@@ -1,9 +1,9 @@
-import { postApiV1SystemCommonConfig } from '@/services/iThingsapi/xitongpeizhi';
+import { postApiV1SystemCommonConfig } from '@/services/iThingsapi/tongyonggongneng';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { history } from '@umijs/max';
 import {
   postApiV1SystemUserRead,
-  postApiV1SystemUserResourceRead
+  postApiV1SystemUserResourceRead,
 } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
 import { loadBMap } from './utils/map';
