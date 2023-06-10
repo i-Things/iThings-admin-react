@@ -50,6 +50,18 @@ export async function read(body: API.FirmwareReadReq, options?: { [key: string]:
   });
 }
 
+/** 获取升级包直传的signed url POST /api/v1/things/ota/firmware/signedurl */
+export async function signedurl(body: API.FirmwareSignedUrlReq, options?: { [key: string]: any }) {
+  return request<API.FirmwareSignedUrlResp>('/api/v1/things/ota/firmware/signedurl', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 更新升级包 POST /api/v1/things/ota/firmware/update */
 export async function update(body: API.FirmwareInfoUpdateReq, options?: { [key: string]: any }) {
   return request<string>('/api/v1/things/ota/firmware/update', {

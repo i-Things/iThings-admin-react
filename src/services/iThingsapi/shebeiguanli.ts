@@ -39,25 +39,20 @@ export async function postApiV1ThingsDeviceInfoCreate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
-    secret: string;
-    cert: string;
-    imei: string;
-    mac: string;
-    version: string;
-    hardInfo: string;
-    softInfo: string;
-    position: { longitude?: number; latitude?: number };
-    address: string;
-    tags: { key?: string; value?: string }[];
-    /** 1离线 2在线 只读 */
-    isOnline: number;
-    firstLogin: string;
-    lastLogin: string;
+    position?: { longitude?: number; latitude?: number };
+    address?: string;
+    tags?: { key?: string; value?: string }[];
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel: number;
-    createdTime: string;
+    logLevel?: number;
     /** 设备别名 */
     deviceAlias?: string;
+    projectID?: string;
+    areaID?: string;
+    /** 1)移动 2)联通 3)电信 4)广电 */
+    mobileOperator?: number;
+    phone?: string;
+    iccid?: string;
+    uid?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -74,7 +69,9 @@ export async function postApiV1ThingsDeviceInfoCreate(
 /** 删除设备 POST /api/v1/things/device/info/delete */
 export async function postApiV1ThingsDeviceInfo__openAPI__delete(
   body: {
+    /** 不可修改 */
     productID: string;
+    /** 不可修改 */
     deviceName: string;
   },
   options?: { [key: string]: any },
@@ -93,7 +90,7 @@ export async function postApiV1ThingsDeviceInfo__openAPI__delete(
 export async function postApiV1ThingsDeviceInfoIndex(
   body: {
     page?: { page?: number; size?: number };
-    /** 产品id 为空时获取所有产品 */
+    /** 为空时获取所有产品 */
     productID?: string;
     /** 过滤条件:模糊查询 设备名 */
     deviceName?: string;
@@ -103,8 +100,9 @@ export async function postApiV1ThingsDeviceInfoIndex(
     position?: { longitude?: number; latitude?: number };
     /** 过滤条件:距离坐标点固定范围内的设备 单位：米 */
     range?: number;
+    /** 非模糊查询 为tag的名,value为tag对应的值 */
     tags?: { key?: string; value?: string }[];
-    /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表,如果没有匹配的则不会返回 */
+    /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表 */
     withProperties?: string[];
   },
   options?: { [key: string]: any },
@@ -214,25 +212,20 @@ export async function postApiV1ThingsDeviceInfoUpdate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
-    secret: string;
-    cert: string;
-    imei: string;
-    mac: string;
-    version: string;
-    hardInfo: string;
-    softInfo: string;
-    position: { longitude?: number; latitude?: number };
-    address: string;
-    tags: { key?: string; value?: string }[];
-    /** 1离线 2在线 只读 */
-    isOnline: number;
-    firstLogin: string;
-    lastLogin: string;
+    position?: { longitude?: number; latitude?: number };
+    address?: string;
+    tags?: { key?: string; value?: string }[];
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel: number;
-    createdTime: string;
+    logLevel?: number;
     /** 设备别名 */
     deviceAlias?: string;
+    projectID?: string;
+    areaID?: string;
+    /** 1)移动 2)联通 3)电信 4)广电 */
+    mobileOperator?: number;
+    phone?: string;
+    iccid?: string;
+    uid?: string;
   },
   options?: { [key: string]: any },
 ) {

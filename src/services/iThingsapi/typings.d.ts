@@ -32,6 +32,7 @@ declare namespace API {
   type alarmInfo = {
     /** 名称 */
     id?: number;
+    /** 状态 1启用 2禁用 */
     name: string;
     /** 状态 1启用 2禁用 */
     status: number;
@@ -107,24 +108,37 @@ declare namespace API {
     hardInfo: string;
     /** 模组软件版本 */
     softInfo: string;
-    position: { longitude?: number; latitude?: number };
+    /** 设备定位 */
+    position?: { longitude?: number; latitude?: number };
     /** 详细地址 */
-    address: string;
-    tags: { key?: string; value?: string }[];
+    address?: string;
+    tags?: { key?: string; value?: string }[];
     /** 在线状态 1离线 2在线 只读 */
-    isOnline: number;
+    isOnline?: number;
     /** 激活时间 */
-    firstLogin: string;
+    firstLogin?: string;
     /** 最后上线时间 */
-    lastLogin: string;
+    lastLogin?: string;
     /** 日志级别 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel: number;
+    logLevel?: number;
     /** 创建时间 */
-    createdTime: string;
+    createdTime?: string;
     /** 获取的属性列表,如果不传withProperty,则不会返回 key是属性id,value是{"value:"xxx","timestamp":123}的结构体,时间戳是毫秒时间戳 */
-    withProperties: Record<string, any>;
+    withProperties?: Record<string, any>;
     /** 设备别名 */
     deviceAlias?: string;
+    /** 项目id */
+    projectID?: string;
+    /** 项目区域id */
+    areaID?: string;
+    /** 移动运营商 1)移动 2)联通 3)电信 4)广电 */
+    mobileOperator?: number;
+    /** 手机号 */
+    phone?: string;
+    /** SIM卡卡号 */
+    iccid?: string;
+    /** 所属用户id */
+    uid?: string;
   };
 
   type deviceMsgSdkIndex = {
@@ -478,6 +492,10 @@ declare namespace API {
     'iThings-token'?: string;
   };
 
+  type postApiV1ThingsDeviceInteractGetPropertyReplyParams = {
+    'iThings-token'?: string;
+  };
+
   type postApiV1ThingsDeviceInteractMultiSendPropertyParams = {
     'iThings-token'?: string;
   };
@@ -767,6 +785,49 @@ declare namespace API {
     affordance: string;
   };
 
+  type ProjectArea = {
+    /** 项目区域id(雪花id) */
+    areaID: string;
+    /** 上级项目区域id(雪花id) */
+    parentAreaID: string;
+    /** 所属项目id(雪花id) */
+    projectID: string;
+    /** 项目区域名称 */
+    areaName: string;
+    /** 项目区域定位(默认百度坐标系BD09) */
+    position?: Record<string, any>;
+    /** 项目区域备注 */
+    desc?: string;
+    createdTime?: string;
+    updatedTime?: string;
+    deletedTime?: string;
+  };
+
+  type ProjectAreaTree = {
+    children: ProjectAreaTree[];
+  };
+
+  type ProjectInfo = {
+    projectID: string;
+    /** 项目名称 */
+    projectName: string;
+    /** 项目所属公司名称 */
+    companyName?: string;
+    /** 项目联系人姓名 */
+    contactName?: string;
+    /** 项目联系人号码 */
+    contactMobile?: string;
+    /** 项目省市区县 */
+    region?: string;
+    /** 项目详细地址 */
+    address?: string;
+    /** 项目备注 */
+    desc?: string;
+    createdTime?: string;
+    updatedTime?: string;
+    deletedTime?: string;
+  };
+
   type putIthings265ngeRHyrSJpgParams = {
     'X-Amz-Algorithm'?: string;
     'X-Amz-Credential'?: string;
@@ -782,14 +843,13 @@ declare namespace API {
   };
 
   type scene = {
-    id: number;
+    id?: number;
     /** 场景名称 */
     name?: string;
     /** 触发类型 device: 设备触发 timer: 定时触发 manual:手动触发 */
     triggerType: string;
     /** 触发器 */
-    trigger: string;
-    triggerType: string;
+    trigger?: string;
     /** 触发条件列表 */
     when?: string;
     /** 满足条件时执行的动作 */
@@ -858,6 +918,10 @@ declare namespace API {
     name: string;
     /** 参数定义 */
     dataType: SchemaDefine;
+  };
+
+  type signedurlParams = {
+    'iThings-token'?: string;
   };
 
   type SuccRet = {
@@ -1040,6 +1104,47 @@ declare namespace API {
 
   type updateParams = {
     'iThings-token'?: string;
+  };
+
+  type UserDataAuth = {
+    createdTime: number;
+    userID: string;
+    dataType: number;
+    dataID: string;
+  };
+
+  type UserInfo = {
+    createdTime: string;
+    /** 用户id */
+    uid: string;
+    /** 用户名 */
+    userName: string;
+    /** 用户名昵称 */
+    nickName: string;
+    /** 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知 */
+    sex: number;
+    /** 用户所在城市 */
+    city: string;
+    /** 用户所在国家 */
+    country: string;
+    /** 用户所在省份 */
+    province: string;
+    /** 用户的语言，简体中文为zh_CN */
+    language: string;
+    /** 用户头像 */
+    headImgUrl: string;
+    /** 注册ip */
+    regIP: string;
+    /** 最后登录ip */
+    lastIP: string;
+    /** 微信UnionID */
+    wechat: string;
+    /**  手机号 */
+    phone: string;
+    /**  邮箱 */
+    email: string;
+    role: number;
+    isAllData: number;
   };
 
   type yonghushujuquanxian = {

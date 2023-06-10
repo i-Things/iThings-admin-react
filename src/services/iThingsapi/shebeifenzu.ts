@@ -8,9 +8,12 @@ export async function postApiV1ThingsGroupDeviceIndex(
     /** 分组ID */
     groupID: string;
     /** 产品ID */
-    productID: string;
+    productID?: string;
     /** 设备名称 */
-    deviceName: string;
+    deviceName?: string;
+    /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表 */
+    withProperties?: string[];
+    page?: { page?: number; size?: number };
   },
   options?: { [key: string]: any },
 ) {
