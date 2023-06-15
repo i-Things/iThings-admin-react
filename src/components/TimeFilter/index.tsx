@@ -23,17 +23,16 @@ const TimeFilter: React.FC<TimeFilterProps> = (props) => {
   const timeTypeChange = (e: RadioChangeEvent) => {
     setTimeType(e.target.value);
     const { startTime, endTime } = resetTimeRange(e.target.value);
+    onChange([moment(startTime), e.target.value === 3 ? moment(endTime) : '0'], e.target.value);
     const value: moment.Moment[] = [
-      moment(startTime),
-      moment(e.target.value === 3 ? moment(endTime) : '0'),
+      startTime == '0' ? moment() : moment(startTime),
+      endTime == '0' ? moment() : moment(endTime),
     ];
     setTimeRange(value);
-    onChange(value, e.target.value);
   };
 
   const timeRangeChange = (value: moment.Moment[]) => {
     setTimeType(6);
-    console.log('timeRangeChange.value:', value);
     setTimeRange(value);
     onChange(value, timeType);
   };
