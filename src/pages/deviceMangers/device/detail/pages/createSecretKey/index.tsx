@@ -118,6 +118,14 @@ const CreateSecretKey = () => {
         </Form>
         <div>
           <div className={styles['result-item']}>
+            <span className={styles['result-text']}>产品ID:</span>
+            <span>{data?.data.productID}</span>
+          </div>
+          <div className={styles['result-item']}>
+            <span className={styles['result-text']}>设备名称:</span>
+            <span>{data?.data.deviceName}</span>
+          </div>
+          <div className={styles['result-item']}>
             <span className={styles['result-text']}>客户端id:</span>
             <span>{info.calculatedClientId}</span>
           </div>
