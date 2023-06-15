@@ -6,6 +6,11 @@ export const typeBtnList = [
   { label: '行为', value: 3 },
 ];
 
+export const shadowType = [
+  { label: '开启', value: true },
+  { label: '关闭', value: false },
+];
+
 export const eventTypeList = [
   { label: '告警', value: 'alert' },
   { label: '故障', value: 'fault' },
