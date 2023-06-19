@@ -39,11 +39,25 @@ export async function postApiV1ThingsDeviceInfoCreate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    secret: string;
+    cert: string;
+    imei: string;
+    mac: string;
+    version: string;
+    hardInfo: string;
+    softInfo: string;
     position?: { longitude?: number; latitude?: number };
     address?: string;
     tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline?: number;
+    firstLogin?: string;
+    lastLogin?: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
+    createdTime?: string;
+    /** key是属性id,value是{"value:"xxx","timestamp":123}的结构体,时间戳是毫秒时间戳 */
+    withProperties?: Record<string, any>;
     /** 设备别名 */
     deviceAlias?: string;
     projectID?: string;
@@ -90,6 +104,10 @@ export async function postApiV1ThingsDeviceInfo__openAPI__delete(
 export async function postApiV1ThingsDeviceInfoIndex(
   body: {
     page?: { page?: number; size?: number };
+    /** 项目IDs */
+    projectIDs: string[];
+    /** 区域IDs */
+    areaIDs: string[];
     /** 为空时获取所有产品 */
     productID?: string;
     /** 过滤条件:模糊查询 设备名 */
@@ -212,11 +230,25 @@ export async function postApiV1ThingsDeviceInfoUpdate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    secret: string;
+    cert: string;
+    imei: string;
+    mac: string;
+    version: string;
+    hardInfo: string;
+    softInfo: string;
     position?: { longitude?: number; latitude?: number };
     address?: string;
     tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline?: number;
+    firstLogin?: string;
+    lastLogin?: string;
     /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
     logLevel?: number;
+    createdTime?: string;
+    /** key是属性id,value是{"value:"xxx","timestamp":123}的结构体,时间戳是毫秒时间戳 */
+    withProperties?: Record<string, any>;
     /** 设备别名 */
     deviceAlias?: string;
     projectID?: string;

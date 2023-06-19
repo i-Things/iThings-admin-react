@@ -66,6 +66,8 @@ export async function postApiV1ThingsDeviceInteractMultiSendProperty(
     deviceNames?: string[];
     /** JSON格式字符串, 注意字段需要在物模型属性里定义 */
     data: string;
+    /** 0:自动,当设备不在线的时候设置设备影子,设备在线时直接下发给设备 1:只实时下发,不在线报错 2:如果有设备影子只修改影子,没有的也不下发 */
+    shadowControl: number;
   },
   options?: { [key: string]: any },
 ) {
@@ -168,6 +170,8 @@ export async function postApiV1ThingsDeviceInteractSendProperty(
     data: string;
     /** 异步情况通过获取接口来获取 */
     isAsync?: boolean;
+    /** 0:自动,当设备不在线的时候设置设备影子,设备在线时直接下发给设备 1:只实时下发,不在线报错 2:如果有设备影子只修改影子,没有的也不下发 */
+    shadowControl?: number;
   },
   options?: { [key: string]: any },
 ) {
