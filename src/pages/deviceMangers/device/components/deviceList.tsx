@@ -256,6 +256,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       title: '固件版本',
       dataIndex: 'version',
       search: false,
+      hideInTable: true,
     },
     {
       title: '日志级别',
@@ -263,6 +264,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       valueType: 'select',
       search: false,
       valueEnum: DEVICE_LOG_LEVEL_VALUE,
+      hideInTable: true,
     },
     {
       title: '在线状态',
@@ -290,6 +292,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       key: 'createdTime',
       dataIndex: 'createdTime',
       search: false,
+      hideInTable: true,
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
