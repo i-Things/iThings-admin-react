@@ -73,7 +73,10 @@ const GroupDeviceList: React.FC<{
       copyable: true,
       width: 150,
     },
-
+    {
+      title: '设备别名',
+      dataIndex: 'deviceAlias',
+    },
     {
       title: '所属产品名称',
       dataIndex: 'productID',
@@ -83,25 +86,12 @@ const GroupDeviceList: React.FC<{
       width: 150,
     },
     {
-      title: '所属产品ID',
-      dataIndex: 'productID',
-      ellipsis: true,
-      copyable: true,
-      renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.value,
-      width: 160,
-    },
-    {
       title: '在线状态',
       dataIndex: 'isOnline',
       valueEnum: isOnlineEnum,
       valueType: 'select',
       width: 100,
       // filters: true,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdTime',
-      renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '激活时间',
