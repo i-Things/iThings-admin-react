@@ -38,6 +38,8 @@ const errorHandler = (error: { response: Response }): Response => {
       .clone()
       .text()
       .then((v) => {
+        const regex = /"msg":"([^"]+)"/;
+        const match = v.match(regex);
         try {
           const data = JSON.parse(v);
           notification.error({
@@ -47,7 +49,7 @@ const errorHandler = (error: { response: Response }): Response => {
         } catch {
           notification.error({
             message: `请求错误, 错误码:${response.status}`,
-            description: v,
+            description: match?.[1] || v,
           });
         }
       });
