@@ -46,7 +46,7 @@ const localLogColumns = [
     title: () => (
       <>
         <span>结果</span>
-        <Tooltip title="0表示成功,非零为错误码">
+        <Tooltip title="200表示成功,其他为错误码">
           <QuestionCircleOutlined className={styles.icon} />
         </Tooltip>
       </>
