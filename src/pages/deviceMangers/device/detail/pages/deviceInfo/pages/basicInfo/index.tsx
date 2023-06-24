@@ -117,8 +117,8 @@ const useColumns = (deviceInfo: Partial<DeviceInfo>, refresh: () => void) => {
     },
     {
       title: '所属用户id',
-      key: 'uid',
-      dataIndex: 'uid',
+      key: 'userID',
+      dataIndex: 'userID',
     },
     {
       title: '设备状态',

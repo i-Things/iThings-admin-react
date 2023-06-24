@@ -45,13 +45,13 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const token = getToken();
-      const uid = getUID();
+      const userID = getUID();
 
-      if (!token || !uid) {
+      if (!token || !userID) {
         return history.push(loginPath);
       }
 
-      const body = { uid: uid };
+      const body = { userID: userID };
       const msg = await postApiV1SystemUserRead(body);
       const menuTree = await postApiV1SystemUserResourceRead({});
       const { data } = await postApiV1SystemCommonConfig({});

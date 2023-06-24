@@ -177,7 +177,7 @@ declare namespace API {
     /** SIM卡卡号 */
     iccid?: string;
     /** 所属用户id */
-    uid?: string;
+    userID?: string;
   };
 
   type deviceMsgSdkIndex = {
@@ -1294,6 +1294,21 @@ declare namespace API {
   };
 
   type ProjectAreaTree = {
+    /** 项目区域id(雪花id) */
+    areaID: string;
+    /** 上级项目区域id(雪花id) */
+    parentAreaID: string;
+    /** 所属项目id(雪花id) */
+    projectID: string;
+    /** 项目区域名称 */
+    areaName: string;
+    /** 项目区域定位(默认百度坐标系BD09) */
+    position?: Record<string, any>;
+    /** 项目区域备注 */
+    desc?: string;
+    createdTime?: string;
+    updatedTime?: string;
+    deletedTime?: string;
     children: ProjectAreaTree[];
   };
 
@@ -1599,7 +1614,7 @@ declare namespace API {
   type UserInfo = {
     createdTime: string;
     /** 用户id */
-    uid: string;
+    userID: string;
     /** 用户名 */
     userName: string;
     /** 用户名昵称 */
@@ -1645,7 +1660,7 @@ declare namespace API {
   type yonghuxinxi = {
     createdTime: string;
     /** 用户id */
-    uid: string;
+    userID: string;
     /** 用户名 */
     userName: string;
     /** 用户名昵称 */

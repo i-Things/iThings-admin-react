@@ -114,6 +114,7 @@ export async function postApiV1ThingsGroupInfo__openAPI__delete(
 export async function postApiV1ThingsGroupInfoIndex(
   body: {
     page: { page?: number; size?: number };
+    productID: string;
     /** 父组ID, 1-根组 */
     parentID: string;
     /** 按分组名称筛选 */

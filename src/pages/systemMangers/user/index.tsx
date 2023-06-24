@@ -28,11 +28,11 @@ const UserList: React.FC = () => {
   type QueryRoleProp = typeof postApiV1SystemRoleIndex;
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string; userName: string }) => {
+  const showDeleteConfirm = (record: { userID: string; userName: string }) => {
     const body = {
-      uid: record?.uid ?? '',
+      userID: record?.userID ?? '',
     };
-    deleteHandler<{ uid: string }>(postApiV1SystemUser__openAPI__delete, actionRef, {
+    deleteHandler<{ userID: string }>(postApiV1SystemUser__openAPI__delete, actionRef, {
       title: '是否删除当前用户',
       content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
       body,
@@ -42,7 +42,7 @@ const UserList: React.FC = () => {
   const columns: ProColumns<UserListItem>[] = [
     {
       title: '编号',
-      dataIndex: 'uid',
+      dataIndex: 'userID',
       search: false,
     },
     {
@@ -116,7 +116,7 @@ const UserList: React.FC = () => {
       <ProTable<UserListItem>
         headerTitle="用户管理"
         actionRef={actionRef}
-        rowKey="uid"
+        rowKey="userID"
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         toolBarRender={() => [

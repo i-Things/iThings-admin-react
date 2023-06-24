@@ -57,7 +57,7 @@ const Login: React.FC = () => {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         setToken(msg.data.token.accessToken);
-        setUID(msg?.data?.info?.uid ?? '');
+        setUID(msg?.data?.info?.userID ?? '');
 
         console.log('====================================');
         console.log('加载完毕');

@@ -26,8 +26,8 @@ export const getToken = () => {
   return localStorage.getItem(`${TOKEN_PREFIX}-token`) ?? '';
 };
 
-export const setUID = (uid: string) => {
-  return localStorage.setItem(`${TOKEN_PREFIX}-UID`, uid);
+export const setUID = (userID: string) => {
+  return localStorage.setItem(`${TOKEN_PREFIX}-UID`, userID);
 };
 
 export const getUID = () => {

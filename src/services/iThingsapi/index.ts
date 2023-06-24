@@ -50,7 +50,6 @@ export default {
   shebeijiaohu,
   wangguanzishebeiguanli,
   changjingliandong,
-  firmware,
   shengjibaoguanli,
   task,
   liu,
@@ -63,4 +62,5 @@ export default {
   quyuguanliqiyeban,
   shujuquanxianqiyeban,
   quanxianguanli,
+  firmware,
 };

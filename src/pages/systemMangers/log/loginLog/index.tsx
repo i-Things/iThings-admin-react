@@ -12,7 +12,7 @@ import React, { useRef } from 'react';
 import '../styles.less';
 
 type LoginLogType = {
-  uid?: number;
+  userID?: number;
   userName?: string;
   ipAddr?: string;
   loginLocation?: string;
@@ -52,7 +52,7 @@ const LoginLog: React.FC = () => {
     },
     {
       title: '用户id',
-      dataIndex: 'uid',
+      dataIndex: 'userID',
       hideInSearch: true,
       copyable: true,
     },
@@ -135,7 +135,7 @@ const LoginLog: React.FC = () => {
         headerTitle="操作日志"
         bordered
         actionRef={actionRef}
-        rowKey="uid"
+        rowKey="userID"
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         request={(params) =>

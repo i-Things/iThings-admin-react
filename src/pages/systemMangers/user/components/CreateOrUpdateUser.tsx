@@ -39,7 +39,7 @@ const CreateOrUpdateUser: React.FC<{
     if (flag === 'update')
       await updateHandler<UpdateProp, UserListItem>(postApiV1SystemUserUpdate, actionRef, {
         ...body,
-        uid: record?.uid as string,
+        userID: record?.userID as string,
       });
     else await createHandler<CreateProp, UserListItem>(postApiV1SystemUserCreate, actionRef, body);
     onClose();

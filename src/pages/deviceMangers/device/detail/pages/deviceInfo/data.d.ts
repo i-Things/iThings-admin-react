@@ -36,5 +36,5 @@ export interface DeviceInfo {
   /** SIM卡卡号 */
   iccid?: string;
   /** 所属用户id */
-  uid?: string;
+  userID?: string;
 }

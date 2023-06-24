@@ -109,7 +109,7 @@ const RoleList: React.FC = () => {
       <ProTable<RoleListItem>
         headerTitle="角色管理"
         actionRef={actionRef}
-        rowKey="uid"
+        rowKey="userID"
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         toolBarRender={() => [

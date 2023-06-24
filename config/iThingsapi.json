@@ -127,9 +127,6 @@
       "name": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"
     },
     {
-      "name": "iThings-apisvr/物联网相关接口/ota升级(企业版)/升级包管理"
-    },
-    {
       "name": "iThings-apisvr/物联网相关接口/ota升级(企业版)/task"
     }
   ],
@@ -278,6 +275,10 @@
                     "required": ["page", "size"],
                     "x-apifox-ignore-properties": []
                   },
+                  "productID": {
+                    "type": "string",
+                    "title": "产品id"
+                  },
                   "parentID": {
                     "description": "父组ID, 1-根组",
                     "type": "string"
@@ -304,8 +305,8 @@
                     }
                   }
                 },
-                "x-apifox-orders": ["page", "parentID", "groupName", "tags"],
-                "required": ["parentID", "page"],
+                "x-apifox-orders": ["page", "productID", "parentID", "groupName", "tags"],
+                "required": ["parentID", "page", "productID"],
                 "x-apifox-refs": {},
                 "x-apifox-ignore-properties": []
               },
@@ -1373,7 +1374,7 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "uid": {
+                              "userID": {
                                 "description": "用户id",
                                 "type": "integer"
                               },
@@ -1411,7 +1412,7 @@
                               }
                             },
                             "x-apifox-orders": [
-                              "uid",
+                              "userID",
                               "userName",
                               "ipAddr",
                               "loginLocation",
@@ -1422,7 +1423,7 @@
                               "createdTime"
                             ],
                             "required": [
-                              "uid",
+                              "userID",
                               "userName",
                               "ipAddr",
                               "loginLocation",
@@ -1569,7 +1570,7 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "uid": {
+                              "userID": {
                                 "description": "用户id",
                                 "type": "integer"
                               },
@@ -1619,7 +1620,7 @@
                               }
                             },
                             "x-apifox-orders": [
-                              "uid",
+                              "userID",
                               "operUserName",
                               "operName",
                               "businessType",
@@ -1633,7 +1634,7 @@
                               "createdTime"
                             ],
                             "required": [
-                              "uid",
+                              "userID",
                               "operUserName",
                               "operName",
                               "businessType",
@@ -2856,13 +2857,13 @@
                       "title": "返回消息",
                       "default": "success"
                     },
-                    "uid": {
+                    "userID": {
                       "type": "integer",
                       "description": "用户id"
                     }
                   },
-                  "x-apifox-orders": ["01GBSG98GKYZTNJ7XWBBJYWQPP", "uid"],
-                  "required": ["uid", "code", "msg"],
+                  "x-apifox-orders": ["01GBSG98GKYZTNJ7XWBBJYWQPP", "userID"],
+                  "required": ["userID", "code", "msg"],
                   "x-apifox-refs": {
                     "01GBSG98GKYZTNJ7XWBBJYWQPP": {
                       "$ref": "#/components/schemas/SuccRet",
@@ -2875,7 +2876,7 @@
                   "1": {
                     "summary": "成功示例",
                     "value": {
-                      "uid": 3132131321213,
+                      "userID": 3132131321213,
                       "code": 0,
                       "msg": "success"
                     }
@@ -3412,77 +3413,7 @@
                       "type": "object",
                       "properties": {
                         "info": {
-                          "type": "object",
-                          "properties": {
-                            "uid": {
-                              "type": "string"
-                            },
-                            "userName": {
-                              "type": "string"
-                            },
-                            "email": {
-                              "type": "string"
-                            },
-                            "phone": {
-                              "type": "string"
-                            },
-                            "wechat": {
-                              "type": "string"
-                            },
-                            "lastIP": {
-                              "type": "string"
-                            },
-                            "regIP": {
-                              "type": "string"
-                            },
-                            "nickName": {
-                              "type": "string"
-                            },
-                            "city": {
-                              "type": "string"
-                            },
-                            "country": {
-                              "type": "string"
-                            },
-                            "province": {
-                              "type": "string"
-                            },
-                            "language": {
-                              "type": "string"
-                            },
-                            "headImgUrl": {
-                              "type": "string"
-                            },
-                            "createTime": {
-                              "type": "string"
-                            },
-                            "role": {
-                              "type": "integer"
-                            },
-                            "sex": {
-                              "type": "string"
-                            }
-                          },
-                          "x-apifox-orders": [
-                            "uid",
-                            "userName",
-                            "email",
-                            "phone",
-                            "wechat",
-                            "lastIP",
-                            "regIP",
-                            "nickName",
-                            "city",
-                            "country",
-                            "province",
-                            "language",
-                            "headImgUrl",
-                            "createTime",
-                            "role",
-                            "sex"
-                          ],
-                          "required": ["role"],
-                          "x-apifox-ignore-properties": []
+                          "$ref": "#/components/schemas/UserInfo"
                         },
                         "token": {
                           "type": "object",
@@ -3520,7 +3451,7 @@
                       "msg": "success",
                       "data": {
                         "info": {
-                          "uid": "1740358057038188544",
+                          "userID": "1740358057038188544",
                           "userName": "administrator",
                           "email": "163",
                           "phone": "13911110000",
@@ -3669,12 +3600,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "uid": {
+                  "userID": {
                     "description": "用户id",
                     "type": "string"
                   }
                 },
-                "x-apifox-orders": ["uid"],
+                "x-apifox-orders": ["userID"],
                 "x-apifox-ignore-properties": []
               },
               "example": {
@@ -3777,13 +3708,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "uid": {
+                  "userID": {
                     "type": "string",
                     "description": "用户id"
                   }
                 },
-                "x-apifox-orders": ["uid"],
-                "required": ["uid"],
+                "x-apifox-orders": ["userID"],
+                "required": ["userID"],
                 "x-apifox-ignore-properties": []
               },
               "example": ""
@@ -7123,8 +7054,8 @@
                 "x-apifox-ignore-properties": []
               },
               "example": {
-                "productID": "26gvWbvywJq",
-                "deviceName": "者高建事置南"
+                "productID": "26mIFLH4Gqs",
+                "deviceName": "cat2"
               }
             }
           }
@@ -7381,7 +7312,7 @@
                     "type": "string",
                     "title": "SIM卡卡号"
                   },
-                  "uid": {
+                  "userID": {
                     "type": "string",
                     "title": "所属用户id"
                   }
@@ -7422,7 +7353,7 @@
                   "mobileOperator",
                   "phone",
                   "iccid",
-                  "uid"
+                  "userID"
                 ]
               },
               "example": {
@@ -7759,7 +7690,7 @@
                     "type": "string",
                     "title": "SIM卡卡号"
                   },
-                  "uid": {
+                  "userID": {
                     "type": "string",
                     "title": "所属用户id"
                   }
@@ -7807,7 +7738,7 @@
                   "mobileOperator",
                   "phone",
                   "iccid",
-                  "uid"
+                  "userID"
                 ]
               },
               "example": {
@@ -10332,7 +10263,13 @@
                 "required": ["productID", "deviceName", "data"],
                 "x-apifox-ignore-properties": []
               },
-              "example": ""
+              "example": {
+                "productID": "26wrGK4KbrW",
+                "deviceName": "OTAtest",
+                "data": "{\"bightness\":\"22\",\"onoff\":\"false\"}",
+                "isAsync": false,
+                "shadowControl": 2
+              }
             }
           }
         },
@@ -10384,6 +10321,20 @@
                   },
                   "required": ["data", "code", "msg"],
                   "x-apifox-ignore-properties": ["code", "msg"]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": 200,
+                      "msg": "success",
+                      "data": {
+                        "code": 200,
+                        "status": "ok",
+                        "clientToken": "af4b79bf-bf3c-9ee9-3976-2540da6017df"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -11122,222 +11073,6 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78232653-run"
       }
     },
-    "/api/v1/things/ota/firmware/create": {
-      "post": {
-        "summary": "创建升级包版本",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
-        "x-apifox-status": "released",
-        "deprecated": false,
-        "description": "",
-        "operationId": "create",
-        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "iThings-project-id",
-            "in": "header",
-            "description": "",
-            "example": "1764806234122309632{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtaFirmwareCreateReq"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326407-run"
-      }
-    },
-    "/api/v1/things/ota/firmware/delete": {
-      "post": {
-        "summary": "删除升级包",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
-        "x-apifox-status": "released",
-        "deprecated": false,
-        "description": "",
-        "operationId": "delete",
-        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "iThings-project-id",
-            "in": "header",
-            "description": "",
-            "example": "1764806234122309632{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtaFirmwareDelReq"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326408-run"
-      }
-    },
-    "/api/v1/things/ota/firmware/index": {
-      "post": {
-        "summary": "获取升级包列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
-        "x-apifox-status": "released",
-        "deprecated": false,
-        "description": "",
-        "operationId": "index",
-        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "iThings-project-id",
-            "in": "header",
-            "description": "",
-            "example": "1764806234122309632{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtaFirmwareIndexReq"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtaFirmwareIndexResp"
-                }
-              }
-            }
-          }
-        },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326409-run"
-      }
-    },
-    "/api/v1/things/ota/firmware/read": {
-      "post": {
-        "summary": "获取升级包详情",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
-        "x-apifox-status": "released",
-        "deprecated": false,
-        "description": "",
-        "operationId": "read",
-        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "iThings-project-id",
-            "in": "header",
-            "description": "",
-            "example": "1764806234122309632{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtaFirmwareReadReq"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtaFirmwareReadResp"
-                }
-              }
-            }
-          }
-        },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326410-run"
-      }
-    },
     "/api/v1/things/ota/firmware/signedurl": {
       "post": {
         "summary": "获取升级包直传的signed url",
@@ -11393,68 +11128,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78232658-run"
       }
     },
-    "/api/v1/things/ota/firmware/update": {
-      "post": {
-        "summary": "更新升级包",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
-        "x-apifox-status": "released",
-        "deprecated": false,
-        "description": "",
-        "operationId": "update",
-        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
-        "parameters": [
-          {
-            "name": "iThings-token",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "iThings-project-id",
-            "in": "header",
-            "description": "",
-            "example": "1764806234122309632{{iThings-token}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtaFirmwareInfoUpdateReq"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326411-run"
-      }
-    },
     "/ithings/265ngeRHyrS/test58.jpg": {
       "put": {
         "summary": "文件直传",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/升级包管理",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "地址由《获取升级包直传的signed url》接口返回",
-        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/升级包管理"],
+        "tags": ["iThings-apisvr/物联网相关接口/运维/ota升级/升级包管理"],
         "parameters": [
           {
             "name": "X-Amz-Algorithm",
@@ -11521,7 +11202,7 @@
             "in": "header",
             "description": "",
             "required": false,
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0IiwiZXhwIjoxNjgzNTQ4NDU5LCJpYXQiOjE2ODM1NDQ4NTksIlJvbGUiOjF9.ygQyxFx7AGtf7vcFJmE-xcElQUtwE23HN_0av02tSec",
+            "example": "{{iThings-token}}",
             "schema": {
               "type": "string"
             }
@@ -11561,7 +11242,7 @@
             }
           }
         },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-83892933-run"
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78232660-run"
       }
     },
     "/api/v1/things/ota/task/create": {
@@ -14570,7 +14251,7 @@
                 "properties": {},
                 "x-apifox-ignore-properties": []
               },
-              "example": "{\n    \"projectID\": \"1764806234122309632\" //测试项目22\n    // \"projectID\": \"1764800777801494528\" //测试项目2\n    // \"areaID\": \"1764914525435441152\" //某个区域\n}"
+              "example": "{\n    // \"projectID\": \"1764806234122309632\" //测试项目22\n    // \"projectID\": \"1764800777801494528\" //测试项目2\n    // \"areaID\": \"1764914525435441152\" //某个区域\n}"
             }
           }
         },
@@ -17139,8 +16820,7 @@
                 "x-apifox-orders": ["productID", "deviceName", "nonce", "timestamp", "signature"],
                 "required": ["productID", "deviceName", "nonce", "timestamp", "signature"],
                 "x-apifox-ignore-properties": []
-              },
-              "example": ""
+              }
             }
           }
         },
@@ -17405,14 +17085,15 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89011991-run"
       }
     },
-    "/register/dev": {
+    "/api/v1/things/ota/firmware/create": {
       "post": {
-        "summary": "未命名接口",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备鉴权",
-        "x-apifox-status": "developing",
+        "summary": "创建升级包版本",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
+        "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/设备/设备鉴权"],
+        "operationId": "create",
+        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -17434,22 +17115,244 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtaFirmwareCreateReq"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "成功",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "x-apifox-orders": [],
-                  "x-apifox-ignore-properties": []
+                  "type": "string"
                 }
               }
             }
           }
         },
-        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89758936-run"
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326407-run"
+      }
+    },
+    "/api/v1/things/ota/firmware/delete": {
+      "post": {
+        "summary": "删除升级包",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "delete",
+        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtaFirmwareDelReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326408-run"
+      }
+    },
+    "/api/v1/things/ota/firmware/index": {
+      "post": {
+        "summary": "获取升级包列表",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "index",
+        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtaFirmwareIndexReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtaFirmwareIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326409-run"
+      }
+    },
+    "/api/v1/things/ota/firmware/read": {
+      "post": {
+        "summary": "获取升级包详情",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "read",
+        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtaFirmwareReadReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtaFirmwareReadResp"
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326410-run"
+      }
+    },
+    "/api/v1/things/ota/firmware/update": {
+      "post": {
+        "summary": "更新升级包",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "update",
+        "tags": ["iThings-apisvr/物联网相关接口/ota升级(企业版)/firmware"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtaFirmwareInfoUpdateReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89326411-run"
       }
     },
     "/api/v1/things/ota/task/device-index": {
@@ -17505,6 +17408,53 @@
           }
         },
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89477820-run"
+      }
+    },
+    "/register/dev": {
+      "post": {
+        "summary": "未命名接口",
+        "x-apifox-folder": "iThings-apisvr/物联网相关接口/设备/设备鉴权",
+        "x-apifox-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": ["iThings-apisvr/物联网相关接口/设备/设备鉴权"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89758936-run"
       }
     },
     "/api/v1/things/ota/task/device-retry": {
@@ -18521,7 +18471,7 @@
           "createdTime": {
             "type": "string"
           },
-          "uid": {
+          "userID": {
             "type": "string",
             "description": "用户id"
           },
@@ -18585,7 +18535,7 @@
           }
         },
         "required": [
-          "uid",
+          "userID",
           "userName",
           "email",
           "phone",
@@ -18605,7 +18555,7 @@
         ],
         "x-apifox-orders": [
           "createdTime",
-          "uid",
+          "userID",
           "userName",
           "nickName",
           "sex",
@@ -18646,7 +18596,7 @@
           "createdTime": {
             "type": "string"
           },
-          "uid": {
+          "userID": {
             "type": "string",
             "description": "用户id"
           },
@@ -18710,7 +18660,7 @@
           }
         },
         "required": [
-          "uid",
+          "userID",
           "userName",
           "email",
           "phone",
@@ -18730,7 +18680,7 @@
         ],
         "x-apifox-orders": [
           "createdTime",
-          "uid",
+          "userID",
           "userName",
           "nickName",
           "sex",
@@ -18774,18 +18724,58 @@
         "x-apifox-ignore-properties": []
       },
       "ProjectAreaTree": {
-        "title": "项目区域信息Tree",
-        "description": "项目区域信息表",
         "type": "object",
         "x-apifox-refs": {
-          "01GZMXF27FM5MMSGY468G0XJV8": {
-            "x-apifox-overrides": {},
-            "type": "object",
-            "properties": {},
-            "x-apifox-orders": []
+          "01H3KK1822X6KP2WA9HBKVE45Z": {
+            "$ref": "#/components/schemas/ProjectArea",
+            "x-apifox-overrides": {}
           }
         },
         "properties": {
+          "areaID": {
+            "type": "string",
+            "description": "项目区域id(雪花id)"
+          },
+          "parentAreaID": {
+            "type": "string",
+            "description": "上级项目区域id(雪花id)"
+          },
+          "projectID": {
+            "type": "string",
+            "description": "所属项目id(雪花id)"
+          },
+          "areaName": {
+            "description": "项目区域名称",
+            "type": "string",
+            "maxLength": 100
+          },
+          "position": {
+            "description": "项目区域定位(默认百度坐标系BD09)",
+            "type": "object",
+            "properties": {},
+            "x-apifox-orders": [],
+            "x-apifox-ignore-properties": []
+          },
+          "desc": {
+            "description": "项目区域备注",
+            "type": "string",
+            "maxLength": 100
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time",
+            "default": "current_timestamp()"
+          },
+          "updatedTime": {
+            "type": "string",
+            "format": "date-time",
+            "default": "current_timestamp()"
+          },
+          "deletedTime": {
+            "type": "string",
+            "format": "date-time",
+            "default": null
+          },
           "children": {
             "type": "array",
             "items": {
@@ -18793,10 +18783,20 @@
             }
           }
         },
-        "required": ["children"],
-        "x-apifox-orders": ["01GZMXF27FM5MMSGY468G0XJV8", "children"],
-        "x-apifox-folder": "iThings数据模型",
-        "x-apifox-ignore-properties": []
+        "required": ["children", "areaID", "parentAreaID", "projectID", "areaName"],
+        "x-apifox-orders": ["01H3KK1822X6KP2WA9HBKVE45Z", "children"],
+        "x-apifox-ignore-properties": [
+          "areaID",
+          "parentAreaID",
+          "projectID",
+          "areaName",
+          "position",
+          "desc",
+          "createdTime",
+          "updatedTime",
+          "deletedTime"
+        ],
+        "x-apifox-folder": "iThings数据模型"
       },
       "position": {
         "type": "object",
@@ -19776,7 +19776,7 @@
             "type": "string",
             "title": "SIM卡卡号"
           },
-          "uid": {
+          "userID": {
             "type": "string",
             "title": "所属用户id"
           }
@@ -19817,7 +19817,7 @@
           "mobileOperator",
           "phone",
           "iccid",
-          "uid"
+          "userID"
         ],
         "title": "设备信息",
         "x-apifox-folder": "iThings数据模型",

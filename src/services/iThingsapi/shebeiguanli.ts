@@ -66,7 +66,7 @@ export async function postApiV1ThingsDeviceInfoCreate(
     mobileOperator?: number;
     phone?: string;
     iccid?: string;
-    uid?: string;
+    userID?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -257,7 +257,7 @@ export async function postApiV1ThingsDeviceInfoUpdate(
     mobileOperator?: number;
     phone?: string;
     iccid?: string;
-    uid?: string;
+    userID?: string;
   },
   options?: { [key: string]: any },
 ) {
