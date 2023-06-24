@@ -100,18 +100,28 @@ export function recursionTree(pre: MenuListItem[]) {
 export function isOnlineEnum(row: DEVICE_INFO | GroupDeviceItem) {
   return row?.firstLogin === '0'
     ? {
-      2: {
-        text: '未激活',
-        status: 'Warning',
-      },
-    }
+        2: {
+          text: '未激活',
+          status: 'Warning',
+        },
+      }
     : {
-      1: { text: '在线', status: 'Success' },
-      2: {
-        text: '离线',
-        status: 'Error',
-      },
-    };
+        1: { text: '在线', status: 'Success' },
+        2: {
+          text: '离线',
+          status: 'Error',
+        },
+      };
+}
+
+// 设备部署状态
+export function actionStatusEnum() {
+  return {
+    1: { text: '待部署', status: 'Default' },
+    2: { text: '部署中', status: 'Processing' },
+    3: { text: '部署成功', status: 'Success' },
+    4: { text: '部署失败', status: 'Error' },
+  };
 }
 
 /**
@@ -202,13 +212,13 @@ export function downloadFunction(content: string, filename = 'tsl.json') {
  * 判断是否为合法的 corn 表达式
  *
  * @param {string} value
- * @return {*} 
+ * @return {*}
  */
 export const isCorn = (value: string) => {
   if (!value) return Promise.reject('请输入 cron 表达式');
   console.log('value', value);
 
-  const v0 = (value).replace(/(^\s*)|(\s*$)/g, "").split(" ")
+  const v0 = value.replace(/(^\s*)|(\s*$)/g, '').split(' ');
   const v = v0.filter(function (e: any) {
     return e && e.trim();
   });
@@ -221,7 +231,7 @@ export const isCorn = (value: string) => {
   })
     ? Promise.resolve('有效 Cron 表达式')
     : Promise.reject('无效 Cron 表达式');
-}
+};
 
 /**
  * 存储本地缓存
@@ -231,57 +241,65 @@ export const isCorn = (value: string) => {
  */
 export const setLocalStorage = (key: string, value: any) => {
   try {
-    const valueOfString = JSON.stringify(value)
-    localStorage.setItem(KEYPREFIX + key, valueOfString)
+    const valueOfString = JSON.stringify(value);
+    localStorage.setItem(KEYPREFIX + key, valueOfString);
   } catch (error) {
-    throw new Error(`存储本地缓存时报错了, ${error}`)
+    throw new Error(`存储本地缓存时报错了, ${error}`);
   }
-}
+};
 /**
  * 获取本地缓存
  *
  * @param {string} key
- * @return {*} 
+ * @return {*}
  */
 export const getLocalStoragByKey = (key: string) => {
   try {
-    const valueOfString = localStorage.getItem(KEYPREFIX + key)
+    const valueOfString = localStorage.getItem(KEYPREFIX + key);
     if (valueOfString) {
-      const value = JSON.parse(valueOfString)
-      return value
+      const value = JSON.parse(valueOfString);
+      return value;
     }
   } catch (error) {
-    throw new Error(`获取本地缓存时报错了, ${error}`)
+    throw new Error(`获取本地缓存时报错了, ${error}`);
   }
-}
+};
 
 /**
  * 下载文件
  * @param url 下载链接
  * @param params 参数
  */
-export const downloadFile = (url: string, params?: Record<string, any>) => {
-  const formElement = document.createElement('form');
-  formElement.style.display = 'display:none;';
-  formElement.method = 'GET';
-  formElement.action = url;
-  // 添加参数
-  if (params) {
-    Object.keys(params).forEach((key: string) => {
-      const inputElement = document.createElement('input');
-      inputElement.type = 'hidden';
-      inputElement.name = key;
-      inputElement.value = params[key];
-      formElement.appendChild(inputElement);
-    });
-  }
-  const inputElement = document.createElement('input');
-  inputElement.type = 'hidden';
-  inputElement.value = getToken();
-  formElement.appendChild(inputElement);
-  document.body.appendChild(formElement);
-  formElement.submit();
-  document.body.removeChild(formElement);
+export const downloadFile = (url: string) => {
+  // const formElement = document.createElement('form');
+  // formElement.style.display = 'display:none;';
+  // formElement.method = 'GET';
+  // formElement.action = url;
+  // // 添加参数
+  // if (params) {
+  //   Object.keys(params).forEach((key: string) => {
+  //     const inputElement = document.createElement('input');
+  //     inputElement.type = 'hidden';
+  //     inputElement.name = key;
+  //     inputElement.value = params[key];
+  //     formElement.appendChild(inputElement);
+  //   });
+  // }
+  // const inputElement = document.createElement('input');
+  // inputElement.type = 'hidden';
+  // inputElement.value = getToken();
+  // formElement.appendChild(inputElement);
+  // document.body.appendChild(formElement);
+  // formElement.submit();
+  // document.body.removeChild(formElement);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = url.substring(url.lastIndexOf('/') + 1);
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 // 第一个首字母大写
