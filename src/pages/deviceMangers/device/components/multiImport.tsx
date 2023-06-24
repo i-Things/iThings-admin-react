@@ -1,5 +1,6 @@
 // @ts-ignore
-import url from '@/assets/template/iThings-设备导入模板.csv';
+// import url from '@/assets/template/iThings-设备导入模板.csv';
+const url = '@/assets/template/iThings-设备导入模板.csv';
 import type { DEVICE_INFO, PRODUCT_INFO } from '@/utils/const';
 import { TOKENKEY } from '@/utils/const';
 import { downloadFile, getToken } from '@/utils/utils';
