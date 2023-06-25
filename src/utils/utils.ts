@@ -271,28 +271,6 @@ export const getLocalStoragByKey = (key: string) => {
  * @param params 参数
  */
 export const downloadFile = (url: string) => {
-  // const formElement = document.createElement('form');
-  // formElement.style.display = 'display:none;';
-  // formElement.method = 'GET';
-  // formElement.action = url;
-  // // 添加参数
-  // if (params) {
-  //   Object.keys(params).forEach((key: string) => {
-  //     const inputElement = document.createElement('input');
-  //     inputElement.type = 'hidden';
-  //     inputElement.name = key;
-  //     inputElement.value = params[key];
-  //     formElement.appendChild(inputElement);
-  //   });
-  // }
-  // const inputElement = document.createElement('input');
-  // inputElement.type = 'hidden';
-  // inputElement.value = getToken();
-  // formElement.appendChild(inputElement);
-  // document.body.appendChild(formElement);
-  // formElement.submit();
-  // document.body.removeChild(formElement);
-
   const link = document.createElement('a');
   link.href = url;
   link.download = url.substring(url.lastIndexOf('/') + 1);
