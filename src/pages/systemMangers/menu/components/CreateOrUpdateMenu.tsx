@@ -38,7 +38,8 @@ const CreateOrUpdateMenu: React.FC<{
   const onClose = () => setVisible(false);
 
   const recursion = (pre: MenuOption[]) => {
-    pre.map((item) => {
+    pre?.map((item) => {
+      item.value = item.id;
       if (item.children) recursion(item?.children);
       if (item.id === record?.id) item.disabled = true;
     });
@@ -57,9 +58,13 @@ const CreateOrUpdateMenu: React.FC<{
   ];
 
   const formSubmit = async (values: MenuListItem) => {
+    console.log(values);
+
     let parentID = 1;
-    if (Array.isArray(values.parentID)) parentID = values.parentID[values.parentID.length - 1];
-    else {
+    if (Array.isArray(values.parentID)) {
+      if (values.parentID[0] === 0) parentID = 1;
+      else parentID = values.parentID[values.parentID.length - 1];
+    } else {
       if (values.parentID === '根节点') parentID = 1;
       else parentID = flatOptions.filter((item) => item.name === values.parentID)[0].id;
     }
@@ -93,6 +98,9 @@ const CreateOrUpdateMenu: React.FC<{
     };
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
+  console.log('flag', flag);
+  console.log('option', recursion(options as MenuOption[]));
+
   return (
     <ModalForm<MenuListItem>
       width={550}
