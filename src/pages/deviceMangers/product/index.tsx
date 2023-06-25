@@ -133,6 +133,7 @@ const IndexPage: React.FC = () => {
           查看
         </a>,
         <Button
+          type="link"
           danger
           key="deleteProduct"
           onClick={() => {

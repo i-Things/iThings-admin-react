@@ -316,6 +316,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           </a>
           <Button
             type="link"
+            danger
             key="deleteProduct"
             onClick={() => {
               showDeleteConfirm(record);
@@ -343,7 +344,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       rowKey="secret"
       columns={columns}
       actionRef={actionRef}
-      cardBordered
+      bordered
       request={queryPage}
       onReset={() => setTags(undefined)}
       editable={{

@@ -7,7 +7,7 @@ import {
 import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { ICON_OPTION } from '@/utils/iconMap';
-import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
@@ -46,17 +46,9 @@ const CreateOrUpdateMenu: React.FC<{
   };
 
   const returnTitle = {
-    [FlagStatus.ADD]: (
-      <>
-        <PlusOutlined /> 添加子菜单
-      </>
-    ),
+    [FlagStatus.ADD]: '添加子菜单',
     [FlagStatus.UPDATE]: '编辑',
-    [FlagStatus.CREATE]: (
-      <>
-        <PlusOutlined /> 新建根菜单
-      </>
-    ),
+    [FlagStatus.CREATE]: '新建根菜单',
   };
 
   const HIDE_IN_MENU_OPTION = [
@@ -104,11 +96,11 @@ const CreateOrUpdateMenu: React.FC<{
   return (
     <ModalForm<MenuListItem>
       width={550}
-      formRef={editFormRef}
-      title={flag === FlagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
+      formRef={editFormRef} /*  */
+      title={flag === FlagStatus.UPDATE ? '编辑菜单' : '创建菜单'}
       trigger={
         <Button
-          type="primary"
+          type={flag === FlagStatus.UPDATE || flag === FlagStatus.ADD ? 'link' : 'primary'}
           onClick={() => {
             setEditFlag(true);
             onOpen();

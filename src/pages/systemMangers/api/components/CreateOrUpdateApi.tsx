@@ -8,7 +8,6 @@ import {
   LAYOUT_TYPE_HORIZONTAL,
   METHOD_VALUE,
 } from '@/utils/const';
-import { PlusOutlined } from '@ant-design/icons';
 import { ActionType, ProFormSelect } from '@ant-design/pro-components';
 import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { useRequest } from 'ahooks';
@@ -73,22 +72,16 @@ const CreateOrUpdateApi: React.FC<{
     <ModalForm<ApiListType>
       width={550}
       formRef={editFormRef}
-      title={flag === 'update' ? '编辑Api' : '新建Api'}
+      title={flag === 'update' ? '编辑Api' : '创建Api'}
       trigger={
         <Button
-          type="primary"
+          type={flag === 'update' ? 'link' : 'primary'}
           onClick={() => {
             setEditFlag(true);
             onOpen();
           }}
         >
-          {flag === 'update' ? (
-            '编辑'
-          ) : (
-            <>
-              <PlusOutlined /> 新建接口
-            </>
-          )}
+          {flag === 'update' ? '编辑' : '新增'}
         </Button>
       }
       visible={visible}

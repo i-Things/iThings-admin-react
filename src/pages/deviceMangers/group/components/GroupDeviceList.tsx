@@ -67,6 +67,11 @@ const GroupDeviceList: React.FC<{
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
       title: '设备名称',
       dataIndex: 'deviceName',
       render: (_, record) => <a onClick={() => jumpToDeviceList(record)}>{_}</a>,
@@ -110,11 +115,11 @@ const GroupDeviceList: React.FC<{
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button type="primary" onClick={() => jumpToDeviceList(record)}>
+          <Button type="link" onClick={() => jumpToDeviceList(record)}>
             查看
           </Button>
           <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             从分组中删除
           </Button>
         </>
@@ -136,6 +141,7 @@ const GroupDeviceList: React.FC<{
   return (
     <>
       <ProTable<GroupDeviceItem>
+        bordered
         headerTitle={
           <LightFilter bordered onFinish={filterFinish}>
             <ProFormSelect
