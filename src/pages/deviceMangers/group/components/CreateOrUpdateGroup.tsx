@@ -8,7 +8,6 @@ import {
 } from '@/services/iThingsapi/shebeifenzu';
 import { FlagStatus, ResponseCode } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
-import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
@@ -106,7 +105,7 @@ const CreateOrUpdateGroup: React.FC<{
     <ModalForm<GroupListItem>
       formRef={editFormRef}
       width={550}
-      title={flag === FlagStatus.UPDATE ? '编辑分组信息' : '新建分组'}
+      title={flag === FlagStatus.UPDATE ? '编辑分组信息' : '创建分组'}
       trigger={
         <Button
           type="primary"
@@ -115,13 +114,7 @@ const CreateOrUpdateGroup: React.FC<{
             onOpen();
           }}
         >
-          {flag === FlagStatus.UPDATE ? (
-            '编辑'
-          ) : (
-            <>
-              <PlusOutlined /> 新建分组
-            </>
-          )}
+          {flag === FlagStatus.UPDATE ? '编辑' : '新增'}
         </Button>
       }
       visible={visible}

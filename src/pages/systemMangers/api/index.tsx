@@ -14,7 +14,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { useRequest } from 'ahooks';
-import { Button, Divider, message, Modal, Space, Tag } from 'antd';
+import { Button, message, Modal, Space, Tag } from 'antd';
 import React, { useRef } from 'react';
 import CreateOrUpdateApi from './components/CreateOrUpdateApi';
 
@@ -130,8 +130,7 @@ const ApiList: React.FC = () => {
       render: (_, record) => (
         <>
           <CreateOrUpdateApi flag="update" record={record} key="updateApi" actionRef={actionRef} />
-          <Divider type="vertical" />
-          <Button danger key="deleteProduct" onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger key="deleteProduct" onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>

@@ -12,7 +12,7 @@ import { arrTransferObj } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider } from 'antd';
+import { Button } from 'antd';
 import React, { useEffect, useRef } from 'react';
 import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
@@ -41,6 +41,11 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<UserListItem>[] = [
     {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
       title: '编号',
       dataIndex: 'userID',
       search: false,
@@ -48,6 +53,7 @@ const UserList: React.FC = () => {
     {
       title: '用户名',
       dataIndex: 'userName',
+      copyable: true,
     },
     {
       title: '昵称',
@@ -94,8 +100,7 @@ const UserList: React.FC = () => {
       render: (_, record) => (
         <>
           <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} />
-          <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>
@@ -114,6 +119,7 @@ const UserList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<UserListItem>
+        bordered
         headerTitle="用户管理"
         actionRef={actionRef}
         rowKey="userID"

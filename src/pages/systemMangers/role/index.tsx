@@ -10,7 +10,7 @@ import { timestampToDateStr } from '@/utils/date';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Drawer, Tabs } from 'antd';
+import { Button, Drawer, Tabs } from 'antd';
 import React, { useRef, useState } from 'react';
 import ApiForm from './components/ApiForm';
 import CreateOrUpdateRole from './components/CreateOrUpdateRole';
@@ -48,6 +48,11 @@ const RoleList: React.FC = () => {
 
   const columns: ProColumns<RoleListItem>[] = [
     {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
       title: '编号',
       dataIndex: 'id',
       hideInSearch: true,
@@ -55,6 +60,7 @@ const RoleList: React.FC = () => {
     {
       title: '角色名称',
       dataIndex: 'name',
+      copyable: true,
     },
     {
       title: '备注',
@@ -84,7 +90,7 @@ const RoleList: React.FC = () => {
       render: (_, record) => (
         <>
           <Button
-            type="primary"
+            type="link"
             onClick={() => {
               setDrawerVisible(true);
               setCurrentData(record);
@@ -93,10 +99,8 @@ const RoleList: React.FC = () => {
           >
             设置权限
           </Button>
-          <Divider type="vertical" />
           <CreateOrUpdateRole flag="update" record={record} actionRef={actionRef} />
-          <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>
@@ -107,6 +111,7 @@ const RoleList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<RoleListItem>
+        bordered
         headerTitle="角色管理"
         actionRef={actionRef}
         rowKey="userID"
