@@ -5,22 +5,22 @@ import {
   postApiV1ThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
 import {
+  createAsyncFormActions,
   Field,
   FormEffectHooks,
   FormMegaLayout,
   FormPath,
   FormSpy,
   SchemaForm,
-  createAsyncFormActions,
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
+  FormItemGrid,
+  FormLayout,
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
   Switch as FSwitch,
-  FormItemGrid,
-  FormLayout,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
@@ -28,13 +28,14 @@ import { AutoComplete, Modal, Radio } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import type { EditFormType } from './const';
 import {
-  _dataTypeList,
-  _yuansuleixingList,
   dataTypeList,
   eventTypeList,
   rwTypeList,
+  shadowType,
   typeBtnList,
   yuansuleixingList,
+  _dataTypeList,
+  _yuansuleixingList,
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -64,12 +65,13 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       name,
       desc,
       mode,
+      isUseShadow,
       numericalRange,
       start,
       step,
       unit,
       max,
-      dataDefinitionForenum,
+      dataDefinitionForEnum: dataDefinitionForEnum,
       mapping,
       specs = [],
       input = [],
@@ -224,7 +226,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     }
 
     const _mapping = {};
-    dataDefinitionForenum?.map((item: any) => {
+    dataDefinitionForEnum?.map((item: any) => {
       const key = item.label;
       const value = item.value;
       _mapping[key] = value;
@@ -237,7 +239,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         specs,
         // input,
         // output,
-        dataDefinitionForenum,
+        dataDefinitionForEnum: dataDefinitionForEnum,
         type: values?.dataType ?? eventType,
         numericalRange,
         mapping: __mapping,
@@ -247,6 +249,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         step: step + '',
         unit: unit + '',
       },
+      isUseShadow,
       params,
       input,
       output,
@@ -329,7 +332,10 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const params = _affordance?.params;
     const input = _affordance?.input;
     const output = _affordance?.output;
-
+    let isUseShadow = _affordance?.isUseShadow;
+    if (isUseShadow == undefined) {
+      isUseShadow = false;
+    }
     const dataType = _affordance?.define?.type;
     const mapping = _affordance?.define?.mapping;
     const max = _affordance?.define?.max;
@@ -338,7 +344,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const step = _affordance?.define?.step;
     const unit = _affordance?.define?.unit;
 
-    const dataDefinitionForenum = _affordance?.define?.dataDefinitionForenum;
+    const dataDefinitionForEnum = _affordance?.define?.dataDefinitionForEnum;
     const numericalRange = _affordance?.define?.numericalRange;
 
     ruleActions.current.setFieldValue('mode', mode);
@@ -349,8 +355,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.current.setFieldValue('start', start);
     ruleActions.current.setFieldValue('step', step);
     ruleActions.current.setFieldValue('unit', unit);
-    ruleActions.current.setFieldValue('dataDefinitionForenum', dataDefinitionForenum);
+    ruleActions.current.setFieldValue('dataDefinitionForEnum', dataDefinitionForEnum);
     ruleActions.current.setFieldValue('numericalRange', numericalRange);
+    ruleActions.current.setFieldValue('isUseShadow', isUseShadow);
 
     ruleActions.current.setFieldValue('dataType', dataType);
     ruleActions.current.setFieldValue('params', params);
@@ -514,7 +521,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       >
         <Field
           type="array"
-          name="dataDefinitionForenum"
+          name="dataDefinitionForEnum"
           title="数据定义"
           x-component="ArrayTable"
           x-props={{ visible: false }}
@@ -526,7 +533,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             renderMoveDown: () => null,
             renderMoveUp: () => null,
             renderRemove: (idx: number) => {
-              const mutators = ruleActions.current.createMutators('dataDefinitionForenum');
+              const mutators = ruleActions.current.createMutators('dataDefinitionForEnum');
               return (
                 <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
                   {({}) => {
@@ -602,7 +609,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
   // 新的对应关系
   const formItemMapping = {
-    1: ['dataType'],
+    1: ['dataType', 'isUseShadow'],
     2: ['eventType', 'params'],
     3: ['input', 'output'],
   };
@@ -612,7 +619,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
     string: ['mode', 'max'],
     float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
-    enum: ['mode', 'dataDefinitionForenum'],
+    enum: ['mode', 'dataDefinitionForEnum'],
     timestamp: ['mode', 'dataDefinitionFortimestamp'],
     struct: ['mode', 'specs'],
     array: [
@@ -876,6 +883,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           mapping: { '0': '关', '1': '开' },
           numericalRange: { min: '1', max: '100' },
           start: 0,
+          isUseShadow: false,
           step: 1,
           max: '2048',
           specs: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
@@ -1094,6 +1102,17 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             message: '请输入第一个字符不能是数字，支持英文、数字、下划线的组合，最多不超过32个字符',
           }}
           x-component="Input"
+        />
+        <Field
+          type="boolean"
+          title="设备影子"
+          name="isUseShadow"
+          x-component="Radio"
+          x-props={{
+            placeholder: '是否启用设备影子',
+            optionType: 'button',
+            options: shadowType,
+          }}
         />
         <>
           <Field

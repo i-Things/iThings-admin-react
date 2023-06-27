@@ -3,7 +3,7 @@ import {
   postApiV1ThingsProductSchemaIndex,
   postApiV1ThingsProductSchemaTslImport,
   postApiV1ThingsProductSchemaTslRead,
-  postApiV1ThingsProductSchema__openAPI__delete
+  postApiV1ThingsProductSchema__openAPI__delete,
 } from '@/services/iThingsapi/wumoxing';
 import { downloadFunction, isJSON } from '@/utils/utils';
 import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -330,6 +330,16 @@ export default () => {
   return (
     <>
       <Button
+        style={{ marginRight: 10 }}
+        key="show"
+        type="primary"
+        onClick={() => {
+          modelModalRef.current.createModel();
+        }}
+      >
+        新建自定义功能
+      </Button>
+      <Button
         type="primary"
         style={{ marginRight: 10 }}
         onClick={() => {
@@ -339,6 +349,7 @@ export default () => {
         导入物模型
       </Button>
       <Button
+        style={{ marginRight: 10 }}
         onClick={async () => {
           const res = await postApiV1ThingsProductSchemaTslRead({ productID });
           if (res instanceof Response) {
@@ -362,17 +373,6 @@ export default () => {
         dateFormatter="string"
         headerTitle="自定义功能"
         request={queryList}
-        toolBarRender={() => [
-          <Button
-            key="show"
-            type="primary"
-            onClick={() => {
-              modelModalRef.current.createModel();
-            }}
-          >
-            新建自定义功能
-          </Button>,
-        ]}
       />
       <EditForm
         modalVisit={modalVisit}

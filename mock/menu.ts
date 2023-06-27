@@ -284,7 +284,12 @@ async function postApiV1SystemMenuIndex(req: Request, res: Response) {
 
 async function postApiV1SystemMenuCreate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
-    menuList.push({ ...req.body, uid: 123456, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
+    menuList.push({
+      ...req.body,
+      userID: 123456,
+      createdTime: 1661830593000,
+      roleMenuID: [1, 2, 3],
+    });
   return res.json({
     code: 200,
     msg: '添加成功',
@@ -294,7 +299,7 @@ async function postApiV1SystemMenuCreate(req: Request, res: Response) {
 
 async function postApiV1SystemMenuUpdate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
-    menuList.push({ ...req.body, uid: 123, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
+    menuList.push({ ...req.body, userID: 123, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
   return res.json({
     code: 200,
     msg: '添加成功',

@@ -15,6 +15,8 @@ const actionMap = new Map([
   ['property', '属性'],
   ['event', '事件'],
   ['action', '行为'],
+  ['subscribe', '订阅'],
+  ['publish', '发布'],
 ]);
 
 const dataTypeMap = new Map([
@@ -115,6 +117,40 @@ export const contentColumns = [
   },
   {
     title: '通信内容',
+    dataIndex: 'content',
+    key: 'content',
+    render: (val: string) => val || '-',
+  },
+  {
+    title: '请求结果状态',
+    dataIndex: 'resultType',
+    key: 'resultType',
+    render: (val: string) => val || '-',
+  },
+];
+
+export const accessColumns = [
+  {
+    title: '时间',
+    dataIndex: 'timestamp',
+    key: 'timestamp',
+    render: (val: string) => timestampToDateStr(Number(val), 'YYYY-MM-DD HH:mm:ss.SSS'),
+  },
+  {
+    title: '操作类型',
+    dataIndex: 'action',
+    key: 'action',
+    render: (val: string) => actionMap.get(val) || '-',
+  },
+
+  {
+    title: 'Topic',
+    dataIndex: 'topic',
+    key: 'topic',
+    render: (val: string) => val || '-',
+  },
+  {
+    title: '描述',
     dataIndex: 'content',
     key: 'content',
     render: (val: string) => val || '-',

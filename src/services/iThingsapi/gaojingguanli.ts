@@ -5,6 +5,7 @@ import request from '@/utils/request';
 /** 新增告警 POST /api/v1/things/rule/alarm/info/create */
 export async function postApiV1ThingsRuleAlarmInfoCreate(
   body: {
+    /** 1启用 2禁用 */
     name: string;
     /** 1启用 2禁用 */
     status: number;
@@ -92,6 +93,7 @@ export async function postApiV1ThingsRuleAlarmInfoRead(
 /** 更新告警 POST /api/v1/things/rule/alarm/info/update */
 export async function postApiV1ThingsRuleAlarmInfoUpdate(
   body: {
+    /** 1启用 2禁用 */
     name: string;
     /** 1启用 2禁用 */
     status: number;

@@ -12,7 +12,7 @@ import { arrTransferObj } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider } from 'antd';
+import { Button } from 'antd';
 import React, { useEffect, useRef } from 'react';
 import CreateOrUpdateUser from './components/CreateOrUpdateUser';
 import type { UserListItem } from './types';
@@ -28,11 +28,11 @@ const UserList: React.FC = () => {
   type QueryRoleProp = typeof postApiV1SystemRoleIndex;
 
   // 删除操作
-  const showDeleteConfirm = (record: { uid: string; userName: string }) => {
+  const showDeleteConfirm = (record: { userID: string; userName: string }) => {
     const body = {
-      uid: record?.uid ?? '',
+      userID: record?.userID ?? '',
     };
-    deleteHandler<{ uid: string }>(postApiV1SystemUser__openAPI__delete, actionRef, {
+    deleteHandler<{ userID: string }>(postApiV1SystemUser__openAPI__delete, actionRef, {
       title: '是否删除当前用户',
       content: `所选用户: ${record?.userName ?? '未知用户'},  删除后无法恢复，请确认`,
       body,
@@ -41,13 +41,19 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<UserListItem>[] = [
     {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
       title: '编号',
-      dataIndex: 'uid',
+      dataIndex: 'userID',
       search: false,
     },
     {
       title: '用户名',
       dataIndex: 'userName',
+      copyable: true,
     },
     {
       title: '昵称',
@@ -94,8 +100,7 @@ const UserList: React.FC = () => {
       render: (_, record) => (
         <>
           <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} />
-          <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>
@@ -114,9 +119,10 @@ const UserList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<UserListItem>
+        bordered
         headerTitle="用户管理"
         actionRef={actionRef}
-        rowKey="uid"
+        rowKey="userID"
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         toolBarRender={() => [

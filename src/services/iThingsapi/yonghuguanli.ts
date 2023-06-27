@@ -64,7 +64,7 @@ export async function postApiV1SystemUserCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; uid: number }>('/api/v1/system/user/create', {
+  return request<{ code: number; msg: string; userID: number }>('/api/v1/system/user/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export async function postApiV1SystemUserCreate(
 export async function postApiV1SystemUser__openAPI__delete(
   body: {
     /** 用户id */
-    uid: string;
+    userID: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -142,24 +142,7 @@ export async function postApiV1SystemUserLogin(
     code: number;
     msg: string;
     data: {
-      info: {
-        uid?: string;
-        userName?: string;
-        email?: string;
-        phone?: string;
-        wechat?: string;
-        lastIP?: string;
-        regIP?: string;
-        nickName?: string;
-        city?: string;
-        country?: string;
-        province?: string;
-        language?: string;
-        headImgUrl?: string;
-        createTime?: string;
-        role?: number;
-        sex?: string;
-      };
+      info?: API.UserInfo;
       token?: { accessToken?: string; accessExpire?: string; refreshAfter?: string };
     };
   }>('/api/v1/system/user/login', {
@@ -176,7 +159,7 @@ export async function postApiV1SystemUserLogin(
 export async function postApiV1SystemUserRead(
   body: {
     /** 用户id */
-    uid?: string;
+    userID?: string;
   },
   options?: { [key: string]: any },
 ) {

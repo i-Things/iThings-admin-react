@@ -12,7 +12,7 @@ import { LightFilter } from '@ant-design/pro-form';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { history } from '@umijs/max';
-import { Button, Divider, Input } from 'antd';
+import { Button, Input } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import type { activeKeyProps, GroupListItem } from '../types';
 import CreateOrUpdateGroup from './CreateOrUpdateGroup';
@@ -87,6 +87,11 @@ const GroupList: React.FC<{
 
   const columns: ProColumns<GroupListItem>[] = [
     {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
       title: '分组名称',
       dataIndex: 'groupName',
       render: (_, record) => <a onClick={() => jumpToDetails(record)}>{_}</a>,
@@ -130,11 +135,10 @@ const GroupList: React.FC<{
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button type="primary" onClick={() => jumpToDetails(record)}>
+          <Button type="link" onClick={() => jumpToDetails(record)}>
             查看
           </Button>
-          <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
         </>
@@ -148,6 +152,7 @@ const GroupList: React.FC<{
 
   return (
     <ProTable<GroupListItem>
+      bordered
       headerTitle={
         indexFlag ? (
           '分组'

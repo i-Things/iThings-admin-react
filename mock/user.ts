@@ -20,7 +20,7 @@ async function postV1SystemUserLogin(req: Request, res: Response) {
     msg: '登录成功',
     data: {
       info: {
-        uid: 'string',
+        userID: 'string',
         userName: 'string',
         nickName: 'string',
         inviterUid: 'string',
@@ -48,7 +48,7 @@ async function postV1SystemUserInfoIndex(req: Request, res: Response) {
     code: 0,
     msg: 'string',
     data: {
-      uid: 'string',
+      userID: 'string',
       userName: 'Hit',
       nickName: 'Hit',
       inviterUid: 'string',

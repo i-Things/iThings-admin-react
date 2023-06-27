@@ -24,6 +24,11 @@ const TimeFilter: React.FC<TimeFilterProps> = (props) => {
     setTimeType(e.target.value);
     const { startTime, endTime } = resetTimeRange(e.target.value);
     onChange([moment(startTime), e.target.value === 3 ? moment(endTime) : '0'], e.target.value);
+    const value: moment.Moment[] = [
+      startTime == '0' ? moment() : moment(startTime),
+      endTime == '0' ? moment() : moment(endTime),
+    ];
+    setTimeRange(value);
   };
 
   const timeRangeChange = (value: moment.Moment[]) => {

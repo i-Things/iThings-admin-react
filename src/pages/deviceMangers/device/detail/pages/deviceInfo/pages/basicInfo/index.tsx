@@ -84,6 +84,43 @@ const useColumns = (deviceInfo: Partial<DeviceInfo>, refresh: () => void) => {
       dataIndex: 'softInfo',
     },
     {
+      title: '项目id',
+      key: 'projectID',
+      dataIndex: 'projectID',
+    },
+    {
+      title: '项目区域id',
+      key: 'areaID',
+      dataIndex: 'areaID',
+    },
+    {
+      title: '移动运营商',
+      key: 'mobileOperator',
+      dataIndex: 'mobileOperator',
+      valueType: 'select',
+      valueEnum: {
+        1: { text: '移动' },
+        2: { text: '联通' },
+        3: { text: '电信' },
+        4: { text: '广电' },
+      },
+    },
+    {
+      title: '手机号',
+      key: 'phone',
+      dataIndex: 'phone',
+    },
+    {
+      title: 'SIM卡卡号',
+      key: 'iccid',
+      dataIndex: 'iccid',
+    },
+    {
+      title: '所属用户id',
+      key: 'userID',
+      dataIndex: 'userID',
+    },
+    {
       title: '设备状态',
       key: 'isOnline',
       dataIndex: 'isOnline',
