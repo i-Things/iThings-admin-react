@@ -2,7 +2,7 @@ import type { editor } from 'monaco-editor';
 
 export const TOKENKEY = 'iThings-token';
 
-export const KEYPREFIX = 'iThings-'
+export const KEYPREFIX = 'iThings-';
 
 export const GUIDKEY = 'iThings-guid';
 
@@ -150,6 +150,8 @@ export type PRODUCT_INFO = {
   productImg?: string;
   /** 是否更新产品图片 只有这个参数为true的时候才会更新产品图片,传参为产品图片的file path */
   isUpdateProductImg?: boolean;
+  /* 产品秘钥 动态更新开启时有效 */
+  secret?: string;
   netType?: number;
   dataProto?: number;
   deviceType?: number;

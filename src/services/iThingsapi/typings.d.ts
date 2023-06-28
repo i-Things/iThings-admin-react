@@ -194,144 +194,6 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
-  type FirmwareCreateReq = {
-    /** 升级包名称 */
-    name: string;
-    /** 产品id */
-    productID: string;
-    /** 升级包版本 */
-    version: string;
-    /** 是否差分包,1:整包,2:差分 */
-    isDiff: number;
-    /** 签名方法 MD5/SHA@256 */
-    signMethod: string;
-    /** 描述 */
-    desc: Record<string, any>;
-    extData: Record<string, any>;
-    /** 升级包附件列表，最多支持上传20个文件，总文件大小不能超过1,000 MB。 */
-    files: FirmwareFile[];
-  };
-
-  type FirmwareDelReq = {
-    /** 固件升级包编号 */
-    firmwareID: number;
-  };
-
-  type FirmwareFile = {
-    /** 附件地址，上传附件后接口应该返回 */
-    url: string;
-    /** 附件原名，上传附件后接口应该返回 */
-    name: string;
-  };
-
-  type FirmwareIndex = {
-    /** 升级包名称 */
-    name: string;
-    /** 升级包版本 */
-    version: string;
-    /** 产品id */
-    productID: string;
-    /** 产品名称 */
-    productName: string;
-    /** 是否差分包,1:整包,2:差分 */
-    isDiff: number;
-    /** 创建时间 只读 */
-    createdTime: number;
-    /** 签名方法 */
-    signMethod: string;
-  };
-
-  type FirmwareIndexReq = {
-    /** 产品id 获取产品id下的所有升级包 */
-    productID: string;
-    /** 获取时间的开始 */
-    timeStart: number;
-    /** 时间的结束 */
-    timeEnd: number;
-    page?: PageInfo;
-  };
-
-  type FirmwareIndexResp = {
-    /** 数据 */
-    list: FirmwareIndex[];
-    /** 总数 */
-    total: number;
-  };
-
-  type FirmwareInfo = {
-    /** 固件升级包编号 */
-    firmwareID: number;
-    /** 升级包名称 */
-    name: string;
-    /** 升级包版本 */
-    version: string;
-    /** 产品id */
-    productID: string;
-    /** 产品名称 */
-    productName: string;
-    /** 是否差分包,1:整包,2:差分 */
-    isDiff: number;
-    /** 创建时间 只读 */
-    createdTime: number;
-    /** 签名方法 */
-    signMethod: string;
-    description: Record<string, any>;
-    extData: Record<string, any>;
-  };
-
-  type FirmwareInfoUpdateReq = {
-    /** 固件升级包编号 */
-    firmwareID: number;
-    /** 升级包名称 */
-    name: string;
-    desc: Record<string, any>;
-    extData: Record<string, any>;
-  };
-
-  type FirmwareReadReq = {
-    /** 固件升级包编号 */
-    firmwareID: number;
-  };
-
-  type FirmwareSignedUrlReq = {
-    /** 产品id */
-    productID: string;
-    /** 文件名 */
-    fileName: string;
-  };
-
-  type FirmwareSignedUrlResp = {
-    /** 附件path */
-    dir: string;
-    /** 附件直传地址 */
-    signedUrl: string;
-  };
-
-  type FirmwareTaskIndexReq = {
-    /** 固件升级包编号 */
-    firmwareID: number;
-    taskUid?: string;
-    page?: PageInfo;
-  };
-
-  type FirmwareTaskIndexResp = {
-    /** 总数 */
-    total: number;
-    list: FirmwareTaskInfo[];
-  };
-
-  type FirmwareTaskInfo = {
-    taskUid: string;
-    /** 升级范围1全部设备2定向升级 */
-    type: number;
-    /** 升级策略:1静态升级2动态升级 */
-    upgradeType: number;
-    /** 升级状态:1未升级2升级中3完成 */
-    status: number;
-    /** 创建时间 只读 */
-    createdTime: number;
-  };
-
   type flow = {
     /** 唯一id-雪花算法 */
     ruleID: string;
@@ -1254,6 +1116,8 @@ declare namespace API {
     devStatus?: number;
     /** 产品标签 */
     tags: tagList;
+    /** 产品秘钥 动态注册产品秘钥 */
+    secret: string;
   };
 
   type ProductSchemaInfo = {
@@ -1331,17 +1195,6 @@ declare namespace API {
     createdTime?: string;
     updatedTime?: string;
     deletedTime?: string;
-  };
-
-  type putIthings265ngeRHyrSJpgParams = {
-    'X-Amz-Algorithm'?: string;
-    'X-Amz-Credential'?: string;
-    'X-Amz-Date'?: string;
-    'X-Amz-Expires'?: string;
-    'X-Amz-SignedHeaders'?: string;
-    'X-Amz-Signature'?: string;
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
   };
 
   type readParams = {
@@ -1432,11 +1285,6 @@ declare namespace API {
     dataType: SchemaDefine;
   };
 
-  type signedurlParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
   type SuccRet = {
     /** 返回code */
     code: number;
@@ -1455,91 +1303,6 @@ declare namespace API {
   };
 
   type tagList = Record<string, any>;
-
-  type TaskAnalysisReq = {
-    taskUid: string;
-  };
-
-  type TaskAnalysisResp = {
-    /** 统计结果,json格式 */
-    result: string;
-  };
-
-  type TaskCancleReq = {
-    taskUid: string;
-  };
-
-  type TaskCreateReq = {
-    /** 固件升级包编号 */
-    firmwareID: number;
-    /** 升级范围1全部设备2定向升级 */
-    type: number;
-    /** 升级策略:1静态升级2动态升级 */
-    upgradeType: number;
-    /** 待升级设备列表,["device1","device2",...] */
-    deviceList: string;
-    /** 待升级版本,["version1","version2",...] */
-    versionList: string;
-  };
-
-  type TaskDeviceCancleReq = {
-    taskUid: string;
-    /** 设备编号 */
-    deviceName: string;
-  };
-
-  type TaskDeviceIndexReq = {
-    taskUid: string;
-    /** 设备编号 */
-    deviceName?: string;
-    /** 升级状态:101待确认 201/202/203待推送 301已推送 401升级中 501升级成功 601升级失败 701已取消 */
-    status?: string;
-    page?: PageInfo;
-  };
-
-  type TaskDeviceIndexResp = {
-    list: TaskDeviceInfo[];
-    /** 总数 */
-    total: number;
-  };
-
-  type TaskDeviceInfo = {
-    taskUid: string;
-    /** 设备编号 */
-    deviceName: string;
-    /** 当前版本 */
-    version: string;
-    /** 升级状态:101待确认 201/202/203待推送 301已推送 401升级中 501升级成功 601升级失败 701已取消 */
-    status: string;
-    /** 状态更新时间 只读 */
-    updatedTime: number;
-  };
-
-  type TaskReadReq = {
-    taskUid?: string;
-  };
-
-  type TaskReadResp = {
-    taskUid: string;
-    /** 升级范围1全部设备2定向升级 */
-    type: number;
-    /** 升级策略:1静态升级2动态升级 */
-    upgradeType: number;
-    /** 升级包版本 */
-    version: string;
-    /** 待升级版本号 */
-    srcVersion: string;
-    /** 产品id */
-    productID: string;
-    /** 产品名称 */
-    productName: string;
-    /** 升级状态:1未升级2升级中3完成 */
-    status: number;
-    /** 是否自动重试,1:不,2自动重试,最多重试10次 */
-    autoRepeat: number;
-    /** 创建时间 只读 */
-    createdTime: number;
-  };
 
   type term = {
     /** 嵌套条件 */
@@ -1560,10 +1323,6 @@ declare namespace API {
     netCondition: string;
     /** 和嵌套条件的关联类型 or  and */
     childrenCondition: string;
-  };
-
-  type timeRange = {
-    timeRange?: { start?: number; end?: number };
   };
 
   type TimeRange = {

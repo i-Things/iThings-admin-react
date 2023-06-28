@@ -23,6 +23,8 @@ export async function postApiV1ThingsProductInfoCreate(
     desc?: string;
     createdTime?: string;
     devStatus?: number;
+    /** 动态注册产品秘钥 */
+    secret: string;
     tags?: { key?: string; value?: string }[];
     /** 文件上传接口返回的dir */
     productImg?: string;
@@ -85,6 +87,7 @@ export async function postApiV1ThingsProductInfoIndex(
         createdTime?: string;
         devStatus?: number;
         tags?: API.tagList;
+        secret?: string;
       }[];
       total?: number;
       num?: number;
@@ -123,6 +126,7 @@ export async function postApiV1ThingsProductInfoRead(
       desc?: string;
       createdTime?: string;
       devStatus?: number;
+      secret?: string;
       tags?: { key?: string; value?: string }[];
     };
     code: number;
@@ -159,6 +163,8 @@ export async function postApiV1ThingsProductInfoUpdate(
     desc?: string;
     createdTime?: string;
     devStatus?: number;
+    /** 动态注册产品秘钥 */
+    secret: string;
     tags?: { key?: string; value?: string }[];
   },
   options?: { [key: string]: any },

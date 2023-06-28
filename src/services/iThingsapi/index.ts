@@ -7,7 +7,6 @@ import * as changjingliandong from './changjingliandong';
 import * as changjingliandongguanlian from './changjingliandongguanlian';
 import * as chanpinguanli from './chanpinguanli';
 import * as chulijilu from './chulijilu';
-import * as firmware from './firmware';
 import * as gaojingguanli from './gaojingguanli';
 import * as gaojingjilu from './gaojingjilu';
 import * as gaojingrizhi from './gaojingrizhi';
@@ -22,9 +21,9 @@ import * as shebeiguanli from './shebeiguanli';
 import * as shebeijianquan from './shebeijianquan';
 import * as shebeijiaohu from './shebeijiaohu';
 import * as shebeixiaoxi from './shebeixiaoxi';
-import * as shengjibaoguanli from './shengjibaoguanli';
+import * as shengjibaoguanlifirmware from './shengjibaoguanlifirmware';
+import * as shengjirenwuguanlitask from './shengjirenwuguanlitask';
 import * as shujuquanxianqiyeban from './shujuquanxianqiyeban';
-import * as task from './task';
 import * as tongyonggongneng from './tongyonggongneng';
 import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
@@ -50,8 +49,7 @@ export default {
   shebeijiaohu,
   wangguanzishebeiguanli,
   changjingliandong,
-  shengjibaoguanli,
-  task,
+  shengjirenwuguanlitask,
   liu,
   chulijilu,
   gaojingguanli,
@@ -62,5 +60,5 @@ export default {
   quyuguanliqiyeban,
   shujuquanxianqiyeban,
   quanxianguanli,
-  firmware,
+  shengjibaoguanlifirmware,
 };
