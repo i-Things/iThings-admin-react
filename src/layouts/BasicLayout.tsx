@@ -8,6 +8,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import React, { useState } from 'react';
 // @ts-ignore
+import FooterCom from '@/components/FooterCom';
 import { history, Outlet, useModel } from '@umijs/max';
 import defaultSettings from '../../config/defaultSettings';
 import logo from '../../public/icons/logo/Group.png';
@@ -27,7 +28,7 @@ const BasicLayout: React.FC = (props) => {
       title="iThings"
       siderWidth={250}
       rightContentRender={() => <RightContent />}
-      footerRender={false}
+      footerRender={() => <FooterCom />}
       menuItemRender={(item, dom) => (
         <a
           onClick={() => {
