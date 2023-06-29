@@ -35,6 +35,7 @@ const ProductInfoPage: React.FC<Props> = ({ productInfo, onChange }) => {
       </Descriptions.Item>
 
       <Descriptions.Item label="产品名称">{productInfo.productName}</Descriptions.Item>
+
       <Descriptions.Item label="设备类型">
         {DEVICE_TYPE_VALUE[productInfo?.deviceType ?? 1].text}
       </Descriptions.Item>
@@ -47,6 +48,9 @@ const ProductInfoPage: React.FC<Props> = ({ productInfo, onChange }) => {
       <Descriptions.Item label="动态注册">
         {AUTO_REGISTER_VALUE[productInfo?.autoRegister ?? 1].text}
       </Descriptions.Item>
+      {productInfo.autoRegister === 2 || productInfo.autoRegister === 3 ? (
+        <Descriptions.Item label="产品秘钥">{productInfo.secret}</Descriptions.Item>
+      ) : null}
       <Descriptions.Item label="创建时间">
         {timestampToDateStr(Number(productInfo.createdTime))}
       </Descriptions.Item>

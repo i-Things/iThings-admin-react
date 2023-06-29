@@ -24,7 +24,6 @@ export async function postApiV1ThingsRuleAlarmDealRecordCreate(
 export async function postApiV1ThingsRuleAlarmDealRecordIndex(
   body: {
     page?: { page?: number; size?: number };
-    timeRange?: { start?: number; end?: number };
     alarmRecordID?: number;
   },
   options?: { [key: string]: any },

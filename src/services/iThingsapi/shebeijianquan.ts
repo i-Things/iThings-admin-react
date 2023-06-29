@@ -60,7 +60,7 @@ export async function postApiV1ThingsDeviceAuthRegister(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: { psk?: string } }>(
+  return request<{ code: number; msg: string; data: { len?: number; payload?: string } }>(
     '/api/v1/things/device/auth/register',
     {
       method: 'POST',

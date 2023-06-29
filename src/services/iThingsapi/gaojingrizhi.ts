@@ -6,7 +6,6 @@ import request from '@/utils/request';
 export async function postApiV1ThingsRuleAlarmLogIndex(
   body: {
     page?: { page?: number; size?: number };
-    timeRange?: { start?: number; end?: number };
     alarmRecordID: number;
   },
   options?: { [key: string]: any },
