@@ -7,7 +7,6 @@ import {
   postApiV1SystemUser__openAPI__delete,
 } from '@/services/iThingsapi/yonghuguanli';
 import { PROTABLE_OPTIONS, SEARCH_CONFIGURE } from '@/utils/const';
-import { timestampToDateStr } from '@/utils/date';
 import { arrTransferObj } from '@/utils/utils';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -45,11 +44,11 @@ const UserList: React.FC = () => {
       valueType: 'indexBorder',
       width: 48,
     },
-    {
-      title: '编号',
-      dataIndex: 'userID',
-      search: false,
-    },
+    // {
+    //   title: '编号',
+    //   dataIndex: 'userID',
+    //   search: false,
+    // },
     {
       title: '用户名',
       dataIndex: 'userName',
@@ -70,18 +69,18 @@ const UserList: React.FC = () => {
       dataIndex: 'email',
       search: false,
     },
-    {
-      title: '创建时间',
-      dataIndex: 'createdTime',
-      valueType: 'dateTime',
-      search: false,
-      renderText: (text: string) => timestampToDateStr(Number(text)),
-    },
-    {
-      title: '注册IP',
-      dataIndex: 'regIP',
-      search: false,
-    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'createdTime',
+    //   valueType: 'dateTime',
+    //   search: false,
+    //   renderText: (text: string) => timestampToDateStr(Number(text)),
+    // },
+    // {
+    //   title: '注册IP',
+    //   dataIndex: 'regIP',
+    //   search: false,
+    // },
     {
       title: '最后登录IP',
       dataIndex: 'lastIP',
@@ -99,7 +98,13 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <CreateOrUpdateUser flag="update" record={record} actionRef={actionRef} />
+          <CreateOrUpdateUser
+            flag="update"
+            key={record.userID}
+            record={record}
+            actionRef={actionRef}
+            selectOptions={selectOptions}
+          />
           <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             删除
           </Button>
