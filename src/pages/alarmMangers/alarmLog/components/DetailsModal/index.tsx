@@ -3,7 +3,6 @@ import { useSearchParams } from '@umijs/max';
 import { Descriptions, Modal } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';
-import { useEffect } from 'react';
 import ReactJson from 'react-json-view';
 import type { AlarmLogInfo } from '../../data';
 
@@ -18,10 +17,6 @@ const DetailsModal: FC<DetailsModalProps> = (props) => {
 
   const [searchParams] = useSearchParams();
   const alarmName = searchParams.get('name');
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <Modal open={open} width={1000} onCancel={onCancel}>

@@ -59,16 +59,8 @@ const Login: React.FC = () => {
         setToken(msg.data.token.accessToken);
         setUID(msg?.data?.info?.userID ?? '');
 
-        console.log('====================================');
-        console.log('加载完毕');
-        console.log('====================================');
-
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
-
-        console.log('====================================');
-        console.log('加载完毕1');
-        console.log('====================================');
 
         if (!history) return;
         const query = queryString.parse(history.location.search);
@@ -78,10 +70,6 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-
-      console.log('====================================');
-      console.log('加载完毕2');
-      console.log('====================================');
     } catch (error) {
       console.log('error', error);
       const defaultLoginFailureMessage = '登录失败，请重试！';

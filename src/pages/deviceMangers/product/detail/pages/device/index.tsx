@@ -1,5 +1,5 @@
 import DeviceList from '@/pages/deviceMangers/device/components/deviceList';
-import { PRODUCT_INFO } from '@/utils/const';
+import type { PRODUCT_INFO } from '@/utils/const';
 import React from 'react';
 
 interface Props {

@@ -45,7 +45,6 @@ const BasicPage = () => {
     defaultParams: [{ id: Number(searchParams.get('id')) || 0 }],
     ready: !!id,
     onSuccess: (result) => {
-      console.log(result);
       setAlarmData(result);
     },
     onError: (error) => {

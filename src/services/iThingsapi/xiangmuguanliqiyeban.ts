@@ -2,17 +2,15 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
-/** 新增项目 POST /api/v1/things/project/info/create */
-export async function postApiV1ThingsProjectInfoCreate(
+/** 新增项目 POST /api/v1/system/project/info/create */
+export async function postApiV1SystemProjectInfoCreate(
   body: {
     /** 项目名称 */
     projectName: string;
     /** 项目所属公司名称 */
     companyName?: string;
-    /** 项目联系人姓名 */
-    contactName?: string;
-    /** 项目联系人号码 */
-    contactMobile?: string;
+    /** 项目联系人id */
+    userID?: string;
     /** 项目省市区县 */
     region?: string;
     /** 项目详细地址 */
@@ -22,7 +20,7 @@ export async function postApiV1ThingsProjectInfoCreate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/things/project/info/create', {
+  return request<{ code: number; msg: string }>('/api/v1/system/project/info/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -32,12 +30,12 @@ export async function postApiV1ThingsProjectInfoCreate(
   });
 }
 
-/** 删除项目 POST /api/v1/things/project/info/delete */
-export async function postApiV1ThingsProjectInfo__openAPI__delete(
+/** 删除项目 POST /api/v1/system/project/info/delete */
+export async function postApiV1SystemProjectInfo__openAPI__delete(
   body: {},
   options?: { [key: string]: any },
 ) {
-  return request<Record<string, any>>('/api/v1/things/project/info/delete', {
+  return request<Record<string, any>>('/api/v1/system/project/info/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,8 +45,8 @@ export async function postApiV1ThingsProjectInfo__openAPI__delete(
   });
 }
 
-/** 获取项目列表 POST /api/v1/things/project/info/index */
-export async function postApiV1ThingsProjectInfoIndex(
+/** 获取项目列表 POST /api/v1/system/project/info/index */
+export async function postApiV1SystemProjectInfoIndex(
   body: {
     page?: API.PageInfo;
     projectIDs?: string[];
@@ -62,18 +60,17 @@ export async function postApiV1ThingsProjectInfoIndex(
     data: {
       total?: number;
       list?: {
-        createdTime?: string;
         projectID?: string;
         projectName?: string;
         companyName?: string;
-        contactName?: string;
-        contactMobile?: string;
+        userID?: string;
         region?: string;
         address?: string;
         desc?: string;
+        createdTime?: string;
       }[];
     };
-  }>('/api/v1/things/project/info/index', {
+  }>('/api/v1/system/project/info/index', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -83,29 +80,15 @@ export async function postApiV1ThingsProjectInfoIndex(
   });
 }
 
-/** 获取项目信息 POST /api/v1/things/project/info/read */
-export async function postApiV1ThingsProjectInfoRead(
+/** 获取项目信息 POST /api/v1/system/project/info/read */
+export async function postApiV1SystemProjectInfoRead(
   body: {
     projectID: string;
-    /** 项目名称 */
-    projectName?: string;
-    /** 项目所属公司名称 */
-    companyName?: string;
-    /** 项目联系人姓名 */
-    contactName?: string;
-    /** 项目联系人号码 */
-    contactMobile?: string;
-    /** 项目省市区县 */
-    region?: string;
-    /** 项目详细地址 */
-    address?: string;
-    /** 项目备注 */
-    desc?: string;
   },
   options?: { [key: string]: any },
 ) {
   return request<{ code: number; msg: string; data: API.ProjectInfo }>(
-    '/api/v1/things/project/info/read',
+    '/api/v1/system/project/info/read',
     {
       method: 'POST',
       headers: {
@@ -117,17 +100,15 @@ export async function postApiV1ThingsProjectInfoRead(
   );
 }
 
-/** 更新项目 POST /api/v1/things/project/info/update */
-export async function postApiV1ThingsProjectInfoUpdate(
+/** 更新项目 POST /api/v1/system/project/info/update */
+export async function postApiV1SystemProjectInfoUpdate(
   body: {
     /** 项目名称 */
     projectName: string;
     /** 项目所属公司名称 */
     companyName?: string;
-    /** 项目联系人姓名 */
-    contactName?: string;
-    /** 项目联系人号码 */
-    contactMobile?: string;
+    /** 项目联系人id */
+    userID?: string;
     /** 项目省市区县 */
     region?: string;
     /** 项目详细地址 */
@@ -137,7 +118,7 @@ export async function postApiV1ThingsProjectInfoUpdate(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/things/project/info/update', {
+  return request<{ code: number; msg: string }>('/api/v1/system/project/info/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

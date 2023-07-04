@@ -37,13 +37,13 @@
       "name": "iThings-apisvr/系统管理/权限管理"
     },
     {
+      "name": "iThings-apisvr/系统管理/项目管理(企业版)"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/区域管理(企业版)"
+    },
+    {
       "name": "iThings-apisvr/物联网相关接口"
-    },
-    {
-      "name": "iThings-apisvr/物联网相关接口/项目管理(企业版)"
-    },
-    {
-      "name": "iThings-apisvr/物联网相关接口/区域管理(企业版)"
     },
     {
       "name": "iThings-apisvr/物联网相关接口/产品"
@@ -3016,10 +3016,14 @@
                             ],
                             "x-apifox-ignore-properties": []
                           }
+                        },
+                        "info": {
+                          "$ref": "#/components/schemas/UserInfo",
+                          "title": "用户信息"
                         }
                       },
-                      "x-apifox-orders": ["menu"],
-                      "required": ["menu"],
+                      "x-apifox-orders": ["menu", "info"],
+                      "required": ["menu", "info"],
                       "x-apifox-ignore-properties": []
                     }
                   },
@@ -3404,7 +3408,8 @@
                       "type": "object",
                       "properties": {
                         "info": {
-                          "$ref": "#/components/schemas/UserInfo"
+                          "type": "object",
+                          "properties": {}
                         },
                         "token": {
                           "type": "object",
@@ -3509,7 +3514,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"
+                "$ref": "#/components/schemas/UserInfo",
+                "title": "用户信息"
               },
               "example": ""
             }
@@ -3622,7 +3628,8 @@
                       "description": "错误信息"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"
+                      "$ref": "#/components/schemas/UserInfo",
+                      "title": "用户信息"
                     }
                   },
                   "x-apifox-orders": ["code", "msg", "data"],
@@ -3848,7 +3855,8 @@
                         "list": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"
+                            "$ref": "#/components/schemas/UserInfo",
+                            "title": "用户信息"
                           }
                         }
                       },
@@ -13091,14 +13099,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78232683-run"
       }
     },
-    "/api/v1/things/project/info/create": {
+    "/api/v1/system/project/info/create": {
       "post": {
         "summary": "新增项目",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/项目管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/项目管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/项目管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/项目管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -13146,13 +13154,9 @@
                     "type": "string",
                     "description": "项目所属公司名称"
                   },
-                  "contactName": {
+                  "userID": {
                     "type": "string",
-                    "description": "项目联系人姓名"
-                  },
-                  "contactMobile": {
-                    "type": "string",
-                    "description": "项目联系人号码"
+                    "description": "项目联系人id"
                   },
                   "region": {
                     "type": "string",
@@ -13171,8 +13175,7 @@
                 "x-apifox-ignore-properties": [
                   "projectName",
                   "companyName",
-                  "contactName",
-                  "contactMobile",
+                  "userID",
                   "region",
                   "address",
                   "desc"
@@ -13216,14 +13219,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78292096-run"
       }
     },
-    "/api/v1/things/area/info/create": {
+    "/api/v1/system/area/info/create": {
       "post": {
         "summary": "新增项目区域",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/区域管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/区域管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/区域管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/区域管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -13330,14 +13333,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78317493-run"
       }
     },
-    "/api/v1/things/project/info/update": {
+    "/api/v1/system/project/info/update": {
       "post": {
         "summary": "更新项目",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/项目管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/项目管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/项目管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/项目管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -13385,13 +13388,9 @@
                     "type": "string",
                     "description": "项目所属公司名称"
                   },
-                  "contactName": {
+                  "userID": {
                     "type": "string",
-                    "description": "项目联系人姓名"
-                  },
-                  "contactMobile": {
-                    "type": "string",
-                    "description": "项目联系人号码"
+                    "description": "项目联系人id"
                   },
                   "region": {
                     "type": "string",
@@ -13410,8 +13409,7 @@
                 "x-apifox-ignore-properties": [
                   "projectName",
                   "companyName",
-                  "contactName",
-                  "contactMobile",
+                  "userID",
                   "region",
                   "address",
                   "desc"
@@ -13486,14 +13484,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78649344-run"
       }
     },
-    "/api/v1/things/area/info/update": {
+    "/api/v1/system/area/info/update": {
       "post": {
         "summary": "更新项目区域",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/区域管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/区域管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/区域管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/区域管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -13602,14 +13600,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-78659345-run"
       }
     },
-    "/api/v1/things/project/info/index": {
+    "/api/v1/system/project/info/index": {
       "post": {
         "summary": "获取项目列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/项目管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/项目管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/项目管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/项目管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -13690,58 +13688,61 @@
                           "type": "array",
                           "items": {
                             "type": "object",
+                            "x-apifox-refs": {
+                              "01H42XXCW28C3WH4GHZRQXHY3N": {
+                                "$ref": "#/components/schemas/ProjectInfo",
+                                "x-apifox-overrides": {
+                                  "projectID": null,
+                                  "createdTime": null,
+                                  "updatedTime": null,
+                                  "deletedTime": null
+                                }
+                              }
+                            },
+                            "x-apifox-orders": ["01H42XXCW28C3WH4GHZRQXHY3N"],
                             "properties": {
-                              "createdTime": {
-                                "type": "string"
-                              },
                               "projectID": {
                                 "type": "string"
                               },
                               "projectName": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "项目名称"
                               },
                               "companyName": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "项目所属公司名称"
                               },
-                              "contactName": {
-                                "type": "string"
-                              },
-                              "contactMobile": {
-                                "type": "string"
+                              "userID": {
+                                "type": "string",
+                                "description": "项目联系人id"
                               },
                               "region": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "项目省市区县"
                               },
                               "address": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "项目详细地址"
                               },
                               "desc": {
+                                "type": "string",
+                                "description": "项目备注"
+                              },
+                              "createdTime": {
                                 "type": "string"
                               }
                             },
-                            "required": [
-                              "createdTime",
+                            "required": ["projectID", "projectName"],
+                            "x-apifox-ignore-properties": [
                               "projectID",
                               "projectName",
                               "companyName",
-                              "contactName",
-                              "contactMobile",
+                              "userID",
                               "region",
                               "address",
-                              "desc"
-                            ],
-                            "x-apifox-orders": [
-                              "createdTime",
-                              "projectID",
-                              "projectName",
-                              "companyName",
-                              "contactName",
-                              "contactMobile",
-                              "region",
-                              "address",
-                              "desc"
-                            ],
-                            "x-apifox-ignore-properties": []
+                              "desc",
+                              "createdTime"
+                            ]
                           }
                         }
                       },
@@ -13801,14 +13802,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-79140502-run"
       }
     },
-    "/api/v1/things/project/info/read": {
+    "/api/v1/system/project/info/read": {
       "post": {
         "summary": "获取项目信息",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/项目管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/项目管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/项目管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/项目管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -13837,47 +13838,10 @@
               "schema": {
                 "type": "object",
                 "x-apifox-refs": {},
-                "x-apifox-orders": [
-                  "projectID",
-                  "projectName",
-                  "companyName",
-                  "contactName",
-                  "contactMobile",
-                  "region",
-                  "address",
-                  "desc"
-                ],
+                "x-apifox-orders": ["projectID"],
                 "properties": {
                   "projectID": {
                     "type": "string"
-                  },
-                  "projectName": {
-                    "type": "string",
-                    "description": "项目名称"
-                  },
-                  "companyName": {
-                    "type": "string",
-                    "description": "项目所属公司名称"
-                  },
-                  "contactName": {
-                    "type": "string",
-                    "description": "项目联系人姓名"
-                  },
-                  "contactMobile": {
-                    "type": "string",
-                    "description": "项目联系人号码"
-                  },
-                  "region": {
-                    "type": "string",
-                    "description": "项目省市区县"
-                  },
-                  "address": {
-                    "type": "string",
-                    "description": "项目详细地址"
-                  },
-                  "desc": {
-                    "type": "string",
-                    "description": "项目备注"
                   }
                 },
                 "required": ["projectID"],
@@ -13993,14 +13957,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-79235569-run"
       }
     },
-    "/api/v1/things/area/info/tree": {
+    "/api/v1/system/area/info/tree": {
       "post": {
         "summary": "获取项目区域树",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/区域管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/区域管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/区域管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/区域管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -14356,14 +14320,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-79392980-run"
       }
     },
-    "/api/v1/things/area/info/read": {
+    "/api/v1/system/area/info/read": {
       "post": {
         "summary": "获取项目区域详情（不含子节点）",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/区域管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/区域管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/区域管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/区域管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -14390,16 +14354,15 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "x-apifox-refs": {
-                  "01GYYE3ECMK8FWNR3J96TPA6DM": {
-                    "x-apifox-overrides": {},
-                    "type": "object",
-                    "properties": {},
-                    "x-apifox-orders": []
+                "x-apifox-refs": {},
+                "x-apifox-orders": ["areaID"],
+                "properties": {
+                  "areaID": {
+                    "type": "string",
+                    "title": "区域id"
                   }
                 },
-                "x-apifox-orders": ["01GYYE3ECMK8FWNR3J96TPA6DM"],
-                "properties": {},
+                "required": ["areaID"],
                 "x-apifox-ignore-properties": []
               },
               "example": {
@@ -14423,18 +14386,8 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "x-apifox-refs": {
-                        "01H0YM1GNE7DAB7PVPY2HWMFM5": {
-                          "x-apifox-overrides": {},
-                          "type": "object",
-                          "properties": {},
-                          "x-apifox-orders": []
-                        }
-                      },
-                      "x-apifox-orders": ["01H0YM1GNE7DAB7PVPY2HWMFM5"],
-                      "properties": {},
-                      "x-apifox-ignore-properties": []
+                      "$ref": "#/components/schemas/ProjectArea",
+                      "x-apifox-overrides": {}
                     }
                   },
                   "required": ["code", "msg", "data"],
@@ -14478,14 +14431,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-79486781-run"
       }
     },
-    "/api/v1/things/area/info/delete": {
+    "/api/v1/system/area/info/delete": {
       "post": {
         "summary": "删除项目区域",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/区域管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/区域管理(企业版)",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/区域管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/区域管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -14586,14 +14539,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-79835597-run"
       }
     },
-    "/api/v1/things/project/info/delete": {
+    "/api/v1/system/project/info/delete": {
       "post": {
         "summary": "删除项目",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/项目管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/项目管理(企业版)",
         "x-apifox-status": "developing",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/项目管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/项目管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -15874,14 +15827,14 @@
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-86406160-run"
       }
     },
-    "/api/v1/things/area/info/index": {
+    "/api/v1/system/area/info/index": {
       "post": {
         "summary": "获取项目区域列表",
-        "x-apifox-folder": "iThings-apisvr/物联网相关接口/区域管理(企业版)",
+        "x-apifox-folder": "iThings-apisvr/系统管理/区域管理(企业版)",
         "x-apifox-status": "released",
         "deprecated": false,
         "description": "",
-        "tags": ["iThings-apisvr/物联网相关接口/区域管理(企业版)"],
+        "tags": ["iThings-apisvr/系统管理/区域管理(企业版)"],
         "parameters": [
           {
             "name": "iThings-token",
@@ -17023,7 +16976,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OtaFirmwareIndexReq"
+                "type": "object",
+                "x-apifox-refs": {
+                  "01H4BFERM7P168EXPB114PJF4Q": {
+                    "$ref": "#/components/schemas/OtaFirmwareIndexReq",
+                    "x-apifox-overrides": {
+                      "timeStart": null,
+                      "timeEnd": null
+                    }
+                  }
+                },
+                "x-apifox-orders": ["01H4BFERM7P168EXPB114PJF4Q"],
+                "properties": {
+                  "productID": {
+                    "type": "string",
+                    "description": "产品id 获取产品id下的所有升级包"
+                  },
+                  "page": {
+                    "$ref": "#/components/schemas/PageInfo"
+                  }
+                },
+                "required": ["productID"],
+                "x-apifox-ignore-properties": ["productID", "page"]
               },
               "example": ""
             }
@@ -17309,6 +17283,278 @@
           }
         },
         "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-89795805-run"
+      }
+    },
+    "/api/v1/system/user/register1": {
+      "post": {
+        "summary": "用戶注册第一步",
+        "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息",
+        "tags": ["iThings-apisvr/系统管理/用户管理"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "regType": {
+                    "type": "string",
+                    "description": "phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内登录 wxMiniP 微信小程序 pwd 账号密码注册",
+                    "title": "注册方式"
+                  },
+                  "note": {
+                    "type": "string",
+                    "description": "手机号注册时填写手机号 账号密码注册时填写userName"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "微信登录填code 账号密码登录时填写密码",
+                    "title": "验证码"
+                  },
+                  "codeID": {
+                    "type": "string",
+                    "description": "微信登录填state",
+                    "title": "验证码编号"
+                  }
+                },
+                "required": ["regType", "note"],
+                "x-apifox-orders": ["regType", "note", "code", "codeID"],
+                "x-apifox-ignore-properties": []
+              },
+              "example": {
+                "guid": "87",
+                "userID": "50",
+                "pwdtype": 3,
+                "password": "minim fugiat sunt sit adipisicing",
+                "loginType": "voluptate",
+                "captcha": "ut dolor deserunt ullamco",
+                "captchaId": "76"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "msg": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "description": "如果返回token则需要第二步填写信息,如果为空则为注册成功"
+                        }
+                      },
+                      "x-apifox-orders": ["token"],
+                      "x-apifox-ignore-properties": []
+                    }
+                  },
+                  "required": ["code", "msg", "data"],
+                  "x-apifox-orders": ["code", "msg", "data"],
+                  "x-apifox-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": 200,
+                      "msg": "success",
+                      "data": {
+                        "info": {
+                          "uid": "1740358057038188544",
+                          "userName": "administrator",
+                          "email": "163",
+                          "phone": "13911110000",
+                          "wechat": "wechat",
+                          "lastIP": "0.0.0.0",
+                          "regIP": "0.0.0.0",
+                          "nickName": "liangjuan",
+                          "city": "shenzhen",
+                          "country": "Ut",
+                          "province": "guangdong",
+                          "language": "eiusmod",
+                          "headImgUrl": "http",
+                          "createdTime": "1684589343",
+                          "role": 1,
+                          "sex": 1,
+                          "isAllData": 2
+                        },
+                        "token": {
+                          "accessToken": "eyJhbGciOiJIUzI1NiIsIn3IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0Iiwi2I6MSwiSXNBbGxEYXRhIjoyLCJleHAiOjE2ODUyMDMwMzQsImlhdCI6MTY4NTE5OTQzNH0.z2zlwKZXDDn1Hf1gWewQ9l7qZydEhucJWLCc1FjNpk",
+                          "accessExpire": "1685203034",
+                          "refreshAfter": "1685201234"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-91782847-run"
+      }
+    },
+    "/api/v1/system/user/register2": {
+      "post": {
+        "summary": "用戶注册第二步",
+        "x-apifox-folder": "iThings-apisvr/系统管理/用户管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "第二步是需要填写用户信息,有些场景不需要则注册成功",
+        "tags": ["iThings-apisvr/系统管理/用户管理"],
+        "parameters": [
+          {
+            "name": "iThings-token",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iThings-project-id",
+            "in": "header",
+            "description": "",
+            "example": "1764806234122309632{{iThings-token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "title": "注册第一步的token"
+                  },
+                  "userInfo": {
+                    "type": "object",
+                    "x-apifox-refs": {
+                      "01H40FZWJYPWDGDKBXA2JRPB8G": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "x-apifox-orders": ["01H40FZWJYPWDGDKBXA2JRPB8G"],
+                    "properties": {},
+                    "x-apifox-ignore-properties": []
+                  }
+                },
+                "x-apifox-orders": ["token", "userInfo"],
+                "required": ["token", "userInfo"],
+                "x-apifox-ignore-properties": []
+              },
+              "example": {
+                "guid": "87",
+                "userID": "50",
+                "pwdtype": 3,
+                "password": "minim fugiat sunt sit adipisicing",
+                "loginType": "voluptate",
+                "captcha": "ut dolor deserunt ullamco",
+                "captchaId": "76"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "msg": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["code", "msg"],
+                  "x-apifox-orders": ["code", "msg"],
+                  "x-apifox-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": 200,
+                      "msg": "success",
+                      "data": {
+                        "info": {
+                          "uid": "1740358057038188544",
+                          "userName": "administrator",
+                          "email": "163",
+                          "phone": "13911110000",
+                          "wechat": "wechat",
+                          "lastIP": "0.0.0.0",
+                          "regIP": "0.0.0.0",
+                          "nickName": "liangjuan",
+                          "city": "shenzhen",
+                          "country": "Ut",
+                          "province": "guangdong",
+                          "language": "eiusmod",
+                          "headImgUrl": "http",
+                          "createdTime": "1684589343",
+                          "role": 1,
+                          "sex": 1,
+                          "isAllData": 2
+                        },
+                        "token": {
+                          "accessToken": "eyJhbGciOiJIUzI1NiIsIn3IkpXVCJ9.eyJVaWQiOiIxNzQwMzU4MDU3MDM4MTg4NTQ0Iiwi2I6MSwiSXNBbGxEYXRhIjoyLCJleHAiOjE2ODUyMDMwMzQsImlhdCI6MTY4NTE5OTQzNH0.z2zlwKZXDDn1Hf1gWewQ9l7qZydEhucJWLCc1FjNpk",
+                          "accessExpire": "1685203034",
+                          "refreshAfter": "1685201234"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/2655100/apis/api-91784556-run"
       }
     }
   },
@@ -18214,152 +18460,6 @@
         "x-apifox-ignore-properties": [],
         "x-apifox-folder": "iThings数据模型/ota"
       },
-      "用户数据权限": {
-        "type": "object",
-        "properties": {
-          "createdTime": {
-            "type": "integer"
-          },
-          "userID": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "integer"
-          },
-          "dataID": {
-            "type": "string"
-          }
-        },
-        "required": ["createdTime", "userID", "dataType", "dataID"],
-        "x-apifox-orders": ["createdTime", "userID", "dataType", "dataID"],
-        "x-apifox-folder": "系统模型",
-        "x-apifox-ignore-properties": []
-      },
-      "用户信息": {
-        "type": "object",
-        "properties": {
-          "createdTime": {
-            "type": "string"
-          },
-          "userID": {
-            "type": "string",
-            "description": "用户id"
-          },
-          "userName": {
-            "type": "string",
-            "description": "用户名"
-          },
-          "nickName": {
-            "type": "string",
-            "description": "用户名昵称"
-          },
-          "sex": {
-            "type": "integer",
-            "description": "用户的性别，值为1时是男性，值为2时是女性，值为0时是未知"
-          },
-          "city": {
-            "type": "string",
-            "description": "用户所在城市"
-          },
-          "country": {
-            "type": "string",
-            "description": "用户所在国家"
-          },
-          "province": {
-            "type": "string",
-            "description": "用户所在省份"
-          },
-          "language": {
-            "type": "string",
-            "description": "用户的语言，简体中文为zh_CN"
-          },
-          "headImgUrl": {
-            "type": "string",
-            "description": "用户头像"
-          },
-          "regIP": {
-            "type": "string",
-            "description": "注册ip"
-          },
-          "lastIP": {
-            "type": "string",
-            "description": "最后登录ip"
-          },
-          "wechat": {
-            "type": "string",
-            "description": "微信UnionID"
-          },
-          "phone": {
-            "type": "string",
-            "description": " 手机号"
-          },
-          "email": {
-            "type": "string",
-            "description": " 邮箱"
-          },
-          "role": {
-            "type": "integer"
-          },
-          "isAllData": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "userID",
-          "userName",
-          "email",
-          "phone",
-          "wechat",
-          "lastIP",
-          "regIP",
-          "nickName",
-          "city",
-          "country",
-          "province",
-          "language",
-          "headImgUrl",
-          "createdTime",
-          "role",
-          "sex",
-          "isAllData"
-        ],
-        "x-apifox-orders": [
-          "createdTime",
-          "userID",
-          "userName",
-          "nickName",
-          "sex",
-          "city",
-          "country",
-          "province",
-          "language",
-          "headImgUrl",
-          "regIP",
-          "lastIP",
-          "wechat",
-          "phone",
-          "email",
-          "role",
-          "isAllData"
-        ],
-        "x-apifox-folder": "系统模型",
-        "x-apifox-ignore-properties": []
-      },
-      "SysRet": {
-        "type": "object",
-        "properties": {
-          "sysCode": {
-            "type": "integer"
-          },
-          "sysMsg": {
-            "type": "string"
-          }
-        },
-        "x-apifox-orders": ["sysCode", "sysMsg"],
-        "required": ["sysCode", "sysMsg"],
-        "x-apifox-folder": "通用模型",
-        "x-apifox-ignore-properties": []
-      },
       "UserInfo": {
         "type": "object",
         "properties": {
@@ -18469,6 +18569,21 @@
         ],
         "x-apifox-folder": "系统模型",
         "title": "用户信息",
+        "x-apifox-ignore-properties": []
+      },
+      "SysRet": {
+        "type": "object",
+        "properties": {
+          "sysCode": {
+            "type": "integer"
+          },
+          "sysMsg": {
+            "type": "string"
+          }
+        },
+        "x-apifox-orders": ["sysCode", "sysMsg"],
+        "required": ["sysCode", "sysMsg"],
+        "x-apifox-folder": "通用模型",
         "x-apifox-ignore-properties": []
       },
       "UserDataAuth": {
@@ -18664,13 +18779,9 @@
             "type": "string",
             "description": "项目所属公司名称"
           },
-          "contactName": {
+          "userID": {
             "type": "string",
-            "description": "项目联系人姓名"
-          },
-          "contactMobile": {
-            "type": "string",
-            "description": "项目联系人号码"
+            "description": "项目联系人id"
           },
           "region": {
             "type": "string",
@@ -18686,16 +18797,6 @@
           },
           "createdTime": {
             "type": "string"
-          },
-          "updatedTime": {
-            "type": "string",
-            "format": "date-time",
-            "default": "current_timestamp()"
-          },
-          "deletedTime": {
-            "type": "string",
-            "format": "date-time",
-            "default": null
           }
         },
         "required": ["projectName", "projectID"],
@@ -18703,14 +18804,11 @@
           "projectID",
           "projectName",
           "companyName",
-          "contactName",
-          "contactMobile",
+          "userID",
           "region",
           "address",
           "desc",
-          "createdTime",
-          "updatedTime",
-          "deletedTime"
+          "createdTime"
         ],
         "title": "项目信息",
         "description": "项目信息表",
