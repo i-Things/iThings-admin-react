@@ -10,39 +10,6 @@
       "name": "iThings-apisvr"
     },
     {
-      "name": "iThings-apisvr/系统管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/用户管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/角色管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/菜单管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/接口管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/数据权限(企业版)"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/通用功能"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/日志管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/权限管理"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/项目管理(企业版)"
-    },
-    {
-      "name": "iThings-apisvr/系统管理/区域管理(企业版)"
-    },
-    {
       "name": "iThings-apisvr/物联网相关接口"
     },
     {
@@ -119,6 +86,39 @@
     },
     {
       "name": "iThings-apisvr/物联网相关接口/ota升级(企业版)/升级任务管理task"
+    },
+    {
+      "name": "iThings-apisvr/系统管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/用户管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/角色管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/菜单管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/接口管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/数据权限(企业版)"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/通用功能"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/日志管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/权限管理"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/项目管理(企业版)"
+    },
+    {
+      "name": "iThings-apisvr/系统管理/区域管理(企业版)"
     }
   ],
   "paths": {
@@ -6794,6 +6794,12 @@
                     },
                     "description": "如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表",
                     "title": "获取设备最新属性"
+                  },
+                  "isOnline": {
+                    "type": "integer",
+                    "title": "在线状态过滤",
+                    "description": "1: 在线 2:不在线",
+                    "nullable": true
                   }
                 },
                 "required": ["projectIDs", "areaIDs"],
@@ -6807,7 +6813,8 @@
                   "position",
                   "range",
                   "tags",
-                  "withProperties"
+                  "withProperties",
+                  "isOnline"
                 ],
                 "x-apifox-refs": {
                   "01H18ZCS75AZGNFYH9BS2KS9MT": {
