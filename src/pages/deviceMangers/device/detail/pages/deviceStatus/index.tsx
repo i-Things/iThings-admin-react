@@ -68,12 +68,14 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
 
   const [attrList, setAttrList] = useState<AttrTableProps[]>([]);
   const [loading, setLoading] = useState(false);
+  const [controlLoading, setControlLoading] = useState(false);
 
   console.log('attrList', attrList);
 
   const actionRef = useRef<ActionType>();
 
   const valueType = ['bool', 'int', 'float', 'string', 'timestamp', 'enum'];
+  const formInputWidth = 300;
 
   // 获取物模型日志 - 属性
   const { data: attrData } = useRequest(async () => {
@@ -104,6 +106,9 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       }),
     {
       manual: true,
+      onSuccess: () => {
+        setControlLoading(false);
+      },
     },
   );
 
@@ -143,6 +148,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps, firstItem?: string) => (
         <ProFormDigit
           name={par?.identifier}
+          width={formInputWidth}
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
             value: firstItem
@@ -161,6 +167,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps, firstItem?: string) => (
         <ProFormDigit
           name={par?.identifier}
+          width={formInputWidth}
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
             stringMode: true,
@@ -189,6 +196,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps, firstItem?: string) => (
         <ProFormText
           name={par?.identifier}
+          width={formInputWidth}
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
             value: firstItem
@@ -228,6 +236,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps, firstItem?: string) => (
         <ProFormDateTimePicker
           name={par?.name}
+          width={formInputWidth}
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
             allowClear: false,
@@ -301,22 +310,24 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
 
   const controlDeviceProp = (attrRecord: AttrTableProps) => {
     // TODO: 发出去的值是什么类型
+    setControlLoading(true);
     run({
-      deviceName: attrRecord?.name,
+      deviceName,
       data: { [attrRecord?.identifier]: formState?.[attrRecord?.identifier] },
     });
   };
 
   const columns: ProColumns<AttrTableProps>[] = [
     {
-      dataIndex: 'index',
-      valueType: 'indexBorder',
-      width: 48,
-    },
-    {
       title: '属性',
       dataIndex: 'name',
       key: 'name',
+      renderText: (val: string) => val || '-',
+    },
+    {
+      title: '标识符',
+      dataIndex: 'identifier',
+      key: 'identifier',
       renderText: (val: string) => val || '-',
     },
     {
@@ -330,7 +341,12 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button type="link" key="control" onClick={() => controlDeviceProp(record)}>
+          <Button
+            type="link"
+            key="control"
+            onClick={() => controlDeviceProp(record)}
+            loading={controlLoading}
+          >
             控制
           </Button>
           {record?.affordance?.isUseShadow && (
@@ -374,11 +390,9 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
         const type = item?.affordance?.define?.type;
         if (valueType.includes(type)) formState[item?.identifier] = item?.value || '';
         if (item?.type === 'struct') {
-          formState[item?.identifier] = {};
-          item?.affordance?.define?.specs?.forEach((spec) => {
+          item?.affordance?.define?.specs?.forEach(() => {
             // TODO: 确定struct的value值结构
-            (formState[item?.identifier] as Record<string, string>)[spec?.identifier] =
-              !Object.keys(JSON.parse(item?.value)).length ? '' : item?.value;
+            formState[item?.identifier] = JSON.parse(item?.value || '{}');
           });
         }
       });
