@@ -193,3 +193,9 @@ export const MONACO_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
   scrollBeyondLastLine: false,
   scrollBeyondLastColumn: 0,
 };
+
+export const MODEL_VALUE_TYPE_ENUMS = {
+  int: '整数型',
+  string: '字符串',
+  float: '浮点型',
+};

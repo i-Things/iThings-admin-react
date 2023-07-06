@@ -58,6 +58,7 @@ const DevicePage: React.FC<DeviceInfo> = (props) => {
 
   // 物模型日志-属性表格数据
   const [modelData, setModelData] = useState<Partial<AttrData>[]>([]);
+  console.log(modelData);
 
   // 获取物模型日志 - 属性
   const {
