@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: loginType) => {
     try {
       const body = {
-        userID: values.userID,
+        account: values.account,
         pwdType: 2,
         password: MD5(values.password).toString(),
         loginType: 'pwd',
@@ -104,7 +104,7 @@ const Login: React.FC = () => {
                 }}
               >
                 <ProFormText
-                  name="userID"
+                  name="account"
                   fieldProps={{
                     size: 'large',
                     prefix: <UserOutlined className={styles.prefixIcon} />,

@@ -84,16 +84,6 @@ const useColumns = (deviceInfo: Partial<DeviceInfo>, refresh: () => void) => {
       dataIndex: 'softInfo',
     },
     {
-      title: '项目id',
-      key: 'projectID',
-      dataIndex: 'projectID',
-    },
-    {
-      title: '项目区域id',
-      key: 'areaID',
-      dataIndex: 'areaID',
-    },
-    {
       title: '移动运营商',
       key: 'mobileOperator',
       dataIndex: 'mobileOperator',

@@ -3020,10 +3020,16 @@
                         "info": {
                           "$ref": "#/components/schemas/UserInfo",
                           "title": "用户信息"
+                        },
+                        "projects": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ProjectInfo"
+                          }
                         }
                       },
-                      "x-apifox-orders": ["menu", "info"],
-                      "required": ["menu", "info"],
+                      "x-apifox-orders": ["menu", "info", "projects"],
+                      "required": ["menu", "info", "projects"],
                       "x-apifox-ignore-properties": []
                     }
                   },
@@ -3353,9 +3359,10 @@
                     "description": "账号密码登录时需要填写.0,无密码 1，明文 2，md5加密",
                     "default": 2
                   },
-                  "userID": {
+                  "account": {
                     "type": "string",
-                    "description": "登录账号(支持用户名,手机号登录) 账号密码登录时需要填写"
+                    "description": "登录账号(支持用户名,邮箱,手机号登录) 账号密码登录时需要填写",
+                    "title": "登录账号"
                   },
                   "password": {
                     "type": "string",
@@ -3374,8 +3381,15 @@
                     "description": "验证码编号 微信登录填state 登录类型为img时必输"
                   }
                 },
-                "required": ["userID", "pwdType", "password", "loginType"],
-                "x-apifox-orders": ["pwdType", "userID", "password", "loginType", "code", "codeID"],
+                "required": ["account", "pwdType", "password", "loginType"],
+                "x-apifox-orders": [
+                  "pwdType",
+                  "account",
+                  "password",
+                  "loginType",
+                  "code",
+                  "codeID"
+                ],
                 "x-apifox-ignore-properties": []
               },
               "example": {
@@ -13142,13 +13156,7 @@
                 "type": "object",
                 "x-apifox-refs": {
                   "01GYYAS4X32YTGB7XEE43H3JRV": {
-                    "$ref": "#/components/schemas/ProjectInfo",
-                    "x-apifox-overrides": {
-                      "projectID": null,
-                      "createdTime": null,
-                      "updatedTime": null,
-                      "deletedTime": null
-                    }
+                    "$ref": "#/components/schemas/ProjectInfo"
                   }
                 },
                 "x-apifox-orders": ["01GYYAS4X32YTGB7XEE43H3JRV"],
@@ -13376,13 +13384,7 @@
                 "type": "object",
                 "x-apifox-refs": {
                   "01GYYAS4X32YTGB7XEE43H3JRV": {
-                    "$ref": "#/components/schemas/ProjectInfo",
-                    "x-apifox-overrides": {
-                      "projectID": null,
-                      "createdTime": null,
-                      "updatedTime": null,
-                      "deletedTime": null
-                    }
+                    "$ref": "#/components/schemas/ProjectInfo"
                   }
                 },
                 "x-apifox-orders": ["01GYYAS4X32YTGB7XEE43H3JRV"],
@@ -13697,13 +13699,7 @@
                             "type": "object",
                             "x-apifox-refs": {
                               "01H42XXCW28C3WH4GHZRQXHY3N": {
-                                "$ref": "#/components/schemas/ProjectInfo",
-                                "x-apifox-overrides": {
-                                  "projectID": null,
-                                  "createdTime": null,
-                                  "updatedTime": null,
-                                  "deletedTime": null
-                                }
+                                "$ref": "#/components/schemas/ProjectInfo"
                               }
                             },
                             "x-apifox-orders": ["01H42XXCW28C3WH4GHZRQXHY3N"],
@@ -13875,13 +13871,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/ProjectInfo",
-                      "x-apifox-overrides": {
-                        "projectID": null,
-                        "createdTime": null,
-                        "updatedTime": null,
-                        "deletedTime": null
-                      }
+                      "$ref": "#/components/schemas/ProjectInfo"
                     }
                   },
                   "required": ["code", "msg", "data"],

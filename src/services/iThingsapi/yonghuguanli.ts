@@ -124,8 +124,8 @@ export async function postApiV1SystemUserLogin(
   body: {
     /** 账号密码登录时需要填写.0,无密码 1，明文 2，md5加密 */
     pwdType: number;
-    /** 登录账号(支持用户名,手机号登录) 账号密码登录时需要填写 */
-    userID: string;
+    /** 登录账号(支持用户名,邮箱,手机号登录) 账号密码登录时需要填写 */
+    account: string;
     /** 密码，建议md5转换 密码登录时需要填写 注意：md5转换的密码固定使用是32位小写方式的md5转换结果 */
     password: string;
     /** 验证类型 sms 短信验证码 img 图形验证码加账号密码登录 wxopen 微信开放平台登录 wxin 微信内登录 wxminip 微信小程序 */
@@ -236,6 +236,7 @@ export async function postApiV1SystemUserResourceRead(body: {}, options?: { [key
         order?: number;
       }[];
       info?: API.UserInfo;
+      projects?: API.ProjectInfo[];
     };
   }>('/api/v1/system/user/resource-read', {
     method: 'POST',
