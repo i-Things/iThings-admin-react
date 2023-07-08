@@ -23,3 +23,13 @@ export interface CommonResponse<T> {
   code: number;
   msg: string;
 }
+
+export type ModelType =
+  | 'bool'
+  | 'string'
+  | 'int'
+  | 'enum'
+  | 'struct'
+  | 'array'
+  | 'float'
+  | 'timestamp';
