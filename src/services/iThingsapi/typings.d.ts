@@ -511,6 +511,36 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
+  type postApiV1SystemAreaInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemAreaInfoCreateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemAreaInfoIndexParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemAreaInfoReadParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemAreaInfoTreeParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemAreaInfoUpdateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
   type postApiV1SystemAuthApiIndexParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
@@ -582,6 +612,31 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
+  type postApiV1SystemProjectInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemProjectInfoCreateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemProjectInfoIndexParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemProjectInfoReadParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemProjectInfoUpdateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
   type postApiV1SystemRole_openAPI_deleteParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
@@ -637,42 +692,22 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
+  type postApiV1SystemUserRegister1Params = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemUserRegister2Params = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
   type postApiV1SystemUserResourceReadParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
   };
 
   type postApiV1SystemUserUpdateParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsAreaInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsAreaInfoCreateParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsAreaInfoIndexParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsAreaInfoReadParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsAreaInfoTreeParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsAreaInfoUpdateParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
   };
@@ -941,31 +976,6 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
-  type postApiV1ThingsProjectInfo_openAPI_deleteParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsProjectInfoCreateParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsProjectInfoIndexParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsProjectInfoReadParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1ThingsProjectInfoUpdateParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
   type postApiV1ThingsRuleAlarmDealRecordCreateParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
@@ -1182,10 +1192,8 @@ declare namespace API {
     projectName: string;
     /** 项目所属公司名称 */
     companyName?: string;
-    /** 项目联系人姓名 */
-    contactName?: string;
-    /** 项目联系人号码 */
-    contactMobile?: string;
+    /** 项目联系人id */
+    userID?: string;
     /** 项目省市区县 */
     region?: string;
     /** 项目详细地址 */
@@ -1193,8 +1201,6 @@ declare namespace API {
     /** 项目备注 */
     desc?: string;
     createdTime?: string;
-    updatedTime?: string;
-    deletedTime?: string;
   };
 
   type readParams = {
@@ -1407,46 +1413,5 @@ declare namespace API {
   type WithID = {
     /**  id */
     id?: number;
-  };
-
-  type yonghushujuquanxian = {
-    createdTime: number;
-    userID: string;
-    dataType: number;
-    dataID: string;
-  };
-
-  type yonghuxinxi = {
-    createdTime: string;
-    /** 用户id */
-    userID: string;
-    /** 用户名 */
-    userName: string;
-    /** 用户名昵称 */
-    nickName: string;
-    /** 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知 */
-    sex: number;
-    /** 用户所在城市 */
-    city: string;
-    /** 用户所在国家 */
-    country: string;
-    /** 用户所在省份 */
-    province: string;
-    /** 用户的语言，简体中文为zh_CN */
-    language: string;
-    /** 用户头像 */
-    headImgUrl: string;
-    /** 注册ip */
-    regIP: string;
-    /** 最后登录ip */
-    lastIP: string;
-    /** 微信UnionID */
-    wechat: string;
-    /**  手机号 */
-    phone: string;
-    /**  邮箱 */
-    email: string;
-    role: number;
-    isAllData: number;
   };
 }

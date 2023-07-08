@@ -5,6 +5,7 @@ export interface GroupListItem {
   groupName: string;
   groupID: string;
   createdTime: string;
+  desc: string;
   tags: TagProps[];
 }
 

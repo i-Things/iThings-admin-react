@@ -87,7 +87,7 @@ const EditForm: React.FC<ModalProps> = (props) => {
     <ModalForm<LogInfo>
       title="设置日志配置"
       layout="horizontal"
-      visible={visible}
+      open={visible}
       formRef={formRef}
       initialValues={initialValues}
       width={550}

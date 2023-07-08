@@ -2,9 +2,9 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
-/** 新增项目区域 POST /api/v1/things/area/info/create */
-export async function postApiV1ThingsAreaInfoCreate(body: {}, options?: { [key: string]: any }) {
-  return request<{ code: number; msg: string }>('/api/v1/things/area/info/create', {
+/** 新增项目区域 POST /api/v1/system/area/info/create */
+export async function postApiV1SystemAreaInfoCreate(body: {}, options?: { [key: string]: any }) {
+  return request<{ code: number; msg: string }>('/api/v1/system/area/info/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -14,12 +14,12 @@ export async function postApiV1ThingsAreaInfoCreate(body: {}, options?: { [key: 
   });
 }
 
-/** 删除项目区域 POST /api/v1/things/area/info/delete */
-export async function postApiV1ThingsAreaInfo__openAPI__delete(
+/** 删除项目区域 POST /api/v1/system/area/info/delete */
+export async function postApiV1SystemAreaInfo__openAPI__delete(
   body: {},
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string }>('/api/v1/things/area/info/delete', {
+  return request<{ code: number; msg: string }>('/api/v1/system/area/info/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,8 +29,8 @@ export async function postApiV1ThingsAreaInfo__openAPI__delete(
   });
 }
 
-/** 获取项目区域列表 POST /api/v1/things/area/info/index */
-export async function postApiV1ThingsAreaInfoIndex(
+/** 获取项目区域列表 POST /api/v1/system/area/info/index */
+export async function postApiV1SystemAreaInfoIndex(
   body: {
     page?: API.PageInfo;
     projectID?: string;
@@ -44,7 +44,7 @@ export async function postApiV1ThingsAreaInfoIndex(
     code: number;
     msg: string;
     data: { total?: number; list?: Record<string, any>[] };
-  }>('/api/v1/things/area/info/index', {
+  }>('/api/v1/system/area/info/index', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -54,10 +54,15 @@ export async function postApiV1ThingsAreaInfoIndex(
   });
 }
 
-/** 获取项目区域详情（不含子节点） POST /api/v1/things/area/info/read */
-export async function postApiV1ThingsAreaInfoRead(body: {}, options?: { [key: string]: any }) {
-  return request<{ code: number; msg: string; data: Record<string, any> }>(
-    '/api/v1/things/area/info/read',
+/** 获取项目区域详情（不含子节点） POST /api/v1/system/area/info/read */
+export async function postApiV1SystemAreaInfoRead(
+  body: {
+    areaID: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string; data: API.ProjectArea }>(
+    '/api/v1/system/area/info/read',
     {
       method: 'POST',
       headers: {
@@ -69,10 +74,10 @@ export async function postApiV1ThingsAreaInfoRead(body: {}, options?: { [key: st
   );
 }
 
-/** 获取项目区域树 POST /api/v1/things/area/info/tree */
-export async function postApiV1ThingsAreaInfoTree(body: {}, options?: { [key: string]: any }) {
+/** 获取项目区域树 POST /api/v1/system/area/info/tree */
+export async function postApiV1SystemAreaInfoTree(body: {}, options?: { [key: string]: any }) {
   return request<{ code: number; msg: string; data: { tree?: API.ProjectAreaTree } }>(
-    '/api/v1/things/area/info/tree',
+    '/api/v1/system/area/info/tree',
     {
       method: 'POST',
       headers: {
@@ -84,9 +89,9 @@ export async function postApiV1ThingsAreaInfoTree(body: {}, options?: { [key: st
   );
 }
 
-/** 更新项目区域 POST /api/v1/things/area/info/update */
-export async function postApiV1ThingsAreaInfoUpdate(body: {}, options?: { [key: string]: any }) {
-  return request<{ code: number; msg: string }>('/api/v1/things/area/info/update', {
+/** 更新项目区域 POST /api/v1/system/area/info/update */
+export async function postApiV1SystemAreaInfoUpdate(body: {}, options?: { [key: string]: any }) {
+  return request<{ code: number; msg: string }>('/api/v1/system/area/info/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

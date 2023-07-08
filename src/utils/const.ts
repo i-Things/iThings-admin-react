@@ -141,6 +141,57 @@ export type DEVICE_INFO = {
   logLevel?: number;
   tags?: { key?: string; value?: string }[];
   isOnline?: number;
+  withProperties?: any;
+  deviceAlias?: string;
+  areaID?: string;
+  position: {
+    latitude: number;
+    longitude: number;
+  };
+};
+
+export type DeviceInfo = {
+  /** 产品id 不可修改 */
+  productID: string;
+  /** 设备名称 不可修改 */
+  deviceName: string;
+  /** 设备秘钥 */
+  secret: string;
+  /** 设备证书 */
+  cert: string;
+  /** IMEI信息 */
+  imei: string;
+  /** MAC信息 */
+  mac: string;
+  /** 固件版本 */
+  version: string;
+  /** 模组硬件型号 */
+  hardInfo: string;
+  /** 模组软件版本 */
+  softInfo: string;
+  /** 设备定位 */
+  position?: { longitude?: number; latitude?: number };
+  /** 详细地址 */
+  address?: string;
+  tags?: { key?: string; value?: string }[];
+  /** 在线状态 1离线 2在线 只读 */
+  isOnline?: number;
+  /** 激活时间 */
+  firstLogin?: string;
+  /** 最后上线时间 */
+  lastLogin?: string;
+  /** 日志级别 1)关闭 2)错误 3)告警 4)信息 5)调试  */
+  logLevel?: number;
+  /** 创建时间 */
+  createdTime?: string;
+  /** 获取的属性列表,如果不传withProperty,则不会返回 key是属性id,value是{"value:"xxx","timestamp":123}的结构体,时间戳是毫秒时间戳 */
+  withProperties?: Record<string, any>;
+  /** 设备别名 */
+  deviceAlias?: string;
+  /** 项目id */
+  projectID?: string;
+  /** 项目区域id */
+  areaID?: string;
 };
 
 export type PRODUCT_INFO = {
@@ -199,3 +250,4 @@ export const MODEL_VALUE_TYPE_ENUMS = {
   string: '字符串',
   float: '浮点型',
 };
+export const CON_HEIGHT_STYLE = { height: '100%' };

@@ -122,6 +122,8 @@ export async function postApiV1ThingsDeviceInfoIndex(
     tags?: { key?: string; value?: string }[];
     /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表 */
     withProperties?: string[];
+    /** 1: 在线 2:不在线 */
+    isOnline?: number;
   },
   options?: { [key: string]: any },
 ) {

@@ -106,18 +106,17 @@ export async function postApiV1SystemUserIndex(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: { total?: number; list?: API.E794A8E688B7E4BFA1E681AF[] };
-  }>('/api/v1/system/user/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { total?: number; list?: API.UserInfo[] } }>(
+    '/api/v1/system/user/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 登录 POST /api/v1/system/user/login */
@@ -142,7 +141,7 @@ export async function postApiV1SystemUserLogin(
     code: number;
     msg: string;
     data: {
-      info?: API.UserInfo;
+      info?: Record<string, any>;
       token?: { accessToken?: string; accessExpire?: string; refreshAfter?: string };
     };
   }>('/api/v1/system/user/login', {
@@ -163,8 +162,32 @@ export async function postApiV1SystemUserRead(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: number; msg: string; data: API.E794A8E688B7E4BFA1E681AF }>(
-    '/api/v1/system/user/read',
+  return request<{ code: number; msg: string; data: API.UserInfo }>('/api/v1/system/user/read', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 用戶注册第一步 登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息 POST /api/v1/system/user/register1 */
+export async function postApiV1SystemUserRegister1(
+  body: {
+    /** phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内登录 wxMiniP 微信小程序 pwd 账号密码注册 */
+    regType: string;
+    /** 手机号注册时填写手机号 账号密码注册时填写userName */
+    note: string;
+    /** 微信登录填code 账号密码登录时填写密码 */
+    code?: string;
+    /** 微信登录填state */
+    codeID?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string; data: { token?: string } }>(
+    '/api/v1/system/user/register1',
     {
       method: 'POST',
       headers: {
@@ -174,6 +197,24 @@ export async function postApiV1SystemUserRead(
       ...(options || {}),
     },
   );
+}
+
+/** 用戶注册第二步 第二步是需要填写用户信息,有些场景不需要则注册成功 POST /api/v1/system/user/register2 */
+export async function postApiV1SystemUserRegister2(
+  body: {
+    token: string;
+    userInfo: Record<string, any>;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string }>('/api/v1/system/user/register2', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 获取用户资源 POST /api/v1/system/user/resource-read */
@@ -194,6 +235,7 @@ export async function postApiV1SystemUserResourceRead(body: {}, options?: { [key
         createTime?: number;
         order?: number;
       }[];
+      info?: API.UserInfo;
     };
   }>('/api/v1/system/user/resource-read', {
     method: 'POST',
@@ -207,7 +249,7 @@ export async function postApiV1SystemUserResourceRead(body: {}, options?: { [key
 
 /** 更新用户基本数据 POST /api/v1/system/user/update */
 export async function postApiV1SystemUserUpdate(
-  body: API.E794A8E688B7E4BFA1E681AF,
+  body: API.UserInfo,
   options?: { [key: string]: any },
 ) {
   return request<{ code: number; msg: string; data?: Record<string, any> }>(

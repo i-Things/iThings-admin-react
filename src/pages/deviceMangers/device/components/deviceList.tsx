@@ -32,6 +32,7 @@ type queryParam = {
   productID?: string;
   deviceName?: string;
   deviceAlias?: string;
+  isOnline?: number;
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: Tags[];
 };
@@ -106,6 +107,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       deviceName: params.deviceName,
       deviceAlias: params.deviceAlias,
       tags: tags,
+      isOnline: Number(params.isOnline || 0),
     };
     const res = await postApiV1ThingsDeviceInfoIndex(body);
 
@@ -269,7 +271,6 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
     {
       title: '在线状态',
       dataIndex: 'isOnline',
-      search: false,
       valueType: 'select',
       valueEnum: isOnlineEnum,
       width: 80,
@@ -355,7 +356,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         persistenceType: 'localStorage',
       }}
       search={{
-        span: 6,
+        span: 4,
         labelWidth: 'auto',
       }}
       options={{

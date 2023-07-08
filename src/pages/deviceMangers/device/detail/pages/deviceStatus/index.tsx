@@ -69,14 +69,10 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
     Record<string, string | number | boolean | Record<string, string | number | boolean>>
   >({});
 
-  console.log(formState);
-
   const [attrList, setAttrList] = useState<AttrTableProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [controlLoading, setControlLoading] = useState(false);
   const [shadowLoading, setShadowLoading] = useState(false);
-
-  console.log('attrList', attrList);
 
   const actionRef = useRef<ActionType>();
 
@@ -467,7 +463,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
   }, [attrList.length]);
 
   return (
-    <Card>
+    <Card className="status-card">
       <ProTable<AttrTableProps>
         className="model-prop-table"
         headerTitle={false}
