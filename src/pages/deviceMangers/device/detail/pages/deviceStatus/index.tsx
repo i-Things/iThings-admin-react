@@ -1,5 +1,8 @@
 import useReactive from '@/hooks/useReactive';
-import { postApiV1ThingsDeviceMsgPropertyLatestIndex } from '@/services/iThingsapi/shebeixiaoxi';
+import {
+  postApiV1ThingsDeviceMsgPropertyLatestIndex,
+  postApiV1ThingsDeviceMsgShadowIndex,
+} from '@/services/iThingsapi/shebeixiaoxi';
 import { postApiV1ThingsProductSchemaIndex } from '@/services/iThingsapi/wumoxing';
 import { MODEL_VALUE_TYPE_ENUMS } from '@/utils/const';
 import {
@@ -14,12 +17,14 @@ import {
 import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import { useRequest } from 'ahooks';
-import { Button, Card, Space } from 'antd';
+import { Button, Card, message, notification, Space } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import type { ModelType } from 'types/base';
 
 import { postApiV1ThingsDeviceInteractSendProperty } from '@/services/iThingsapi/shebeijiaohu';
-import { dateStrToTimestamp, timestampToDateStr } from '@/utils/date';
+import { ResponseCode } from '@/utils/base';
+import { dateStrToTimestamp, timestampToDate, timestampToDateStr } from '@/utils/date';
+import { SmileOutlined } from '@ant-design/icons';
 import '../../index.less';
 
 interface DataType {
@@ -69,13 +74,14 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
   const [attrList, setAttrList] = useState<AttrTableProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [controlLoading, setControlLoading] = useState(false);
+  const [shadowLoading, setShadowLoading] = useState(false);
 
   console.log('attrList', attrList);
 
   const actionRef = useRef<ActionType>();
 
   const valueType = ['bool', 'int', 'float', 'string', 'timestamp', 'enum'];
-  const formInputWidth = 300;
+  const formInputWidth = 250;
 
   // 获取物模型日志 - 属性
   const { data: attrData } = useRequest(async () => {
@@ -97,7 +103,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
   });
 
   // 调用设备属性
-  const { run } = useRequest(
+  const { run: controlRun } = useRequest(
     (params) =>
       postApiV1ThingsDeviceInteractSendProperty({
         productID,
@@ -106,9 +112,53 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       }),
     {
       manual: true,
-      onSuccess: () => {
-        setControlLoading(false);
+      onSuccess: (res) => {
+        if (res?.code === ResponseCode.SUCCESS) {
+          message.success('设置成功');
+        }
       },
+      onFinally: () => setControlLoading(false),
+    },
+  );
+
+  // 获取影子列表
+
+  const { run: showRun } = useRequest(
+    (params) =>
+      postApiV1ThingsDeviceMsgShadowIndex({
+        productID,
+        deviceName: params?.deviceName,
+        dataIDs: params?.dataIDs,
+      }),
+    {
+      manual: true,
+      onSuccess: (res) => {
+        if (res?.code === ResponseCode.SUCCESS) {
+          if (res?.data?.list?.length)
+            notification.open({
+              message: '设备影子',
+              icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+              duration: 3,
+              description: (
+                <ProDescriptions column={1}>
+                  <ProDescriptions.Item label="属性">
+                    {res?.data?.list?.[0].dataID}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="更新时间">
+                    {res?.data?.list?.[0].updatedDeviceTime
+                      ? timestampToDate(Number(res?.data?.list?.[0].updatedDeviceTime))
+                      : 0}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="更新的值">
+                    {res?.data?.list?.[0].value}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              ),
+            });
+          else message.info('暂无影子列表');
+        } else message.error('获取设备影子失败');
+      },
+      onFinally: () => setShadowLoading(false),
     },
   );
 
@@ -220,12 +270,12 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
             value: firstItem
-              ? (formState?.[firstItem] as Record<string, string>)?.[par?.identifier]
-              : formState?.[par?.identifier] || '',
+              ? String((formState?.[firstItem] as Record<string, number>)?.[par?.identifier] || '')
+              : String(formState?.[par?.identifier] || ''),
             onChange: (v) => {
               if (firstItem)
-                (formState[firstItem] as Record<string, string>)[par?.identifier] = v as string;
-              else formState[par?.identifier] = v as string;
+                (formState[firstItem] as Record<string, number>)[par?.identifier] = Number(v);
+              else formState[par?.identifier] = Number(v);
             },
           }}
         />
@@ -235,7 +285,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       'timestamp',
       (par: AttrTableProps, firstItem?: string) => (
         <ProFormDateTimePicker
-          name={par?.name}
+          name={par?.identifier}
           width={formInputWidth}
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
@@ -243,14 +293,17 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
             showToday: true,
             value: firstItem
               ? timestampToDateStr(
-                  Number((formState?.[firstItem] as Record<string, string>)?.[par?.name] || ''),
+                  Number(
+                    (formState?.[firstItem] as Record<string, string>)?.[par?.identifier] ||
+                      Date.now(),
+                  ),
                 )
-              : timestampToDateStr(Number(formState?.[par?.name] || '')),
+              : timestampToDateStr(Number(formState?.[par?.identifier] || Date.now())),
             onChange: (v, date) => {
               if (firstItem)
-                (formState[firstItem] as Record<string, string>)[par?.name] =
-                  dateStrToTimestamp(date).toString();
-              else formState[par?.name] = dateStrToTimestamp(date).toString();
+                (formState[firstItem] as Record<string, number>)[par?.identifier] =
+                  dateStrToTimestamp(date);
+              else formState[par?.identifier] = dateStrToTimestamp(date);
             },
           }}
         />
@@ -309,11 +362,19 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
   };
 
   const controlDeviceProp = (attrRecord: AttrTableProps) => {
-    // TODO: 发出去的值是什么类型
     setControlLoading(true);
-    run({
+    controlRun({
       deviceName,
       data: { [attrRecord?.identifier]: formState?.[attrRecord?.identifier] },
+    });
+  };
+
+  // 影子列表
+  const getShadowList = (attrRecord: AttrTableProps) => {
+    setShadowLoading(true);
+    showRun({
+      deviceName,
+      dataIDs: [attrRecord?.identifier],
     });
   };
 
@@ -334,6 +395,7 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
       title: '参数',
       dataIndex: 'affordance',
       render: (_, record) => renderInput(record),
+      width: 600,
     },
     {
       title: '操作',
@@ -350,7 +412,12 @@ const DeviceStatusPage: React.FC<{ productID: string; deviceName: string }> = ({
             控制
           </Button>
           {record?.affordance?.isUseShadow && (
-            <Button type="link" key="shadow">
+            <Button
+              type="link"
+              key="shadow"
+              onClick={() => getShadowList(record)}
+              loading={shadowLoading}
+            >
               影子
             </Button>
           )}
