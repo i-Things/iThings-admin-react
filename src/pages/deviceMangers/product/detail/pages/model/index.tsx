@@ -10,7 +10,7 @@ import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { useParams } from '@umijs/max';
-import { Alert, Button, Input, message, Modal } from 'antd';
+import { Alert, Button, Input, Modal, message } from 'antd';
 import { useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import JSONInput from 'react-json-editor-ajrm';
@@ -35,6 +35,8 @@ type queryParam = {
   current: number;
   productID?: string;
 };
+
+type MapType = 'bool' | 'int' | 'float' | 'string' | 'enum' | 'timestamp';
 
 export default () => {
   const [modalVisit, setModalVisit] = useState(false);
@@ -102,8 +104,8 @@ export default () => {
     );
   };
 
-  const renderMap = (type: string, record: ProductSchemaInfo) => {
-    const map = {
+  const renderMap = (type: MapType, record: ProductSchemaInfo) => {
+    const map: { [key in MapType]: (record: ProductSchemaInfo) => JSX.Element } = {
       bool: boolRender,
       int: intRender,
       float: intRender,
@@ -116,6 +118,16 @@ export default () => {
     }
     return map[type](record) ?? '-';
   };
+
+  const getDefinition = (record: ProductSchemaInfo)  =>{
+    try {
+        return JSON.parse(record?.affordance);
+    } catch (e) {
+        console.error(e);
+        message.error('JSON 解析错误')
+    }
+}
+
 
   const columns: ProColumns<ProductSchemaInfo>[] = [
     {
@@ -137,7 +149,8 @@ export default () => {
       width: 80,
       dataIndex: 'dataType',
       render: (_: any, record: ProductSchemaInfo) => {
-        return DATA_TYPE_ENUM[JSON.parse(record?.affordance)?.define?.type] ?? '-';
+        const dataType = getDefinition(record)?.define?.type as keyof typeof DATA_TYPE_ENUM;
+        return DATA_TYPE_ENUM[dataType]  ?? '-';
       },
     },
     {
@@ -146,14 +159,15 @@ export default () => {
       key: 'mode',
       dataIndex: 'mode',
       render: (_: any, record: ProductSchemaInfo) => {
-        return MODE_ENUM[JSON.parse(record?.affordance)?.mode] ?? '-';
+        const dataType = (getDefinition(record)?.mode || getDefinition(record)?.define?.mode) as keyof typeof MODE_ENUM;
+        return MODE_ENUM[dataType] ?? '-';
       },
     },
     {
       title: '数据定义',
       dataIndex: 'affordance',
       render: (_: any, record: ProductSchemaInfo) => {
-        const type = JSON.parse(record?.affordance)?.define?.type;
+        const type = getDefinition(record)?.define?.type;
         return renderMap(type, record);
       },
     },
@@ -183,10 +197,8 @@ export default () => {
               icon: <ExclamationCircleOutlined />,
               content: '你确定删除该功能吗？',
               async onOk() {
-                const { identifier, productID } = record;
                 const params = {
-                  productID,
-                  identifier,
+                  ...record
                 };
                 const res = await postApiV1ThingsProductSchema__openAPI__delete(params);
                 if (res instanceof Response) {
