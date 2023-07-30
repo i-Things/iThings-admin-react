@@ -1,6 +1,18 @@
 import type { MutableRefObject } from 'react';
+export type DataType = 'bool' | 'int' | 'string' | 'float' | 'enum' | 'timestamp' | 'struct' | 'array';
 
-export const typeBtnList = [
+export enum TypeEnum {
+  Property = 1,
+  Event = 2,
+  Action = 3,
+}
+
+export type typeType = TypeEnum;
+
+export type elementInterface = 'int' | 'string' | 'float' | 'struct'
+
+
+export const typeOptionsList = [
   { label: '属性', value: 1 },
   { label: '事件', value: 2 },
   { label: '行为', value: 3 },
@@ -17,7 +29,7 @@ export const eventTypeList = [
   { label: '信息', value: 'info' },
 ];
 
-export const dataTypeList = [
+export const dataTypeOptionsList = [
   { label: '布尔型', value: 'bool' },
   { label: '整数型', value: 'int' },
   { label: '字符串', value: 'string' },
@@ -55,6 +67,43 @@ export const _yuansuleixingList = [
   { label: '浮点型', value: 'float' },
   { label: '结构体', value: 'struct' },
 ];
+
+// 功能类型 的对应关系
+export const formItemMapping: { [key in typeType]: string[] } = {
+  1: ['dataType', 'isUseShadow'],
+  2: ['eventType', 'params'],
+  3: ['input', 'output'],
+};
+
+// 元素类型 的对应关系
+export const elementTypeMapping: { [key in elementInterface]: string[] } = {
+  int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+  string: ['mode', 'max'],
+  float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+  struct: ['mode', 'specs'],
+};
+
+export const dataTypeMapping: { [key in DataType]: string[] } = {
+  bool: ['mode', 'mapping'],
+  int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+  string: ['mode', 'max'],
+  float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
+  enum: ['mode', 'dataDefinitionForEnum'],
+  timestamp: ['mode', 'dataDefinitionFortimestamp'],
+  struct: ['mode', 'specs'],
+  array: [
+    'mode',
+    'arrayInfo',
+    'elementType',
+    'numericalRange',
+    'start',
+    'step',
+    'unit',
+    'mode',
+    'max',
+    'mode',
+  ],
+};
 
 export type EditFormType = {
   ref: any;

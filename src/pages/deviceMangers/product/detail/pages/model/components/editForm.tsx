@@ -1,46 +1,49 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
   postApiV1ThingsProductSchemaCreate,
   postApiV1ThingsProductSchemaUpdate,
 } from '@/services/iThingsapi/wumoxing';
 import {
-  createAsyncFormActions,
   Field,
   FormEffectHooks,
   FormMegaLayout,
   FormPath,
-  FormSpy,
   SchemaForm,
+  createAsyncFormActions
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
-  FormItemGrid,
-  FormLayout,
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
   Switch as FSwitch,
+  FormItemGrid,
+  FormLayout,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
 import { AutoComplete, Modal, Radio } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import type { EditFormType } from './const';
+
+import styles from '../style.less';
 import {
-  dataTypeList,
-  eventTypeList,
-  rwTypeList,
-  shadowType,
-  typeBtnList,
-  yuansuleixingList,
   _dataTypeList,
   _yuansuleixingList,
+  dataTypeMapping,
+  dataTypeOptionsList,
+  elementTypeMapping,
+  eventTypeList,
+  formItemMapping,
+  rwTypeList,
+  shadowType,
+  typeOptionsList,
+  yuansuleixingList
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
 
 export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) => {
+  // 暴露出去的方法
   useImperativeHandle(ref, () => ({
     setModelModalValue: setModelModalValue,
     clearModal: clearModal,
@@ -48,16 +51,19 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   }));
 
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
+
   const [isEdit, setIsEdit] = useState(false);
+  const [loading, setLoading] = useState(false)
+
   const urlParams = useParams() as { id: string };
   const productID = urlParams.id ?? '';
 
-  const currentFunctionType = useRef<1 | 2 | 3>(1);
   const ruleModalFormItemLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 },
   };
 
+  // TODO: 提交函数
   const onModalFinish = async (values: any) => {
     const {
       type,
@@ -263,7 +269,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         delete affordance.define[key];
       }
     }
-
     const _params = {
       productID,
       type,
@@ -435,6 +440,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           full
           hasBorder={false}
           isLayout={false}
+          className={styles['form-mega-layout-no-margin']}
         >
           <Field
             type="string"
@@ -459,7 +465,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       </Field>
       {/* 初始值 */}
       <Field
-        type="number"
+        type="string"
         name="start"
         title="初始值"
         x-props={{
@@ -470,7 +476,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       />
       {/* 步长 */}
       <Field
-        type="number"
+        type="string"
         name="step"
         title="步长"
         x-props={{
@@ -532,27 +538,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             },
             renderMoveDown: () => null,
             renderMoveUp: () => null,
-            renderRemove: (idx: number) => {
-              const mutators = ruleActions.current.createMutators('dataDefinitionForEnum');
-              return (
-                <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
-                    return (
-                      <a
-                        style={{
-                          width: '60px',
-                        }}
-                        onClick={async () => {
-                          (await mutators).remove(idx);
-                        }}
-                      >
-                        删除
-                      </a>
-                    );
-                  }}
-                </FormSpy>
-              );
-            },
           }}
         >
           <Field type="object">
@@ -607,42 +592,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     </>
   );
 
-  // 新的对应关系
-  const formItemMapping = {
-    1: ['dataType', 'isUseShadow'],
-    2: ['eventType', 'params'],
-    3: ['input', 'output'],
-  };
-
-  const dataTypeMapping = {
-    bool: ['mode', 'mapping'],
-    int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
-    string: ['mode', 'max'],
-    float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
-    enum: ['mode', 'dataDefinitionForEnum'],
-    timestamp: ['mode', 'dataDefinitionFortimestamp'],
-    struct: ['mode', 'specs'],
-    array: [
-      'mode',
-      'arrayInfo',
-      'elementType',
-      'numericalRange',
-      'start',
-      'step',
-      'unit',
-      'mode',
-      'max',
-      'mode',
-    ],
-  };
-
-  const elementTypeMapping = {
-    int: ['mode', 'numericalRange', 'start', 'step', 'unit'],
-    string: ['mode', 'max'],
-    float: ['mode', 'numericalRange', 'start', 'step', 'unit'],
-    struct: ['mode', 'specs'],
-  };
-
   const renderStructFormItem = (title: string, name: string) => {
     return (
       <FormLayout
@@ -664,27 +613,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             },
             renderMoveDown: () => null,
             renderMoveUp: () => null,
-            renderRemove: (idx: number) => {
-              const mutators = ruleActions.current.createMutators(name);
-              return (
-                <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                  {({}) => {
-                    return (
-                      <a
-                        style={{
-                          width: '60px',
-                        }}
-                        onClick={async () => {
-                          (await mutators).remove(idx);
-                        }}
-                      >
-                        删除
-                      </a>
-                    );
-                  }}
-                </FormSpy>
-              );
-            },
           }}
         >
           <Field type="object">
@@ -779,27 +707,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                     },
                     renderMoveDown: () => null,
                     renderMoveUp: () => null,
-                    renderRemove: (idx: number) => {
-                      const mutators = ruleActions.current.createMutators('shujudingyiForenum');
-                      return (
-                        <FormSpy selector={[['onFieldValueChange', `userList.${idx}.username`]]}>
-                          {({}) => {
-                            return (
-                              <a
-                                style={{
-                                  width: '60px',
-                                }}
-                                onClick={async () => {
-                                  (await mutators).remove(idx);
-                                }}
-                              >
-                                删除
-                              </a>
-                            );
-                          }}
-                        </FormSpy>
-                      );
-                    },
                   }}
                 >
                   <Field type="object">
@@ -834,10 +741,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   };
 
   const formItemVisibleConfig = (formItems: string[], flag: boolean) => {
-    if (!formItems) {
-      return;
-    }
-    if (formItems.length === 0) {
+    if (!formItems || formItems?.length === 0) {
       return;
     }
     formItems?.map((item: string) => {
@@ -851,7 +755,10 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     <Modal
       forceRender
       destroyOnClose
-      visible={props.modalVisit}
+      open={props.modalVisit}
+      okButtonProps={{
+        loading: loading
+      }}
       onOk={() => {
         ruleActions.current.submit();
       }}
@@ -893,140 +800,68 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         }}
         onSubmit={onModalFinish}
         effects={() => {
-          // 监听 type 表单项显示 功能类型
-          onFieldValueChange$('type').subscribe((state) => {
-            const value = state.value;
-            let allFormItem: string[] = [];
+          // 扁平化对象数据
+          function flattenObjectValues(obj: Record<string, any[]>): string[] {
+            return Object.values(obj).flat();
+          }
 
-            currentFunctionType.current = value;
+          // 订阅表单字段改变
+          function subscribeToFieldChanges(allFormItems: string[], mapping: Record<string, string[]>, scopedFieldName: string) {
+            onFieldValueChange$(scopedFieldName).subscribe(async (state) => {
+              if (scopedFieldName === 'elementType') {
+                const dataType = await ruleActions.current.getFieldState('dataType');
+                if (dataType.value !== 'array') {
+                  return;
+                }
+              }
 
-            Object.keys(formItemMapping)?.map((item) => {
-              allFormItem = allFormItem.concat(formItemMapping[item]);
+              const fieldType = state.value;
+
+              if (!fieldType || !(fieldType in mapping)) {
+                return;
+              }
+
+              // 隐藏所有表单项
+              formItemVisibleConfig(allFormItems, false);
+
+              //展示匹配到的表单项
+              const formItemsToShow = mapping[fieldType];
+              formItemVisibleConfig(formItemsToShow, true);
             });
+          }
 
-            Object.keys(dataTypeMapping)?.map((item) => {
-              allFormItem = allFormItem.concat(dataTypeMapping[item]);
-            });
+          // 需要订阅的表单字段
+          const fieldsToSubscribe = ['type', 'dataType', 'elementType'];
 
-            // 先把所有的 设置为 false
-            formItemVisibleConfig(allFormItem, false);
+          // 需要订阅的表单字段以及所对应的项
+          const fieldMappings: Record<string, Record<string, string[]>> = {
+            'type': Object.assign({ ...formItemMapping, ...dataTypeMapping }),
+            'dataType': dataTypeMapping,
+            'elementType': elementTypeMapping,
+          };
 
-            const showFormItem = formItemMapping[value];
-            formItemVisibleConfig(showFormItem, true);
+          // 为每一个字段绑定订阅函数
+          fieldsToSubscribe.forEach((field) => {
+            const allFormItems = flattenObjectValues(fieldMappings[field]);
+            subscribeToFieldChanges(allFormItems, fieldMappings[field], field);
           });
 
-          // 监听 dataType 表单项显示 数据类型
-          onFieldValueChange$('dataType').subscribe((state) => {
-            const value = state.value;
-            if (!value) {
-              return;
-            }
 
-            let allFormItem: string[] = [];
-
-            Object.keys(dataTypeMapping)?.map((item) => {
-              allFormItem = allFormItem.concat(dataTypeMapping[item]);
-            });
-
-            formItemVisibleConfig(allFormItem, false);
-            const showFormItem = dataTypeMapping[value];
-            formItemVisibleConfig(showFormItem, true);
-          });
-
-          // 监听数据类型为数组时，元素类型的变化
-          onFieldValueChange$('elementType').subscribe(async (state) => {
-            const dataType = await ruleActions.current.getFieldState('dataType');
-            if (dataType.value !== 'array') {
-              return;
-            }
-            const value = state.value;
-            if (!value) {
-              return;
-            }
-
-            let allFormItem: string[] = [];
-
-            Object.keys(elementTypeMapping)?.map((item) => {
-              allFormItem = allFormItem.concat(elementTypeMapping[item]);
-            });
-
-            // 先把所有的 设置为 false
-            formItemVisibleConfig(allFormItem, false);
-            const showFormItem = elementTypeMapping[value];
-            // 再把对应的表单项展示出来
-            formItemVisibleConfig(showFormItem, true);
-          });
-
-          const array = ['specs', 'params', 'input', 'output'];
-
-          array?.map((scope) => {
-            onFieldValueChange$(`${scope}.*.type`).subscribe((fieldState) => {
+          // 定义函数用于管理表单项的可见性
+          function manageFormItemVisibility(scope: string, formName: string, mapper: Record<string, string[]>) {
+            onFieldValueChange$(`${scope}.${formName}`).subscribe((fieldState) => {
               const value = fieldState.value;
 
               if (!value) {
                 return;
               }
-              const mapper = {
-                bool: ['mapping'],
-                int: ['numericalRange', 'start', 'step', 'unit'],
-                string: ['max'],
-                float: ['numericalRange', 'start', 'step', 'unit'],
-                enum: ['shujudingyiForenum'],
-                timestamp: ['timestamp'],
-                array: ['elementType'],
-              };
 
               let allFormItem: string[] = [];
-
               Object.keys(mapper)?.map((item) => {
                 allFormItem = allFormItem.concat(mapper[item]);
               });
 
-              // 先把所有的 设置为 false
-              allFormItem?.map((item: string) => {
-                ruleActions.current.setFieldState(
-                  FormPath.transform(
-                    fieldState.name,
-                    /\d/,
-                    ($1) => `${scope}.${$1}.dataType.${item}`,
-                  ),
-                  (state) => {
-                    state.visible = false;
-                  },
-                );
-              });
-
-              const arr = mapper[value];
-
-              arr?.map((item: string) => {
-                ruleActions.current.setFieldState(
-                  FormPath.transform(
-                    fieldState.name,
-                    /\d/,
-                    ($1) => `${scope}.${$1}.dataType.${item}`,
-                  ),
-                  (state) => {
-                    state.visible = true;
-                  },
-                );
-              });
-            });
-            onFieldValueChange$(`${scope}.*.dataType.elementType`).subscribe((fieldState) => {
-              const value = fieldState.value;
-
-              const mapper = {
-                int: ['numericalRange', 'start', 'step', 'unit'],
-                string: ['max'],
-                float: ['numericalRange', 'start', 'step', 'unit'],
-              };
-
-              let allFormItem: string[] = [];
-
-              Object.keys(mapper)?.map((item) => {
-                allFormItem = allFormItem.concat(mapper[item]);
-              });
-
-              // 先把所有的 设置为 false
+              // 先把所有的设置为false
               allFormItem?.map((item: string) => {
                 ruleActions.current.setFieldState(
                   FormPath.transform(
@@ -1058,18 +893,43 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                 );
               });
             });
+          }
+
+          // 定义对应的mapper
+          const typeMapper = {
+            bool: ['mapping'],
+            int: ['numericalRange', 'start', 'step', 'unit'],
+            string: ['max'],
+            float: ['numericalRange', 'start', 'step', 'unit'],
+            enum: ['shujudingyiForenum'],
+            timestamp: ['timestamp'],
+            array: ['elementType'],
+          };
+
+          const elementTypeMapper = {
+            int: ['numericalRange', 'start', 'step', 'unit'],
+            string: ['max'],
+            float: ['numericalRange', 'start', 'step', 'unit'],
+          };
+
+          const array = ['specs', 'params', 'input', 'output'];
+          array?.map((scope) => {
+            // 调用函数
+            manageFormItemVisibility(scope, '*.type', typeMapper);
+            manageFormItemVisibility(scope, '*.dataType.elementType', elementTypeMapper);
           });
         }}
       >
         <Field
           type="string"
           title="功能类型"
+          required
           name="type"
           x-component="Radio"
           x-props={{
             placeholder: '请选择功能类型',
             optionType: 'button',
-            options: typeBtnList,
+            options: typeOptionsList,
           }}
         />
         <Field
@@ -1115,17 +975,20 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           }}
         />
         <>
+          {/* 数据类型选项框 */}
           <Field
             type="string"
             name="dataType"
+            default={'bool'}
             title="数据类型"
             x-props={{
               placeholder: '请选择数据类型',
               optionType: 'button',
-              options: dataTypeList,
+              options: dataTypeOptionsList,
             }}
             x-component="Radio"
           />
+
           {arrayTypeFormItem}
           {rwTypeFormItem}
           {boolTypeFormItem}

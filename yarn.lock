@@ -3935,7 +3935,7 @@
 
 "@types/react-json-editor-ajrm@^2.5.3":
   version "2.5.3"
-  resolved "https://registry.npmmirror.com/@types/react-json-editor-ajrm/-/react-json-editor-ajrm-2.5.3.tgz#9859cabb73a5dda74faa9ecf8bfcaf3c1ef6da35"
+  resolved "https://registry-npm.myscrm.cn/repository/pkg/@types/react-json-editor-ajrm/-/react-json-editor-ajrm-2.5.3.tgz#9859cabb73a5dda74faa9ecf8bfcaf3c1ef6da35"
   integrity sha512-hHf3FU1HjL6Lm3rK2iWUJtoYpZ1qDCSffnLAQXCf++TP1Ms18rnB06gBK3psQ8NEW6CfrfRNlirIL3D/P80QVg==
   dependencies:
     "@types/react" "*"
