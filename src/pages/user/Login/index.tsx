@@ -96,7 +96,7 @@ const Login: React.FC = () => {
               <p className={styles['sub-title']}>欢迎使用</p>
               <LoginForm
                 initialValues={{
-                  userID: 'administrator',
+                  account: 'administrator',
                   password: 'iThings666',
                 }}
                 onFinish={async (values) => {
@@ -109,7 +109,7 @@ const Login: React.FC = () => {
                     size: 'large',
                     prefix: <UserOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={'用户名: 17052709767'}
+                  placeholder={'用户名: administrator'}
                   rules={[
                     {
                       required: true,
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
                     size: 'large',
                     prefix: <LockOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={'密码: yl'}
+                  placeholder={'密码: iThings666'}
                   rules={[
                     {
                       required: true,
