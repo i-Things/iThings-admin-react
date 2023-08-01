@@ -312,7 +312,7 @@ const DevicePropsPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps, firstItem: string) => {
         return (
           <>
-            <ProDescriptions column={1} bordered>
+            <ProDescriptions column={1} bordered className="prop-arr">
               <ProDescriptions.Item
                 label={MODEL_VALUE_TYPE_ENUMS?.[par?.dataType?.arrayInfo?.type]}
                 key={par?.identifier}
@@ -332,7 +332,7 @@ const DevicePropsPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps) => {
         return (
           <>
-            <ProDescriptions column={1} bordered>
+            <ProDescriptions column={1} bordered className="prop-str">
               {par.affordance?.define?.specs?.map((item) => (
                 <ProDescriptions.Item label={item?.identifier} key={item?.identifier}>
                   {/* {MODE_ENUM[par.affordance?.mode] === 'r' ? '只读' : '读写'} */}

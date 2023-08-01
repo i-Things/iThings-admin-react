@@ -64,6 +64,8 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
     Record<string, string | number | boolean | Record<string, string | number | boolean>>
   >({});
 
+  console.log('formState', formState);
+
   const [attrList, setAttrList] = useState<AttrTableProps[]>([]);
   const [controlLoading, setControlLoading] = useState(false);
 
@@ -97,7 +99,7 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
     },
   );
 
-  // 调用设备属性
+  // 调用设备行为
   const { run: controlRun } = useRequest(
     (params) =>
       postApiV1ThingsDeviceInteractSendAction({
@@ -130,9 +132,9 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
             <ProFormSwitch
               name={par?.identifier}
               fieldProps={{
-                value: (formState?.[firstItem] as Record<string, boolean>)?.[par?.identifier] || '',
+                value: (formState?.[firstItem] as Record<string, boolean>)?.[par?.identifier],
                 onChange: (v) => {
-                  (formState[firstItem] as Record<string, boolean>)[par?.identifier] = v!;
+                  (formState[firstItem] as Record<string, boolean>)[par?.identifier] = v ? 1 : 0;
                 },
               }}
             />
@@ -245,7 +247,7 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps, firstItem: string) => {
         return (
           <>
-            <ProDescriptions column={1} bordered>
+            <ProDescriptions column={1} bordered className="prop-arr">
               <ProDescriptions.Item
                 label={MODEL_VALUE_TYPE_ENUMS?.[par?.define?.arrayInfo?.type]}
                 key={par?.identifier}
@@ -265,7 +267,7 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
       (par: AttrTableProps) => {
         return (
           <>
-            <ProDescriptions column={1} bordered>
+            <ProDescriptions column={1} bordered className="prop-str">
               {par.affordance?.input?.map((item) => (
                 <ProDescriptions.Item label={item?.identifier} key={item?.identifier}>
                   {/* {MODE_ENUM[par.affordance?.mode] === 'r' ? '只读' : '读写'} */}
@@ -338,7 +340,10 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
       attrList?.forEach((item) => {
         formState[item?.identifier] = {};
         item?.affordance?.input?.forEach((n) => {
-          formState[item?.identifier][n?.identifier] = parseInt(n?.define?.start) || '';
+          console.log('n', n);
+          if (n.define.type === 'bool') {
+            formState[item?.identifier][n?.identifier] = parseInt(n?.define?.start) || 0;
+          } else formState[item?.identifier][n?.identifier] = parseInt(n?.define?.start) || '';
         });
       });
     }
