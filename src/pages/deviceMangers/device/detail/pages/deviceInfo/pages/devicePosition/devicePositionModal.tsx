@@ -91,7 +91,7 @@ const DevicePositionModal: React.FC<{
   };
 
   useEffect(() => {
-    loadOption();
+    if (window.hasOwnProperty('BMap')) loadOption();
     local?.search(parseAddress);
     setAddress(parseAddress as string);
   }, [flag, record, parseAddress]);
