@@ -32,6 +32,7 @@ interface DataType {
   step: string;
   min: string;
   max: string;
+  start: string;
   specs: AttrTableProps[];
   arrayInfo: {
     type: 'int' | 'string' | 'float';
@@ -176,8 +177,8 @@ const DevicePropsPage: React.FC<{ productID: string; deviceName: string }> = ({
                   : formState?.[par?.identifier] || '',
                 onChange: (v) => {
                   if (firstItem) {
-                    (formState[firstItem] as Record<string, boolean>)[par?.identifier] = v!;
-                  } else formState[par?.identifier] = v!;
+                    (formState[firstItem] as Record<string, boolean>)[par?.identifier] = v ? 1 : 0;
+                  } else formState[par?.identifier] = v ? 1 : 0;
                 },
               }}
             />
@@ -196,6 +197,18 @@ const DevicePropsPage: React.FC<{ productID: string; deviceName: string }> = ({
           width={formInputWidth}
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
+            step:
+              (firstItem
+                ? Number(par?.dataType?.arrayInfo?.step)
+                : Number(par?.affordance?.define?.step)) || 1,
+            min:
+              (firstItem
+                ? Number(par?.dataType?.arrayInfo?.min)
+                : Number(par?.affordance?.define?.min)) || 0,
+            max:
+              (firstItem
+                ? Number(par?.dataType?.arrayInfo?.max)
+                : Number(par?.affordance?.define?.max)) || 100,
             value: firstItem
               ? (formState?.[firstItem] as Record<string, number>)?.[par?.identifier]
               : formState?.[par?.identifier] || '',
@@ -216,15 +229,18 @@ const DevicePropsPage: React.FC<{ productID: string; deviceName: string }> = ({
           fieldProps={{
             disabled: par?.affordance?.mode === 'r',
             stringMode: true,
-            step: firstItem
-              ? Number(par?.dataType?.arrayInfo?.step)
-              : Number(par?.affordance?.define?.step) || 0.0,
-            min: firstItem
-              ? Number(par?.dataType?.arrayInfo?.min)
-              : Number(par?.affordance?.define?.min) || 0,
-            max: firstItem
-              ? Number(par?.dataType?.arrayInfo?.max)
-              : Number(par?.affordance?.define?.max) || 100,
+            step:
+              (firstItem
+                ? Number(par?.dataType?.arrayInfo?.step)
+                : Number(par?.affordance?.define?.step)) || 0.1,
+            min:
+              (firstItem
+                ? Number(par?.dataType?.arrayInfo?.min)
+                : Number(par?.affordance?.define?.min)) || 0.0,
+            max:
+              (firstItem
+                ? Number(par?.dataType?.arrayInfo?.max)
+                : Number(par?.affordance?.define?.max)) || 100,
             value: firstItem
               ? (formState?.[firstItem] as Record<string, string>)?.[par?.identifier]
               : formState[par?.identifier] || '',
@@ -452,11 +468,26 @@ const DevicePropsPage: React.FC<{ productID: string; deviceName: string }> = ({
     if (attrList.length) {
       attrList?.forEach((item) => {
         const type = item?.affordance?.define?.type;
-        if (valueType.includes(type)) formState[item?.identifier] = item?.value || '';
+        if (valueType.includes(type)) {
+          if (type === 'bool')
+            formState[item?.identifier] =
+              item?.value || parseInt(item?.affordance?.define?.start) || 0;
+          else
+            formState[item?.identifier] =
+              item?.value || parseInt(item?.affordance?.define?.start) || '';
+        }
+
         if (item?.type === 'struct') {
-          item?.affordance?.define?.specs?.forEach(() => {
+          formState[item?.identifier] = {};
+          item?.affordance?.define?.specs?.forEach((n) => {
             // TODO: 确定struct的value值结构
-            formState[item?.identifier] = JSON.parse(item?.value || '{}');
+            if (Object.keys(JSON.parse(item?.value || '{}')).length)
+              formState[item?.identifier] = JSON.parse(item?.value || '{}');
+            else {
+              if (n?.dataType?.type === 'bool')
+                formState[item?.identifier][n?.identifier] = parseInt(n?.dataType?.start) || 0;
+              else formState[item?.identifier][n?.identifier] = parseInt(n?.dataType?.start) || '';
+            }
           });
         }
       });

@@ -13,13 +13,14 @@ import {
 import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import { useRequest } from 'ahooks';
-import { Button, message, Space } from 'antd';
+import { Button, message, notification, Space } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import type { ModelType } from 'types/base';
 
 import { postApiV1ThingsDeviceInteractSendAction } from '@/services/iThingsapi/shebeijiaohu';
 import { ResponseCode } from '@/utils/base';
 import { dateStrToTimestamp, timestampToDateStr } from '@/utils/date';
+import { SmileOutlined } from '@ant-design/icons';
 
 interface DataType {
   type: ModelType;
@@ -63,8 +64,6 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
   const formState = useReactive<
     Record<string, string | number | boolean | Record<string, string | number | boolean>>
   >({});
-
-  console.log('formState', formState);
 
   const [attrList, setAttrList] = useState<AttrTableProps[]>([]);
   const [controlLoading, setControlLoading] = useState(false);
@@ -112,7 +111,28 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
       manual: true,
       onSuccess: (res) => {
         if (res?.code === ResponseCode.SUCCESS) {
-          message.success('设置成功');
+          message.success('调用成功');
+          const parsedObject = JSON.parse(res?.data?.outputParams || '{}');
+          const output = Object.keys(parsedObject).map((key) => ({
+            key,
+            value: parsedObject[key],
+          }));
+
+          notification.open({
+            message: '输出参数',
+            icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+            duration: 3,
+            description: (
+              <ProDescriptions column={1}>
+                {output?.length &&
+                  output?.map((item) => (
+                    <ProDescriptions.Item label={item.key} key={item.key}>
+                      {item.value}
+                    </ProDescriptions.Item>
+                  ))}
+              </ProDescriptions>
+            ),
+          });
         }
       },
       onFinally: () => setControlLoading(false),
@@ -340,7 +360,6 @@ const DeviceActPage: React.FC<{ productID: string; deviceName: string }> = ({
       attrList?.forEach((item) => {
         formState[item?.identifier] = {};
         item?.affordance?.input?.forEach((n) => {
-          console.log('n', n);
           if (n.define.type === 'bool') {
             formState[item?.identifier][n?.identifier] = parseInt(n?.define?.start) || 0;
           } else formState[item?.identifier][n?.identifier] = parseInt(n?.define?.start) || '';
