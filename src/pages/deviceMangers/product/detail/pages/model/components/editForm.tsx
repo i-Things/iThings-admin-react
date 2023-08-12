@@ -1,23 +1,19 @@
 import {
-  postApiV1ThingsProductSchemaCreate,
-  postApiV1ThingsProductSchemaUpdate,
-} from '@/services/iThingsapi/wumoxing';
-import {
+  createAsyncFormActions,
   Field,
   FormEffectHooks,
   FormMegaLayout,
   FormPath,
   SchemaForm,
-  createAsyncFormActions
 } from '@formily/antd';
 import {
   ArrayTable as FArrayTable,
+  FormItemGrid,
+  FormLayout,
   Input as FInput,
   NumberPicker as FNumberPicker,
   Select as FSelect,
   Switch as FSwitch,
-  FormItemGrid,
-  FormLayout,
 } from '@formily/antd-components';
 import type { ISchemaFormAsyncActions } from '@formily/react-schema-renderer/lib/types';
 import { useParams } from '@umijs/max';
@@ -27,17 +23,18 @@ import type { EditFormType } from './const';
 
 import styles from '../style.less';
 import {
-  _dataTypeList,
-  _yuansuleixingList,
   dataTypeMapping,
   dataTypeOptionsList,
   elementTypeMapping,
   eventTypeList,
   formItemMapping,
+  initialValues,
   rwTypeList,
   shadowType,
   typeOptionsList,
-  yuansuleixingList
+  yuansuleixingList,
+  _dataTypeList,
+  _yuansuleixingList,
 } from './const';
 
 const { onFieldValueChange$ } = FormEffectHooks;
@@ -53,7 +50,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
   const ruleActions = useRef<ISchemaFormAsyncActions>(createAsyncFormActions());
 
   const [isEdit, setIsEdit] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false);
 
   const urlParams = useParams() as { id: string };
   const productID = urlParams.id ?? '';
@@ -65,6 +62,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
   // TODO: 提交函数
   const onModalFinish = async (values: any) => {
+    console.log('values', values);
     const {
       type,
       identifier,
@@ -88,23 +86,39 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     } = values;
 
     let arrayInfo = {};
+    console.log('specs', specs);
+
     //
     specs?.map((item: any) => {
-      item.dataType.type = item.type;
-      if (item?.dataType?.numericalRange) {
-        item.dataType.max = item.dataType.numericalRange.max + '';
-        item.dataType.min = item.dataType.numericalRange.min + '';
-        item.dataType.start = item.dataType.start + '';
-        item.dataType.step = item.dataType.step + '';
-        item.dataType.unit = item.dataType.unit + '';
+      // 去掉undefined
+      for (const key in item) {
+        if (item[key] === undefined) {
+          item[key] = '';
+        }
+      }
+      for (const key in item?.dataType) {
+        if (item?.dataType[key] === undefined) {
+          item.dataType[key] = '';
+        }
       }
 
-      item.dataType.max = item.dataType.max + '';
-      item.dataType.min = item.dataType.min + '';
+      item.dataType.type = item.type;
+      if (item?.dataType?.numericalRange) {
+        item.dataType.max = String(item.dataType.numericalRange.max ?? '');
+        item.dataType.min = String(item.dataType.numericalRange.min ?? '');
+        item.dataType.start = String(item.dataType.start ?? '');
+        item.dataType.step = String(item.dataType.step ?? '');
+        item.dataType.unit = String(item.dataType.unit ?? '');
+      }
+
+      item.dataType.max = String(item.dataType.max ?? '');
+      item.dataType.min = String(item.dataType.min ?? '');
+      if (item.dataType.type !== 'timestamp')
+        item.dataType.timestamp = String(item.dataType.timestamp ?? '');
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map(() => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -116,24 +130,35 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         item.dataType.arrayInfo = {
           ...item.dataType,
           type: item.dataType.elementType,
-          max: item.dataType.max + '',
+          max: String(item.dataType.max ?? ''),
         };
       }
     });
 
     input?.map((item: any) => {
+      // 去掉undefined
+      for (const key in item.dataType) {
+        if (item.dataType[key] === undefined) {
+          item.dataType[key] = '';
+        }
+      }
+      for (const key in item?.define) {
+        if (item?.define[key] === undefined) {
+          item.define[key] = '';
+        }
+      }
       item.dataType.type = item.type;
       if (item?.dataType?.numericalRange) {
-        item.dataType.max = item.dataType.numericalRange.max + '';
-        item.dataType.min = item.dataType.numericalRange.min + '';
-        item.dataType.start = item.dataType.start + '';
-        item.dataType.step = item.dataType.step + '';
-        item.dataType.unit = item.dataType.unit + '';
+        item.dataType.max = String(item.dataType.numericalRange.max ?? '');
+        item.dataType.min = String(item.dataType.numericalRange.min ?? '');
+        item.dataType.start = String(item.dataType.start ?? '');
+        item.dataType.step = String(item.dataType.step ?? '');
+        item.dataType.unit = String(item.dataType.unit ?? '');
       }
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map(() => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -144,7 +169,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         item.dataType.arrayInfo = {
           ...item.dataType,
           type: item.dataType.elementType,
-          max: item.dataType.max + '',
+          max: String(item.dataType.max ?? ''),
         };
       }
       item.define = {
@@ -154,18 +179,29 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     });
 
     output?.map((item: any) => {
+      // 去掉undefined
+      for (const key in item.dataType) {
+        if (item.dataType[key] === undefined) {
+          item.dataType[key] = '';
+        }
+      }
+      for (const key in item?.define) {
+        if (item?.define[key] === undefined) {
+          item.define[key] = '';
+        }
+      }
       item.dataType.type = item.type;
       if (item?.dataType?.numericalRange) {
-        item.dataType.max = item.dataType.numericalRange.max + '';
-        item.dataType.min = item.dataType.numericalRange.min + '';
-        item.dataType.start = item.dataType.start + '';
-        item.dataType.step = item.dataType.step + '';
-        item.dataType.unit = item.dataType.unit + '';
+        item.dataType.max = String(item.dataType.numericalRange.max ?? '');
+        item.dataType.min = String(item.dataType.numericalRange.min ?? '');
+        item.dataType.start = String(item.dataType.start ?? '');
+        item.dataType.step = String(item.dataType.step ?? '');
+        item.dataType.unit = String(item.dataType.unit ?? '');
       }
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map(() => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -176,7 +212,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         item.dataType.arrayInfo = {
           ...item.dataType,
           type: item.dataType.elementType,
-          max: item.dataType.max + '',
+          max: String(item.dataType.max ?? ''),
         };
       }
       item.define = {
@@ -186,17 +222,29 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     });
 
     params?.map((item: any) => {
+      // 去掉undefined
+      for (const key in item.dataType) {
+        if (item.dataType[key] === undefined) {
+          item.dataType[key] = '';
+        }
+      }
+      for (const key in item?.define) {
+        if (item?.define[key] === undefined) {
+          item.define[key] = '';
+        }
+      }
+
       if (item?.dataType?.numericalRange) {
-        item.dataType.max = item.dataType.numericalRange.max + '';
-        item.dataType.min = item.dataType.numericalRange.min + '';
-        item.dataType.start = item.dataType.start + '';
-        item.dataType.step = item.dataType.step + '';
-        item.dataType.unit = item.dataType.unit + '';
+        item.dataType.max = String(item.dataType.numericalRange.max ?? '');
+        item.dataType.min = String(item.dataType.numericalRange.min ?? '');
+        item.dataType.start = String(item.dataType.start ?? '');
+        item.dataType.step = String(item.dataType.step ?? '');
+        item.dataType.unit = String(item.dataType.unit ?? '');
       }
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum?.map((item: any) => {
+        item?.dataType?.shujudingyiForenum?.map(() => {
           const key = item.label;
           const value = item.value;
           _mapping[key] = value;
@@ -208,26 +256,26 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         item.dataType.arrayInfo = {
           ...item.dataType,
           type: item.dataType.elementType,
-          max: item.dataType.max + '',
+          max: String(item.dataType.max ?? ''),
         };
       }
 
       item.define = {
         ...item.dataType,
         type: item.type,
-        max: item.dataType.max + '',
+        max: (item.dataType.max ?? '') + '',
       };
     });
 
-    const _max = numericalRange?.max + '' ?? max + '';
+    const _max = String(numericalRange?.max ?? max ?? '');
 
     if (dataType === 'array') {
       arrayInfo = {
-        max: _max + '',
-        min: numericalRange?.min + '',
-        start: start + '',
-        step: step + '',
-        unit: unit + '',
+        max: String(_max ?? ''),
+        min: String(numericalRange?.min ?? ''),
+        start: String(start ?? ''),
+        step: String(step ?? ''),
+        unit: String(unit ?? ''),
       };
     }
 
@@ -249,11 +297,11 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         type: values?.dataType ?? eventType,
         numericalRange,
         mapping: __mapping,
-        max: _max + '',
-        min: numericalRange?.min + '',
-        start: start + '',
-        step: step + '',
-        unit: unit + '',
+        max: String(_max ?? ''),
+        min: String(numericalRange?.min ?? ''),
+        start: String(start ?? ''),
+        step: String(step ?? ''),
+        unit: String(unit ?? ''),
       },
       isUseShadow,
       params,
@@ -264,11 +312,18 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     };
 
     // 过滤掉 undefined 字段
+    for (const key in affordance) {
+      if (affordance[key] === undefined) {
+        affordance[key] = '';
+      }
+    }
     for (const key in affordance.define) {
       if (!affordance.define[key] || affordance.define[key] === 'undefined') {
         delete affordance.define[key];
       }
     }
+    console.log('affordance', affordance);
+
     const _params = {
       productID,
       type,
@@ -280,23 +335,25 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       affordance: JSON.stringify(affordance),
     };
 
-    let res = null;
+    console.log('_params', _params);
 
-    if (isEdit) {
-      res = await postApiV1ThingsProductSchemaUpdate(_params);
-    } else {
-      res = await postApiV1ThingsProductSchemaCreate(_params);
-    }
+    // let res = null;
 
-    if (res instanceof Response) {
-      return;
-    }
+    // if (isEdit) {
+    //   res = await postApiV1ThingsProductSchemaUpdate(_params);
+    // } else {
+    //   res = await postApiV1ThingsProductSchemaCreate(_params);
+    // }
 
-    await ruleActions.current.reset({
-      validate: false,
-    });
-    props?.actionRef?.current?.reload();
-    props.setModalVisit(false);
+    // if (res instanceof Response) {
+    //   return;
+    // }
+
+    // await ruleActions.current.reset({
+    //   validate: false,
+    // });
+    // props?.actionRef?.current?.reload();
+    // props.setModalVisit(false);
   };
 
   async function clearModal() {
@@ -370,7 +427,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.current.setFieldValue('specs', specs);
     ruleActions.current.setFieldValue('input', input);
     ruleActions.current.setFieldValue('output', output);
-    ruleActions.current.setFieldValue('eventType', _affordance?.type);
+    ruleActions.current.setFieldValue('eventType', _affordance?.type ?? initialValues.eventType);
     props.setModalVisit(true);
   }
 
@@ -757,7 +814,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       destroyOnClose
       open={props.modalVisit}
       okButtonProps={{
-        loading: loading
+        loading: loading,
       }}
       onOk={() => {
         ruleActions.current.submit();
@@ -782,22 +839,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           ArrayTable: FArrayTable,
           NumberPicker: FNumberPicker,
         }}
-        initialValues={{
-          type: 1,
-          dataType: 'bool',
-          mode: 'rw',
-          eventType: 'alert',
-          mapping: { '0': '关', '1': '开' },
-          numericalRange: { min: '1', max: '100' },
-          start: 0,
-          isUseShadow: false,
-          step: 1,
-          max: '2048',
-          specs: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-          params: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-          input: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-          output: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-        }}
+        initialValues={initialValues}
         onSubmit={onModalFinish}
         effects={() => {
           // 扁平化对象数据
@@ -806,8 +848,18 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
           }
 
           // 订阅表单字段改变
-          function subscribeToFieldChanges(allFormItems: string[], mapping: Record<string, string[]>, scopedFieldName: string) {
+          function subscribeToFieldChanges(
+            allFormItems: string[],
+            mapping: Record<string, string[]>,
+            scopedFieldName: string,
+          ) {
             onFieldValueChange$(scopedFieldName).subscribe(async (state) => {
+              console.log('allFormItems', allFormItems);
+              console.log('mapping', mapping);
+              console.log('scopedFieldName', scopedFieldName);
+              console.log('state', state);
+              console.log('枚举', await ruleActions.current.getFieldState('dataDefinitionForEnum'));
+
               if (scopedFieldName === 'elementType') {
                 const dataType = await ruleActions.current.getFieldState('dataType');
                 if (dataType.value !== 'array') {
@@ -816,6 +868,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               }
 
               const fieldType = state.value;
+              console.log('fieldType', fieldType);
 
               if (!fieldType || !(fieldType in mapping)) {
                 return;
@@ -835,9 +888,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
           // 需要订阅的表单字段以及所对应的项
           const fieldMappings: Record<string, Record<string, string[]>> = {
-            'type': Object.assign({ ...formItemMapping, ...dataTypeMapping }),
-            'dataType': dataTypeMapping,
-            'elementType': elementTypeMapping,
+            type: Object.assign({ ...formItemMapping, ...dataTypeMapping }),
+            dataType: dataTypeMapping,
+            elementType: elementTypeMapping,
           };
 
           // 为每一个字段绑定订阅函数
@@ -846,11 +899,18 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             subscribeToFieldChanges(allFormItems, fieldMappings[field], field);
           });
 
-
           // 定义函数用于管理表单项的可见性
-          function manageFormItemVisibility(scope: string, formName: string, mapper: Record<string, string[]>) {
-            onFieldValueChange$(`${scope}.${formName}`).subscribe((fieldState) => {
+          function manageFormItemVisibility(
+            scope: string,
+            formName: string,
+            mapper: Record<string, string[]>,
+          ) {
+            onFieldValueChange$(`${scope}.${formName}`).subscribe(async (fieldState) => {
               const value = fieldState.value;
+              console.log('scope', scope);
+              console.log('formName', formName);
+              console.log('mapper', mapper);
+              console.log('fieldState', fieldState);
 
               if (!value) {
                 return;
@@ -862,7 +922,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               });
 
               // 先把所有的设置为false
-              allFormItem?.map((item: string) => {
+              allFormItem?.map(async (item: string) => {
                 ruleActions.current.setFieldState(
                   FormPath.transform(
                     fieldState.name,
@@ -873,12 +933,22 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
                     state.visible = false;
                   },
                 );
+                const a = await ruleActions.current.getFieldInitialValue(
+                  FormPath.transform(
+                    fieldState.name,
+                    /\d/,
+                    ($1) => `${scope}.${$1}.dataType.${item}`,
+                  ),
+                );
+                console.log('a', a);
               });
 
               const arr = mapper[value];
               if (!arr) {
                 return;
               }
+
+              console.log('arr', arr);
 
               arr?.map((item: string) => {
                 ruleActions.current.setFieldState(
