@@ -1,5 +1,13 @@
 import type { MutableRefObject } from 'react';
-export type DataType = 'bool' | 'int' | 'string' | 'float' | 'enum' | 'timestamp' | 'struct' | 'array';
+export type DataType =
+  | 'bool'
+  | 'int'
+  | 'string'
+  | 'float'
+  | 'enum'
+  | 'timestamp'
+  | 'struct'
+  | 'array';
 
 export enum TypeEnum {
   Property = 1,
@@ -9,8 +17,57 @@ export enum TypeEnum {
 
 export type typeType = TypeEnum;
 
-export type elementInterface = 'int' | 'string' | 'float' | 'struct'
+export type elementInterface = 'int' | 'string' | 'float' | 'struct';
 
+export const initialValues = {
+  type: 1,
+  dataType: 'bool',
+  mode: 'rw',
+  eventType: 'alert',
+  mapping: { '0': '关', '1': '开' },
+  numericalRange: { min: '1', max: '100' },
+  start: 0,
+  isUseShadow: false,
+  step: 1,
+  max: '2048',
+  desc: '',
+  specs: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+  params: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+  input: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+  output: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+};
 
 export const typeOptionsList = [
   { label: '属性', value: 1 },

@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "umi debug",
+      "url": "http://localhost:8000",
+      "runtimeExecutable": "canary",
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": false,
+      "runtimeArgs": ["--auto-open-devtools-for-tabs"],
+      "sourceMapPathOverrides": {
+        "meteor://💻app/*": "${workspaceFolder}/*",
+        "webpack:///./~/*": "${workspaceFolder}/node_modules/*",
+        "webpack://?:*/*": "${workspaceFolder}/*"
+      }
+    }
+  ]
+}
