@@ -31,10 +31,42 @@ export const initialValues = {
   step: 1,
   max: '2048',
   desc: '',
-  specs: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-  params: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-  input: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
-  output: [{ type: 'bool', dataType: { mapping: { '0': '关', '1': '开' } } }],
+  specs: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+  params: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+  input: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
+  output: [
+    {
+      type: 'bool',
+      dataType: {
+        mapping: { '0': '关', '1': '开' },
+        shujudingyiForenum: [{ label: '0', value: '' }],
+      },
+    },
+  ],
 };
 
 export const typeOptionsList = [

@@ -10,7 +10,7 @@ import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { useParams } from '@umijs/max';
-import { Alert, Button, Input, Modal, message } from 'antd';
+import { Alert, Button, Input, message, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import JSONInput from 'react-json-editor-ajrm';
@@ -119,15 +119,14 @@ export default () => {
     return map[type](record) ?? '-';
   };
 
-  const getDefinition = (record: ProductSchemaInfo)  =>{
+  const getDefinition = (record: ProductSchemaInfo) => {
     try {
-        return JSON.parse(record?.affordance);
+      return JSON.parse(record?.affordance);
     } catch (e) {
-        console.error(e);
-        message.error('JSON 解析错误')
+      console.error(e);
+      message.error('JSON 解析错误');
     }
-}
-
+  };
 
   const columns: ProColumns<ProductSchemaInfo>[] = [
     {
@@ -150,7 +149,7 @@ export default () => {
       dataIndex: 'dataType',
       render: (_: any, record: ProductSchemaInfo) => {
         const dataType = getDefinition(record)?.define?.type as keyof typeof DATA_TYPE_ENUM;
-        return DATA_TYPE_ENUM[dataType]  ?? '-';
+        return DATA_TYPE_ENUM[dataType] ?? '-';
       },
     },
     {
@@ -159,7 +158,8 @@ export default () => {
       key: 'mode',
       dataIndex: 'mode',
       render: (_: any, record: ProductSchemaInfo) => {
-        const dataType = (getDefinition(record)?.mode || getDefinition(record)?.define?.mode) as keyof typeof MODE_ENUM;
+        const dataType = (getDefinition(record)?.mode ||
+          getDefinition(record)?.define?.mode) as keyof typeof MODE_ENUM;
         return MODE_ENUM[dataType] ?? '-';
       },
     },
@@ -181,7 +181,6 @@ export default () => {
           key="view"
           onClick={() => {
             if (modelModalRef.current) {
-              console.log('record11', record);
               modelModalRef.current.setModelModalValue(record, true);
             }
           }}
@@ -198,7 +197,7 @@ export default () => {
               content: '你确定删除该功能吗？',
               async onOk() {
                 const params = {
-                  ...record
+                  ...record,
                 };
                 const res = await postApiV1ThingsProductSchema__openAPI__delete(params);
                 if (res instanceof Response) {
