@@ -161,9 +161,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum?.map(() => {
-          const key = item.label;
-          const value = item.value;
+        item?.dataType?.shujudingyiForenum?.map((en) => {
+          const key = en.label;
+          const value = en.value;
           _mapping[key] = value;
         });
         item.dataType.mapping = _mapping;
@@ -204,9 +204,9 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
       if (item?.dataType?.shujudingyiForenum) {
         const _mapping = {};
-        item?.dataType?.shujudingyiForenum?.map(() => {
-          const key = item.label;
-          const value = item.value;
+        item?.dataType?.shujudingyiForenum?.map((en) => {
+          const key = en.label;
+          const value = en.value;
           _mapping[key] = value;
         });
         item.dataType.mapping = _mapping;
@@ -321,6 +321,8 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       mode,
     };
 
+    console.log('affordance', affordance);
+
     // 过滤掉 undefined 字段
     for (const key in affordance) {
       if (affordance[key] === undefined || affordance[key] === 'undefined') {
@@ -367,6 +369,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     await ruleActions.reset({
       validate: false,
     });
+    props?.actionRef?.current?.reload();
   }
 
   async function createModel() {
@@ -422,22 +425,25 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       }));
 
     if (defineType === 'struct') {
-      specs.map((s: any) => {
+      specs.map((s: any, i: number) => {
         if (s.dataType.type === 'array') {
           s.dataType.elementType = s.dataType.arrayInfo.type;
         }
         if (s.dataType.type === 'enum') {
           if (s.dataType.mapping) {
-            s.dataType.shujudingyiForenum = Object.keys(s.dataType.mapping).map((m) => ({
+            const enumValue = Object.keys(s.dataType.mapping).map((m) => ({
               label: m,
               value: s.dataType.mapping[m],
             }));
+            console.log('enumValue', enumValue);
+
+            ruleActions.setFieldValue(`specs.${i}.dataType.shujudingyiForenum`, enumValue);
           }
         }
       });
     }
     if (params)
-      params.map((p) => {
+      params.map((p, i) => {
         p.type = p.define.type;
         if (p.define) {
           p.dataType = p.define;
@@ -448,17 +454,18 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         }
         if (p.type === 'enum') {
           if (p.define.mapping) {
-            p.dataType.shujudingyiForenum = Object.keys(p.define.mapping).map((m) => ({
+            const enumValue = Object.keys(p.define.mapping).map((m) => ({
               label: m,
               value: p.define.mapping[m],
             }));
+            ruleActions.setFieldValue(`params.${i}.dataType.shujudingyiForenum`, enumValue);
           }
         }
         p.dataType.numericalRange = { min: p.define.min ?? '', max: p.define.max ?? '' };
       });
 
     if (input)
-      input.map((p) => {
+      input.map((p, i) => {
         p.type = p.define.type;
         if (p.define) {
           p.dataType = p.define;
@@ -469,17 +476,18 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         }
         if (p.type === 'enum') {
           if (p.define.mapping) {
-            p.dataType.shujudingyiForenum = Object.keys(p.define.mapping).map((m) => ({
+            const enumValue = Object.keys(p.define.mapping).map((m) => ({
               label: m,
               value: p.define.mapping[m],
             }));
+            ruleActions.setFieldValue(`input.${i}.dataType.shujudingyiForenum`, enumValue);
           }
         }
         p.dataType.numericalRange = { min: p.define.min ?? '', max: p.define.max ?? '' };
       });
 
     if (output)
-      output.map((p) => {
+      output.map((p, i) => {
         p.type = p.define.type;
         if (p.define) {
           p.dataType = p.define;
@@ -490,10 +498,11 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         }
         if (p.type === 'enum') {
           if (p.define.mapping) {
-            p.dataType.shujudingyiForenum = Object.keys(p.define.mapping).map((m) => ({
+            const enumValue = Object.keys(p.define.mapping).map((m) => ({
               label: m,
               value: p.define.mapping[m],
             }));
+            ruleActions.setFieldValue(`output.${i}.dataType.shujudingyiForenum`, enumValue);
           }
         }
         p.dataType.numericalRange = { min: p.define.min ?? '', max: p.define.max ?? '' };
@@ -930,7 +939,8 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         ruleActions.submit();
       }}
       onCancel={() => {
-        props.setModalVisit();
+        clearModal();
+        props.setModalVisit(false);
       }}
       title={isEdit ? '编辑自定义规则' : '新建自定义规则'}
       width={1300}
