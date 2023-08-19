@@ -78,6 +78,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       start,
       step,
       unit,
+      min,
       max,
       dataDefinitionForEnum: dataDefinitionForEnum,
       mapping,
@@ -271,19 +272,22 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     });
 
     const _max = String(numericalRange?.max ?? max ?? '');
+    const _min = String(numericalRange?.min ?? min ?? '');
 
     let defineType;
 
     if (dataType === 'array') {
+      defineType = 'array';
       arrayInfo = {
+        type: elementType,
+        numericalRange: { min: _min, max: _max },
         max: String(_max ?? ''),
-        min: String(numericalRange?.min ?? ''),
+        min: String(_min ?? ''),
         start: String(start ?? ''),
         step: String(step ?? ''),
-        unit: String(unit ?? ''),
+        unit: String(unit ?? '') /*  */,
+        specs: specs,
       };
-      // arrayInfo = specs;
-      if (elementType === 'struct') defineType = 'struct';
     }
 
     if (values?.dataType && values?.dataType != 'array') defineType = values?.dataType;
@@ -303,9 +307,10 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         specs,
         // input,
         // output,
+        elementType: elementType ?? '',
         dataDefinitionForEnum: dataDefinitionForEnum,
         type: defineType,
-        numericalRange,
+        numericalRange: { min: _min, max: _max },
         mapping: __mapping,
         max: String(_max ?? ''),
         min: String(numericalRange?.min ?? ''),
@@ -320,8 +325,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
       type: eventType,
       mode,
     };
-
-    console.log('affordance', affordance);
 
     // 过滤掉 undefined 字段
     for (const key in affordance) {
@@ -391,9 +394,10 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
 
     const _affordance = JSON.parse(affordance);
     const { params, input, output } = _affordance;
-    const defineType = _affordance?.define?.type;
+    const defineType = _affordance.define.type || {};
+    const specs = _affordance.define.specs || {};
+    const arrayInfo = _affordance.define.arrayInfo || {};
     const mode = _affordance?.mode;
-    const specs = _affordance?.define?.specs;
     specs?.map((item) => {
       item.type = item.dataType.type;
       const numericalRange = {
@@ -424,7 +428,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         value: mapping[label],
       }));
 
-    if (defineType === 'struct') {
+    if (defineType === 'struct' || defineType === 'array') {
       specs.map((s: any, i: number) => {
         if (s.dataType.type === 'array') {
           s.dataType.elementType = s.dataType.arrayInfo.type;
@@ -435,7 +439,6 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               label: m,
               value: s.dataType.mapping[m],
             }));
-            console.log('enumValue', enumValue);
 
             ruleActions.setFieldValue(`specs.${i}.dataType.shujudingyiForenum`, enumValue);
           }
@@ -508,6 +511,12 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         p.dataType.numericalRange = { min: p.define.min ?? '', max: p.define.max ?? '' };
       });
 
+    let elementType;
+    if (arrayInfo && Object.keys(arrayInfo).length) {
+      if (arrayInfo.type) elementType = arrayInfo.type;
+      else elementType = 'int';
+    }
+
     ruleActions.setFieldValue('mode', mode);
 
     ruleActions.setFieldValue('mapping', mapping);
@@ -522,8 +531,8 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     ruleActions.setFieldValue('isUseShadow', isUseShadow);
 
     ruleActions.setFieldValue('dataType', dataType);
+    ruleActions.setFieldValue('elementType', elementType);
     ruleActions.setFieldValue('params', params);
-
     ruleActions.setFieldValue('specs', specs);
     ruleActions.setFieldValue('input', input);
     ruleActions.setFieldValue('output', output);
@@ -961,7 +970,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
         }}
         initialValues={initialValues}
         onSubmit={onModalFinish}
-        effects={() => {
+        effects={async () => {
           // 扁平化对象数据
           function flattenObjectValues(obj: Record<string, any[]>): string[] {
             return Object.values(obj).flat();
@@ -976,11 +985,11 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
             onFieldValueChange$(scopedFieldName).subscribe(async (state) => {
               if (scopedFieldName === 'elementType') {
                 const dataType = await ruleActions.getFieldState('dataType');
+
                 if (dataType.value !== 'array') {
                   return;
                 }
               }
-
               const fieldType = state.value;
 
               if (!fieldType || !(fieldType in mapping)) {
@@ -991,7 +1000,16 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               formItemVisibleConfig(allFormItems, false);
 
               //展示匹配到的表单项
-              const formItemsToShow = mapping[fieldType];
+              let formItemsToShow = mapping[fieldType];
+
+              if (scopedFieldName === 'dataType') {
+                const elementType = await ruleActions.getFieldState('elementType');
+                const dataType = await ruleActions.getFieldState('dataType');
+                if (elementType?.value === 'int' && dataType?.value === 'array') {
+                  formItemsToShow = formItemsToShow.filter((item) => item !== 'max');
+                }
+              }
+
               formItemVisibleConfig(formItemsToShow, true);
             });
           }
@@ -1029,6 +1047,13 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
               Object.keys(mapper)?.map((item) => {
                 allFormItem = allFormItem.concat(mapper[item]);
               });
+
+              const type = await ruleActions.getFieldState(fieldState.name);
+              const elementType = await ruleActions.getFieldState('elementType');
+              if (type?.props?.enum && elementType.value === 'struct') {
+                const filterEnum = type.props.enum.filter((en) => en.value !== 'array');
+                type.props.enum = filterEnum;
+              }
 
               // 先把所有的设置为false
               allFormItem?.map(async (item: string) => {
