@@ -21,6 +21,7 @@ export type elementInterface = 'int' | 'string' | 'float' | 'struct';
 
 export const initialValues = {
   type: 1,
+  elementType: 'int',
   dataType: 'bool',
   mode: 'rw',
   eventType: 'alert',
