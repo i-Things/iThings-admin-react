@@ -21,7 +21,16 @@ export async function postApiV1ThingsProductSchemaCreate(
 export async function postApiV1ThingsProductSchema__openAPI__delete(
   body: {
     productID: string;
+    /** 1:property属性 2:event事件 3:action行为 */
+    type: number;
+    /** 1:自定义 2:可选 3:必选  必选不可删除 */
+    tag?: number;
     identifier: string;
+    name?: string;
+    desc?: string;
+    /** 1:是 2:否 */
+    required: number;
+    affordance: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -87,7 +96,9 @@ export async function postApiV1ThingsProductSchemaTslRead(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ tsl: string }>('/api/v1/things/product/schema/tsl-read', {
+  return request<{
+    data: any; tsl: string 
+}>('/api/v1/things/product/schema/tsl-read', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -103,6 +114,8 @@ export async function postApiV1ThingsProductSchemaUpdate(
     productID: string;
     /** 1:property属性 2:event事件 3:action行为 */
     type: number;
+    /** 1:自定义 2:可选 3:必选  必选不可删除 */
+    tag?: number;
     identifier: string;
     name?: string;
     desc?: string;

@@ -1,6 +1,6 @@
 declare namespace USER {
   type UserInfoType = {
-    uid?: string;
+    userID?: string;
     userName?: string;
     nickName?: string;
     inviterUid?: string;

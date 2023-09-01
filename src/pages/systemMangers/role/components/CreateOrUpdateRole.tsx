@@ -5,7 +5,6 @@ import {
   postApiV1SystemRoleUpdate,
 } from '@/services/iThingsapi/jiaoseguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
-import { PlusOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
@@ -46,22 +45,16 @@ const CreateOrUpdateRole: React.FC<{
     <ModalForm<RoleListItem>
       width={550}
       formRef={editFormRef}
-      title={flag === 'update' ? '编辑角色信息' : '新建角色'}
+      title={flag === 'update' ? '编辑角色信息' : '创建角色'}
       trigger={
         <Button
-          type="primary"
+          type={flag === 'update' ? 'link' : 'primary'}
           onClick={() => {
             setEditFlag(true);
             onOpen();
           }}
         >
-          {flag === 'update' ? (
-            '编辑'
-          ) : (
-            <>
-              <PlusOutlined /> 新建角色
-            </>
-          )}
+          {flag === 'update' ? '编辑' : '新增'}
         </Button>
       }
       visible={visible}

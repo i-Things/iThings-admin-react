@@ -1,5 +1,5 @@
 export type loginType = {
-  userID: string;
+  account: string;
   pwdtype: number;
   password: string;
   loginType: string;

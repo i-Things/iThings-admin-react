@@ -39,18 +39,34 @@ export async function postApiV1ThingsDeviceInfoCreate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    secret: string;
     cert: string;
     imei: string;
     mac: string;
+    version: string;
     hardInfo: string;
     softInfo: string;
-    tags: { key?: string; value?: string }[];
-    /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel: number;
-    /** 设备所在地址 */
-    address?: string;
-    /** 设备点坐标，,默认百度坐标系 */
     position?: { longitude?: number; latitude?: number };
+    address?: string;
+    tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline?: number;
+    firstLogin?: string;
+    lastLogin?: string;
+    /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
+    logLevel?: number;
+    createdTime?: string;
+    /** key是属性id,value是{"value:"xxx","timestamp":123}的结构体,时间戳是毫秒时间戳 */
+    withProperties?: Record<string, any>;
+    /** 设备别名 */
+    deviceAlias?: string;
+    projectID?: string;
+    areaID?: string;
+    /** 1)移动 2)联通 3)电信 4)广电 */
+    mobileOperator?: number;
+    phone?: string;
+    iccid?: string;
+    userID?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -71,13 +87,6 @@ export async function postApiV1ThingsDeviceInfo__openAPI__delete(
     productID: string;
     /** 不可修改 */
     deviceName: string;
-    cert: string;
-    imei: string;
-    mac: string;
-    hardInfo: string;
-    softInfo: string;
-    position: { longitude?: number; latitude?: number };
-    address: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -95,39 +104,33 @@ export async function postApiV1ThingsDeviceInfo__openAPI__delete(
 export async function postApiV1ThingsDeviceInfoIndex(
   body: {
     page?: { page?: number; size?: number };
+    /** 项目IDs */
+    projectIDs: string[];
+    /** 区域IDs */
+    areaIDs: string[];
     /** 为空时获取所有产品 */
     productID?: string;
+    /** 过滤条件:模糊查询 设备名 */
     deviceName?: string;
-    /** 非模糊查询 为tag的名,value为tag对应的值 */
-    tags?: { key?: string; value?: string }[];
-    /** 过滤条件:距离坐标点固定范围内的设备 单位：米 */
-    range?: number;
+    /** 过滤条件:模糊查询 设备别名 */
+    deviceAlias?: string;
     /** 设备定位,默认百度坐标系，用于获取以该点为中心，Range范围内的设备列表，与Range连用 */
     position?: { longitude?: number; latitude?: number };
+    /** 过滤条件:距离坐标点固定范围内的设备 单位：米 */
+    range?: number;
+    /** 非模糊查询 为tag的名,value为tag对应的值 */
+    tags?: { key?: string; value?: string }[];
+    /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表 */
+    withProperties?: string[];
+    /** 1: 在线 2:不在线 */
+    isOnline?: number;
   },
   options?: { [key: string]: any },
 ) {
   return request<{
     code: number;
     msg: string;
-    data: {
-      list?: {
-        productID?: string;
-        deviceName?: string;
-        createdTime?: string;
-        secret?: string;
-        firstLogin?: string;
-        lastLogin?: string;
-        version?: string;
-        logLevel?: number;
-        tags?: { key?: string; value?: string }[];
-        isOnline?: number;
-        address?: string;
-        position: { longitude?: number; latitude?: number };
-      }[];
-      total?: number;
-      num?: number;
-    };
+    data: { list?: API.DeviceInfo[]; total?: number; num?: number };
   }>('/api/v1/things/device/info/index', {
     method: 'POST',
     headers: {
@@ -204,6 +207,8 @@ export async function postApiV1ThingsDeviceInfoRead(
     /** 为空时获取所有产品 */
     productID: string;
     deviceName: string;
+    /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表 */
+    withProperties?: string[];
   },
   options?: { [key: string]: any },
 ) {
@@ -227,18 +232,34 @@ export async function postApiV1ThingsDeviceInfoUpdate(
     productID: string;
     /** 不可修改 */
     deviceName: string;
+    secret: string;
     cert: string;
     imei: string;
     mac: string;
+    version: string;
     hardInfo: string;
     softInfo: string;
-    tags: { key?: string; value?: string }[];
-    /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
-    logLevel: number;
-    /** 设备所在地址 */
-    address?: string;
-    /** 设备坐标点,默认百度坐标系 */
     position?: { longitude?: number; latitude?: number };
+    address?: string;
+    tags?: { key?: string; value?: string }[];
+    /** 1离线 2在线 只读 */
+    isOnline?: number;
+    firstLogin?: string;
+    lastLogin?: string;
+    /** 1)关闭 2)错误 3)告警 4)信息 5)调试  */
+    logLevel?: number;
+    createdTime?: string;
+    /** key是属性id,value是{"value:"xxx","timestamp":123}的结构体,时间戳是毫秒时间戳 */
+    withProperties?: Record<string, any>;
+    /** 设备别名 */
+    deviceAlias?: string;
+    projectID?: string;
+    areaID?: string;
+    /** 1)移动 2)联通 3)电信 4)广电 */
+    mobileOperator?: number;
+    phone?: string;
+    iccid?: string;
+    userID?: string;
   },
   options?: { [key: string]: any },
 ) {

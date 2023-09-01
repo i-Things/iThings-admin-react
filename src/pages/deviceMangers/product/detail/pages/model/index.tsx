@@ -3,7 +3,7 @@ import {
   postApiV1ThingsProductSchemaIndex,
   postApiV1ThingsProductSchemaTslImport,
   postApiV1ThingsProductSchemaTslRead,
-  postApiV1ThingsProductSchema__openAPI__delete
+  postApiV1ThingsProductSchema__openAPI__delete,
 } from '@/services/iThingsapi/wumoxing';
 import { downloadFunction, isJSON } from '@/utils/utils';
 import { CopyOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -35,6 +35,8 @@ type queryParam = {
   current: number;
   productID?: string;
 };
+
+type MapType = 'bool' | 'int' | 'float' | 'string' | 'enum' | 'timestamp';
 
 export default () => {
   const [modalVisit, setModalVisit] = useState(false);
@@ -102,8 +104,8 @@ export default () => {
     );
   };
 
-  const renderMap = (type: string, record: ProductSchemaInfo) => {
-    const map = {
+  const renderMap = (type: MapType, record: ProductSchemaInfo) => {
+    const map: { [key in MapType]: (record: ProductSchemaInfo) => JSX.Element } = {
       bool: boolRender,
       int: intRender,
       float: intRender,
@@ -115,6 +117,15 @@ export default () => {
       return '-';
     }
     return map[type](record) ?? '-';
+  };
+
+  const getDefinition = (record: ProductSchemaInfo) => {
+    try {
+      return JSON.parse(record?.affordance);
+    } catch (e) {
+      console.error(e);
+      message.error('JSON 解析错误');
+    }
   };
 
   const columns: ProColumns<ProductSchemaInfo>[] = [
@@ -137,7 +148,8 @@ export default () => {
       width: 80,
       dataIndex: 'dataType',
       render: (_: any, record: ProductSchemaInfo) => {
-        return DATA_TYPE_ENUM[JSON.parse(record?.affordance)?.define?.type] ?? '-';
+        const dataType = getDefinition(record)?.define?.type as keyof typeof DATA_TYPE_ENUM;
+        return DATA_TYPE_ENUM[dataType] ?? '-';
       },
     },
     {
@@ -146,14 +158,16 @@ export default () => {
       key: 'mode',
       dataIndex: 'mode',
       render: (_: any, record: ProductSchemaInfo) => {
-        return MODE_ENUM[JSON.parse(record?.affordance)?.mode] ?? '-';
+        const dataType = (getDefinition(record)?.mode ||
+          getDefinition(record)?.define?.mode) as keyof typeof MODE_ENUM;
+        return MODE_ENUM[dataType] ?? '-';
       },
     },
     {
       title: '数据定义',
       dataIndex: 'affordance',
       render: (_: any, record: ProductSchemaInfo) => {
-        const type = JSON.parse(record?.affordance)?.define?.type;
+        const type = getDefinition(record)?.define?.type;
         return renderMap(type, record);
       },
     },
@@ -167,7 +181,6 @@ export default () => {
           key="view"
           onClick={() => {
             if (modelModalRef.current) {
-              console.log('record11', record);
               modelModalRef.current.setModelModalValue(record, true);
             }
           }}
@@ -183,10 +196,8 @@ export default () => {
               icon: <ExclamationCircleOutlined />,
               content: '你确定删除该功能吗？',
               async onOk() {
-                const { identifier, productID } = record;
                 const params = {
-                  productID,
-                  identifier,
+                  ...record,
                 };
                 const res = await postApiV1ThingsProductSchema__openAPI__delete(params);
                 if (res instanceof Response) {
@@ -330,6 +341,16 @@ export default () => {
   return (
     <>
       <Button
+        style={{ marginRight: 10 }}
+        key="show"
+        type="primary"
+        onClick={() => {
+          modelModalRef.current.createModel();
+        }}
+      >
+        新建自定义功能
+      </Button>
+      <Button
         type="primary"
         style={{ marginRight: 10 }}
         onClick={() => {
@@ -339,6 +360,7 @@ export default () => {
         导入物模型
       </Button>
       <Button
+        style={{ marginRight: 10 }}
         onClick={async () => {
           const res = await postApiV1ThingsProductSchemaTslRead({ productID });
           if (res instanceof Response) {
@@ -362,17 +384,6 @@ export default () => {
         dateFormatter="string"
         headerTitle="自定义功能"
         request={queryList}
-        toolBarRender={() => [
-          <Button
-            key="show"
-            type="primary"
-            onClick={() => {
-              modelModalRef.current.createModel();
-            }}
-          >
-            新建自定义功能
-          </Button>,
-        ]}
       />
       <EditForm
         modalVisit={modalVisit}

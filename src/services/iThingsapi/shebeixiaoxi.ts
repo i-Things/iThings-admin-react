@@ -22,6 +22,8 @@ export async function postApiV1ThingsDeviceMsgEventLogIndex(
       list?: { timestamp?: string; type?: string; dataID?: string; params?: string }[];
       total?: number;
     };
+    code: number;
+    msg: string;
   }>('/api/v1/things/device/msg/event-log/index', {
     method: 'POST',
     headers: {
@@ -61,6 +63,8 @@ export async function postApiV1ThingsDeviceMsgHubLogIndex(
       }[];
       total?: number;
     };
+    code: number;
+    msg: string;
   }>('/api/v1/things/device/msg/hub-log/index', {
     method: 'POST',
     headers: {
@@ -83,6 +87,8 @@ export async function postApiV1ThingsDeviceMsgPropertyLatestIndex(
 ) {
   return request<{
     data: { list?: { timestamp?: string; dataID?: string; value?: string }[]; total?: number };
+    code: number;
+    msg: string;
   }>('/api/v1/things/device/msg/property-latest/index', {
     method: 'POST',
     headers: {
@@ -116,6 +122,8 @@ export async function postApiV1ThingsDeviceMsgPropertyLogIndex(
 ) {
   return request<{
     data: { list?: { timestamp?: string; dataID?: string; value?: string }[]; total?: number };
+    code: number;
+    msg: string;
   }>('/api/v1/things/device/msg/property-log/index', {
     method: 'POST',
     headers: {
@@ -138,15 +146,40 @@ export async function postApiV1ThingsDeviceMsgSdkLogIndex(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ data: { list?: API.deviceMsgSdkIndex[]; total?: number } }>(
-    '/api/v1/things/device/msg/sdk-log/index',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<{
+    data: { list?: API.deviceMsgSdkIndex[]; total?: number };
+    code: number;
+    msg: string;
+  }>('/api/v1/things/device/msg/sdk-log/index', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取设备影子列表 POST /api/v1/things/device/msg/shadow/index */
+export async function postApiV1ThingsDeviceMsgShadowIndex(
+  body: {
+    deviceName: string;
+    productID: string;
+    /** 如果不指定则获取所有属性数据 */
+    dataIDs: string[];
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{
+    data: { list?: { updatedDeviceTime?: number; dataID?: string; value?: string }[] };
+    code: number;
+    msg: string;
+  }>('/api/v1/things/device/msg/shadow/index', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
 }

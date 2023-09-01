@@ -7,7 +7,8 @@ export async function postApiV1ThingsRuleAlarmInfoCreate(
   body: {
     /** 1启用 2禁用 */
     name: string;
-    state: number;
+    /** 1启用 2禁用 */
+    status: number;
     desc: string;
     /** 1提醒 2一般 3严重 4紧急 5超紧急 */
     level: number;
@@ -92,10 +93,10 @@ export async function postApiV1ThingsRuleAlarmInfoRead(
 /** 更新告警 POST /api/v1/things/rule/alarm/info/update */
 export async function postApiV1ThingsRuleAlarmInfoUpdate(
   body: {
-    id?: number;
     /** 1启用 2禁用 */
     name: string;
-    state: number;
+    /** 1启用 2禁用 */
+    status: number;
     desc: string;
     /** 1提醒 2一般 3严重 4紧急 5超紧急 */
     level: number;

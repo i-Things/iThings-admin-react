@@ -21,7 +21,7 @@ export async function postApiV1SystemLogLoginIndex(
     data: {
       total?: number;
       list?: {
-        uid?: number;
+        userID?: number;
         userName?: string;
         ipAddr?: string;
         loginLocation?: string;
@@ -61,7 +61,7 @@ export async function postApiV1SystemLogOperIndex(
     data: {
       total?: number;
       list?: {
-        uid?: number;
+        userID?: number;
         operUserName?: string;
         operName?: string;
         businessType?: string;

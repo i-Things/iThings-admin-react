@@ -5,7 +5,6 @@ import {
   postApiV1SystemUserUpdate,
 } from '@/services/iThingsapi/yonghuguanli';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
-import { PlusOutlined } from '@ant-design/icons';
 import { ProFormSelect } from '@ant-design/pro-components';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormText } from '@ant-design/pro-form';
@@ -39,7 +38,7 @@ const CreateOrUpdateUser: React.FC<{
     if (flag === 'update')
       await updateHandler<UpdateProp, UserListItem>(postApiV1SystemUserUpdate, actionRef, {
         ...body,
-        uid: record?.uid as string,
+        userID: record?.userID as string,
       });
     else await createHandler<CreateProp, UserListItem>(postApiV1SystemUserCreate, actionRef, body);
     onClose();
@@ -54,22 +53,16 @@ const CreateOrUpdateUser: React.FC<{
     <ModalForm<UserListItem>
       width={550}
       formRef={editFormRef}
-      title={flag === 'update' ? '编辑用户信息' : '新建用户'}
+      title={flag === 'update' ? '编辑用户信息' : '创建用户'}
       trigger={
         <Button
-          type="primary"
+          type={flag === 'update' ? 'link' : 'primary'}
           onClick={() => {
             setEditFlag(true);
             onOpen();
           }}
         >
-          {flag === 'update' ? (
-            '编辑'
-          ) : (
-            <>
-              <PlusOutlined /> 新建用户
-            </>
-          )}
+          {flag === 'update' ? '编辑' : '新增'}
         </Button>
       }
       visible={visible}

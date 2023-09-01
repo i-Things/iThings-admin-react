@@ -13,7 +13,7 @@ import type { ActionType } from '@ant-design/pro-table';
 import { ProTable } from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table/lib/typing';
 import { Button, message, Modal } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CreateForm } from './createForm';
 import type { TagsInfo } from './data';
 import ProductTagsModal from './detail/pages/productInfo/components/deviceTagsModal';
@@ -133,6 +133,7 @@ const IndexPage: React.FC = () => {
           查看
         </a>,
         <Button
+          type="link"
           danger
           key="deleteProduct"
           onClick={() => {
@@ -162,6 +163,11 @@ const IndexPage: React.FC = () => {
       ],
     },
   ];
+
+  useEffect(() => {
+    console.log('11111');
+    console.log('11111');
+  }, []);
 
   return (
     <PageContainer>

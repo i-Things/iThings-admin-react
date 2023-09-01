@@ -13,7 +13,7 @@ import type { ParamsType } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, message } from 'antd';
+import { Button, message } from 'antd';
 import { cloneDeep } from 'lodash';
 import React, { useRef, useState } from 'react';
 import CreateOrUpdateMenu from './components/CreateOrUpdateMenu';
@@ -49,27 +49,28 @@ const MenuList: React.FC = () => {
     {
       title: '菜单名称',
       dataIndex: 'name',
-      width: 100,
+      copyable: true,
+      // width: 100,
     },
     {
       title: '图标',
       dataIndex: 'icon',
       hideInSearch: true,
-      width: 170,
+      // width: 170,
       render: (dom) => <span>{ICON_OPTION.filter((i) => i.value === dom)?.[0]?.label}</span>,
     },
     {
       title: '路由path',
       dataIndex: 'path',
       ellipsis: true,
-      width: 180,
+      // width: 180,
     },
     {
       title: '路由重定向',
       dataIndex: 'redirect',
       hideInSearch: true,
       ellipsis: true,
-      width: 180,
+      // width: 180,
     },
     {
       title: '父节点',
@@ -83,7 +84,7 @@ const MenuList: React.FC = () => {
       hideInSearch: true,
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.order - b.order,
-      width: 60,
+      width: 70,
     },
 
     {
@@ -91,7 +92,7 @@ const MenuList: React.FC = () => {
       dataIndex: 'component',
       hideInSearch: true,
       ellipsis: true,
-      width: 200,
+      // width: 200,
     },
 
     {
@@ -100,7 +101,7 @@ const MenuList: React.FC = () => {
       valueType: 'dateTime',
       search: false,
       renderText: (text: string) => timestampToDateStr(Number(text)),
-      width: 150,
+      // width: 150,
     },
     {
       title: '隐藏',
@@ -116,6 +117,7 @@ const MenuList: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 240,
       render: (_, record) => (
         <>
           <CreateOrUpdateMenu
@@ -125,7 +127,6 @@ const MenuList: React.FC = () => {
             flatOptions={flatOptions}
           />
 
-          <Divider type="vertical" />
           <CreateOrUpdateMenu
             flag={FlagStatus.UPDATE}
             record={record}
@@ -133,9 +134,8 @@ const MenuList: React.FC = () => {
             cascaderOptions={cascaderOptions}
             flatOptions={flatOptions}
           />
-          <Divider type="vertical" />
           <Button
-            type="primary"
+            type="link"
             danger
             onClick={() => {
               if (record?.children)
@@ -184,6 +184,7 @@ const MenuList: React.FC = () => {
     // TODO: 菜单目前只支持单条搜索结果
     <PageContainer>
       <ProTable<MenuListItem>
+        bordered
         headerTitle="菜单管理"
         actionRef={actionRef}
         rowKey="id"

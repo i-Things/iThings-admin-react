@@ -110,6 +110,12 @@ export const CreateForm: React.FC<Props> = ({ onCommit, productValues }) => {
             },
           ]}
         />
+        <ProFormText
+          width="md"
+          name="deviceAlias"
+          label="设备别名"
+          placeholder="请选择输入设备别名"
+        />
         <ProFormSelect
           width="md"
           name="logLevel"

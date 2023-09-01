@@ -3,8 +3,9 @@ import type {
   GroupDeviceItem,
 } from '@/pages/deviceMangers/group/types';
 import type { MenuListItem } from '@/pages/systemMangers/menu/types';
+import { isValidCron } from 'cron-validator';
 import type { DEVICE_INFO } from './const';
-import { GUIDKEY, TOKENKEY } from './const';
+import { GUIDKEY, KEYPREFIX, TOKENKEY } from './const';
 
 // 判断是否为移动端
 export const isMobile = () => {
@@ -25,8 +26,8 @@ export const getToken = () => {
   return localStorage.getItem(`${TOKEN_PREFIX}-token`) ?? '';
 };
 
-export const setUID = (uid: string) => {
-  return localStorage.setItem(`${TOKEN_PREFIX}-UID`, uid);
+export const setUID = (userID: string) => {
+  return localStorage.setItem(`${TOKEN_PREFIX}-UID`, userID);
 };
 
 export const getUID = () => {
@@ -113,6 +114,16 @@ export function isOnlineEnum(row: DEVICE_INFO | GroupDeviceItem) {
       };
 }
 
+// 设备部署状态
+export function actionStatusEnum() {
+  return {
+    1: { text: '待部署', status: 'Default' },
+    2: { text: '部署中', status: 'Processing' },
+    3: { text: '部署成功', status: 'Success' },
+    4: { text: '部署失败', status: 'Error' },
+  };
+}
+
 /**
  * @function 数组转对象
  * @param {Array} original 原始数组
@@ -197,34 +208,76 @@ export function downloadFunction(content: string, filename = 'tsl.json') {
   eleLink.click();
   document.body.removeChild(eleLink);
 }
+/**
+ * 判断是否为合法的 corn 表达式
+ *
+ * @param {string} value
+ * @return {*}
+ */
+export const isCorn = (value: string) => {
+  if (!value) return Promise.reject('请输入 cron 表达式');
+  console.log('value', value);
+
+  const v0 = value.replace(/(^\s*)|(\s*$)/g, '').split(' ');
+  const v = v0.filter(function (e: any) {
+    return e && e.trim();
+  });
+  if (v.length !== 6) return Promise.reject('无效 Cron 表达式');
+  return isValidCron(value, {
+    alias: true,
+    seconds: true,
+    allowBlankDay: true,
+    allowSevenAsSunday: true,
+  })
+    ? Promise.resolve('有效 Cron 表达式')
+    : Promise.reject('无效 Cron 表达式');
+};
+
+/**
+ * 存储本地缓存
+ *
+ * @param {string} key
+ * @param {*} value
+ */
+export const setLocalStorage = (key: string, value: any) => {
+  try {
+    const valueOfString = JSON.stringify(value);
+    localStorage.setItem(KEYPREFIX + key, valueOfString);
+  } catch (error) {
+    throw new Error(`存储本地缓存时报错了, ${error}`);
+  }
+};
+/**
+ * 获取本地缓存
+ *
+ * @param {string} key
+ * @return {*}
+ */
+export const getLocalStoragByKey = (key: string) => {
+  try {
+    const valueOfString = localStorage.getItem(KEYPREFIX + key);
+    if (valueOfString) {
+      const value = JSON.parse(valueOfString);
+      return value;
+    }
+  } catch (error) {
+    throw new Error(`获取本地缓存时报错了, ${error}`);
+  }
+};
 
 /**
  * 下载文件
  * @param url 下载链接
  * @param params 参数
  */
-export const downloadFile = (url: string, params?: Record<string, any>) => {
-  const formElement = document.createElement('form');
-  formElement.style.display = 'display:none;';
-  formElement.method = 'GET';
-  formElement.action = url;
-  // 添加参数
-  if (params) {
-    Object.keys(params).forEach((key: string) => {
-      const inputElement = document.createElement('input');
-      inputElement.type = 'hidden';
-      inputElement.name = key;
-      inputElement.value = params[key];
-      formElement.appendChild(inputElement);
-    });
-  }
-  const inputElement = document.createElement('input');
-  inputElement.type = 'hidden';
-  inputElement.value = getToken();
-  formElement.appendChild(inputElement);
-  document.body.appendChild(formElement);
-  formElement.submit();
-  document.body.removeChild(formElement);
+export const downloadFile = (url: string) => {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = url.substring(url.lastIndexOf('/') + 1);
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 // 第一个首字母大写

@@ -3,11 +3,11 @@ import { history, useParams } from '@umijs/max';
 import { Card, message, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import DeviceInfoPage from './pages/deviceInfo/index';
-
 import CloudLogPage from './pages/cloudLog/index';
 import DeviceCloudLogPage from './pages/deviceCloudLog/index';
+import DeviceInfoPage from './pages/deviceInfo/index';
 import DeviceLocalLogPage from './pages/deviceLocalLog/index';
+import DeviceStatusPage from './pages/deviceStatus/index';
 import SubDevicePage from './pages/SubDevice/index';
 
 import { postApiV1ThingsProductInfoIndex } from '@/services/iThingsapi/chanpinguanli';
@@ -15,6 +15,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import { useRequest } from 'ahooks';
 import type { DeviceInfo } from '../data';
 import styles from './index.less';
+import CreateSecretKey from './pages/createSecretKey';
 import OnlineDebugPage from './pages/onlineDebug';
 
 const { TabPane } = Tabs;
@@ -80,6 +81,12 @@ const IndexPage: React.FC = () => {
         >
           <TabPane tab="设备信息" key="1">
             <DeviceInfoPage />
+          </TabPane>
+          <TabPane tab="设备状态" key="9">
+            <DeviceStatusPage productID={id} deviceName={name} />
+          </TabPane>
+          <TabPane tab="设备密钥生成" key="8">
+            <CreateSecretKey />
           </TabPane>
           <TabPane tab="云端诊断日志" key="2">
             <CloudLogPage productID={id} deviceName={name} />

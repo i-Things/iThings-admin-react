@@ -32,7 +32,7 @@ const DeviceInfoPage: React.FC = () => {
 
   return (
     <Card>
-      <BasicInfoPage deviceInfo={deviceInfo} />
+      <BasicInfoPage deviceInfo={deviceInfo} refresh={refresh} />
       <TagsInfoPage deviceInfo={deviceInfo} refresh={refresh} />
       <LocalLogPage deviceInfo={deviceInfo} refresh={refresh} />
       <DevicePositionPage deviceInfo={deviceInfo} refresh={refresh} />

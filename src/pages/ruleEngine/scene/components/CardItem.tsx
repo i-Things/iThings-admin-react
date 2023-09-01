@@ -21,11 +21,11 @@ const CardItem: React.FC<ruleSceneProps> = (props) => {
       <div
         className={styles['top-wrap']}
         onClick={() => {
-          if (isJump) history.push('/ruleEngine/scene/detail');
+          if (isJump) history.push(`/ruleEngine/scene/detail?id=${data.id}`);
         }}
       >
         <div className={styles['top-icon-wrap']}>
-          <div className={styles['top-icon']}>{TriggerWayType[data.triggerType]}</div>
+          <div className={styles['top-icon']}>{TriggerWayType[data.trigger]}</div>
         </div>
 
         <div className={styles['box-content']}>
@@ -38,7 +38,7 @@ const CardItem: React.FC<ruleSceneProps> = (props) => {
           </div>
         </div>
         <div className={styles['right-status-wrap']}>
-          <div className={styles['right-status']}>{data?.state === 1 ? '启用' : '禁用'}</div>
+          <div className={styles['right-status']}>{data?.status === 1 ? '启用' : '禁用'}</div>
         </div>
       </div>
     </div>

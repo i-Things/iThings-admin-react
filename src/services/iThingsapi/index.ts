@@ -14,45 +14,51 @@ import * as jiaoseguanli from './jiaoseguanli';
 import * as jiekouguanli from './jiekouguanli';
 import * as liu from './liu';
 import * as quanxianguanli from './quanxianguanli';
+import * as quyuguanliqiyeban from './quyuguanliqiyeban';
 import * as rizhiguanli from './rizhiguanli';
 import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
 import * as shebeijianquan from './shebeijianquan';
 import * as shebeijiaohu from './shebeijiaohu';
 import * as shebeixiaoxi from './shebeixiaoxi';
-import * as shengjibaoguanli from './shengjibaoguanli';
-import * as task from './task';
+import * as shengjibaoguanlifirmware from './shengjibaoguanlifirmware';
+import * as shengjirenwuguanlitask from './shengjirenwuguanlitask';
+import * as shujuquanxianqiyeban from './shujuquanxianqiyeban';
+import * as tongyonggongneng from './tongyonggongneng';
 import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
-import * as xitongpeizhi from './xitongpeizhi';
+import * as xiangmuguanliqiyeban from './xiangmuguanliqiyeban';
 import * as yonghuguanli from './yonghuguanli';
 import * as yuanchengpeizhi from './yuanchengpeizhi';
 import * as zidingyi from './zidingyi';
 export default {
+  shebeifenzu,
+  rizhiguanli,
+  jiaoseguanli,
+  caidanguanli,
+  yonghuguanli,
+  tongyonggongneng,
+  jiekouguanli,
   chanpinguanli,
   wumoxing,
+  yuanchengpeizhi,
+  zidingyi,
   shebeiguanli,
   shebeijianquan,
   shebeixiaoxi,
   shebeijiaohu,
-  caidanguanli,
-  jiaoseguanli,
-  yonghuguanli,
-  shebeifenzu,
-  shengjibaoguanli,
-  task,
-  yuanchengpeizhi,
   wangguanzishebeiguanli,
-  liu,
-  xitongpeizhi,
   changjingliandong,
-  rizhiguanli,
-  jiekouguanli,
+  shengjirenwuguanlitask,
+  liu,
   chulijilu,
   gaojingguanli,
   changjingliandongguanlian,
   gaojingrizhi,
   gaojingjilu,
-  zidingyi,
+  xiangmuguanliqiyeban,
+  quyuguanliqiyeban,
+  shujuquanxianqiyeban,
   quanxianguanli,
+  shengjibaoguanlifirmware,
 };

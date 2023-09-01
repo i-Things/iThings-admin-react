@@ -14,4 +14,6 @@ export enum LogType {
   CONTENT = 'content',
   /** 上下线日志 */
   ONOFFLINE = 'onoffline',
+  /** 操作日志 订阅和发布 */
+  ACCESS = 'access',
 }

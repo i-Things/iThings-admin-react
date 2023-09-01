@@ -7,7 +7,7 @@ import {
 import { FlagStatus } from '@/utils/base';
 import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
 import { ICON_OPTION } from '@/utils/iconMap';
-import { ExclamationCircleTwoTone, PlusOutlined } from '@ant-design/icons';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormCascader, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ActionType } from '@ant-design/pro-table';
@@ -38,7 +38,8 @@ const CreateOrUpdateMenu: React.FC<{
   const onClose = () => setVisible(false);
 
   const recursion = (pre: MenuOption[]) => {
-    pre.map((item) => {
+    pre?.map((item) => {
+      item.value = item.id;
       if (item.children) recursion(item?.children);
       if (item.id === record?.id) item.disabled = true;
     });
@@ -46,17 +47,9 @@ const CreateOrUpdateMenu: React.FC<{
   };
 
   const returnTitle = {
-    [FlagStatus.ADD]: (
-      <>
-        <PlusOutlined /> 添加子菜单
-      </>
-    ),
+    [FlagStatus.ADD]: '添加子菜单',
     [FlagStatus.UPDATE]: '编辑',
-    [FlagStatus.CREATE]: (
-      <>
-        <PlusOutlined /> 新建根菜单
-      </>
-    ),
+    [FlagStatus.CREATE]: '新建根菜单',
   };
 
   const HIDE_IN_MENU_OPTION = [
@@ -65,9 +58,13 @@ const CreateOrUpdateMenu: React.FC<{
   ];
 
   const formSubmit = async (values: MenuListItem) => {
+    console.log(values);
+
     let parentID = 1;
-    if (Array.isArray(values.parentID)) parentID = values.parentID[values.parentID.length - 1];
-    else {
+    if (Array.isArray(values.parentID)) {
+      if (values.parentID[0] === 0) parentID = 1;
+      else parentID = values.parentID[values.parentID.length - 1];
+    } else {
       if (values.parentID === '根节点') parentID = 1;
       else parentID = flatOptions.filter((item) => item.name === values.parentID)[0].id;
     }
@@ -101,14 +98,17 @@ const CreateOrUpdateMenu: React.FC<{
     };
     editFormRef.current?.setFieldsValue(initialValues);
   }, [editFlag, record]);
+  console.log('flag', flag);
+  console.log('option', recursion(options as MenuOption[]));
+
   return (
     <ModalForm<MenuListItem>
       width={550}
-      formRef={editFormRef}
-      title={flag === FlagStatus.UPDATE ? '编辑菜单' : '新建菜单'}
+      formRef={editFormRef} /*  */
+      title={flag === FlagStatus.UPDATE ? '编辑菜单' : '创建菜单'}
       trigger={
         <Button
-          type="primary"
+          type={flag === FlagStatus.UPDATE || flag === FlagStatus.ADD ? 'link' : 'primary'}
           onClick={() => {
             setEditFlag(true);
             onOpen();

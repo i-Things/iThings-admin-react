@@ -1,10 +1,7 @@
-import { postApiV1SystemCommonConfig } from '@/services/iThingsapi/xitongpeizhi';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { history } from '@umijs/max';
-import {
-  postApiV1SystemUserRead,
-  postApiV1SystemUserResourceRead,
-} from './services/iThingsapi/yonghuguanli';
+import { postApiV1SystemCommonConfig } from './services/iThingsapi/tongyonggongneng';
+import { postApiV1SystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
 import { loadBMap } from './utils/map';
 import { getToken, getUID, setLocal, spanTree } from './utils/utils';
@@ -45,26 +42,23 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const token = getToken();
-      const uid = getUID();
+      const userID = getUID();
 
-      if (!token || !uid) {
+      if (!token || !userID) {
         return history.push(loginPath);
       }
-
-      const body = { uid: uid };
-      const msg = await postApiV1SystemUserRead(body);
-      const menuTree = await postApiV1SystemUserResourceRead({});
+      const resourece = await postApiV1SystemUserResourceRead({});
       const { data } = await postApiV1SystemCommonConfig({});
       setLocal(`mapData`, JSON.stringify(data));
       loadBMap();
       const menuInfo = loopMenuItem(
         spanTree(
-          menuTree?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number)),
+          resourece?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number)),
           1,
           'parentID',
         ),
       );
-      return { userInfo: msg.data, menuInfo };
+      return { userInfo: resourece.data.info, menuInfo };
     } catch (error) {
       history.push(loginPath);
     }

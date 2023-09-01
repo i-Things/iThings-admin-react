@@ -67,13 +67,21 @@ const GroupDeviceList: React.FC<{
 
   const columns: ProColumns<GroupDeviceItem>[] = [
     {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
       title: '设备名称',
       dataIndex: 'deviceName',
       render: (_, record) => <a onClick={() => jumpToDeviceList(record)}>{_}</a>,
       copyable: true,
       width: 150,
     },
-
+    {
+      title: '设备别名',
+      dataIndex: 'deviceAlias',
+    },
     {
       title: '所属产品名称',
       dataIndex: 'productID',
@@ -83,25 +91,12 @@ const GroupDeviceList: React.FC<{
       width: 150,
     },
     {
-      title: '所属产品ID',
-      dataIndex: 'productID',
-      ellipsis: true,
-      copyable: true,
-      renderText: (text) => selectOptions.filter((item) => item?.value === text)[0]?.value,
-      width: 160,
-    },
-    {
       title: '在线状态',
       dataIndex: 'isOnline',
       valueEnum: isOnlineEnum,
       valueType: 'select',
       width: 100,
       // filters: true,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdTime',
-      renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
       title: '激活时间',
@@ -120,11 +115,11 @@ const GroupDeviceList: React.FC<{
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button type="primary" onClick={() => jumpToDeviceList(record)}>
+          <Button type="link" onClick={() => jumpToDeviceList(record)}>
             查看
           </Button>
           <Divider type="vertical" />
-          <Button type="primary" danger onClick={() => showDeleteConfirm(record)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(record)}>
             从分组中删除
           </Button>
         </>
@@ -146,6 +141,7 @@ const GroupDeviceList: React.FC<{
   return (
     <>
       <ProTable<GroupDeviceItem>
+        bordered
         headerTitle={
           <LightFilter bordered onFinish={filterFinish}>
             <ProFormSelect

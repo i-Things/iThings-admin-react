@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 
 let roleList = [
   {
-    uid: 1234,
+    userID: 1234,
     name: 'user',
     status: 1,
     remark: 'aqwww',
@@ -10,7 +10,7 @@ let roleList = [
     roleMenuID: [2, 3, 4],
   },
   {
-    uid: 12345,
+    userID: 12345,
     name: 'user',
     status: 2,
     remark: 'aqwww',
@@ -32,7 +32,12 @@ async function postApiV1SystemRoleIndex(req: Request, res: Response) {
 
 async function postApiV1SystemRoleCreate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
-    roleList.push({ ...req.body, uid: 123456, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
+    roleList.push({
+      ...req.body,
+      userID: 123456,
+      createdTime: 1661830593000,
+      roleMenuID: [1, 2, 3],
+    });
   return res.json({
     code: 200,
     msg: '添加成功',
@@ -42,7 +47,7 @@ async function postApiV1SystemRoleCreate(req: Request, res: Response) {
 
 async function postApiV1SystemRoleUpdate(req: Request, res: Response) {
   if (Object.keys(req.body).length > 0)
-    roleList.push({ ...req.body, uid: 123, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
+    roleList.push({ ...req.body, userID: 123, createdTime: 1661830593000, roleMenuID: [1, 2, 3] });
   return res.json({
     code: 200,
     msg: '添加成功',
@@ -51,7 +56,7 @@ async function postApiV1SystemRoleUpdate(req: Request, res: Response) {
 }
 
 async function postApiV1SystemRole__openAPI__delete(req: Request, res: Response) {
-  roleList = roleList.filter((item) => item.uid != req.body?.id);
+  roleList = roleList.filter((item) => item.userID != req.body?.id);
   return res.json({
     code: 200,
     msg: '添加成功',

@@ -8,37 +8,26 @@ export async function postApiV1ThingsGroupDeviceIndex(
     /** 分组ID */
     groupID: string;
     /** 产品ID */
-    productID: string;
+    productID?: string;
     /** 设备名称 */
-    deviceName: string;
+    deviceName?: string;
+    /** 如果不为nil,如果为空,获取设备所有最新属性 如果传了属性列表,则会返回属性列表 */
+    withProperties?: string[];
+    page?: { page?: number; size?: number };
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: number;
-    msg: string;
-    data: {
-      list?: {
-        productID?: string;
-        deviceName?: string;
-        createdTime?: string;
-        secret?: string;
-        firstLogin?: string;
-        lastLogin?: string;
-        version?: string;
-        logLevel?: string;
-        cert?: string;
-        isOnline?: string;
-      }[];
-    };
-  }>('/api/v1/things/group/device/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { list?: API.DeviceInfo[] } }>(
+    '/api/v1/things/group/device/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 添加分组设备(支持批量) POST /api/v1/things/group/device/multi-create */
@@ -86,6 +75,8 @@ export async function postApiV1ThingsGroupInfoCreate(
     groupName: string;
     /** 父组ID 1-根组 ，非根组，则传所选父分组的groupID 作为本组的parentID */
     parentID?: string;
+    /** 绑定的productID */
+    productID?: string;
     /** 分组描述 */
     desc?: string;
   },
@@ -123,6 +114,7 @@ export async function postApiV1ThingsGroupInfo__openAPI__delete(
 export async function postApiV1ThingsGroupInfoIndex(
   body: {
     page: { page?: number; size?: number };
+    productID: string;
     /** 父组ID, 1-根组 */
     parentID: string;
     /** 按分组名称筛选 */
@@ -137,6 +129,8 @@ export async function postApiV1ThingsGroupInfoIndex(
         groupName?: string;
         parentID?: number;
         groupID?: number;
+        productID?: string;
+        productName?: string;
         desc?: string;
         createdTime?: string;
         tags?: { key?: string; value?: string }[];

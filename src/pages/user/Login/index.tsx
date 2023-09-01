@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: loginType) => {
     try {
       const body = {
-        userID: values.userID,
+        account: values.account,
         pwdType: 2,
         password: MD5(values.password).toString(),
         loginType: 'pwd',
@@ -57,18 +57,10 @@ const Login: React.FC = () => {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         setToken(msg.data.token.accessToken);
-        setUID(msg?.data?.info?.uid ?? '');
-
-        console.log('====================================');
-        console.log('加载完毕');
-        console.log('====================================');
+        setUID(msg?.data?.info?.userID ?? '');
 
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
-
-        console.log('====================================');
-        console.log('加载完毕1');
-        console.log('====================================');
 
         if (!history) return;
         const query = queryString.parse(history.location.search);
@@ -78,10 +70,6 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-
-      console.log('====================================');
-      console.log('加载完毕2');
-      console.log('====================================');
     } catch (error) {
       console.log('error', error);
       const defaultLoginFailureMessage = '登录失败，请重试！';
@@ -108,7 +96,7 @@ const Login: React.FC = () => {
               <p className={styles['sub-title']}>欢迎使用</p>
               <LoginForm
                 initialValues={{
-                  userID: 'administrator',
+                  account: 'administrator',
                   password: 'iThings666',
                 }}
                 onFinish={async (values) => {
@@ -116,12 +104,12 @@ const Login: React.FC = () => {
                 }}
               >
                 <ProFormText
-                  name="userID"
+                  name="account"
                   fieldProps={{
                     size: 'large',
                     prefix: <UserOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={'用户名: 17052709767'}
+                  placeholder={'用户名: administrator'}
                   rules={[
                     {
                       required: true,
@@ -135,7 +123,7 @@ const Login: React.FC = () => {
                     size: 'large',
                     prefix: <LockOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={'密码: yl'}
+                  placeholder={'密码: iThings666'}
                   rules={[
                     {
                       required: true,

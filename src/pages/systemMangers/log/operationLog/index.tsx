@@ -12,7 +12,7 @@ import React, { useRef, useState } from 'react';
 import '../styles.less';
 
 type OperationLogType = {
-  uid?: number;
+  userID?: number;
   operUserName?: string;
   operName?: string;
   businessType?: string;
@@ -64,7 +64,7 @@ const OperationLog: React.FC = () => {
     },
     {
       title: '用户id',
-      dataIndex: 'uid',
+      dataIndex: 'userID',
       hideInSearch: true,
       copyable: true,
     },
@@ -162,7 +162,7 @@ const OperationLog: React.FC = () => {
         headerTitle="操作日志"
         bordered
         actionRef={actionRef}
-        rowKey="uid"
+        rowKey="userID"
         search={SEARCH_CONFIGURE}
         options={PROTABLE_OPTIONS}
         request={(params) =>

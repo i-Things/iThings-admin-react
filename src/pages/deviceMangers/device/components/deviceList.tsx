@@ -31,6 +31,8 @@ type queryParam = {
   current: number;
   productID?: string;
   deviceName?: string;
+  deviceAlias?: string;
+  isOnline?: number;
   /** 非模糊查询 为tag的名,value为tag对应的值 */
   tags?: Tags[];
 };
@@ -103,7 +105,9 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       },
       productID: productID,
       deviceName: params.deviceName,
+      deviceAlias: params.deviceAlias,
       tags: tags,
+      isOnline: Number(params.isOnline || 0),
     };
     const res = await postApiV1ThingsDeviceInfoIndex(body);
 
@@ -205,6 +209,10 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       ],
     },
     {
+      title: '设备别名',
+      dataIndex: 'deviceAlias',
+    },
+    {
       title: '所属产品名称',
       dataIndex: 'productID',
       valueType: 'select',
@@ -218,17 +226,17 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       dataIndex: 'productID',
       ellipsis: true,
       copyable: true,
-      hideInTable: productInfo != undefined,
+      hideInTable: true,
       search: false,
     },
     {
       title: '设备类型',
       dataIndex: 'productID',
       ellipsis: true,
-      copyable: true,
       hideInTable: productInfo != undefined,
       search: false,
       valueEnum: deviceType,
+      width: 80,
     },
     {
       title: '设备标签',
@@ -250,6 +258,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       title: '固件版本',
       dataIndex: 'version',
       search: false,
+      hideInTable: true,
     },
     {
       title: '日志级别',
@@ -257,19 +266,21 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       valueType: 'select',
       search: false,
       valueEnum: DEVICE_LOG_LEVEL_VALUE,
+      hideInTable: true,
     },
     {
       title: '在线状态',
       dataIndex: 'isOnline',
-      search: false,
       valueType: 'select',
       valueEnum: isOnlineEnum,
+      width: 80,
     },
     {
       title: '激活时间',
       key: 'firstLogin',
       dataIndex: 'firstLogin',
       search: false,
+      hideInTable: true,
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
@@ -284,6 +295,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       key: 'createdTime',
       dataIndex: 'createdTime',
       search: false,
+      hideInTable: true,
       renderText: (text: string) => timestampToDateStr(Number(text)),
     },
     {
@@ -305,6 +317,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
           </a>
           <Button
             type="link"
+            danger
             key="deleteProduct"
             onClick={() => {
               showDeleteConfirm(record);
@@ -332,7 +345,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
       rowKey="secret"
       columns={columns}
       actionRef={actionRef}
-      cardBordered
+      bordered
       request={queryPage}
       onReset={() => setTags(undefined)}
       editable={{
@@ -343,7 +356,7 @@ const DeviceList: React.FC<Props> = ({ productInfo }) => {
         persistenceType: 'localStorage',
       }}
       search={{
-        span: 6,
+        span: 4,
         labelWidth: 'auto',
       }}
       options={{
