@@ -1,34 +1,108 @@
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { history } from '@umijs/max';
+import { history, Navigate } from '@umijs/max';
+import React from 'react';
 import { postApiV1SystemCommonConfig } from './services/iThingsapi/tongyonggongneng';
 import { postApiV1SystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
 import { loadBMap } from './utils/map';
+import { filterMenu } from './utils/menu';
 import { getToken, getUID, setLocal, spanTree } from './utils/utils';
 
 const loginPath = '/user/login';
 
-const loopMenuItem = (menus: any[]): MenuDataItem[] =>
-  menus.map(({ icon, children, hideInMenu, ...item }) => {
-    return {
-      ...item,
-      icon: (
-        <img
-          src={IconMap[icon as string]}
-          alt=""
-          style={{
-            width: 14,
-            height: 14,
-            marginRight: 5,
-            marginBottom: 5,
-          }}
-        />
-      ),
-      children: children && loopMenuItem(children),
-      hideInMenu: hideInMenu === 1,
-    };
-  });
+let extraRoutes: any[] = [];
+let userInfo = {};
+let flatMenu: any[] = [];
 
+// 尝试加载对应的组件
+const loadMyComponent = async (path) => {
+  let module = null;
+  try {
+    module = await import(path + '.tsx'); // 使用React.lazy加载组件
+  } catch (error) {
+    // 处理加载组件时的错误
+    module = await import('./pages/404');
+  }
+  return module;
+};
+
+// 确定当前菜单对应的组件
+const confirmComponent = (component) => {
+  if (component.includes('.tsx')) {
+    return React.lazy(() =>
+      loadMyComponent('./pages/' + component?.split('./')?.[1]?.split('.tsx')?.[0]),
+    );
+  } else {
+    return React.lazy(() => loadMyComponent('./pages/' + component?.split('./')?.[1]));
+  }
+};
+
+const loopMenuItem = (menus: any[], pId: number | string) => {
+  return menus.flatMap((item) => {
+    let Component: React.ComponentType<any> | null = null;
+
+    if (item.redirect) {
+      const redirectMenu = flatMenu.filter((it) => it.path === item.redirect);
+      Component = confirmComponent(redirectMenu?.[0]?.component);
+    }
+    if ((item.parentID != 1 || !item.children) && !item.redirect) {
+      Component = confirmComponent(item.component);
+    }
+    if (item.children) {
+      return [
+        {
+          ...item,
+          parentID: pId,
+          hideInMenu: item.hideInMenu === 1,
+          icon: (
+            <img
+              src={IconMap[(item.icon as string) || 'icon_data_01']}
+              alt=""
+              style={{
+                width: 14,
+                height: 14,
+                marginRight: 5,
+                marginBottom: 5,
+              }}
+            />
+          ),
+          children: [
+            {
+              path: item.path,
+              element: <Navigate to={item.children[0].path} replace />,
+            },
+            ...loopMenuItem(item.children, item.parentID),
+          ],
+        },
+      ];
+    } else {
+      return [
+        {
+          ...item,
+          parentID: pId,
+          hideInMenu: item.hideInMenu === 1,
+          icon: (
+            <img
+              src={IconMap[(item.icon as string) || 'icon_data_01']}
+              alt=""
+              style={{
+                width: 14,
+                height: 14,
+                marginRight: 5,
+                marginBottom: 5,
+              }}
+            />
+          ),
+          element: (
+            <React.Suspense fallback={<div>Loading...</div>}>
+              {Component && <Component />}
+            </React.Suspense>
+          ),
+        },
+      ];
+    }
+  });
+};
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -43,22 +117,12 @@ export async function getInitialState(): Promise<{
     try {
       const token = getToken();
       const userID = getUID();
-
       if (!token || !userID) {
         return history.push(loginPath);
       }
-      const resourece = await postApiV1SystemUserResourceRead({});
       const { data } = await postApiV1SystemCommonConfig({});
       setLocal(`mapData`, JSON.stringify(data));
-      loadBMap();
-      const menuInfo = loopMenuItem(
-        spanTree(
-          resourece?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number)),
-          1,
-          'parentID',
-        ),
-      );
-      return { userInfo: resourece.data.info, menuInfo };
+      return { userInfo, menuInfo: filterMenu(extraRoutes)! };
     } catch (error) {
       history.push(loginPath);
     }
@@ -77,4 +141,21 @@ export async function getInitialState(): Promise<{
     fetchUserInfo,
     settings: {},
   };
+}
+
+export async function render(oldRender: Function) {
+  loadBMap();
+  const resourece = await postApiV1SystemUserResourceRead({});
+  userInfo = resourece?.data?.info;
+  flatMenu = resourece?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number));
+  oldRender();
+}
+
+export async function patchClientRoutes({ routes }: { routes: any[] }) {
+  const routerIndex = routes.findIndex((item) => item.path === '/');
+  const parentID = routes[routerIndex].id;
+  if (flatMenu) {
+    extraRoutes = loopMenuItem(spanTree(flatMenu, 1, 'parentID'), parentID);
+    routes[routerIndex].routes.push(...extraRoutes);
+  }
 }
