@@ -1,6 +1,5 @@
 import RightContent from '@/components/RightContent';
 import { OFFICIAL_WEBSITE } from '@/utils/const';
-import type { MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -9,6 +8,7 @@ import 'moment/locale/zh-cn';
 import React, { useState } from 'react';
 // @ts-ignore
 import FooterCom from '@/components/FooterCom';
+import type { MenuDataItem } from '@ant-design/pro-components';
 import { history, Outlet, useModel } from '@umijs/max';
 import defaultSettings from '../../config/defaultSettings';
 import logo from '../../public/icons/logo/Group.png';
@@ -19,9 +19,10 @@ const BasicLayout: React.FC = (props) => {
   const { initialState } = useModel('@@initialState');
   const [pathname, setPathname] = useState('/welcome');
   const menuTree = initialState?.currentUser?.menuInfo;
-
   return (
     <ProLayout
+      {...props}
+      {...defaultSettings}
       location={{
         pathname,
       }}
@@ -47,8 +48,7 @@ const BasicLayout: React.FC = (props) => {
         );
       }}
       menuDataRender={() => menuTree as MenuDataItem[]}
-      {...props}
-      {...defaultSettings}
+      // route={{ routes: getRouterMenu(asyncRouters) }}
       logo={<img src={logo} alt="" />}
       onMenuHeaderClick={() => {
         window.open(OFFICIAL_WEBSITE);
