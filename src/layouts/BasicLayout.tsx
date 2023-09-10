@@ -19,6 +19,7 @@ const BasicLayout: React.FC = (props) => {
   const { initialState } = useModel('@@initialState');
   const [pathname, setPathname] = useState('/welcome');
   const menuTree = initialState?.currentUser?.menuInfo;
+
   return (
     <ProLayout
       {...props}
@@ -33,6 +34,7 @@ const BasicLayout: React.FC = (props) => {
       menuItemRender={(item, dom) => (
         <a
           onClick={() => {
+            if (item.type == 3) return window.open(item.path);
             setPathname(item.path || '/welcome');
             history.push(item.path ?? '/welcome');
           }}
@@ -48,7 +50,6 @@ const BasicLayout: React.FC = (props) => {
         );
       }}
       menuDataRender={() => menuTree as MenuDataItem[]}
-      // route={{ routes: getRouterMenu(asyncRouters) }}
       logo={<img src={logo} alt="" />}
       onMenuHeaderClick={() => {
         window.open(OFFICIAL_WEBSITE);
