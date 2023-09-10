@@ -251,3 +251,22 @@ export const MODEL_VALUE_TYPE_ENUMS = {
   float: '浮点型',
 };
 export const CON_HEIGHT_STYLE = { height: '100%' };
+
+export const MENU_TYPE_OPTIONS = [
+  {
+    value: 1,
+    label: '菜单',
+  },
+  {
+    value: 2,
+    label: 'iframe内嵌',
+  },
+  {
+    value: 3,
+    label: '外部链接',
+  },
+  {
+    value: 4,
+    label: '微前端',
+  },
+];
