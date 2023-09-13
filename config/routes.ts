@@ -24,7 +24,7 @@ export default [
     routes: [
       {
         path: '/',
-        redirect: '/deviceMangers/product',
+        redirect: '/deviceMangers/product/index',
       },
       // {
       //   path: '/systemMangers',
