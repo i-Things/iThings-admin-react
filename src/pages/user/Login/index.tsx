@@ -26,6 +26,7 @@ const Login: React.FC = () => {
     if (userInfo) {
       await setInitialState((s) => ({ ...s, currentUser: userInfo }));
     }
+    return userInfo;
   };
   const fetchCaptcha = async () => {
     const body = {
@@ -59,7 +60,8 @@ const Login: React.FC = () => {
         setToken(msg.data.token.accessToken);
         setUID(msg?.data?.info?.userID ?? '');
 
-        await fetchUserInfo();
+        const { menuInfo } = await fetchUserInfo();
+
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
         if (!history) return;
@@ -68,6 +70,7 @@ const Login: React.FC = () => {
           redirect: string;
         };
         history.push(redirect || '/');
+        if (!menuInfo?.length) location.reload();
         return;
       }
     } catch (error) {
