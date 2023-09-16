@@ -4,7 +4,6 @@ import React from 'react';
 import { postApiV1SystemCommonConfig } from './services/iThingsapi/tongyonggongneng';
 import { postApiV1SystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
 import { IconMap } from './utils/iconMap';
-import { loadBMap } from './utils/map';
 import { filterMenu } from './utils/menu';
 import { getToken, getUID, setLocal, spanTree } from './utils/utils';
 
@@ -144,7 +143,7 @@ export async function getInitialState(): Promise<{
 }
 
 export async function render(oldRender: Function) {
-  loadBMap();
+  // loadBMap();
   const resourece = await postApiV1SystemUserResourceRead({});
   userInfo = resourece?.data?.info;
   flatMenu = resourece?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number));
