@@ -395,7 +395,7 @@ export const EditForm: React.FC<EditFormType> = forwardRef(({ ...props }, ref) =
     const _affordance = JSON.parse(affordance);
     const { params, input, output } = _affordance;
     const defineType = _affordance.define.type || {};
-    const specs = _affordance.define.specs || {};
+    const specs = _affordance.define.specs || [];
     const arrayInfo = _affordance.define.arrayInfo || {};
     const mode = _affordance?.mode;
     specs?.map((item) => {
