@@ -5,7 +5,7 @@ import {
   postApiV1SystemMenuUpdate,
 } from '@/services/iThingsapi/caidanguanli';
 import { FlagStatus } from '@/utils/base';
-import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL } from '@/utils/const';
+import { FORMITEM_LAYOUT, LAYOUT_TYPE_HORIZONTAL, MENU_TYPE_OPTIONS } from '@/utils/const';
 import { ICON_OPTION } from '@/utils/iconMap';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -28,6 +28,7 @@ const CreateOrUpdateMenu: React.FC<{
   const { updateHandler } = useTableUpdate();
   const [editFlag, setEditFlag] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [initialValues, setInitialValues] = useState({});
   const editFormRef = useRef<ProFormInstance>();
   const options = cloneDeep(cascaderOptions);
 
@@ -68,8 +69,11 @@ const CreateOrUpdateMenu: React.FC<{
       if (values.parentID === '根节点') parentID = 1;
       else parentID = flatOptions.filter((item) => item.name === values.parentID)[0].id;
     }
+    if (!values.type) values.type = 2;
+    if (!values.icon) values.icon = 'icon_data_01';
     const body = {
       ...values,
+      type: Number(values.type),
       order: values.order ? Number(values?.order) : 1,
       id: record?.id as number,
       parentID,
@@ -91,15 +95,12 @@ const CreateOrUpdateMenu: React.FC<{
           ? '根节点'
           : flatOptions.filter((item) => item.id === record?.parentID)[0]?.name,
     };
-    const initialValues = {
+    const initial = {
       ...record,
-      //parentID: flag === FlagStatus.CREATE ? '根节点' : parentIDFlag(),
       parentID: parentIDFlag[flag],
     };
-    editFormRef.current?.setFieldsValue(initialValues);
+    setInitialValues(initial);
   }, [editFlag, record]);
-  console.log('flag', flag);
-  console.log('option', recursion(options as MenuOption[]));
 
   return (
     <ModalForm<MenuListItem>
@@ -117,9 +118,11 @@ const CreateOrUpdateMenu: React.FC<{
           {returnTitle[flag]}
         </Button>
       }
+      initialValues={initialValues}
       visible={visible}
       autoFocusFirstInput
       modalProps={{
+        destroyOnClose: true,
         onCancel: onClose,
       }}
       submitTimeout={2000}
@@ -149,6 +152,20 @@ const CreateOrUpdateMenu: React.FC<{
           changeOnSelect: true,
         }}
       />
+      <ProFormSelect
+        width="md"
+        name="type"
+        label="类型"
+        placeholder="请选择对应类型"
+        request={async () => MENU_TYPE_OPTIONS}
+        initialValue={1}
+        rules={[
+          {
+            required: true,
+            message: '菜单类型是必填项！',
+          },
+        ]}
+      />
       <ProFormText
         name="name"
         width="md"
@@ -176,7 +193,7 @@ const CreateOrUpdateMenu: React.FC<{
       <ProFormText
         name="component"
         width="md"
-        label="文件路径"
+        label="路径"
         placeholder="如：./deviceMangers/index.tsx"
         rules={[
           {
@@ -191,9 +208,7 @@ const CreateOrUpdateMenu: React.FC<{
         label="图标"
         placeholder="请选择"
         request={async () => ICON_OPTION}
-        fieldProps={{
-          defaultValue: 'icon_data_01',
-        }}
+        initialValue="icon_data_01"
       />
       <ProFormText name="redirect" width="md" label="路由重定向" />
       <ProFormText name="order" width="md" label="排序" />
@@ -201,11 +216,9 @@ const CreateOrUpdateMenu: React.FC<{
         width="md"
         name="hideInMenu"
         label="是否隐藏"
-        placeholder="是否在列表隐藏"
+        placeholder="请选择"
         request={async () => HIDE_IN_MENU_OPTION}
-        fieldProps={{
-          defaultValue: 2,
-        }}
+        initialValue={2}
       />
     </ModalForm>
   );
