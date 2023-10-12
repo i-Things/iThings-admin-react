@@ -1,3 +1,4 @@
+import { loadBMap } from '@/utils/map';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { history, Navigate } from '@umijs/max';
 import { Spin } from 'antd';
