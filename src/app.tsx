@@ -1,4 +1,3 @@
-import { loadBMap } from '@/utils/map';
 import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { history, Navigate } from '@umijs/max';
 import { Spin } from 'antd';
@@ -8,6 +7,7 @@ import { postApiV1SystemCommonConfig } from './services/iThingsapi/tongyonggongn
 import { postApiV1SystemUserResourceRead } from './services/iThingsapi/yonghuguanli';
 import { OFFICIAL_WEBSITE } from './utils/const';
 import { IconMap } from './utils/iconMap';
+import { loadBMap } from './utils/map';
 import { filterMenu } from './utils/menu';
 import { getToken, getUID, setLocal, spanTree } from './utils/utils';
 
@@ -160,6 +160,9 @@ export async function getInitialState(): Promise<{
       if (!token || !userID) {
         return history.push(loginPath);
       }
+      const { data } = await postApiV1SystemCommonConfig({});
+      setLocal(`mapData`, JSON.stringify(data));
+      loadBMap();
       return { userInfo, menuInfo: filterMenu(extraRoutes)! };
     } catch (error) {
       history.push(loginPath);
@@ -182,9 +185,6 @@ export async function getInitialState(): Promise<{
 }
 
 export async function render(oldRender: Function) {
-  const { data } = await postApiV1SystemCommonConfig({});
-  setLocal(`mapData`, JSON.stringify(data));
-  loadBMap();
   const resourece = await postApiV1SystemUserResourceRead({});
   userInfo = resourece?.data?.info;
   flatMenu = resourece?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number));
