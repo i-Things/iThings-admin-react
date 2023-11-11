@@ -160,6 +160,9 @@ export async function getInitialState(): Promise<{
       if (!token || !userID) {
         return history.push(loginPath);
       }
+      const { data } = await postApiV1SystemCommonConfig({});
+      setLocal(`mapData`, JSON.stringify(data));
+      loadBMap();
       return { userInfo, menuInfo: filterMenu(extraRoutes)! };
     } catch (error) {
       history.push(loginPath);
@@ -182,9 +185,6 @@ export async function getInitialState(): Promise<{
 }
 
 export async function render(oldRender: Function) {
-  const { data } = await postApiV1SystemCommonConfig({});
-  setLocal(`mapData`, JSON.stringify(data));
-  loadBMap();
   const resourece = await postApiV1SystemUserResourceRead({});
   userInfo = resourece?.data?.info;
   flatMenu = resourece?.data?.menu?.sort((a, b) => (a.order as number) - (b.order as number));
