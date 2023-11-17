@@ -330,7 +330,7 @@ const DeviceMap: React.FC<DeviceMapProps> = () => {
   const clickHandle = (params) => {
     if (params.data.productID) {
       history.push(
-        '/deviceMangers/device/detail/' +
+        '/deviceManagers/device/detail/' +
           params.data.productID +
           '/' +
           params.data.deviceName +

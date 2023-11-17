@@ -1,6 +1,6 @@
-import CloudLogPage from '@/pages/deviceMangers/device/detail/pages/cloudLog';
-import DeviceCloudLogPage from '@/pages/deviceMangers/device/detail/pages/deviceCloudLog';
-import DeviceLocalLogPage from '@/pages/deviceMangers/device/detail/pages/deviceLocalLog';
+import CloudLogPage from '@/pages/deviceManagers/device/detail/pages/cloudLog';
+import DeviceCloudLogPage from '@/pages/deviceManagers/device/detail/pages/deviceCloudLog';
+import DeviceLocalLogPage from '@/pages/deviceManagers/device/detail/pages/deviceLocalLog';
 
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Tabs } from 'antd';

@@ -126,6 +126,7 @@ export async function postApiV1ThingsDeviceInteractSendAction(
     inputParams: string;
     /** 异步情况通过获取接口来获取 */
     isAsync?: boolean;
+    option?: any;
   },
   options?: { [key: string]: any },
 ) {

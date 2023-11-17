@@ -1,8 +1,8 @@
 import type {
   GroupDeviceCreateListProps,
   GroupDeviceItem,
-} from '@/pages/deviceMangers/group/types';
-import type { MenuListItem } from '@/pages/systemMangers/menu/types';
+} from '@/pages/deviceManagers/group/types';
+import type { MenuListItem } from '@/pages/systemManagers/menu/types';
 import { isValidCron } from 'cron-validator';
 import type { DEVICE_INFO } from './const';
 import { GUIDKEY, KEYPREFIX, TOKENKEY } from './const';

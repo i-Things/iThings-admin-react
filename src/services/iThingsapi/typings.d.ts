@@ -194,6 +194,14 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
+  type FirmwareFile = {
+    name: string;
+    size: number;
+    url: string;
+    signValue: string;
+    fileMd5: string;
+  };
+
   type flow = {
     /** 唯一id-雪花算法 */
     ruleID: string;
@@ -205,6 +213,11 @@ declare namespace API {
     desc?: string;
   };
 
+  type getApiV1SystemCommonWsParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
   type indexParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
@@ -213,6 +226,28 @@ declare namespace API {
   type indexParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
+  };
+
+  type menu = {
+    id: number;
+    /** 菜单名称 */
+    name?: string;
+    /** 父菜单ID，一级菜单为1 */
+    parentID?: number;
+    /** 类型   1：目录   2：菜单   3：按钮 */
+    type?: number;
+    /** 系统的path */
+    path?: string;
+    /** 页面 */
+    component?: string;
+    /** 菜单图标 */
+    icon?: string;
+    /** 路由重定向 */
+    redirect?: string;
+    /** 排序 */
+    order?: number;
+    /** 是否隐藏 1-是 2-否 */
+    hideInMenu?: number;
   };
 
   type OtaFirmwareCreateReq = {
@@ -235,6 +270,16 @@ declare namespace API {
   type OtaFirmwareDelReq = {
     /** 固件升级包编号 */
     firmwareID: number;
+  };
+
+  type OtaFirmwareDeviceInfoReq = {
+    /** 固件升级包编号 */
+    firmwareID: number;
+  };
+
+  type OtaFirmwareDeviceInfoResp = {
+    /** 版本列表，逗号分隔 */
+    versions: string;
   };
 
   type OtaFirmwareFile = {
@@ -346,6 +391,18 @@ declare namespace API {
     desc: Record<string, any>;
     extData: Record<string, any>;
     files: OtaFirmwareFileInfo[];
+  };
+
+  type OtaFirmwareReq = {
+    productID: string;
+    firmwareName: string;
+    destVersion: string;
+    signMethod: string;
+    firmwareDesc: string;
+    type: number;
+    moduleName: string;
+    needToVerify: boolean;
+    firmwareFiles: FirmwareFile[];
   };
 
   type OtaTaskAnalysisReq = {
@@ -511,6 +568,11 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
+  type postApiV1SystemAppCreateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
   type postApiV1SystemAreaInfo_openAPI_deleteParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
@@ -562,21 +624,6 @@ declare namespace API {
   };
 
   type postApiV1SystemCommonUploadUrlCreateParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1SystemDataAuth_openAPI_deleteParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1SystemDataAuthIndexParams = {
-    'iThings-token'?: string;
-    'iThings-project-id'?: string;
-  };
-
-  type postApiV1SystemDataAuthMultiUpdateParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
   };
@@ -662,7 +709,82 @@ declare namespace API {
     'iThings-project-id'?: string;
   };
 
+  type postApiV1SystemTimedTaskGroup_openAPI_deleteParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskGroupCreateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskGroupIndexParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskGroupReadParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskGroupUpdateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskInfo_openAPI_deleteParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskInfoCreateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskInfoIndexParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskInfoReadParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskInfoUpdateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemTimedTaskSendParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
   type postApiV1SystemUser_openAPI_deleteParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemUserAuthAreaIndexParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemUserAuthAreaMultiUpdateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemUserAuthProjectIndexParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1SystemUserAuthProjectMultiUpdateParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
   };
@@ -887,6 +1009,16 @@ declare namespace API {
   };
 
   type postApiV1ThingsGroupInfoUpdateParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1ThingsOtaFirmwareDeviceInfoReadParams = {
+    'iThings-token'?: string;
+    'iThings-project-id'?: string;
+  };
+
+  type postApiV1ThingsOtaOtaFirmwareCreateParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
   };
@@ -1291,6 +1423,15 @@ declare namespace API {
     dataType: SchemaDefine;
   };
 
+  type sendOption = {
+    /** 超时失败时间 */
+    timeoutToFail: number;
+    /** 请求超时 超时后会进行重试 */
+    requestTimeout: number;
+    /** 重试间隔 */
+    retryInterval: number;
+  };
+
   type SuccRet = {
     /** 返回code */
     code: number;
@@ -1309,6 +1450,35 @@ declare namespace API {
   };
 
   type tagList = Record<string, any>;
+
+  type taskGroup = {
+    code: string;
+    name?: string;
+    type?: string;
+    subType?: string;
+    priority?: number;
+    env?: Record<string, any>;
+    config?: string;
+  };
+
+  type taskInfo = {
+    /** 组编码 */
+    groupCode: string;
+    /** 任务类型 1 定时任务 2 延时任务 */
+    type?: number;
+    /** 任务名称 */
+    name?: string;
+    /** 任务编码 */
+    code: string;
+    /** 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行 */
+    params?: string;
+    /** cron执行表达式 */
+    cronExpr?: string;
+    /** 状态 */
+    status?: number;
+    /** 优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级 */
+    priority?: number;
+  };
 
   type term = {
     /** 嵌套条件 */
@@ -1367,6 +1537,16 @@ declare namespace API {
   type updateParams = {
     'iThings-token'?: string;
     'iThings-project-id'?: string;
+  };
+
+  type userAuthArea = {
+    /** 区域id */
+    areaID: string;
+  };
+
+  type userAuthProject = {
+    /** 项目id */
+    projectID: string;
   };
 
   type UserDataAuth = {

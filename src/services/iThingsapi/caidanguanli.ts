@@ -6,7 +6,7 @@ import request from '@/utils/request';
 export async function postApiV1SystemMenuCreate(
   body: {
     /** 菜单名称 */
-    name: string;
+    name?: string;
     /** 父菜单ID，一级菜单为1 */
     parentID?: number;
     /** 类型   1：目录   2：菜单   3：按钮 */
@@ -39,7 +39,6 @@ export async function postApiV1SystemMenuCreate(
 /** 删除菜单 POST /api/v1/system/menu/delete */
 export async function postApiV1SystemMenu__openAPI__delete(
   body: {
-    /** 菜单编号 */
     id: number;
   },
   options?: { [key: string]: any },
@@ -59,39 +58,26 @@ export async function postApiV1SystemMenuIndex(
   body: {
     /** 按照菜单名筛选 （只有获取完整菜单时有效） */
     name?: string;
-    /** 按菜单路径筛选（只有获取完整菜单时有效） */
     path?: string;
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    total: number;
-    data: {
-      id?: number;
-      name?: string;
-      parentID?: number;
-      type?: number;
-      path?: string;
-      component?: string;
-      icon?: string;
-      redirect?: string;
-      order?: number;
-      hideInMenu?: number;
-    }[];
-  }>('/api/v1/system/menu/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { total?: number; list?: API.menu[] } }>(
+    '/api/v1/system/menu/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 更新菜单 POST /api/v1/system/menu/update */
 export async function postApiV1SystemMenuUpdate(
   body: {
-    /** 编号 */
     id: number;
     /** 菜单名称 */
     name?: string;

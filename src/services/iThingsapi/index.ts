@@ -14,7 +14,8 @@ import * as jiaoseguanli from './jiaoseguanli';
 import * as jiekouguanli from './jiekouguanli';
 import * as liu from './liu';
 import * as quanxianguanli from './quanxianguanli';
-import * as quyuguanliqiyeban from './quyuguanliqiyeban';
+import * as quyuguanli from './quyuguanli';
+import * as renwu from './renwu';
 import * as rizhiguanli from './rizhiguanli';
 import * as shebeifenzu from './shebeifenzu';
 import * as shebeiguanli from './shebeiguanli';
@@ -22,13 +23,15 @@ import * as shebeijianquan from './shebeijianquan';
 import * as shebeijiaohu from './shebeijiaohu';
 import * as shebeixiaoxi from './shebeixiaoxi';
 import * as shengjibaoguanlifirmware from './shengjibaoguanlifirmware';
+import * as shengjibaoguanlixin from './shengjibaoguanlixin';
 import * as shengjirenwuguanlitask from './shengjirenwuguanlitask';
-import * as shujuquanxianqiyeban from './shujuquanxianqiyeban';
 import * as tongyonggongneng from './tongyonggongneng';
 import * as wangguanzishebeiguanli from './wangguanzishebeiguanli';
 import * as wumoxing from './wumoxing';
-import * as xiangmuguanliqiyeban from './xiangmuguanliqiyeban';
+import * as xiangmuguanli from './xiangmuguanli';
+import * as yingyongguanli from './yingyongguanli';
 import * as yonghuguanli from './yonghuguanli';
+import * as yonghuquanxian from './yonghuquanxian';
 import * as yuanchengpeizhi from './yuanchengpeizhi';
 import * as zidingyi from './zidingyi';
 export default {
@@ -56,9 +59,12 @@ export default {
   changjingliandongguanlian,
   gaojingrizhi,
   gaojingjilu,
-  xiangmuguanliqiyeban,
-  quyuguanliqiyeban,
-  shujuquanxianqiyeban,
+  xiangmuguanli,
+  quyuguanli,
   quanxianguanli,
   shengjibaoguanlifirmware,
+  yonghuquanxian,
+  yingyongguanli,
+  renwu,
+  shengjibaoguanlixin,
 };

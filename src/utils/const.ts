@@ -50,6 +50,18 @@ export const DEVICE_TYPE_VALUE = {
   3: { text: '子设备' },
 };
 
+export const TASK_GROUP_TYPE_VALUE = {
+  queue: { text: 'queue' },
+  sql: { text: 'sql' },
+};
+
+export const TASK_GROUP_SUB_TYPE_VALUE = {
+  normal: { text: '普通' },
+  js: { text: 'js脚本' },
+  natsJs: { text: 'natsJs' },
+  nats: { text: 'nats' },
+};
+
 export const DEVICE_LOG_LEVEL_FORM = [
   { label: '关闭', value: 1 },
   { label: '错误', value: 2 },

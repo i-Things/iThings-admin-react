@@ -83,3 +83,11 @@ export async function postApiV1SystemCommonUploadUrlCreate(
     },
   );
 }
+
+/** websocket接口 GET /api/v1/system/common/ws */
+export async function getApiV1SystemCommonWs(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/v1/system/common/ws', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

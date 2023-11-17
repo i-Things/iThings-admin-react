@@ -25,7 +25,7 @@ import type { editor } from 'monaco-editor';
 import sizeof from 'object-sizeof';
 import { useEffect, useRef, useState } from 'react';
 import type { ChangeHandler, MonacoEditorProps } from 'react-monaco-editor';
-import '../../systemMangers/menu/styles.less';
+import '../../systemManagers/menu/styles.less';
 import './styles.less';
 import type { RemoteConfigurationItem } from './types';
 

@@ -4,7 +4,7 @@ import request from '@/utils/request';
 
 /** 创建升级包版本 POST /api/v1/things/ota/firmware/create */
 export async function create(body: API.OtaFirmwareCreateReq, options?: { [key: string]: any }) {
-  return request<string>('/api/v1/things/ota/firmware/create', {
+  return request<API.SuccRet>('/api/v1/things/ota/firmware/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export async function deleteUsingPOST(
   body: API.OtaFirmwareDelReq,
   options?: { [key: string]: any },
 ) {
-  return request<string>('/api/v1/things/ota/firmware/delete', {
+  return request<API.SuccRet>('/api/v1/things/ota/firmware/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -27,6 +27,24 @@ export async function deleteUsingPOST(
     data: body,
     ...(options || {}),
   });
+}
+
+/** 获取升级包可选设备信息,包含可用版本 POST /api/v1/things/ota/firmware/device-info-read */
+export async function postApiV1ThingsOtaFirmwareDeviceInfoRead(
+  body: API.OtaFirmwareDeviceInfoReq,
+  options?: { [key: string]: any },
+) {
+  return request<{ code: number; msg: string; data: API.OtaFirmwareDeviceInfoResp }>(
+    '/api/v1/things/ota/firmware/device-info-read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    },
+  );
 }
 
 /** 获取升级包列表 POST /api/v1/things/ota/firmware/index */
@@ -38,31 +56,37 @@ export async function index(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.OtaFirmwareIndexResp>('/api/v1/things/ota/firmware/index', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: API.OtaFirmwareIndexResp }>(
+    '/api/v1/things/ota/firmware/index',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 获取升级包详情 POST /api/v1/things/ota/firmware/read */
 export async function read(body: API.OtaFirmwareReadReq, options?: { [key: string]: any }) {
-  return request<API.OtaFirmwareReadResp>('/api/v1/things/ota/firmware/read', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: API.OtaFirmwareReadResp }>(
+    '/api/v1/things/ota/firmware/read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 更新升级包 POST /api/v1/things/ota/firmware/update */
 export async function update(body: API.OtaFirmwareInfoUpdateReq, options?: { [key: string]: any }) {
-  return request<string>('/api/v1/things/ota/firmware/update', {
+  return request<API.SuccRet>('/api/v1/things/ota/firmware/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

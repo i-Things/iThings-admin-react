@@ -1,4 +1,4 @@
-import OnlineDebugPage from '@/pages/deviceMangers/device/detail/pages/onlineDebug';
+import OnlineDebugPage from '@/pages/deviceManagers/device/detail/pages/onlineDebug';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
 import Filter from '../components/filterProduct';

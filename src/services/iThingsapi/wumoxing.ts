@@ -96,16 +96,17 @@ export async function postApiV1ThingsProductSchemaTslRead(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    data: any; tsl: string 
-}>('/api/v1/things/product/schema/tsl-read', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: number; msg: string; data: { tsl?: string } }>(
+    '/api/v1/things/product/schema/tsl-read',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 更新物模型功能 POST /api/v1/things/product/schema/update */
